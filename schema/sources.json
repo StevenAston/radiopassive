@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "radiopassive/schema/sources.json",
+  "title": "Radiopassive source registry row",
+  "description": "One row of data/sources.csv (SCHEMA.md §4.3). Banned domains are checked by pipeline/validate.py from vocab.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["source_id", "short_cite", "full_citation", "year", "type", "rank", "access", "licence"],
+  "properties": {
+    "source_id": {"type": "string", "pattern": "^S[0-9]{4}$"},
+    "short_cite": {"type": "string", "minLength": 3},
+    "full_citation": {"type": "string", "minLength": 10},
+    "url": {"type": ["string", "null"], "pattern": "^https?://"},
+    "doi": {"type": ["string", "null"], "pattern": "^10\\.[0-9]{4,9}/\\S+$"},
+    "year": {"type": "integer", "minimum": 1900, "maximum": 2026},
+    "type": {"enum": ["regulator", "compilation", "peer_reviewed", "agency", "grey"]},
+    "rank": {"type": "integer", "minimum": 1, "maximum": 5},
+    "access": {"enum": ["open", "paywalled", "inaccessible"]},
+    "licence": {"enum": ["open", "restricted", "unknown"]},
+    "notes": {"type": ["string", "null"]}
+  },
+  "allOf": [
+    {"if": {"properties": {"type": {"const": "regulator"}}}, "then": {"properties": {"rank": {"const": 1}}}},
+    {"if": {"properties": {"type": {"const": "compilation"}}}, "then": {"properties": {"rank": {"const": 2}}}},
+    {"if": {"properties": {"type": {"const": "peer_reviewed"}}}, "then": {"properties": {"rank": {"const": 3}}}},
+    {"if": {"properties": {"type": {"const": "agency"}}}, "then": {"properties": {"rank": {"const": 4}}}},
+    {"if": {"properties": {"type": {"const": "grey"}}}, "then": {"properties": {"rank": {"const": 5}}}}
+  ]
+}

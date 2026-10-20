@@ -1,0 +1,277 @@
+{
+ "streams": [
+  "nuclear",
+  "coal",
+  "oil_gas",
+  "wind_solar",
+  "other"
+ ],
+ "substreams": {
+  "nuclear": [
+   "pwr",
+   "bwr",
+   "phwr",
+   "gcr",
+   "lwgr",
+   "fbr",
+   "other_reactor",
+   "fuel_cycle"
+  ],
+  "coal": [
+   "power",
+   "non_power",
+   "all"
+  ],
+  "oil_gas": [
+   "conventional",
+   "unconventional",
+   "oil_sands"
+  ],
+  "wind_solar": [
+   "wind",
+   "solar"
+  ],
+  "other": [
+   "geothermal",
+   "biomass_peat",
+   "hydro"
+  ]
+ },
+ "stages": {
+  "nuclear": [
+   "u_mining_conv",
+   "u_mining_isl",
+   "u_milling",
+   "conv_enrich_fab",
+   "reactor_operation",
+   "spent_fuel",
+   "reprocessing",
+   "sea_disposal",
+   "construction_decom",
+   "accident"
+  ],
+  "coal": [
+   "coal_mining",
+   "combustion_power",
+   "combustion_nonpower",
+   "construction"
+  ],
+  "oil_gas": [
+   "drilling",
+   "production",
+   "oil_sands_mining",
+   "processing_transport",
+   "abandonment_scrap",
+   "construction"
+  ],
+  "wind_solar": [
+   "commodity_supply",
+   "end_of_life"
+  ],
+  "other": [
+   "geothermal",
+   "biomass_peat",
+   "hydro",
+   "construction"
+  ]
+ },
+ "tiers": [
+  "sealed_in_core",
+  "sealed_fuel_cycle",
+  "sealed_damaged_core",
+  "impounded",
+  "reisolated",
+  "dispersed",
+  "liberated",
+  "memo_earth_moved"
+ ],
+ "stage_tiers": {
+  "u_mining_conv": [
+   "impounded",
+   "reisolated",
+   "liberated",
+   "memo_earth_moved"
+  ],
+  "u_mining_isl": [
+   "impounded",
+   "reisolated",
+   "liberated"
+  ],
+  "u_milling": [
+   "sealed_fuel_cycle",
+   "impounded",
+   "dispersed",
+   "liberated"
+  ],
+  "conv_enrich_fab": [
+   "sealed_fuel_cycle",
+   "impounded",
+   "liberated"
+  ],
+  "reactor_operation": [
+   "sealed_in_core",
+   "sealed_fuel_cycle",
+   "liberated"
+  ],
+  "spent_fuel": [
+   "sealed_in_core",
+   "sealed_fuel_cycle"
+  ],
+  "reprocessing": [
+   "sealed_fuel_cycle",
+   "liberated"
+  ],
+  "sea_disposal": [
+   "sealed_fuel_cycle",
+   "liberated"
+  ],
+  "construction_decom": [
+   "sealed_fuel_cycle",
+   "impounded",
+   "dispersed",
+   "liberated"
+  ],
+  "accident": [
+   "sealed_in_core",
+   "sealed_damaged_core",
+   "liberated"
+  ],
+  "coal_mining": [
+   "impounded",
+   "liberated",
+   "memo_earth_moved"
+  ],
+  "combustion_power": [
+   "impounded",
+   "reisolated",
+   "dispersed",
+   "liberated"
+  ],
+  "combustion_nonpower": [
+   "impounded",
+   "dispersed",
+   "liberated"
+  ],
+  "construction": [
+   "impounded",
+   "dispersed",
+   "liberated"
+  ],
+  "drilling": [
+   "impounded"
+  ],
+  "production": [
+   "impounded",
+   "reisolated",
+   "dispersed",
+   "liberated"
+  ],
+  "oil_sands_mining": [
+   "impounded",
+   "liberated",
+   "memo_earth_moved"
+  ],
+  "processing_transport": [
+   "impounded",
+   "liberated"
+  ],
+  "abandonment_scrap": [
+   "impounded",
+   "dispersed",
+   "liberated"
+  ],
+  "commodity_supply": [
+   "impounded",
+   "dispersed",
+   "liberated",
+   "memo_earth_moved"
+  ],
+  "end_of_life": [
+   "impounded",
+   "liberated"
+  ],
+  "geothermal": [
+   "impounded",
+   "reisolated",
+   "liberated"
+  ],
+  "biomass_peat": [
+   "impounded",
+   "dispersed",
+   "liberated"
+  ],
+  "hydro": [
+   "liberated"
+  ]
+ },
+ "quantities": {
+  "flow": "Bq/a",
+  "transfer_out": "Bq",
+  "transfer_in": "Bq",
+  "standing_inventory": "Bq"
+ },
+ "basis": [
+  "measured",
+  "compiled",
+  "modelled",
+  "interpolated",
+  "extrapolated"
+ ],
+ "allocation_variants": [
+  "default",
+  "bound_main",
+  "bound_radio"
+ ],
+ "technologies": [
+  "coal_power",
+  "gas_power",
+  "oil_power",
+  "nuclear",
+  "wind",
+  "solar",
+  "geothermal",
+  "biomass",
+  "hydro"
+ ],
+ "source_types": {
+  "regulator": 1,
+  "compilation": 2,
+  "peer_reviewed": 3,
+  "agency": 4,
+  "grey": 5
+ },
+ "source_access": [
+  "open",
+  "paywalled",
+  "inaccessible"
+ ],
+ "source_licence": [
+  "open",
+  "restricted",
+  "unknown"
+ ],
+ "banned_domains": [
+  "grokipedia.com",
+  "wikipedia.org"
+ ],
+ "event_types": [
+  "accident",
+  "impoundment_failure",
+  "spill",
+  "other"
+ ],
+ "event_inclusion": {
+  "activity_bq_min": 1000000000000.0,
+  "mass_t_min": 100000.0
+ },
+ "year_range": [
+  1950,
+  2025
+ ],
+ "forbidden_column_tokens": [
+  "dose",
+  "sv",
+  "sievert",
+  "rem"
+ ]
+}
