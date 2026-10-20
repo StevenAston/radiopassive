@@ -111,13 +111,13 @@ To keep the decay engine tractable, short-lived daughters are folded into a long
 
 | Chain | Group (head+) | Members | $m_k$ |
 |---|---|---|---|
-| U-238 | `U238+` | U-238, Th-234, Pa-234m | 3 |
+| U-238 | `U238+` | U-238, Th-234, Pa-234m, Pa-234 (0.16% IT branch of Pa-234m) | 3.0016 |
 | | `U234` | U-234 | 1 |
 | | `Th230` | Th-230 | 1 |
 | | `Ra226+` | Ra-226, Rn-222, Po-218, Pb-214, Bi-214, Po-214 | 6 |
 | | `Pb210+` | Pb-210, Bi-210 | 2 |
 | | `Po210` | Po-210 (tracked separately because its 138 d half-life is often out of equilibrium) | 1 |
-| | **U-238 series total** | | **14** |
+| | **U-238 series total** | | **14.0016** (nominally 14) |
 | U-235 | `U235+` | U-235, Th-231 | 2 |
 | | `Pa231` | Pa-231 | 1 |
 | | `Ac227+` | Ac-227, Th-227/Fr-223, Ra-223, Rn-219, Po-215, Pb-211, Bi-211, Tl-207 | 8 |
@@ -130,20 +130,28 @@ To keep the decay engine tractable, short-lived daughters are folded into a long
 | | `Rn220+` | Rn-220, Po-216, Pb-212, Bi-212, Po-212 (64.06%) / Tl-208 (35.94%) (geothermal, thoron-rich residues) | 5 |
 | Potassium | `K40` | K-40 | 1 |
 
-Natural uranium: the U-235 series head activity is 0.0461 × that of U-238 (from atom abundances 0.7204% and 99.2742%, half-lives 7.038 × 10⁸ a and 4.468 × 10⁹ a; Task 0.3 confirms).
+Natural uranium: the U-235 series head activity is 0.0461 × that of U-238 (0.04606 from ICRP 107 half-lives and atom abundances 0.7204% / 99.2742%; confirmed in Task 0.3).
 
-**Multipliers for released radon** (`Rn222+`, `Rn220+`) assume full equilibrium with the progeny. That is a counting convention: in air, equilibrium is often not reached before dilution and deposition (Pb-212's half-life is 10.6 h). Every decay is still counted, because the progeny decay wherever they end up.
+### 4.1a Two kinds of multiplier
 
-The members, $m_k$ and branching ratios in this table are provisional until Task 0.3 verifies them against ICRP 107. The checks done so far: the series totals 14 / 11 / 10 match the α + β counts (8 + 6, 7 + 4, 6 + 4), and the Bi-212 branching is 64.06% / 35.94%.
+Every group in `groups.csv` carries a `role` and a `multiplier_scope`:
+
+- **Equilibrium groups** (`multiplier_scope = stock_and_flow`): every daughter's half-life is < 1/10 of the head's, so the daughters stay in (secular or transient) equilibrium wherever the head is. The member weight of a daughter is its branching × the transient-equilibrium ratio $\lambda_d/(\lambda_d-\lambda_h)$. The multiplier applies to both stocks and flows.
+- **Released-gas groups** (`role = released_gas`, `multiplier_scope = flow_only`): `Rn222+`, `Rn220+`, `Kr88+`, `Xe138+`.
+  - The multiplier counts the **eventual decays per head decay** of the progeny formed after release. Its member weights are branching only.
+  - It applies to **flows only** and is never applied to a stock. For `Rn220+` in particular, the progeny (Pb-212, 10.6 h) outlive the head (55.6 s), so a standing activity ratio of 5 would be wrong.
+  - *Why still count the progeny:* under D24 every decay is counted, and the progeny decay wherever they end up.
+
+The members, multipliers and branching ratios in this section are verified against ICRP 107 in Task 0.3 (`data/reference/groups.csv` is authoritative where it differs from this text). The series totals 14 / 11 / 10 match the α + β counts (8 + 6, 7 + 4, 6 + 4); the Bi-212 branching is 64.06% / 35.94%.
 
 ### 4.2 Artificial nuclides (nuclear stream)
 
 | Class | Groups |
 |---|---|
-| Noble gases | Ar-41, Kr-85, Kr-85m, Kr-87, Kr-88, Xe-131m, Xe-133, Xe-133m, Xe-135, Xe-138 |
-| Light / activation | H-3, C-14, Co-58, Co-60, Mn-54, Fe-55, Ni-63, Sb-125 |
-| Fission products | `Sr90+` (Sr-90, Y-90; $m$=2), `Cs137+` (Cs-137, Ba-137m; $m$≈1.946, from the DDEP branching of 94.57%; final value from Task 0.3), Cs-134, Cs-135, `Ru106+` (Ru-106, Rh-106; $m$=2), Ru-103, `Ce144+` (Ce-144, Pr-144; $m$=2), `Ba140+` (Ba-140, La-140; $m$=2), `Zr95+` (Zr-95, Nb-95; $m$≈2), Mo-99, Tc-99, I-129, I-131, I-133, Te-132, Pm-147, Sm-151, Eu-154, Eu-155 |
-| Actinides | U-233, U-234, U-236, Np-237, Np-239, Pu-238, Pu-239, Pu-240, Pu-241, Pu-242, Am-241, Am-243, Cm-242, Cm-244, Cm-245, Cm-246 |
+| Noble gases | Ar-41, Kr-85, Kr-85m, Kr-87, `Kr88+` (Kr-88, Rb-88; released gas), Xe-131m, Xe-133, Xe-133m, Xe-135, `Xe138+` (Xe-138, Cs-138; released gas) |
+| Light / activation | H-3, C-14 (half-life 5700 a, ICRP 107 / ENSDF; the older "Cambridge" value 5730 a is not used), Co-58, Co-60, Mn-54, Fe-55, Ni-63, `Sb125+` (Sb-125, Te-125m, if it passes the equilibrium rule) |
+| Fission products | `Sr90+` (Sr-90, Y-90; $m$≈2.0003), `Cs137+` (Cs-137, Ba-137m; $m$=1.944, from ICRP 107's 94.399% branching; DDEP 94.57%, ENSDF 94.7%), Cs-134, Cs-135, `Ru106+` (Ru-106, Rh-106; $m$≈2.0000), `Ru103+` (Ru-103, Rh-103m, if it passes the equilibrium rule), `Ce144+` (Ce-144, Pr-144; $m$≈2.0000), Ba-140 and La-140 (separate: La-140's half-life is 0.13 × Ba-140's, above the 1/10 rule), Zr-95 and Nb-95 (separate: ratio 0.55), `Mo99+` (Mo-99, Tc-99m; $m$=1.965), Tc-99, I-129, I-131, I-133, `Te132+` (Te-132, I-132; $m$=2.031), Pm-147, Sm-151, Eu-154, Eu-155 |
+| Actinides | U-233, U-234, U-236, `Np237+` (Np-237, Pa-233; $m$=2.000), Np-239, Pu-238, Pu-239, Pu-240, Pu-241, Pu-242, Am-241, Am-243, Cm-242, Cm-244, Cm-245, Cm-246 |
 
 For spent-fuel **inventory**, a reduced set is used that together accounts for ≥ 99% of activity and ≥ 99% of decay heat at every cooling time from 1 to 10⁴ years. The set is drawn from the lists above and is confirmed against a published per-tHM inventory in Task 1.2. Long-lived members such as Am-243, Cm-245/246, U-233/234/236 and Cs-135 are expected to be needed at long cooling times.
 
@@ -151,7 +159,7 @@ For spent-fuel **inventory**, a reduced set is used that together accounts for �
 
 | Stream | Candidate groups |
 |---|---|
-| ① Nuclear | Mining/milling: `U238+`, `U234`, `Th230`, `Ra226+`, `Pb210+`, `Po210`, `U235+`, `Pa231`, `Ac227+`, `Rn222+`. Effluents: noble gases, H-3, C-14, I-129, I-131, `Cs137+`, Cs-134, `Sr90+`, Co-60, Co-58, Mn-54, Sb-125, Tc-99, `Ru106+`, Pu/Am. Spent fuel and in-core inventory: §4.2 reduced inventory set. Accidents: I-131, I-133, Te-132, Cs-134, `Cs137+`, `Sr90+`, Xe-133, Kr-85, `Ba140+`, `Zr95+`, Ru-103, `Ru106+`, Mo-99, Np-239, `Ce144+`, Pu-isotopes. |
+| ① Nuclear | Mining/milling: `U238+`, `U234`, `Th230`, `Ra226+`, `Pb210+`, `Po210`, `U235+`, `Pa231`, `Ac227+`, `Rn222+`. Effluents: noble gases, H-3, C-14, I-129, I-131, `Cs137+`, Cs-134, `Sr90+`, Co-60, Co-58, Mn-54, Sb-125, Tc-99, `Ru106+`, Pu/Am. Spent fuel and in-core inventory: §4.2 reduced inventory set. Accidents: I-131, I-133, `Te132+`, Cs-134, `Cs137+`, `Sr90+`, Xe-133, Kr-85, Ba-140, La-140, Zr-95, Nb-95, `Ru103+`, `Ru106+`, `Mo99+`, Np-239, `Ce144+`, Pu-isotopes. |
 | ② Coal | `U238+`, `U234`, `Th230`, `Ra226+`, `Pb210+`, `Po210`, `U235+`, `Pa231`, `Ac227+`, `Th232`, `Ra228+`, `Th228+`, `K40`, `Rn222+` (mines, ash). |
 | ③ Oil and gas | `Ra226+`, `Ra228+`, `Th228+` (ingrowth in scale), `Pb210+`, `Po210` (gas processing, scale), `Rn222+` (gas, processing), `K40` (produced water). |
 | ④ Wind and solar materials | `Th232` series groups (monazite, Bayan Obo, ionic clays), U-238 and U-235 series groups (REE ores, copper-uranium ores, bauxite red mud), `Pb210+` and `Po210` (smelter off-gas), `Rn222+` (tailings), `K40`. |
@@ -411,7 +419,7 @@ Each year is stepped exactly by the matrix exponential of the chain's decay matr
 
 $$S(y)=S(y-1)\,e^{-\lambda}+F(y)\,\frac{1-e^{-\lambda}}{\lambda}$$
 
-with $\lambda$ in a⁻¹. Short-lived releases therefore show in the flow chart but leave almost nothing in the stock: for I-131, $(1-e^{-\lambda})/\lambda\approx0.032$, and the short-lived noble gases (Xe-133, Kr-88 and others) leave even less. The longer-lived releases **do** accumulate: Kr-85 (10.8 a), H-3 (12.3 a) and C-14 (5730 a). Events are applied as instantaneous transfers at mid-year.
+with $\lambda$ in a⁻¹. Short-lived releases therefore show in the flow chart but leave almost nothing in the stock: for I-131, $(1-e^{-\lambda})/\lambda\approx0.032$, and the short-lived noble gases (Xe-133, Kr-88 and others) leave even less. The longer-lived releases **do** accumulate: Kr-85 (10.8 a), H-3 (12.3 a) and C-14 (5700 a). Events are applied as instantaneous transfers at mid-year.
 
 ### 12.3 Disequilibrium at entry
 
@@ -484,4 +492,5 @@ Collective dose is calculated **for the 2010 reference year only**, in the lifec
 |---|---|
 | 2026-10-20 | First draft (Task 0.1). |
 | 2026-10-20 | Signed off; PD1–PD6 became D21–D26. |
+| 2026-10-20 | Updated from Task 0.3 (ICRP 107): U238+ multiplier 3.0016; Cs137+ 1.944; C-14 half-life 5700 a; Ba-140/La-140 and Zr-95/Nb-95 kept separate; Te132+, Mo99+, Np237+ formed; equilibrium vs released-gas multipliers (§4.1a); Kr88+, Xe138+ added. |
 | 2026-10-20 | Revised after independent verification. Fixed the Rn220+ multiplier (5); rewrote the civil/military rule as a per-country-year rule order; added in-core inventory (§5.4) and the full accident-toggle mechanics. Also: per-nuclide NORM threshold; difference from the regulatory "+" convention; extra stages (non-power coal, sea disposal, tailings as fill, refining and pipeline scale, scrapping, oil sands, end of life); no-double-count rules; radon branching via $\varepsilon$; zero-bound and asymmetric uncertainty handling; Kr-85/H-3/C-14 persistence; per-TWh basic formula; country codes; rationale table; added PD5 and PD6. |

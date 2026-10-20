@@ -105,6 +105,8 @@ One row = one quantity of one nuclide group, in one tier, from one stage, in one
 | `multiplier` | float | $m_k$ = sum of `member_weights` (§4) |
 | `e_per_head_decay_mev` | float | $\bar{E}_k$ (§7) |
 | `chain` | enum | `U238`, `U235`, `Th232`, `K40`, `artificial` |
+| `role` | enum | `chain`, `released_gas`, `artificial` (METHODS §4.1a) |
+| `multiplier_scope` | enum | `stock_and_flow` or `flow_only`; `flow_only` iff `role = released_gas`. The validator rejects any master row in a stock tier that would apply a `flow_only` multiplier (i.e. a `flow_only` group with `quantity` ≠ `flow`) |
 | `parent_group` | code | Next group up the chain; empty for chain heads and artificial groups |
 | `parent_branching` | float | Branching from `parent_group` to this group |
 | `notes` | string | Includes the equilibrium convention used (§4.1) |
@@ -252,3 +254,4 @@ Event rows (`quantity` = `transfer_out`/`transfer_in`) may use any tier pair; th
 | Date | Change |
 |---|---|
 | 2026-10-20 | First draft (Task 0.2). |
+| 2026-10-20 | Added `role` and `multiplier_scope` to groups.csv (from Task 0.3). |
