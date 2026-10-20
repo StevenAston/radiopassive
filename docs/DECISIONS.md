@@ -33,3 +33,5 @@ Each decision records what was decided, when, and where it is made operational. 
 | PD2 | Industry view and electricity lifecycle view; stacked totals only within one view. | METHODS §6.1 |
 | PD3 | Levelised per-TWh for construction-phase releases. | METHODS §8 |
 | PD4 | Count all decays in each nuclide group (head-only kept as alternative). | METHODS §3.2 |
+| PD5 | Per-TWh: chronic residue flows charged to the generation that created them over a 100-year horizon; stocks not normalised per TWh. | METHODS §8 |
+| PD6 | Oil and gas sub-streams: conventional, unconventional (fractured shale/tight + CBM), oil sands / extra-heavy oil. | METHODS §2.3 |
