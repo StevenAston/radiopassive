@@ -1,6 +1,6 @@
 # Radiopassive — Methods Specification (v1, Energy Edition)
 
-> **Status:** SIGNED OFF by Steve, 2026-10-20 (Task 0.1); PD1–PD6 are now decisions D21–D26. Revised the same day from the Task 0.2 schema review (see change log); new proposals PD7–PD8 await sign-off.
+> **Status:** SIGNED OFF by Steve, 2026-10-20 (Task 0.1); PD1–PD6 are now decisions D21–D26. Revised the same day from the Task 0.2 schema review (see change log); PD7–PD8 approved as D30–D31.
 > **Governs:** every dataset, script and chart in this project. If anything here conflicts with `PLAN.md`, the plan wins until this document is updated.
 
 ---
@@ -41,7 +41,7 @@ The framing thesis governs presentation, not calculation: **radiation is like wa
 
 - Annual resolution, **1950 to the latest year with data** (D14), for every stream; the nuclear stream reads near zero until civil power begins (~1956). The target end year is 2025; streams whose data stop earlier are extrapolated to 2025 with `basis = extrapolated`.
 - Years are calendar years. Where a source reports fiscal years, it is mapped to the calendar year containing most of its months, and this is noted.
-- **Before 1950 (PROPOSED, PD8).** Stocks of residues created before 1950 (19th- and early-20th-century coal ash, early oil-field NORM, civil sea disposal from 1946) would otherwise start at zero. Proposal: an **opening stock** for 1 January 1950, per stream, tier and group, estimated from pre-1950 production with the same factors and decayed to 1950, flagged `modelled`, and shown as a distinct band at the left edge of the stock charts. Flows start in 1950 as decided (D14).
+- **Before 1950 (D31).** Stocks of residues created before 1950 (19th- and early-20th-century coal ash, early oil-field NORM, civil sea disposal from 1946) would otherwise start at zero. Proposal: an **opening stock** for 1 January 1950, per stream, tier and group, estimated from pre-1950 production with the same factors and decayed to 1950, flagged `modelled`, and shown as a distinct band at the left edge of the stock charts. Flows start in 1950 as decided (D14).
 
 ### 2.2 Geography
 
@@ -316,7 +316,7 @@ $$\text{intensity}_{\mathrm{chronic},t}(y')=\frac{1}{E_t(y')}\int_{y'}^{y'+H}F_{
 
 $$\text{intensity}_{\mathrm{constr}}(y)=\frac{F_{\mathrm{constr}}(y)}{C(y)\,\mathrm{CF}\,L\times 8.766\ \mathrm{TWh\,GW^{-1}a^{-1}}}$$
 
-where $C(y)$ is capacity added (GW), $\mathrm{CF}$ the expected capacity factor and $L$ the expected lifetime (a); 1 GW × 8766 h = 8.766 TWh per GW-year. CF and $L$ are planning-lifetime values by technology and vintage, which ignore degradation and early retirement; that approximation is stated on the page. *Why:* dividing up-front construction releases by the current year's output penalises any fast-growing fleet (wind and solar now, nuclear in the 1970s–80s) and flatters any shrinking one. A simple "annual ratio" variant is kept in the data as a secondary series:
+where $C(y)$ is capacity added (GW), $\mathrm{CF}$ the expected capacity factor and $L$ the expected lifetime (a); 1 GW × 8766 h = 8.766 TWh per GW-year. CF and $L$ are planning-lifetime values by technology and vintage, which ignore degradation and early retirement; that approximation is stated on the page. *Why:* dividing up-front construction releases by the current year's output penalises any fast-growing fleet (wind and solar now, nuclear in the 1970s–80s) and flatters any shrinking one. **Decommissioning (D30)** is levelised the same way: decommissioning releases are divided by the plant's actual lifetime generation (known at retirement), or by its expected lifetime generation if it is still operating. A simple "annual ratio" variant is kept in the data as a secondary series:
 
 $$\text{intensity}_{\mathrm{constr,annual}}(y)=\frac{F_{\mathrm{constr}}(y)}{E_t(y)}$$
 - Years with zero generation are marked `n/a`, never zero.
@@ -487,7 +487,7 @@ Collective dose is calculated **for the 2010 reference year only**, in the lifec
 
 ---
 
-## 16. Proposed decisions (PD1–PD6 approved 2026-10-20 as D21–D26; PD7–PD8 awaiting sign-off)
+## 16. Proposed decisions (all approved 2026-10-20: PD1–PD6 as D21–D26, PD7–PD8 as D30–D31)
 
 | ID | Section | Proposal |
 |---|---|---|
@@ -508,6 +508,7 @@ Collective dose is calculated **for the 2010 reference year only**, in the lifec
 |---|---|
 | 2026-10-20 | First draft (Task 0.1). |
 | 2026-10-20 | Signed off; PD1–PD6 became D21–D26. |
+| 2026-10-20 | PD7 and PD8 approved (D30, D31). |
 | 2026-10-20 | From the Task 0.2 schema review: routine vs event transfers; chronic exhalation and seepage are engine processes, never data rows; release routes on Liberated rows; spent-fuel discharge recorded as a flow (clarification of §5.4); in-core inventory is the no-accident baseline; construction stages may write Dispersed and ⑤ gains a construction row; events may have several destination tiers. Added PD7 (decommissioning) and PD8 (pre-1950 opening stock). |
 | 2026-10-20 | Updated from Task 0.3 (ICRP 107): U238+ multiplier 3.0016; Cs137+ 1.944; C-14 half-life 5700 a; Ba-140/La-140 and Zr-95/Nb-95 kept separate; Te132+, Mo99+, Np237+ formed; equilibrium vs released-gas multipliers (§4.1a); Kr88+, Xe138+ added. |
 | 2026-10-20 | Revised after independent verification. Fixed the Rn220+ multiplier (5); rewrote the civil/military rule as a per-country-year rule order; added in-core inventory (§5.4) and the full accident-toggle mechanics. Also: per-nuclide NORM threshold; difference from the regulatory "+" convention; extra stages (non-power coal, sea disposal, tailings as fill, refining and pipeline scale, scrapping, oil sands, end of life); no-double-count rules; radon branching via $\varepsilon$; zero-bound and asymmetric uncertainty handling; Kr-85/H-3/C-14 persistence; per-TWh basic formula; country codes; rationale table; added PD5 and PD6. |

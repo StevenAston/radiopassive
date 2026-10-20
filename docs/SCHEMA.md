@@ -55,7 +55,7 @@ One row = one quantity of one nuclide group, in one tier, from one stage (and pr
 | `country` | code | yes | In `countries.csv`; **not** `XWL` (global data without a country breakdown go in `XXX`) |
 | `group` | code | yes | In `groups.csv` (head code, e.g. `Ra226+`, `Cs137+`, `H3`) |
 | `tier` | enum | yes | `sealed_in_core`, `sealed_fuel_cycle`, `sealed_damaged_core`, `impounded`, `reisolated`, `dispersed`, `liberated`, `memo_earth_moved`; allowed for the stage (§5.3) |
-| `quantity` | enum | yes | `flow` (Bq/a added), `transfer_out`, `transfer_in` (Bq moved between tiers in the year), `standing_inventory` (Bq present in `sealed_in_core`; the no-accident baseline, METHODS §5.4), `opening_stock` (Bq present on 1 January 1950; **pending PD8**, §3.2) |
+| `quantity` | enum | yes | `flow` (Bq/a added), `transfer_out`, `transfer_in` (Bq moved between tiers in the year), `standing_inventory` (Bq present in `sealed_in_core`; the no-accident baseline, METHODS §5.4), `opening_stock` (Bq present on 1 January 1950; D31, §3.2) |
 | `unit` | enum | yes | `Bq/a` for `flow`; `Bq` for every other quantity |
 | `value_low` | float ≥ 0 | yes | |
 | `value_central` | float ≥ 0 | yes | low ≤ central ≤ high |
@@ -89,7 +89,7 @@ The decay engine generates these from parameters, so data rows for them would do
 
 They are kept out by construction: every Liberated row must name a `route` (§5.7), and no route exists for exhalation from residues or for seepage. Radon released by an operating process (mine ventilation, vented and delivered gas, stack) is entered under its route.
 
-**`opening_stock` (pending PD8).** The schema accepts `opening_stock` rows (year 1950 only, any stock tier except `sealed_in_core` and `memo_earth_moved`) so that the pre-1950 decision can be implemented without a schema change. If PD8 is declined, the quantity is removed from `vocab.json` and `master.json`.
+**`opening_stock` (D31).** Residues created before 1950 enter as `opening_stock` rows: year 1950 only, any stock tier except `sealed_in_core` and `memo_earth_moved`, the activity present on 1 January 1950 after decay, usually `basis = modelled` from pre-1950 activity series (which `data/activity/` allows back to 1800). The decay engine starts each stock from these values.
 
 ### 3.3 Cross-row rules
 
@@ -531,4 +531,4 @@ The vocabularies for these (`views`, `runs`, `conventions`, `horizons_a`, the ti
 | 2026-10-20 | First draft (Task 0.2). |
 | 2026-10-20 | Added `role` and `multiplier_scope` to groups.csv (from Task 0.3). |
 | 2026-10-20 | Added the validator contract (API, CLI, rule codes, coercion) and behaviour details from the spec-blind test ambiguities. |
-| 2026-10-20 | **v2** after the independent schema review: master gains `product`, `residue_type`, `factor_ids`, `route`; routine vs event transfers; events gain `to_tiers` and activity bounds; `opening_stock` (pending PD8); new tables `residue_types.csv`, `reference_bands.csv`, factor registry; JSON schemas and rule codes (`T01`–`T05`, `D01`) for every support table; `V10`–`V13`, `E03`, `G04`, `G05`; dose tokens checked in values; URL required for inaccessible sources; field-name mapping; provisional derived-output dimensions. |
+| 2026-10-20 | **v2** after the independent schema review: master gains `product`, `residue_type`, `factor_ids`, `route`; routine vs event transfers; events gain `to_tiers` and activity bounds; `opening_stock` (D31); new tables `residue_types.csv`, `reference_bands.csv`, factor registry; JSON schemas and rule codes (`T01`–`T05`, `D01`) for every support table; `V10`–`V13`, `E03`, `G04`, `G05`; dose tokens checked in values; URL required for inaccessible sources; field-name mapping; provisional derived-output dimensions. |

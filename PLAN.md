@@ -189,7 +189,7 @@ One task per stream: **1.2 Nuclear · 1.3 Coal · 1.4 Oil and gas · 1.5 Wind an
 | Description | Assemble the annual driver series that factors are multiplied against. |
 | Input | Generation and production statistics; USGS DS140 mirror; IRENA; material-intensity studies. |
 | Output / Effect | `data/activity/*.csv` + sanity plots. |
-| Done condition | Annual series 1950–present (or from the series' natural start) for: electricity by source; coal production and consumption; oil and gas production; produced-water volumes (with the unconventional share); uranium production; REE production by country; wind and solar capacity additions by technology; material intensity by technology and year. Every series has source and basis flags, and any gap is filled by a stated method. |
+| Done condition | Annual series 1950–present (or from the series' natural start) for: electricity by source; coal production and consumption; oil and gas production; produced-water volumes (with the unconventional share); uranium production; REE production by country; wind and solar capacity additions by technology; material intensity by technology and year. Every series has source and basis flags, and any gap is filled by a stated method. **For the D31 opening stock:** pre-1950 production series (back to the start of significant production, e.g. coal from ~1800) for every stream with pre-1950 residues, at least as global or major-producer totals, so that Tasks 2.1–2.5 can estimate the 1 January 1950 stock. *(Amended 2026-10-20, D31.)* |
 | Verification | `verifier` compares 3 random years per series against an independent source. |
 
 ---
