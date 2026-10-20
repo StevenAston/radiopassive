@@ -114,19 +114,19 @@ To keep the decay engine tractable, short-lived daughters are folded into a long
 | U-238 | `U238+` | U-238, Th-234, Pa-234m, Pa-234 (0.16% IT branch of Pa-234m) | 3.0016 |
 | | `U234` | U-234 | 1 |
 | | `Th230` | Th-230 | 1 |
-| | `Ra226+` | Ra-226, Rn-222, Po-218, Pb-214, Bi-214, Po-214 | 6 |
+| | `Ra226+` | Ra-226, Rn-222, Po-218, Pb-214, Bi-214, Po-214 (plus minor branches At-218, Tl-210) | 6 |
 | | `Pb210+` | Pb-210, Bi-210 | 2 |
 | | `Po210` | Po-210 (tracked separately because its 138 d half-life is often out of equilibrium) | 1 |
 | | **U-238 series total** | | **14.0016** (nominally 14) |
 | U-235 | `U235+` | U-235, Th-231 | 2 |
 | | `Pa231` | Pa-231 | 1 |
-| | `Ac227+` | Ac-227, Th-227/Fr-223, Ra-223, Rn-219, Po-215, Pb-211, Bi-211, Tl-207 | 8 |
+| | `Ac227+` | Ac-227, Th-227/Fr-223, Ra-223, Rn-219, Po-215, Pb-211, Bi-211, Tl-207 (plus minor branch Po-211) | 8 |
 | | **U-235 series total** | | **11** |
 | Th-232 | `Th232` | Th-232 | 1 |
 | | `Ra228+` | Ra-228, Ac-228 | 2 |
 | | `Th228+` | Th-228, Ra-224, Rn-220, Po-216, Pb-212, Bi-212, Po-212 (64.06%) / Tl-208 (35.94%) | 7 |
 | | **Th-232 series total** | | **10** |
-| Radon released to air | `Rn222+` | Rn-222, Po-218, Pb-214, Bi-214, Po-214 | 5 |
+| Radon released to air | `Rn222+` | Rn-222, Po-218, Pb-214, Bi-214, Po-214 (plus minor branches At-218, Tl-210) | 5 |
 | | `Rn220+` | Rn-220, Po-216, Pb-212, Bi-212, Po-212 (64.06%) / Tl-208 (35.94%) (geothermal, thoron-rich residues) | 5 |
 | Potassium | `K40` | K-40 | 1 |
 
