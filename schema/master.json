@@ -2,53 +2,285 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "radiopassive/schema/master.json",
   "title": "Radiopassive master row",
-  "description": "One row of data/streams/*.csv or build/master.csv, after type coercion. Row-level rules only; vocabulary membership (substream, stage, stage-tier, group, country, source and event IDs) and cross-row rules are checked by pipeline/validate.py against data/reference/vocab.json and the reference tables (SCHEMA.md §3, §5).",
+  "description": "One row of data/streams/*.csv or build/master.csv, after type coercion. Covers types, enums of fixed vocabularies (stream, tier, quantity, unit, basis, allocation_variant, technology) and conditional rules. Membership of substream, stage, country, group, source and event IDs is deliberately NOT checked here: pipeline/validate.py checks it against the reference tables (rule codes V01-V08), so each fault raises exactly one code (SCHEMA.md \u00a76.3).",
   "type": "object",
   "additionalProperties": false,
-  "required": ["year", "stream", "substream", "stage", "country", "group", "tier", "quantity", "unit",
-               "value_low", "value_central", "value_high", "below_detection", "basis", "source_ids",
-               "allocation_variant", "allocation_rule", "embedded_fuel"],
+  "required": [
+    "year",
+    "stream",
+    "substream",
+    "stage",
+    "country",
+    "group",
+    "tier",
+    "quantity",
+    "unit",
+    "value_low",
+    "value_central",
+    "value_high",
+    "below_detection",
+    "basis",
+    "source_ids",
+    "allocation_variant",
+    "allocation_rule",
+    "embedded_fuel"
+  ],
   "properties": {
-    "year": {"type": "integer", "minimum": 1950, "maximum": 2025},
-    "stream": {"enum": ["nuclear", "coal", "oil_gas", "wind_solar", "other"]},
-    "substream": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
-    "stage": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
-    "country": {"type": "string", "pattern": "^[A-Z]{3}$"},
-    "group": {"type": "string", "pattern": "^[A-Z][a-z]?[0-9]{1,3}m?\\+?$"},
-    "tier": {"enum": ["sealed_in_core", "sealed_fuel_cycle", "sealed_damaged_core", "impounded",
-                      "reisolated", "dispersed", "liberated", "memo_earth_moved"]},
-    "quantity": {"enum": ["flow", "transfer_out", "transfer_in", "standing_inventory"]},
-    "unit": {"enum": ["Bq/a", "Bq"]},
-    "value_low": {"type": "number", "minimum": 0},
-    "value_central": {"type": "number", "minimum": 0},
-    "value_high": {"type": "number", "minimum": 0},
-    "below_detection": {"type": "boolean"},
-    "basis": {"enum": ["measured", "compiled", "modelled", "interpolated", "extrapolated"]},
-    "source_ids": {"type": "array", "minItems": 1, "uniqueItems": true,
-                   "items": {"type": "string", "pattern": "^S[0-9]{4}$"}},
-    "allocation_variant": {"enum": ["default", "bound_main", "bound_radio"]},
-    "allocation_rule": {"type": "string", "pattern": "^(none|value|mass|elec_share|civil:(doc|pre1965|ratio))(;(none|value|mass|elec_share|civil:(doc|pre1965|ratio)))*$"},
-    "embedded_fuel": {"type": "boolean"},
-    "technology": {"enum": [null, "coal_power", "gas_power", "oil_power", "nuclear", "wind", "solar",
-                            "geothermal", "biomass", "hydro"]},
-    "event_id": {"type": ["string", "null"], "pattern": "^E[0-9]{3}$"},
-    "notes": {"type": ["string", "null"]}
+    "year": {
+      "type": "integer",
+      "minimum": 1950,
+      "maximum": 2025
+    },
+    "stream": {
+      "enum": [
+        "nuclear",
+        "coal",
+        "oil_gas",
+        "wind_solar",
+        "other"
+      ]
+    },
+    "substream": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stage": {
+      "type": "string",
+      "minLength": 1
+    },
+    "country": {
+      "type": "string",
+      "minLength": 1
+    },
+    "group": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tier": {
+      "enum": [
+        "sealed_in_core",
+        "sealed_fuel_cycle",
+        "sealed_damaged_core",
+        "impounded",
+        "reisolated",
+        "dispersed",
+        "liberated",
+        "memo_earth_moved"
+      ]
+    },
+    "quantity": {
+      "enum": [
+        "flow",
+        "transfer_out",
+        "transfer_in",
+        "standing_inventory"
+      ]
+    },
+    "unit": {
+      "enum": [
+        "Bq/a",
+        "Bq"
+      ]
+    },
+    "value_low": {
+      "type": "number",
+      "minimum": 0
+    },
+    "value_central": {
+      "type": "number",
+      "minimum": 0
+    },
+    "value_high": {
+      "type": "number",
+      "minimum": 0
+    },
+    "below_detection": {
+      "type": "boolean"
+    },
+    "basis": {
+      "enum": [
+        "measured",
+        "compiled",
+        "modelled",
+        "interpolated",
+        "extrapolated"
+      ]
+    },
+    "source_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "allocation_variant": {
+      "enum": [
+        "default",
+        "bound_main",
+        "bound_radio"
+      ]
+    },
+    "allocation_rule": {
+      "type": "string",
+      "pattern": "^(none|value|mass|elec_share|civil:(doc|pre1965|ratio))(;(none|value|mass|elec_share|civil:(doc|pre1965|ratio)))*$"
+    },
+    "embedded_fuel": {
+      "type": "boolean"
+    },
+    "technology": {
+      "enum": [
+        null,
+        "coal_power",
+        "gas_power",
+        "oil_power",
+        "nuclear",
+        "wind",
+        "solar",
+        "geothermal",
+        "biomass",
+        "hydro"
+      ]
+    },
+    "event_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
   },
   "allOf": [
-    {"if": {"properties": {"quantity": {"const": "flow"}}},
-     "then": {"properties": {"unit": {"const": "Bq/a"}}},
-     "else": {"properties": {"unit": {"const": "Bq"}}}},
-    {"if": {"properties": {"quantity": {"enum": ["transfer_out", "transfer_in"]}}},
-     "then": {"required": ["event_id"], "properties": {"event_id": {"type": "string"}}}},
-    {"if": {"properties": {"quantity": {"const": "standing_inventory"}}},
-     "then": {"properties": {"tier": {"const": "sealed_in_core"}}}},
-    {"if": {"properties": {"tier": {"const": "sealed_in_core"}}},
-     "then": {"properties": {"quantity": {"enum": ["standing_inventory", "transfer_out", "transfer_in"]}}}},
-    {"if": {"properties": {"below_detection": {"const": true}}},
-     "then": {"properties": {"value_low": {"const": 0}}}},
-    {"if": {"properties": {"embedded_fuel": {"const": true}}},
-     "then": {"anyOf": [
-       {"properties": {"stream": {"const": "wind_solar"}}},
-       {"properties": {"stage": {"pattern": "^construction"}}}]}}
+    {
+      "if": {
+        "properties": {
+          "quantity": {
+            "const": "flow"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": {
+            "const": "Bq/a"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "unit": {
+            "const": "Bq"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "quantity": {
+            "enum": [
+              "transfer_out",
+              "transfer_in"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "event_id"
+        ],
+        "properties": {
+          "event_id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "quantity": {
+            "const": "standing_inventory"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "tier": {
+            "const": "sealed_in_core"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tier": {
+            "const": "sealed_in_core"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "quantity": {
+            "enum": [
+              "standing_inventory",
+              "transfer_out",
+              "transfer_in"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "below_detection": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "value_low": {
+            "const": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "embedded_fuel": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "anyOf": [
+          {
+            "properties": {
+              "stream": {
+                "const": "wind_solar"
+              }
+            }
+          },
+          {
+            "properties": {
+              "stage": {
+                "pattern": "^construction"
+              }
+            }
+          }
+        ]
+      }
+    }
   ]
 }

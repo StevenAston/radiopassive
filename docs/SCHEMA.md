@@ -273,7 +273,7 @@ def validate(root: str | os.PathLike, master_files: Iterable[str | os.PathLike] 
   - `schema/master.json`, `schema/sources.json`, `schema/events.json` (required);
   - `data/sources.csv` (required);
   - `data/events.csv` (optional: if absent, there are no events).
-- `master_files`: paths (absolute, or relative to `root`) of master-format CSVs to check. If `None`, every `data/streams/*.csv` plus `build/master.csv` if it exists.
+- `master_files`: paths (absolute, or relative to `root`) of master-format CSVs to check. If `None`, every `data/streams/*.csv` (sorted by name). `build/master.csv` is checked only when passed explicitly, because it is the merge of the stream files and would otherwise duplicate every key. An empty list checks no master files.
 - Every call also validates `data/sources.csv`, `data/events.csv` (if present), `nuclides.csv` and `groups.csv`.
 - An empty list means everything is valid. Issues are returned in a stable order: by file, then row (file-level first), then rule.
 - A missing *required* reference file raises `FileNotFoundError`. It is not reported as an `Issue`.
@@ -309,7 +309,7 @@ One row may raise several codes. Each code below is raised **only** for the cond
 | `V09` | master | A `flow_only` group with `quantity` ≠ `flow` |
 | `X01` | master | Duplicate unique key (§3) |
 | `X02` | master | Transfers for an (`event_id`, `year`, `group`, `allocation_variant`) do not balance (relative tolerance 10⁻⁶, each of low/central/high) |
-| `X03` | master | A key (all unique-key columns except `allocation_variant`) has some but not all of `default`, `bound_main`, `bound_radio` |
+| `X03` | master | A key (all unique-key columns except `allocation_variant`) has at least one row with `allocation_variant` ≠ `default`, but does not have all three of `default`, `bound_main`, `bound_radio`. A key with only `default` is normal and is not flagged. Reported once per key, on the key's first row |
 | `X04` | master | A `nuclear` row at `u_mining_conv`, `u_mining_isl` or `u_milling` whose `allocation_rule` has no `civil:` component |
 | `X05` | master | A transfer row whose tier does not match its event (`transfer_out` tier ≠ `from_tier`, or `transfer_in` tier ≠ `to_tier`) |
 | `S01` | sources | Row fails `schema/sources.json`, or a duplicate `source_id` |
@@ -322,6 +322,8 @@ One row may raise several codes. Each code below is raised **only** for the cond
 | `G01` | groups | A head or member not in `nuclides.csv` |
 | `G02` | groups | `multiplier` ≠ the sum of `member_weights` (relative 10⁻⁶) |
 | `G03` | groups | `multiplier_scope = flow_only` but `role ≠ released_gas`, or the reverse |
+
+**Membership vs schema.** `schema/master.json` checks types, the fixed enums (stream, tier, quantity, unit, basis, allocation_variant, technology) and conditional rules. It does **not** check whether a substream, stage, country, group, source ID or event ID exists; those are V-codes only. So an unknown group raises `V04` alone, never `R02`. If `stream` itself is invalid (`R02`), `V01`–`V03` are skipped for that row; if `tier` is invalid, `V03` is skipped.
 
 Notes on rules: `below_detection = true` with `value_low ≠ 0`, unit/quantity mismatches, `standing_inventory` outside `sealed_in_core`, and `embedded_fuel = true` outside `wind_solar`/`construction*` are all in `schema/master.json`, so they raise `R02`. `X03` and `X04` are skipped for a row that already has `R01`.
 
@@ -341,3 +343,4 @@ Notes on rules: `below_detection = true` with `value_low ≠ 0`, unit/quantity m
 | 2026-10-20 | First draft (Task 0.2). |
 | 2026-10-20 | Added `role` and `multiplier_scope` to groups.csv (from Task 0.3). |
 | 2026-10-20 | Added §6 validator contract (API, CLI, rule codes, coercion). |
+| 2026-10-20 | Clarified X03; default master files exclude build/master.csv; membership checks moved out of master.json so each fault raises one code. |
