@@ -1,6 +1,6 @@
 # Radiopassive — Data Schema (v1)
 
-> **Status:** DRAFT (Task 0.2). Governs every CSV under `data/` and `build/`. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document.
+> **Status:** Task 0.2 — validator implemented and passing its spec-blind test suite; awaiting independent review and sign-off. Governs every CSV under `data/` and `build/`. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document.
 
 ---
 
@@ -106,7 +106,7 @@ One row = one quantity of one nuclide group, in one tier, from one stage, in one
 | `e_per_head_decay_mev` | float | $\bar{E}_k$ (METHODS §7) |
 | `chain` | enum | `U238`, `U235`, `Th232`, `K40`, `artificial` |
 | `role` | enum | `chain`, `released_gas`, `artificial` (METHODS §4.1a) |
-| `multiplier_scope` | enum | `stock_and_flow` or `flow_only`; `flow_only` iff `role = released_gas`. The validator rejects any master row in a stock tier that would apply a `flow_only` multiplier (i.e. a `flow_only` group with `quantity` ≠ `flow`) |
+| `multiplier_scope` | enum | `stock_and_flow` or `flow_only`; `flow_only` iff `role = released_gas`. The validator rejects any master row that uses a `flow_only` group with `quantity` ≠ `flow` (rule `V09`) |
 | `parent_group` | code | Next group up the chain; empty for chain heads and artificial groups |
 | `parent_branching` | float | Branching from `parent_group` to this group |
 | `notes` | string | Includes the equilibrium convention used (METHODS §4.1) |
@@ -334,6 +334,25 @@ Notes on rules: `below_detection = true` with `value_low ≠ 0`, unit/quantity m
 - `technology`, `event_id` and `notes`: an empty cell → `null`.
 - Any other empty required cell → `R01`.
 
+### 6.5 Behaviour details
+
+These settle the edge cases the spec-blind tests raised (A1–A14 in `pipeline/tests/test_validate.py`), and match the implementation:
+
+| Case | Behaviour |
+|---|---|
+| A master file outside `root` (A1) | `Issue.file` is its absolute POSIX path |
+| "Later" across files (A2, A11) | Processing order: the order of `master_files` (or sorted names by default), then row order. X01 is reported on the later occurrence, and X03 on the key's first row in that order |
+| Duplicate `source_id` / `event_id` (A3) | Reported on the later row |
+| A row with `R01` (A4) | `R02` and `R03` are skipped for that row; V-checks still run on the cells that coerced; X01 and X05 still run; X02 skips the whole balance key; X03 and X04 skip the row |
+| A file with `F01`, `F02` or `F03` (A5) | Its data rows are not validated |
+| Country validity window (A6) | Inclusive: valid if `valid_from ≤ year ≤ valid_to` |
+| CLI paths and output (A7) | `FILE` arguments that are relative are taken relative to `--root`; issue lines and the summary go to stdout, errors to stderr; printed file names follow `Issue.file` |
+| Unknown or missing event (A8) | `V08` only; `X05` is skipped for that row |
+| Unknown stage (A9) | `V02` only; `V03` is skipped |
+| Banned domains (A10) | Matched on the URL's host only: the domain itself or any subdomain |
+| A header-only master file (A12) | Valid |
+| Issue order (A14) | Sorted by `file` (string), then `row` (`None` first), then `rule` |
+
 ---
 
 ## 7. Change log
@@ -343,4 +362,5 @@ Notes on rules: `below_detection = true` with `value_low ≠ 0`, unit/quantity m
 | 2026-10-20 | First draft (Task 0.2). |
 | 2026-10-20 | Added `role` and `multiplier_scope` to groups.csv (from Task 0.3). |
 | 2026-10-20 | Added §6 validator contract (API, CLI, rule codes, coercion). |
+| 2026-10-20 | Added §6.5 behaviour details from the spec-blind test ambiguities; aligned §4.2 V09 wording. |
 | 2026-10-20 | Clarified X03; default master files exclude build/master.csv; membership checks moved out of master.json so each fault raises one code. |

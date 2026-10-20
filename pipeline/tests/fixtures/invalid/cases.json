@@ -1,0 +1,52 @@
+{
+  "01_r02_wrong_unit.csv": {
+    "rule": "R02",
+    "row": 2,
+    "description": "Flow row (Bq/a quantity) carries unit Bq"
+  },
+  "02_v07_unknown_source.csv": {
+    "rule": "V07",
+    "row": 2,
+    "description": "source_ids cites S0099, which is not in sources.csv"
+  },
+  "03_r03_low_above_high.csv": {
+    "rule": "R03",
+    "row": 2,
+    "description": "value_low (9e13) exceeds value_central (3e13) and value_high"
+  },
+  "04_v04_unknown_group.csv": {
+    "rule": "V04",
+    "row": 2,
+    "description": "Group Tc98 is not a head code in groups.csv (alone, no R02)"
+  },
+  "05_v03_tier_not_allowed_for_stage.csv": {
+    "rule": "V03",
+    "row": 2,
+    "description": "memo_earth_moved tier at combustion_power, which is not a mining stage"
+  },
+  "06_v02_stage_not_allowed_for_stream.csv": {
+    "rule": "V02",
+    "row": 2,
+    "description": "Coal stream row at the nuclear stage u_milling (tier impounded is allowed there, so no V03)"
+  },
+  "07_x01_duplicate_key.csv": {
+    "rule": "X01",
+    "row": 2,
+    "description": "Second row repeats the unique key of the first with different values; reported on the later row"
+  },
+  "08_x02_unbalanced_transfers.csv": {
+    "rule": "X02",
+    "row": null,
+    "description": "E001 transfer_in is half of transfer_out for Cs137+ in 1986; one file-level X02 (row null)"
+  },
+  "09_x04_missing_civil_rule.csv": {
+    "rule": "X04",
+    "row": 2,
+    "description": "Uranium milling row with allocation_rule none (no civil: component)"
+  },
+  "10_v06_country_outside_window.csv": {
+    "rule": "V06",
+    "row": 2,
+    "description": "SUN used in 1992, after its valid_to of 1991"
+  }
+}

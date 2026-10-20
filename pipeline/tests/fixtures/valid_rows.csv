@@ -1,0 +1,11 @@
+year,stream,substream,stage,country,group,tier,quantity,unit,value_low,value_central,value_high,below_detection,basis,source_ids,allocation_variant,allocation_rule,embedded_fuel,technology,event_id,notes
+1998,nuclear,fuel_cycle,u_milling,CAN,Ra226+,impounded,flow,Bq/a,2.0e12,4.0e12,8.0e12,false,compiled,S0001;S0004,default,civil:doc,false,,,Tailings addition with documented civil end use
+2010,nuclear,pwr,reactor_operation,USA,Cs137+,sealed_in_core,standing_inventory,Bq,3.0e19,5.0e19,7.0e19,false,modelled,S0002,default,none,false,,,Core inventory
+1986,nuclear,lwgr,accident,UKR,Cs137+,sealed_in_core,transfer_out,Bq,7.0e16,8.5e16,1.0e17,false,compiled,S0001,default,none,false,,E001,Chernobyl release from core
+1986,nuclear,lwgr,accident,UKR,Cs137+,liberated,transfer_in,Bq,7.0e16,8.5e16,1.0e17,false,compiled,S0001,default,none,false,,E001,Chernobyl release to environment
+2015,coal,power,combustion_power,CHN,Ra226+,reisolated,flow,Bq/a,1.0e13,3.0e13,6.0e13,false,modelled,S0003,default,elec_share,false,coal_power,,Ash landfill
+2012,oil_gas,conventional,production,USA,Pb210+,dispersed,flow,Bq/a,0,5.0e8,2.0e9,true,measured,S0002,default,none,false,,,Central value is half a detection limit
+2018,wind_solar,solar,commodity_supply,CHN,Th228+,impounded,flow,Bq/a,1.0e9,4.0e9,1.2e10,false,modelled,S0003;S0004,default,value,true,solar,,Embedded coal contribution to silicon supply
+2005,other,geothermal,geothermal,ITA,Rn222+,liberated,flow,Bq/a,5.0e12,1.0e13,2.5e13,false,compiled,S0001,default,none,false,geothermal,,
+2000,coal,all,coal_mining,USA,Ra226+,memo_earth_moved,flow,Bq/a,1.0e15,2.0e15,4.0e15,false,modelled,S0003,default,none,false,,,Memo item: earth moved
+1980,oil_gas,conventional,production,SUN,Ra226+,liberated,flow,Bq/a,1.0e11,3.0e11,9.0e11,false,extrapolated,S0001;S0003,default,none,false,,,Historical country code within validity window
