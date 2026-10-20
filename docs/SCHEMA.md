@@ -95,7 +95,7 @@ They are kept out by construction: every Liberated row must name a `route` (§5.
 
 1. **Transfers balance** (§3.1), central, low and high each, within a relative tolerance of 10⁻⁶.
 2. **Transfers are legitimate**: event tiers match the event; routine transfers only at routine stages with the stated tiers (§3.1).
-3. **Allocation completeness.** If any row for a key (the unique key without `allocation_variant`) has `allocation_variant` ≠ `default`, rows for all three variants exist. In such a key, the `default` row's rule contains `alloc:value` or `alloc:mass`, the `bound_main` row's `alloc:main` and the `bound_radio` row's `alloc:radio`.
+3. **Allocation completeness.** If any row for a key (the unique key without `allocation_variant`) has `allocation_variant` ≠ `default`, rows for all three variants exist for that key, and the `default` row's rule contains `alloc:value` or `alloc:mass` (`X03`). That the `bound_main` row carries `alloc:main` and the `bound_radio` row `alloc:radio` is a row-level schema rule (`R02`).
 4. **Civil rule recorded.** Every `nuclear` row at a stage in `vocab.json` → `civil_rule_stages` (`u_mining_conv`, `u_mining_isl`, `u_milling`, `reprocessing`) has an `allocation_rule` with a `civil:` token. `civil:pre1965` is allowed only for years ≤ 1964, with `value_high = 0`; `civil:ratio` only for years ≥ 1965.
 
 ---
@@ -355,7 +355,8 @@ Transfer rows follow §3.1 instead of this matrix.
 
 ### 5.5 Products and commodities
 
-- **Oil and gas** (`stream = oil_gas`, every stage): `product` is **required**, one of `oil`, `gas`, `ngl`, `bitumen`. Residues shared between products are split by value (D6, `alloc:value`).
+- **Precedence:** the commodity-stage rule is applied first, then the oil-and-gas rule. So an `oil_gas` row at `construction` takes a commodity (building materials), not an oil or gas product.
+- **Oil and gas** (`stream = oil_gas`, every stage except `construction`): `product` is **required**, one of `oil`, `gas`, `ngl`, `bitumen`. Residues shared between products are split by value (D6, `alloc:value`).
 - **Commodity stages** (`commodity_supply`, `end_of_life`, `construction`, `construction_decom`): `product` is **required**, one of `vocab.json` → `commodities`, except on rows in a Sealed tier (e.g. nuclear decommissioning waste), where it must be empty.
 - **Every other row:** `product` must be empty.
 
@@ -440,7 +441,7 @@ One row may raise several codes. Each code is raised **only** for the condition 
 | `V13` | A `factor_ids` entry not in the factor registry |
 | `X01` | Duplicate unique key (§3) |
 | `X02` | Transfers do not balance for a balance key (§3.1; relative tolerance 10⁻⁶ for each of low/central/high). Reported once per key, with `row = None`, against the first file containing that key |
-| `X03` | Allocation completeness (§3.3 rule 3): a key has a non-default variant but not all three, **or** in a complete key a row's rule lacks the token for its variant (`default`: `alloc:value` or `alloc:mass`). Reported once per key, on the key's first row |
+| `X03` | Allocation completeness (§3.3 rule 3): a key has a non-default variant but not all three, **or** in a complete key the `default` row's rule lacks `alloc:value`/`alloc:mass`. Reported once per key, on the key's first row. (A bound row lacking its own token is `R02`, not `X03`) |
 | `X04` | A `nuclear` row at a civil-rule stage (§3.3 rule 4) with no `civil:` token |
 | `X05` | An illegitimate transfer (§3.1): an event transfer whose tier does not match the event (`transfer_out` ≠ `from_tier`, or `transfer_in` ∉ `to_tiers`); or a transfer with no `event_id` at a stage not in `routine_transfers`, or with tiers other than that stage's routine pair |
 
@@ -465,7 +466,7 @@ One row may raise several codes. Each code is raised **only** for the condition 
 | `T02` | same | Duplicate key (§4.5–4.11) |
 | `T03` | same | Bounds out of order (low ≤ central ≤ high; `year_from ≤ year_to`; residue parameter sets all-or-none and ordered; residue parameters filled without `basis` and `source_ids`) |
 | `T04` | same | A reference that does not resolve: `source_ids` (sources), `country`/`region` (countries), `group` (groups), `residue_type` (residue types), `driver_series` (activity series), `stage` for the stream (factors), `applies_to` (nuclides or groups) |
-| `T05` | commodity_factors | Allocation completeness, as `X03` |
+| `T05` | commodity_factors | Allocation completeness, as `X03` (bound-row tokens are `T01`) |
 
 **Membership vs schema.** The JSON schemas check types, fixed enums and conditional rules. They do **not** check whether a substream, stage, product, residue type, country, group, source, factor or event ID exists; those are V-, E02- and T04-codes only. If `stream` itself is invalid (`R02`), `V01`–`V03` and `V11` are skipped for that row; if `tier` is invalid, `V03` is skipped.
 
@@ -493,6 +494,14 @@ Applied before schema validation, in every table:
 | Unknown stage | `V02` only; `V03` and `V11` are skipped |
 | Banned domains | Matched on the URL's host only: the domain itself or any subdomain |
 | A header-only CSV | Valid |
+| An event row with `E01` | `E03` is skipped for that row (its inputs may be missing or invalid); `E02` still runs |
+| Flow-only groups (V09) | Every use not listed in §4.2 is `V09`, including `opening_stock`, `transfer_in` to a non-Liberated tier and `transfer_out` from a tier other than `sealed_in_core` |
+| T04 in the factor registry | Resolves `source_ids`, `region`, `group`, `residue_type`, `driver_series` and the stage for the stream (`tier` and `route` are enums, so `T01`) |
+| Countries | `valid_from > valid_to` is `T03`; countries have no `T04` |
+| Dose tokens | `F02` uses `vocab.forbidden_column_tokens`, `D01` uses `vocab.dose_tokens` (identical lists by default, kept separate so either can be tuned). Matching is whole-word on lower-cased text split on every non-alphanumeric character; `µ` and `μ` count as letters. `D01` is one issue per row, listing the offending column=value pairs |
+| `reference_bands` keys | Each named nuclide or group at most once per `quantity_class`, and the `*` default at most once per class |
+| `residue_types` with only `basis`/`source_ids` filled | Allowed (no issue): recording a source before the values is harmless |
+| Sources for reference tables | `reference_bands.csv` and `residue_types.csv` cite sources that must be in `data/sources.csv` (`T04`); `nuclides.csv` and `groups.csv` `source_ids` are not resolved in v2 |
 | Issue order | Sorted by `file` (string), then `row` (`None` first), then `rule` |
 
 ---
@@ -531,4 +540,5 @@ The vocabularies for these (`views`, `runs`, `conventions`, `horizons_a`, the ti
 | 2026-10-20 | First draft (Task 0.2). |
 | 2026-10-20 | Added `role` and `multiplier_scope` to groups.csv (from Task 0.3). |
 | 2026-10-20 | Added the validator contract (API, CLI, rule codes, coercion) and behaviour details from the spec-blind test ambiguities. |
+| 2026-10-20 | v2 behaviour details from the second spec-blind test pass (B1–B11); bound-token coupling is `R02` only; `E03` skipped after `E01`; commodity-stage product rule takes precedence. |
 | 2026-10-20 | **v2** after the independent schema review: master gains `product`, `residue_type`, `factor_ids`, `route`; routine vs event transfers; events gain `to_tiers` and activity bounds; `opening_stock` (D31); new tables `residue_types.csv`, `reference_bands.csv`, factor registry; JSON schemas and rule codes (`T01`–`T05`, `D01`) for every support table; `V10`–`V13`, `E03`, `G04`, `G05`; dose tokens checked in values; URL required for inaccessible sources; field-name mapping; provisional derived-output dimensions. |

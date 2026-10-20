@@ -1,0 +1,3 @@
+factor_id,description,stream,stage,driver_series,group,tier,route,residue_type,region,year_from,year_to,value_low,value_central,value_high,unit,below_detection,basis,source_ids,notes
+coal:0001,Ra-226 content of coal-mine earth moved,coal,coal_mining,earth_moved_t_coal,Ra226+,memo_earth_moved,,,USA,1950,2025,2.0e3,4.0e3,8.0e3,Bq/t,false,compiled,S0003,
+coal:0002,Ra-226 in reisolated fly ash per tonne of coal burned,coal,combustion_power,coal_production,Ra226+,reisolated,,coal_fly_ash,CHN,1990,2020,5.0e1,1.0e2,2.0e2,Bq/t,false,compiled,S0003,

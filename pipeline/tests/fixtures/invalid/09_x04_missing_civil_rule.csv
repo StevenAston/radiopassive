@@ -1,4 +1,4 @@
-year,stream,substream,stage,country,group,tier,quantity,unit,value_low,value_central,value_high,below_detection,basis,source_ids,allocation_variant,allocation_rule,embedded_fuel,technology,event_id,notes
-2015,coal,power,combustion_power,CHN,Ra226+,reisolated,flow,Bq/a,1.0e13,3.0e13,6.0e13,false,modelled,S0003,default,elec_share,false,coal_power,,Ash landfill
-1998,nuclear,fuel_cycle,u_milling,CAN,Ra226+,impounded,flow,Bq/a,2.0e12,4.0e12,8.0e12,false,compiled,S0001;S0004,default,none,false,,,Tailings addition with documented civil end use
-2000,coal,all,coal_mining,USA,Ra226+,memo_earth_moved,flow,Bq/a,1.0e15,2.0e15,4.0e15,false,modelled,S0003,default,none,false,,,Memo item: earth moved
+year,stream,substream,stage,product,residue_type,country,group,tier,quantity,unit,value_low,value_central,value_high,below_detection,basis,source_ids,factor_ids,allocation_variant,allocation_rule,embedded_fuel,technology,route,event_id,notes
+2005,other,geothermal,geothermal,,geothermal_scale,ITA,Ra226+,reisolated,flow,Bq/a,5.0e12,1.0e13,2.5e13,false,compiled,S0001,,default,none,false,geothermal,,,
+1998,nuclear,fuel_cycle,u_milling,,u_tailings,CAN,Ra226+,dispersed,flow,Bq/a,2.0e12,4.0e12,8.0e12,false,compiled,S0001;S0004,,default,none,false,,,,Tailings dust with documented civil end use
+2000,coal,all,coal_mining,,,USA,Ra226+,memo_earth_moved,flow,Bq/a,1.0e15,2.0e15,4.0e15,false,modelled,S0003,coal:0001,default,none,false,,,,Memo item: earth moved

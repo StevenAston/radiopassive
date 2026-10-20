@@ -1,0 +1,5 @@
+series,year,country,value_low,value_central,value_high,unit,below_detection,basis,source_ids,notes
+earth_moved_t_coal,2000,USA,1.0e9,1.2e9,1.4e9,t,false,compiled,S0003,Memo series: mass of earth moved
+coal_production,2015,CHN,3.2e9,3.5e9,3.8e9,t,false,compiled,S0003,
+coal_production,1900,GBR,2.2e8,2.3e8,2.4e8,t,false,compiled,S0003,Pre-1950 allowed for the opening-stock estimate
+elec_gen_coal,2015,XWL,8.0e3,9.0e3,1.0e4,TWh,false,compiled,S0004,XWL is allowed in activity tables

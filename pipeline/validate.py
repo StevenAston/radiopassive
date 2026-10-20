@@ -70,10 +70,10 @@ KEY_COLUMNS = [
     "embedded_fuel", "technology", "route", "event_id",
 ]
 ALLOCATION_VARIANTS = ("default", "bound_main", "bound_radio")
+# Token coupling checked across rows (X03/T05). The bound variants' tokens
+# are a row-level schema rule (R02/T01), so they are not repeated here.
 VARIANT_TOKENS = {
     "default": ("alloc:value", "alloc:mass"),
-    "bound_main": ("alloc:main",),
-    "bound_radio": ("alloc:radio",),
 }
 TRANSFER_QUANTITIES = {"transfer_out", "transfer_in"}
 
@@ -652,7 +652,7 @@ def _check_events(ctx: _Context, path: Path) -> None:
         if membership:
             ctx.add(table.name, index, "E02", "; ".join(membership))
 
-        crit = record.get("inclusion")
+        crit = record.get("inclusion") if not problems else None  # E03 skipped after E01
         failed: list[str] = []
         if crit == "activity":
             central = record.get("activity_central_bq")
@@ -819,10 +819,10 @@ def _coerce_master(raw: dict[str, str]) -> tuple[dict, list[str]]:
 
 def _product_rule(vocab: dict, stream: str | None, stage: str | None) -> str | None:
     rules = vocab.get("product_rules", {})
+    if stage in rules.get("by_stage", {}):  # stage rules take precedence (SCHEMA §5.5)
+        return rules["by_stage"][stage]
     if stream in rules.get("by_stream", {}):
         return rules["by_stream"][stream]
-    if stage in rules.get("by_stage", {}):
-        return rules["by_stage"][stage]
     return None
 
 

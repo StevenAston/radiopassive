@@ -1,0 +1,4 @@
+baseline_id,name,quantity,group,year,value_low,value_central,value_high,unit,basis,derivation,source_ids,notes
+B01,Atmospheric Rn-222 inventory,stock,Rn222+,,1.0e17,2.0e17,4.0e17,Bq,modelled,Global exhalation flux times mean life,S0001,Test fixture
+B02,Global fallout Cs-137 deposited by 2020,stock,Cs137+,2020,4.0e17,6.0e17,8.0e17,Bq,compiled,Decay-corrected deposition inventory,S0001,Test fixture
+B03,Radiogenic heat flow of the Earth,power,,,1.5e13,2.0e13,2.5e13,W,compiled,Geoneutrino-constrained estimate,S0001,Test fixture

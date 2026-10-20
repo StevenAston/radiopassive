@@ -1,3 +1,3 @@
-event_id,name,date_start,date_end,country,location,lat,lon,stream,stage,event_type,is_accident,from_tier,to_tier,mass_t,activity_central_bq,inclusion,military,source_ids,notes
-E001,Chernobyl Unit 4 accident,1986-04-26,1986-05-06,UKR,Chornobyl,51.389,30.099,nuclear,accident,accident,true,sealed_in_core,liberated,,5.3e18,activity,false,S0001,Civil RBMK accident; activity by group in master transfer rows
-E002,TVA Kingston coal ash spill,2008-12-22,,USA,"Harriman, Tennessee",35.9,-84.51,coal,combustion_power,impoundment_failure,false,impounded,liberated,4.1e6,,mass,false,S0005,Dredge cell failure releasing coal combustion residue
+event_id,name,date_start,date_end,country,location,lat,lon,stream,stage,event_type,is_accident,from_tier,to_tiers,mass_t,activity_low_bq,activity_central_bq,activity_high_bq,inclusion,military,source_ids,notes
+E001,Chernobyl Unit 4 accident,1986-04-26,1986-05-06,UKR,Chornobyl,51.389,30.099,nuclear,accident,accident,true,sealed_in_core,liberated;sealed_damaged_core,,4.0e18,5.3e18,7.0e18,activity,false,S0001,Civil RBMK accident; activity by group in master transfer rows
+E002,TVA Kingston coal ash spill,2008-12-22,,USA,"Harriman, Tennessee",35.9,-84.51,coal,combustion_power,impoundment_failure,false,impounded,liberated,4.1e6,,,,mass,false,S0005,Dredge cell failure releasing coal combustion residue

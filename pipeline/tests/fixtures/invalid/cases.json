@@ -12,7 +12,7 @@
   "03_r03_low_above_high.csv": {
     "rule": "R03",
     "row": 2,
-    "description": "value_low (9e13) exceeds value_central (3e13) and value_high"
+    "description": "value_low (9e13) exceeds value_central and value_high"
   },
   "04_v04_unknown_group.csv": {
     "rule": "V04",
@@ -22,12 +22,12 @@
   "05_v03_tier_not_allowed_for_stage.csv": {
     "rule": "V03",
     "row": 2,
-    "description": "memo_earth_moved tier at combustion_power, which is not a mining stage"
+    "description": "sealed_in_core standing inventory at spent_fuel, which now allows only sealed_fuel_cycle"
   },
-  "06_v02_stage_not_allowed_for_stream.csv": {
-    "rule": "V02",
+  "06_v11_product_missing.csv": {
+    "rule": "V11",
     "row": 2,
-    "description": "Coal stream row at the nuclear stage u_milling (tier impounded is allowed there, so no V03)"
+    "description": "oil_gas row with no product (required at every oil_gas stage, SCHEMA 5.5)"
   },
   "07_x01_duplicate_key.csv": {
     "rule": "X01",
@@ -42,7 +42,7 @@
   "09_x04_missing_civil_rule.csv": {
     "rule": "X04",
     "row": 2,
-    "description": "Uranium milling row with allocation_rule none (no civil: component)"
+    "description": "Uranium milling row with allocation_rule none (no civil: token)"
   },
   "10_v06_country_outside_window.csv": {
     "rule": "V06",
