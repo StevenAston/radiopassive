@@ -1,0 +1,20 @@
+[workspace]
+authors = ["Steven Aston <steven.james.aston@gmail.com>"]
+channels = ["conda-forge"]
+name = "radiopassive"
+platforms = ["win-64", "linux-64"]
+version = "0.1.0"
+
+[tasks]
+validate = "python -m pipeline.validate"
+test = "python -m pytest pipeline/tests -q"
+
+[dependencies]
+python = ">=3.15.0,<3.16"
+
+[pypi-dependencies]
+numpy = ">=2.5.4, <3"
+scipy = ">=1.18.1, <2"
+pytest = ">=9.1.1, <10"
+pandas = ">=2.3"
+jsonschema = ">=4.23"

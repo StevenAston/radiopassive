@@ -30,5 +30,8 @@ Each decision records what was decided, when, and where it is made operational. 
 | D24 | 2026-10-20 | (was PD4) Count all decays in each nuclide group; head-only activity kept as an alternative. | METHODS §3.2 |
 | D25 | 2026-10-20 | (was PD5) Per-TWh chronic residue flows committed over 100 a (500 a, 10 000 a kept) and charged to the creating generation; stocks not normalised per TWh. | METHODS §8 |
 | D26 | 2026-10-20 | (was PD6) Oil and gas sub-streams: conventional, unconventional, oil sands / extra-heavy oil. | METHODS §2.3 |
+| D27 | 2026-10-20 | Task 0.3 done condition amended: a spot-check mismatch passes if documented as an inter-evaluation difference (not a transcription error); inter-evaluation spreads become uncertainty bands. | PLAN Task 0.3; research/task0.3_notes.md §11.4 |
+| D28 | 2026-10-20 | Radiopassive is non-commercial; ICRP 107 data used under ICRP's educational/research/not-for-profit terms. Revisit if the project ever becomes commercial. Reference tables derived from ICRP data are not offered in the page's CSV download. | sources S9001–S9003 |
+| D29 | 2026-10-20 | Environment: pixi (Steve's `pixi.toml`), platforms `win-64` + `linux-64`, Python 3.15; Claude's Linux environment is detached outside the project folder. | pixi.toml |
 
-No proposals outstanding. Task 0.1 signed off by Steve, 2026-10-20.
+No proposals outstanding. Task 0.1 signed off by Steve, 2026-10-20. Task 0.3 passes its amended done condition (D27) after independent verification; awaiting Steve's sign-off.

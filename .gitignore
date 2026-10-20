@@ -5,3 +5,6 @@ __pycache__/
 .DS_Store
 Thumbs.db
 build/*.tmp
+# pixi environments
+.pixi/*
+!.pixi/config.toml

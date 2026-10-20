@@ -41,7 +41,7 @@ The work runs in seven phases:
 | D10 | **Geography:** global totals on the page; country-level detail **kept in the dataset** wherever a source provides it. | Don't throw data away. |
 | D11 | **Baselines (drawn in the same units):** Earth's radiogenic heat (~20 TW, geoneutrino estimates); K-40 in the oceans; natural radon exhalation from land; cosmogenic production of H-3 and C-14; activity of the top metre of global soil (candidate); atmospheric weapons-test fallout. | Every industrial number is seen next to the natural water table. |
 | D12 | **Units:** SI throughout — Bq with prefixes (TBq, PBq, EBq), W, t, m³; curies (Ci) shown in tooltips as the customary equivalent (1 PBq ≈ 27.0 kCi). | House style. |
-| D13 | **Working setup:** this folder under git; Python data pipeline writing tidy CSV + page-ready JSON; the finished page published as an Artifact using the Neobrutalism design system. Parallel work is capped below the machine's capacity. | Recoverable history; reproducible data. |
+| D13 | **Working setup:** this folder under git; Python data pipeline (pixi environment, `win-64` + `linux-64`, Python 3.15; `pixi run validate`, `pixi run test`) writing tidy CSV + page-ready JSON; the finished page published as an Artifact using the Neobrutalism design system. Parallel work is capped below the machine's capacity. | Recoverable history; reproducible data. |
 
 ---
 
@@ -133,7 +133,7 @@ Additions accepted with the plan: cosmogenic H-3 and C-14 as a baseline (D11); a
 | Description | Build the physical constants table used by the decay and power models. |
 | Input | ICRP Publication 107; ENSDF/NNDC; the nuclide lists from Task 0.1. |
 | Output / Effect | `data/reference/nuclides.csv`. |
-| Done condition | Every nuclide named in METHODS.md is present, with half-life, decay constant, mean energy per decay excluding antineutrinos (split α / β / γ+X), daughters and branching ratios; the full U-238, U-235 and Th-232 chains are present; every row has a source; 10 randomly chosen values match an independent source to within 1%. |
+| Done condition | Every nuclide named in METHODS.md is present, with half-life, decay constant, mean energy per decay excluding antineutrinos (split α / β / γ+X), daughters and branching ratios; the full U-238, U-235 and Th-232 chains are present; every row has a source; 10 randomly chosen values match an independent source to within 1%, **or** any mismatch is shown to be a documented difference between evaluations rather than a transcription error, with inter-evaluation spreads carried into the pipeline as uncertainty bands *(amended 2026-10-20, D27)*. |
 | Verification | `verifier` spot-checks 10 random rows against a second source. |
 
 ---
