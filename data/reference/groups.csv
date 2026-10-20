@@ -1,0 +1,70 @@
+group,head,members,member_weights,multiplier,e_per_head_decay_mev,chain,role,multiplier_scope,parent_group,parent_branching,notes
+U238+,U-238,U-238;Th-234;Pa-234m;Pa-234,1;1;1;0.0016,3.0016,5.1782544,U238,chain,stock_and_flow,,,Pa-234 (6.7 h) is the 0.16% IT branch of Pa-234m; nominal multiplier 3 (METHODS) is 3.0016 when counted exactly. Secular-equilibrium convention: member weights are branching-propagated decays per head decay (no transient-equilibrium factor).
+U234,U-234,U-234,1,1,4.8587076,U238,chain,stock_and_flow,U238+,1,Single nuclide.
+Th230,Th-230,Th-230,1,1,4.7701842,U238,chain,stock_and_flow,U234,1,Single nuclide.
+Ra226+,Ra-226,Ra-226;Rn-222;Po-218;At-218;Pb-214;Bi-214;Po-214;Tl-210,1;1;1;0.0002;0.9998;0.9999998;0.9997898;0.00020999996,5.9999996,27.10099,U238,chain,stock_and_flow,Th230,1,Includes minor branches At-218 (0.02% of Po-218) and Tl-210 (0.021% of Bi-214); nominal multiplier 6. Assumes all Rn-222 retained; for radon escaping to air use Rn222+ (METHODS 5.2). Pb-210 and later are Pb210+/Po210 (differs from regulatory Ra-226+). Secular-equilibrium convention: member weights are branching-propagated decays per head decay (no transient-equilibrium factor).
+Pb210+,Pb-210,Pb-210;Bi-210,1;1,2,0.43464322,U238,chain,stock_and_flow,Ra226+,1,Pb-210 + Bi-210; Po-210 tracked separately as Po210. Bi-210 alpha branch to Tl-206 (1.3e-6) neglected. Secular-equilibrium convention: member weights are branching-propagated decays per head decay (no transient-equilibrium factor).
+Po210,Po-210,Po-210,1,1,5.4074966,U238,chain,stock_and_flow,Pb210+,1,Single nuclide; 138 d half-life often out of equilibrium.
+U235+,U-235,U-235;Th-231,1;1,2,4.8782156,U235,chain,stock_and_flow,,,Secular-equilibrium convention: member weights are branching-propagated decays per head decay (no transient-equilibrium factor).
+Pa231,Pa-231,Pa-231,1,1,5.1579878,U235,chain,stock_and_flow,U235+,1,Single nuclide.
+Ac227+,Ac-227,Ac-227;Th-227;Fr-223;Ra-223;Rn-219;Po-215;Pb-211;Bi-211;Tl-207;Po-211,1;0.9862;0.0138;1;1;1;1;1;0.99724;0.00276,8,34.431583,U235,chain,stock_and_flow,Pa231,1,"Ac-227 branches 98.62% to Th-227 (alpha) and 1.38% to Fr-223 (beta); Bi-211 99.724% to Tl-207, 0.276% to Po-211. Fr-223 -> At-219 (6e-5) neglected. Nominal multiplier 8. Secular-equilibrium convention: member weights are branching-propagated decays per head decay (no transient-equilibrium factor)."
+Th232,Th-232,Th-232,1,1,4.0829123,Th232,chain,stock_and_flow,,,Single nuclide.
+Ra228+,Ra-228,Ra-228;Ac-228,1;1,2,1.3328602,Th232,chain,stock_and_flow,Th232,1,Secular-equilibrium convention: member weights are branching-propagated decays per head decay (no transient-equilibrium factor).
+Th228+,Th-228,Th-228;Ra-224;Rn-220;Po-216;Pb-212;Bi-212;Po-212;Tl-208,1;1;1;1;1;1;0.6406;0.3594,7,34.930366,Th232,chain,stock_and_flow,Ra228+,1,Bi-212 branches 64.06% Po-212 / 35.94% Tl-208. Nominal multiplier 7. Assumes all Rn-220 retained; for released thoron use Rn220+. Secular-equilibrium convention: member weights are branching-propagated decays per head decay (no transient-equilibrium factor).
+Rn222+,Rn-222,Rn-222;Po-218;At-218;Pb-214;Bi-214;Po-214;Tl-210,1;1;0.0002;0.9998;0.9999998;0.9997898;0.00020999996,4.9999996,22.229417,U238,released_gas,flow_only,Ra226+,1,"Released-gas group (role released_gas, flow_only): use instead of the Rn-222 tail of Ra226+ when radon escapes to air (METHODS 5.2, fraction epsilon). Ends at Pb-210 (which then belongs to Pb210+, Liberated tier). Not part of the series total. Nominal multiplier 5. Progeny half-lives (3.1 min, 26.8 min, 19.9 min) are all <1/10 of Rn-222 (3.82 d), so the group passes the equilibrium rule (transient factor +0.49%, not applied). Secular-equilibrium convention: member weights are branching-propagated decays per head decay (no transient-equilibrium factor)."
+Rn220+,Rn-220,Rn-220;Po-216;Pb-212;Bi-212;Po-212;Tl-208,1;1;1;1;0.6406;0.3594,5,23.620849,Th232,released_gas,flow_only,Th228+,1,"Released-gas group (role released_gas, flow_only): use instead of the Rn-220 tail of Th228+ when thoron escapes. Ends at stable Pb-208. Not part of the series total. Nominal multiplier 5. Po-212 64.06% / Tl-208 35.94%. COUNTING CONVENTION ONLY: Pb-212 (10.6 h) and Bi-212 (1.0 h) outlive Rn-220 (55.6 s), so the group is not in transient equilibrium and fails the 1/10 half-life rule; the weights are the eventual decays per Rn-220 atom released (flow basis), not a standing-activity ratio. Secular-equilibrium convention: member weights are branching-propagated decays per head decay (no transient-equilibrium factor)."
+K40,K-40,K-40,1,1,0.67847087,K40,chain,stock_and_flow,,,"Single nuclide; 89.14% beta to Ca-40, 10.86% EC/beta+ to Ar-40."
+Sr90+,Sr-90,Sr-90;Y-90,1;1.0002541,2.0002541,1.1290736,artificial,artificial,stock_and_flow,,,Transient-equilibrium convention: daughter weight = branching x lambda_d/(lambda_d - lambda_h).
+Cs137+,Cs-137,Cs-137;Ba-137m,1;0.94399015,1.94399015,0.81296786,artificial,artificial,stock_and_flow,,,Ba-137m weight = ICRP-107 branching 0.94399 (DDEP 94.57% gives 1.9457; ENSDF 94.7% gives 1.947; METHODS quoted ~1.946). Transient-equilibrium convention: daughter weight = branching x lambda_d/(lambda_d - lambda_h).
+Ru106+,Ru-106,Ru-106;Rh-106,1;1.0000009,2.0000009,1.6272424,artificial,artificial,stock_and_flow,,,Transient-equilibrium convention: daughter weight = branching x lambda_d/(lambda_d - lambda_h).
+Ce144+,Ce-144,Ce-144;Pr-144,1;1.0000352,2.0000352,1.3483273,artificial,artificial,stock_and_flow,,,"Pr-144 weight = 0.99023 (direct) + 0.0097699 x 0.9993 (via Pr-144m, 7.2 min, IT to Pr-144; ICRP-107) = 0.99999, so every Ce-144 decay is followed by one Pr-144 decay. Pr-144m itself is not a table nuclide: its own 0.0098 decays and 0.0006 MeV (0.04%) are omitted. Transient-equilibrium convention: daughter weight = branching x lambda_d/(lambda_d - lambda_h)."
+Ru103+,Ru-103,Ru-103;Rh-103m,1;0.98853118,1.98853118,0.60116922,artificial,artificial,stock_and_flow,,,Rh-103m is 98.755% of Ru-103 decays (the rest go straight to stable Rh-103). Transient-equilibrium convention: daughter weight = branching x lambda_d/(lambda_d - lambda_h).
+Sb125+,Sb-125,Sb-125;Te-125m,1;0.2453366,1.2453366,0.57388279,artificial,artificial,stock_and_flow,,,Te-125m is fed by 23.136% of Sb-125 decays (the rest go to stable Te-125); weight includes that branching. Transient-equilibrium convention: daughter weight = branching x lambda_d/(lambda_d - lambda_h).
+Te132+,Te-132,Te-132;I-132,1;1.0307637,2.0307637,3.1875962,artificial,artificial,stock_and_flow,,,Candidate group. Transient-equilibrium convention: daughter weight = branching x lambda_d/(lambda_d - lambda_h).
+Mo99+,Mo-99,Mo-99;Tc-99m,1;0.9653594,1.9653594,0.67913829,artificial,artificial,stock_and_flow,,,"Candidate group; Mo-99 also feeds Tc-99 directly (12.27%), so Tc99 is a separate group. Transient-equilibrium convention: daughter weight = branching x lambda_d/(lambda_d - lambda_h)."
+Np237+,Np-237,Np-237;Pa-233,1;1,2,5.3909063,artificial,artificial,stock_and_flow,,,Candidate group. Transient-equilibrium convention: daughter weight = branching x lambda_d/(lambda_d - lambda_h).
+Kr88+,Kr-88,Kr-88;Rb-88,1;1,2,5.0316335,artificial,released_gas,flow_only,,,"Released-gas group (role released_gas, flow_only): weights are EVENTUAL decays per head decay (branching only, no transient factor). Rb-88 T1/2 / Kr-88 T1/2 = 0.104 (fails the 1/10 rule), so a standing-activity multiplier does not apply. Daughter decays to a stable nuclide."
+Xe138+,Xe-138,Xe-138;Cs-138,1;1,2,5.3891593,artificial,released_gas,flow_only,,,"Released-gas group (role released_gas, flow_only): weights are EVENTUAL decays per head decay (branching only, no transient factor). Cs-138 T1/2 / Xe-138 T1/2 = 2.373 (fails the 1/10 rule; daughter outlives head), so a standing-activity multiplier does not apply. Daughter decays to a stable nuclide."
+H3,H-3,H-3,1,1,0.00567977,artificial,artificial,stock_and_flow,,,Single nuclide.
+C14,C-14,C-14,1,1,0.0494533,artificial,artificial,stock_and_flow,,,Single nuclide.
+Ar41,Ar-41,Ar-41,1,1,1.7473877,artificial,artificial,stock_and_flow,,,Single nuclide.
+Kr85,Kr-85,Kr-85,1,1,0.25291196,artificial,artificial,stock_and_flow,,,Single nuclide.
+Kr85m,Kr-85m,Kr-85m,1,1,0.41231705,artificial,artificial,stock_and_flow,,,Single nuclide.
+Kr87,Kr-87,Kr-87,1,1,2.1200507,artificial,artificial,stock_and_flow,,,Single nuclide.
+Xe131m,Xe-131m,Xe-131m,1,1,0.16761986,artificial,artificial,stock_and_flow,,,Single nuclide.
+Xe133,Xe-133,Xe-133,1,1,0.18535158,artificial,artificial,stock_and_flow,,,Single nuclide.
+Xe133m,Xe-133m,Xe-133m,1,1,0.2333273,artificial,artificial,stock_and_flow,,,Single nuclide.
+Xe135,Xe-135,Xe-135,1,1,0.56912603,artificial,artificial,stock_and_flow,,,Single nuclide.
+Mn54,Mn-54,Mn-54,1,1,0.84020862,artificial,artificial,stock_and_flow,,,Single nuclide.
+Fe55,Fe-55,Fe-55,1,1,0.0058335,artificial,artificial,stock_and_flow,,,Single nuclide.
+Co58,Co-58,Co-58,1,1,1.008889,artificial,artificial,stock_and_flow,,,Single nuclide.
+Co60,Co-60,Co-60,1,1,2.600704,artificial,artificial,stock_and_flow,,,Single nuclide.
+Ni63,Ni-63,Ni-63,1,1,0.017422,artificial,artificial,stock_and_flow,,,Single nuclide.
+Zr95,Zr-95,Zr-95,1,1,0.85064814,artificial,artificial,stock_and_flow,,,Single nuclide; Zr95+ rule failed (Nb-95 T1/2 / Zr-95 T1/2 = 0.546 >= 0.1); Nb95 is its own group.
+Nb95,Nb-95,Nb-95,1,1,0.80905342,artificial,artificial,stock_and_flow,,,"Single nuclide (daughter of Zr95, kept separate)."
+Tc99,Tc-99,Tc-99,1,1,0.10125516,artificial,artificial,stock_and_flow,,,Single nuclide; ingrowth from Mo99+ (via Tc-99m and direct 12.27% branch) is carried by the decay engine.
+I129,I-129,I-129,1,1,0.09024962,artificial,artificial,stock_and_flow,,,Single nuclide.
+I131,I-131,I-131,1,1,0.57460553,artificial,artificial,stock_and_flow,,,Single nuclide.
+I133,I-133,I-133,1,1,1.0261594,artificial,artificial,stock_and_flow,,,Single nuclide.
+Cs134,Cs-134,Cs-134,1,1,1.7189716,artificial,artificial,stock_and_flow,,,Single nuclide.
+Cs135,Cs-135,Cs-135,1,1,0.0893813,artificial,artificial,stock_and_flow,,,Single nuclide.
+Ba140,Ba-140,Ba-140,1,1,0.50287153,artificial,artificial,stock_and_flow,,,Single nuclide; Ba140+ rule failed (La-140 T1/2 / Ba-140 T1/2 = 0.132 >= 0.1); La140 is its own group.
+La140,La-140,La-140,1,1,2.8429326,artificial,artificial,stock_and_flow,,,"Single nuclide (daughter of Ba140, kept separate because transient equilibrium does not hold)."
+Pm147,Pm-147,Pm-147,1,1,0.061935597,artificial,artificial,stock_and_flow,,,Single nuclide.
+Sm151,Sm-151,Sm-151,1,1,0.019985856,artificial,artificial,stock_and_flow,,,Single nuclide.
+Eu154,Eu-154,Eu-154,1,1,1.5223081,artificial,artificial,stock_and_flow,,,Single nuclide.
+Eu155,Eu-155,Eu-155,1,1,0.12589153,artificial,artificial,stock_and_flow,,,Single nuclide.
+U233,U-233,U-233,1,1,4.9085045,artificial,artificial,stock_and_flow,,,Single nuclide.
+U236,U-236,U-236,1,1,4.5723462,artificial,artificial,stock_and_flow,,,Single nuclide.
+Np239,Np-239,Np-239,1,1,0.4469114,artificial,artificial,stock_and_flow,,,Single nuclide.
+Pu238,Pu-238,Pu-238,1,1,5.5929972,artificial,artificial,stock_and_flow,,,Single nuclide.
+Pu239,Pu-239,Pu-239,1,1,5.2442411,artificial,artificial,stock_and_flow,,,Single nuclide.
+Pu240,Pu-240,Pu-240,1,1,5.2558889,artificial,artificial,stock_and_flow,,,Single nuclide.
+Pu241,Pu-241,Pu-241,1,1,0.0053621424,artificial,artificial,stock_and_flow,,,Single nuclide.
+Pu242,Pu-242,Pu-242,1,1,4.985492,artificial,artificial,stock_and_flow,,,Single nuclide.
+Am241,Am-241,Am-241,1,1,5.6378501,artificial,artificial,stock_and_flow,,,Single nuclide.
+Am243,Am-243,Am-243,1,1,5.4402326,artificial,artificial,stock_and_flow,,,Single nuclide.
+Cm242,Cm-242,Cm-242,1,1,6.2156279,artificial,artificial,stock_and_flow,,,Single nuclide.
+Cm244,Cm-244,Cm-244,1,1,5.9014075,artificial,artificial,stock_and_flow,,,Single nuclide.
+Cm245,Cm-245,Cm-245,1,1,5.6382316,artificial,artificial,stock_and_flow,,,Single nuclide.
+Cm246,Cm-246,Cm-246,1,1,5.5285192,artificial,artificial,stock_and_flow,,,Single nuclide.
