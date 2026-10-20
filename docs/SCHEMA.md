@@ -1,6 +1,6 @@
-# Radiopassive — Data Schema (v1)
+# Radiopassive — Data Schema (v2)
 
-> **Status:** Task 0.2 — validator implemented and passing its spec-blind test suite; awaiting independent review and sign-off. Governs every CSV under `data/` and `build/`. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document.
+> **Status:** Task 0.2, revision v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
 
 ---
 
@@ -10,65 +10,93 @@
 - **Missing values:** empty cell. Never `0` for "unknown", never `NA` or `-`.
 - **Booleans:** `true` / `false`.
 - **Lists inside a cell:** `;`-separated with no spaces (e.g. `S0012;S0040`).
-- **Identifiers:** lower_snake_case for controlled vocabularies; prefixed IDs for records (`S0001` sources, `E001` events, `B01` baselines).
+- **Identifiers:** lower_snake_case for controlled vocabularies; prefixed IDs for records (`S0001` sources, `E001` events, `B01` baselines, `RB01` reference bands, `<stream>:0001` factors).
 - **Activity is stored as head activity, as reported** (METHODS §3.2, D24). The group multiplier $m_k$ is applied in the pipeline, never in stored data.
-- **No dose quantities anywhere** (D1). Any column whose name contains `dose`, `sv`, `sievert` or `rem` is rejected by the validator.
+- **No dose quantities anywhere** (D1). The forbidden tokens are listed in `vocab.json` → `dose_tokens` (`dose`, `sv`, `msv`, `usv`, `nsv`, `sievert`, `rem`, `mrem`, `mansv` and variants). A token is matched as a **whole word**: names and values are lower-cased and split on every character that is not a letter or a digit (`_`, `-`, `/`, space, …). The rule applies to:
+  - every column name of every table the validator reads (`F02`);
+  - the cell values of the columns `series`, `unit`, `name`, `description` and `quantity_class` in every table that has them (`D01`).
 
 ---
 
 ## 2. Files
 
-| File | Purpose | Written by |
-|---|---|---|
-| `data/reference/nuclides.csv` | Physical constants per nuclide | Task 0.3 |
-| `data/reference/groups.csv` | Nuclide groups, heads, members, multipliers, mean energy per head decay | Task 0.3 |
-| `data/reference/countries.csv` | Allowed country codes (ISO alpha-3 + `XWL`, `XXX`, historical codes) | Task 0.2 |
-| `data/reference/vocab.json` | Controlled vocabularies and the stage–tier matrix (§5 below) | Task 0.2 |
-| `data/reference/commodity_factors.csv` | Per-tonne commodity footprints (METHODS §6.2) | Tasks 1.5, 1.9 |
-| `data/sources.csv` | Bibliography registry | All tasks |
-| `data/events.csv` | Event catalogue (one row per event) | Task 1.8 |
-| `data/baselines.csv` | Natural and fallout baselines | Task 1.7 |
-| `data/activity/<series>.csv` | Activity spine (generation, production, capacity, intensity) | Task 1.9 |
-| `data/streams/<stream>.csv` | Master-format rows for one stream | Tasks 2.1–2.5 |
-| `build/master.csv` | Merge of all stream files | Task 3.1 |
+| File | Purpose | Required by validator | Written by |
+|---|---|---|---|
+| `data/reference/vocab.json` | Controlled vocabularies, matrices and parameters (§5) | yes | Task 0.2 |
+| `data/reference/countries.csv` | Country codes (§4.8) | yes | Task 0.2 |
+| `data/reference/nuclides.csv` | Physical constants per nuclide (§4.1) | yes | Task 0.3 |
+| `data/reference/groups.csv` | Nuclide groups (§4.2) | yes | Task 0.3 |
+| `data/reference/residue_types.csv` | Per-residue engine parameters: ε for radon and thoron, seepage (§4.10) | yes | Tasks 0.2 (codes), 1.3–1.6 (values) |
+| `data/reference/reference_bands.csv` | Inter-evaluation uncertainty bands for nuclide data (§4.11, D27) | yes | Task 0.3 |
+| `data/reference/commodity_factors.csv` | Per-tonne commodity footprints (§4.7, METHODS §6.2) | no | Tasks 1.5, 1.9 |
+| `data/sources.csv` | Bibliography registry (§4.3) | yes | All tasks |
+| `data/events.csv` | Event catalogue (§4.4) | no | Task 1.8 |
+| `data/baselines.csv` | Natural and fallout baselines (§4.5) | no | Task 1.7 |
+| `data/activity/*.csv` | Activity spine (§4.6) | no | Task 1.9 |
+| `data/factors/*.csv` | Factor registry, one file per stream (§4.9) | no | Tasks 2.1–2.5 |
+| `data/streams/*.csv` | Master-format rows, one file per stream (§3) | no | Tasks 2.1–2.5 |
+| `build/master.csv` | Merge of the stream files and nothing else (§3) | no | Task 3.1 |
+| `schema/*.json` | Row schemas for every table above: `master`, `sources`, `events`, `countries`, `activity`, `baselines`, `commodity_factors`, `factors`, `residue_types`, `reference_bands` | yes (all ten) | Task 0.2 |
 
 ---
 
 ## 3. Master table (`data/streams/*.csv`, `build/master.csv`)
 
-One row = one quantity of one nuclide group, in one tier, from one stage, in one country and year, under one allocation variant.
+One row = one quantity of one nuclide group, in one tier, from one stage (and product, residue type and release route where they apply), in one country and year, under one allocation variant.
 
 | Column | Type | Required | Rule |
 |---|---|---|---|
 | `year` | int | yes | 1950 ≤ year ≤ 2025 (D14) |
 | `stream` | enum | yes | `nuclear`, `coal`, `oil_gas`, `wind_solar`, `other` |
-| `substream` | enum | yes | Allowed per stream (§5.1) |
-| `stage` | enum | yes | Allowed per stream (§5.2) |
-| `country` | code | yes | In `countries.csv` |
+| `substream` | code | yes | Allowed per stream (§5.1) |
+| `stage` | code | yes | Allowed per stream (§5.2) |
+| `product` | code | conditional | Oil/gas product, or commodity, per the product rules (§5.5); otherwise empty |
+| `residue_type` | code | conditional | In `residue_types.csv`; **required** when `tier` is `impounded`, `reisolated` or `dispersed`, **empty** otherwise |
+| `country` | code | yes | In `countries.csv`; **not** `XWL` (global data without a country breakdown go in `XXX`) |
 | `group` | code | yes | In `groups.csv` (head code, e.g. `Ra226+`, `Cs137+`, `H3`) |
-| `tier` | enum | yes | `sealed_in_core`, `sealed_fuel_cycle`, `sealed_damaged_core`, `impounded`, `reisolated`, `dispersed`, `liberated`, `memo_earth_moved`; must be allowed for the stage (§5.3) |
-| `quantity` | enum | yes | `flow` (Bq/a added), `transfer_out`, `transfer_in` (Bq moved between tiers in the year), `standing_inventory` (Bq present, for `sealed_in_core` only, METHODS §5.4) |
-| `unit` | enum | yes | `Bq/a` for `flow`; `Bq` for the others |
+| `tier` | enum | yes | `sealed_in_core`, `sealed_fuel_cycle`, `sealed_damaged_core`, `impounded`, `reisolated`, `dispersed`, `liberated`, `memo_earth_moved`; allowed for the stage (§5.3) |
+| `quantity` | enum | yes | `flow` (Bq/a added), `transfer_out`, `transfer_in` (Bq moved between tiers in the year), `standing_inventory` (Bq present in `sealed_in_core`; the no-accident baseline, METHODS §5.4), `opening_stock` (Bq present on 1 January 1950; **pending PD8**, §3.2) |
+| `unit` | enum | yes | `Bq/a` for `flow`; `Bq` for every other quantity |
 | `value_low` | float ≥ 0 | yes | |
 | `value_central` | float ≥ 0 | yes | low ≤ central ≤ high |
 | `value_high` | float ≥ 0 | yes | |
 | `below_detection` | bool | yes | `true` if the central value is half a detection limit (METHODS §11.1); then `value_low` must be 0 |
 | `basis` | enum | yes | `measured`, `compiled`, `modelled`, `interpolated`, `extrapolated` (METHODS §11.2) |
-| `source_ids` | list | yes | Every ID exists in `sources.csv`; at least one |
+| `source_ids` | list | yes | Every ID in `sources.csv`; at least one |
+| `factor_ids` | list | conditional | Every ID in the factor registry (§4.9); **required** when `basis = modelled` |
 | `allocation_variant` | enum | yes | `default`, `bound_main`, `bound_radio` (METHODS §10.1); `default` where no split applies |
-| `allocation_rule` | string | yes | Short code of the rule applied, e.g. `none`, `value`, `mass`, `civil:doc`, `civil:pre1965`, `civil:ratio`, `elec_share` |
+| `allocation_rule` | list | yes | Tokens from §5.6, e.g. `none`, `alloc:value`, `civil:doc;alloc:value` |
 | `embedded_fuel` | bool | yes | `true` only for embedded coal/O&G contributions in `wind_solar` or `construction*` stages (METHODS §6.1–6.2, D22) |
 | `technology` | enum | no | Lifecycle attribution (§5.4); empty = attributed in the pipeline by electricity share |
-| `event_id` | code | no | In `events.csv`; required when `quantity` is a transfer |
+| `route` | enum | conditional | Release route (§5.7); **required** when `tier = liberated`, **empty** otherwise |
+| `event_id` | code | no | In `events.csv`; empty for routine transfers (§3.1) |
 | `notes` | string | no | Free text |
 
-**Unique key:** (`year`, `stream`, `substream`, `stage`, `country`, `group`, `tier`, `quantity`, `allocation_variant`, `embedded_fuel`, `technology`, `event_id`).
+**Unique key:** (`year`, `stream`, `substream`, `stage`, `product`, `residue_type`, `country`, `group`, `tier`, `quantity`, `allocation_variant`, `embedded_fuel`, `technology`, `route`, `event_id`).
 
-**Cross-row rules:**
-1. **Transfers balance.** For each (`event_id`, `year`, `group`, `allocation_variant`), the sum of `transfer_out` equals the sum of `transfer_in` (central, low and high each, within a relative tolerance of 10⁻⁶).
-2. **Allocation completeness.** If any row for a key has `allocation_variant` ≠ `default`, rows for all three variants exist for that key.
-3. **Civil rule recorded.** Every `nuclear` row at stages `u_mining_conv`, `u_mining_isl` and `u_milling` has an `allocation_rule` starting `civil:`.
-4. **In-core inventory.** `standing_inventory` appears only with tier `sealed_in_core`, and `sealed_in_core` appears only with `standing_inventory` or a transfer.
+### 3.1 Transfers
+
+A transfer is a pair of rows, `transfer_out` from a source tier and `transfer_in` to a destination tier, that must balance.
+- **Event transfers** carry an `event_id`. The `transfer_out` tier must be the event's `from_tier`, and every `transfer_in` tier must be one of the event's `to_tiers`.
+- **Routine transfers** have no `event_id` and are allowed only at the stages in `vocab.json` → `routine_transfers` (`sea_disposal`, `reprocessing`: `sealed_fuel_cycle` → `liberated`).
+- **Balance key:** (`event_id`, `year`, `group`, `allocation_variant`) for event transfers; (`stage`, `country`, `year`, `group`, `allocation_variant`) for routine transfers.
+
+### 3.2 What is never a data row
+
+The decay engine generates these from parameters, so data rows for them would double count (METHODS §5.2):
+- **chronic radon and thoron exhalation** from Impounded and Dispersed residues, from ε in `residue_types.csv`;
+- **seepage** from impoundments, from the seepage fraction in `residue_types.csv`.
+
+They are kept out by construction: every Liberated row must name a `route` (§5.7), and no route exists for exhalation from residues or for seepage. Radon released by an operating process (mine ventilation, vented and delivered gas, stack) is entered under its route.
+
+**`opening_stock` (pending PD8).** The schema accepts `opening_stock` rows (year 1950 only, any stock tier except `sealed_in_core` and `memo_earth_moved`) so that the pre-1950 decision can be implemented without a schema change. If PD8 is declined, the quantity is removed from `vocab.json` and `master.json`.
+
+### 3.3 Cross-row rules
+
+1. **Transfers balance** (§3.1), central, low and high each, within a relative tolerance of 10⁻⁶.
+2. **Transfers are legitimate**: event tiers match the event; routine transfers only at routine stages with the stated tiers (§3.1).
+3. **Allocation completeness.** If any row for a key (the unique key without `allocation_variant`) has `allocation_variant` ≠ `default`, rows for all three variants exist. In such a key, the `default` row's rule contains `alloc:value` or `alloc:mass`, the `bound_main` row's `alloc:main` and the `bound_radio` row's `alloc:radio`.
+4. **Civil rule recorded.** Every `nuclear` row at a stage in `vocab.json` → `civil_rule_stages` (`u_mining_conv`, `u_mining_isl`, `u_milling`, `reprocessing`) has an `allocation_rule` with a `civil:` token. `civil:pre1965` is allowed only for years ≤ 1964, with `value_high = 0`; `civil:ratio` only for years ≥ 1965.
 
 ---
 
@@ -83,7 +111,7 @@ One row = one quantity of one nuclide group, in one tier, from one stage, in one
 | `half_life_a` | float | In Julian years (365.25 d) |
 | `lambda_per_a` | float | $\ln 2 / T_{1/2}$ in a⁻¹ |
 | `decay_modes` | list | e.g. `A`, `B-`, `EC`, `IT`, `B-;A` |
-| `daughters` | list | Daughter nuclides, same order as `branching` |
+| `daughters` | list | Daughter nuclides, same order as `branching` (may include stable nuclides and `SF`) |
 | `branching` | list of floats | Sums to 1 (within 10⁻⁴) |
 | `e_alpha_mev` | float | Mean α kinetic energy per decay (MeV) |
 | `e_recoil_mev` | float | Mean recoil energy per decay (MeV) |
@@ -93,6 +121,8 @@ One row = one quantity of one nuclide group, in one tier, from one stage, in one
 | `e_total_mev` | float | Sum of the five above |
 | `source_ids` | list | |
 | `notes` | string | |
+
+Uncertainty bands for these values are in `reference_bands.csv` (§4.11), not in this table.
 
 ### 4.2 `groups.csv` (Task 0.3)
 
@@ -106,10 +136,12 @@ One row = one quantity of one nuclide group, in one tier, from one stage, in one
 | `e_per_head_decay_mev` | float | $\bar{E}_k$ (METHODS §7) |
 | `chain` | enum | `U238`, `U235`, `Th232`, `K40`, `artificial` |
 | `role` | enum | `chain`, `released_gas`, `artificial` (METHODS §4.1a) |
-| `multiplier_scope` | enum | `stock_and_flow` or `flow_only`; `flow_only` iff `role = released_gas`. The validator rejects any master row that uses a `flow_only` group with `quantity` ≠ `flow` (rule `V09`) |
-| `parent_group` | code | Next group up the chain; empty for chain heads and artificial groups |
+| `multiplier_scope` | enum | `stock_and_flow` or `flow_only`; `flow_only` iff `role = released_gas` |
+| `parent_group` | code | Next group up the chain; empty for chain heads and artificial groups. **For a released-gas group that escapes from a residue, the group it escapes from** (`Rn222+` → `Ra226+`, `Rn220+` → `Th228+`): the gas group's members are the members that escape (METHODS §5.2). Released gases from reactors (`Kr88+`, `Xe138+`) have no parent |
 | `parent_branching` | float | Branching from `parent_group` to this group |
 | `notes` | string | Includes the equilibrium convention used (METHODS §4.1) |
+
+**Flow-only groups in the master table** may be used only as: `flow` rows; `transfer_in` rows into `liberated`; `transfer_out` rows from `sealed_in_core`; and `standing_inventory` rows. The multiplier of a flow-only group is applied only on the Liberated side, never to a stock (METHODS §4.1a).
 
 ### 4.3 `sources.csv`
 
@@ -118,73 +150,147 @@ One row = one quantity of one nuclide group, in one tier, from one stage, in one
 | `source_id` | code | `S` + 4 digits, unique |
 | `short_cite` | string | e.g. `UNSCEAR 2016 Annex A` |
 | `full_citation` | string | |
-| `url` | string | Optional; domains `grokipedia.com` and `wikipedia.org` rejected (METHODS §11.3) |
+| `url` | string | Optional, **but required when `access` is `paywalled` or `inaccessible`** (so Steve can try it); must not be on a banned domain (`grokipedia.com`, `wikipedia.org`, or a subdomain) |
 | `doi` | string | Optional |
 | `year` | int | Publication year |
 | `type` | enum | `regulator`, `compilation`, `peer_reviewed`, `agency`, `grey` |
-| `rank` | int | 1–5 per the source hierarchy (METHODS §11.3); must match `type` (regulator 1, compilation 2, peer_reviewed 3, agency 4, grey 5) |
+| `rank` | int | 1–5, matching `type` (regulator 1, compilation 2, peer_reviewed 3, agency 4, grey 5) (METHODS §11.3) |
 | `access` | enum | `open`, `paywalled`, `inaccessible` |
 | `licence` | enum | `open`, `restricted`, `unknown` (D20) |
 | `notes` | string | |
+
+`short_cite` and `full_citation` must not contain the banned citation terms in `vocab.json` (`grokipedia`, `wikipedia`).
 
 ### 4.4 `events.csv`
 
 | Column | Type | Rule |
 |---|---|---|
-| `event_id` | code | `E` + 3 digits |
+| `event_id` | code | `E` + 3 digits, unique |
 | `name` | string | |
-| `date_start` | date | ISO 8601 |
-| `date_end` | date | Optional |
+| `date_start` | date | A real calendar date, `YYYY-MM-DD` (use the first of the month or year when only the month or year is known, and say so in `notes`) |
+| `date_end` | date | Optional; ≥ `date_start` |
 | `country` | code | In `countries.csv` |
-| `location`, `lat`, `lon` | string, float, float | lat/lon optional |
-| `stream`, `stage` | enum | As in the master table |
+| `location`, `lat`, `lon` | string, float, float | Optional |
+| `stream`, `stage` | enum, code | Stage allowed for the stream |
 | `event_type` | enum | `accident`, `impoundment_failure`, `spill`, `other` |
 | `is_accident` | bool | Drives the "exclude accidents" toggle (METHODS §9.1); `true` iff `event_type = accident` |
-| `from_tier`, `to_tier` | enum | Master tiers |
-| `mass_t` | float | Optional; material released |
-| `activity_central_bq` | float | Summary only; detail by group lives in master rows with this `event_id` |
-| `inclusion` | enum | `activity` (≥ 1 TBq) or `mass` (≥ 10⁵ t) (METHODS §9.1); the stated criterion must be met by the row's own values |
-| `military` | bool | Must be `false` (D9); military events never enter the dataset |
-| `source_ids` | list | At least one |
+| `from_tier` | enum | The source tier |
+| `to_tiers` | list of enums | One or more destination tiers, not including `from_tier` |
+| `mass_t` | float | Material released (t); required for `inclusion = mass` |
+| `activity_low_bq`, `activity_central_bq`, `activity_high_bq` | float | **Total** activity moved by the event (all streams, head activity); required for `inclusion = activity`; low ≤ central ≤ high. Detail by group and the attribution to streams live in master transfer rows |
+| `inclusion` | enum | `activity` or `mass` (METHODS §9.1): `activity` needs `activity_central_bq` ≥ `vocab.event_inclusion.activity_bq_min` and at least one of `to_tiers` in {`liberated`, `dispersed`}; `mass` needs `mass_t` ≥ `vocab.event_inclusion.mass_t_min` and `from_tier = impounded` |
+| `military` | bool | Must be `false` (D9) |
+| `source_ids` | list | At least one; all in `sources.csv` |
 | `notes` | string | |
 
 ### 4.5 `baselines.csv`
 
 | Column | Type | Rule |
 |---|---|---|
-| `baseline_id` | code | `B` + 2 digits |
+| `baseline_id` | code | `B` + 2 digits, unique |
 | `name` | string | |
-| `quantity` | enum | `stock` (Bq), `flow` (Bq/a), `power` (W) |
-| `group` | code | Optional |
+| `quantity` | enum | `stock` (unit `Bq`), `flow` (`Bq/a`), `power` (`W`) |
+| `group` | code | Optional; in `groups.csv` if given |
 | `year` | int | Optional (empty = time-invariant) |
-| `value_low`, `value_central`, `value_high` | float | |
-| `unit` | enum | `Bq`, `Bq/a`, `W` |
+| `value_low`, `value_central`, `value_high` | float ≥ 0 | low ≤ central ≤ high |
+| `unit` | enum | Matches `quantity` |
 | `basis` | enum | As master |
 | `derivation` | string | Formula or reference to the calculation note |
-| `source_ids` | list | |
+| `source_ids` | list | All in `sources.csv` |
+| `notes` | string | |
 
-### 4.6 `data/activity/<series>.csv`
+Baselines are **not** merged into `build/master.csv`; they are exported alongside it (Task 3.7).
+
+### 4.6 `data/activity/*.csv`
 
 | Column | Type | Rule |
 |---|---|---|
-| `series` | code | e.g. `elec_gen_coal`, `coal_production`, `produced_water`, `ree_production`, `cap_add_wind_dd` |
-| `year` | int | |
-| `country` | code | |
-| `value_low`, `value_central`, `value_high` | float | |
-| `unit` | string | SI or SI-derived (e.g. `TWh`, `t`, `m3`, `GW`, `t/GW`) |
+| `series` | code | lower_snake_case, e.g. `elec_gen_coal`, `coal_production`, `produced_water`, `ree_production`, `cap_add_wind_dd`, `earth_moved_t_coal`, `phi_civil` |
+| `year` | int | 1800 ≤ year ≤ 2025 (pre-1950 allowed for the opening-stock estimate) |
+| `country` | code | In `countries.csv` (`XWL` allowed here) |
+| `value_low`, `value_central`, `value_high` | float ≥ 0 | low ≤ central ≤ high |
+| `unit` | string | SI or SI-derived (e.g. `TWh`, `t`, `m3`, `GW`, `t/GW`, `1` for dimensionless) |
+| `below_detection` | bool | As master |
 | `basis`, `source_ids`, `notes` | | As master |
+
+**Key:** (`series`, `year`, `country`) across all activity files. The **mass of earth moved** (the D21 memo series in tonnes) is stored here as `earth_moved_t_<stream>`; the Bq side is in master rows with tier `memo_earth_moved`.
 
 ### 4.7 `commodity_factors.csv`
 
 | Column | Type | Rule |
 |---|---|---|
-| `commodity` | enum | e.g. `ree_oxide`, `copper`, `aluminium`, `steel`, `cement`, `silicon_mg`, `silver`, `tellurium`, `indium`, `glass` |
+| `commodity` | enum | `vocab.json` → `commodities` |
 | `component` | enum | `own_residue`, `embedded_fuel` (METHODS §6.2) |
-| `group`, `tier` | code, enum | As master |
-| `value_low`, `value_central`, `value_high` | float | Bq per t of refined commodity |
-| `region` | code | Country or `XWL` |
-| `year_from`, `year_to` | int | Validity window |
+| `group` | code | In `groups.csv` |
+| `tier` | enum | Any non-Sealed tier |
+| `route` | enum | Required when `tier = liberated`, else empty |
+| `residue_type` | code | In `residue_types.csv`; required for residue tiers, else empty |
+| `region` | code | In `countries.csv` (`XWL` allowed) |
+| `year_from`, `year_to` | int | Validity window, `year_from ≤ year_to` |
+| `allocation_variant`, `allocation_rule` | enum, list | As master; variant completeness and token coupling as master (§3.3 rule 3) |
+| `value_low`, `value_central`, `value_high` | float ≥ 0 | Activity per tonne of refined commodity; low ≤ central ≤ high |
+| `unit` | const | `Bq/t` |
+| `below_detection` | bool | As master |
 | `basis`, `source_ids`, `notes` | | As master |
+
+**Key:** (`commodity`, `component`, `group`, `tier`, `route`, `residue_type`, `region`, `year_from`, `allocation_variant`).
+
+### 4.8 `countries.csv`
+
+| Column | Type | Rule |
+|---|---|---|
+| `code` | code | Three capital letters, unique |
+| `name` | string | |
+| `kind` | enum | `iso3166_1`, `iso3166_3_former`, `user_assigned` |
+| `valid_from`, `valid_to` | int | Optional validity window, inclusive |
+| `notes` | string | |
+
+### 4.9 `data/factors/*.csv` — factor registry
+
+Every modelled master row cites the factor(s) it was computed from. The registry is what makes correlated uncertainty (METHODS §11.1) and the Task 4.1 audit possible.
+
+| Column | Type | Rule |
+|---|---|---|
+| `factor_id` | code | `<stream>:<4 digits>`, e.g. `coal:0012`; unique across all factor files |
+| `description` | string | What the factor is |
+| `stream`, `stage` | enum, code | Stage allowed for the stream |
+| `driver_series` | code | The activity series it multiplies, if any; must exist in `data/activity/` |
+| `group`, `tier`, `route`, `residue_type` | | Optional; as master where given |
+| `region` | code | In `countries.csv` (`XWL` allowed) |
+| `year_from`, `year_to` | int | Validity window, `year_from ≤ year_to` |
+| `value_low`, `value_central`, `value_high` | float ≥ 0 | low ≤ central ≤ high |
+| `unit` | string | e.g. `Bq/t`, `Bq/m3`, `Bq/GWa`, `1` |
+| `below_detection` | bool | As master |
+| `basis`, `source_ids`, `notes` | | As master |
+
+Master rows that share a `factor_id` are treated as fully correlated in that factor's uncertainty.
+
+### 4.10 `residue_types.csv` — engine parameters
+
+| Column | Type | Rule |
+|---|---|---|
+| `residue_type` | code | Unique |
+| `description` | string | |
+| `streams` | list | Streams that use it |
+| `epsilon_rn222_low/central/high` | float in [0, 1] | Effective radon exhalation fraction (METHODS §5.2) |
+| `epsilon_rn220_low/central/high` | float in [0, 1] | Effective thoron exhalation fraction |
+| `seepage_per_a_low/central/high` | float in [0, 1] | Annual fraction of the impounded stock that seeps to Liberated |
+| `basis`, `source_ids` | | Required if any parameter set is filled |
+| `notes` | string | |
+
+Each parameter set (the three ε-Rn222 values, the three ε-Rn220 values, the three seepage values) is either **all empty** (not yet set, Phase 1) or **all filled** with low ≤ central ≤ high. The pipeline refuses to run on an empty set for a residue type that has data rows; the validator only checks consistency.
+
+### 4.11 `reference_bands.csv` — nuclide-data uncertainty (D27)
+
+| Column | Type | Rule |
+|---|---|---|
+| `band_id` | code | `RB` + 2 digits, unique |
+| `quantity_class` | enum | `half_life`, `e_alpha`, `e_beta`, `e_beta_forbidden`, `e_photon`, `e_photon_low`, `e_electron`, `e_electron_low`, `e_total_alpha_dominated`, `e_total_other`, `group_e_chain`, `group_e_k40`, `group_e_artificial` |
+| `applies_to` | list | `*` (the class default) or named nuclides/groups, all in `nuclides.csv` or `groups.csv` |
+| `rel_low`, `rel_high` | float | Relative band, −1 ≤ `rel_low` ≤ 0 ≤ `rel_high` |
+| `basis`, `source_ids`, `notes` | | As master |
+
+**Precedence:** a row naming a nuclide or group overrides the class's `*` row. **Key:** (`quantity_class`, each entry of `applies_to`): a nuclide may appear only once per class.
 
 ---
 
@@ -212,7 +318,7 @@ One row = one quantity of one nuclide group, in one tier, from one stage, in one
 
 ### 5.3 Stage–tier matrix
 
-Allowed tiers per stage, as in METHODS §6.3 (`memo_earth_moved` is allowed only at mining stages: `u_mining_conv`, `coal_mining`, `oil_sands_mining`, `commodity_supply`).
+Allowed tiers per stage for non-transfer rows, as in METHODS §6.3 (`memo_earth_moved` is allowed only at the mining stages `u_mining_conv`, `coal_mining`, `oil_sands_mining` and `commodity_supply`).
 
 | Stage | Allowed tiers |
 |---|---|
@@ -221,7 +327,7 @@ Allowed tiers per stage, as in METHODS §6.3 (`memo_earth_moved` is allowed only
 | `u_milling` | sealed_fuel_cycle, impounded, dispersed, liberated |
 | `conv_enrich_fab` | sealed_fuel_cycle, impounded, liberated |
 | `reactor_operation` | sealed_in_core, sealed_fuel_cycle, liberated |
-| `spent_fuel` | sealed_in_core, sealed_fuel_cycle |
+| `spent_fuel` | sealed_fuel_cycle |
 | `reprocessing` | sealed_fuel_cycle, liberated |
 | `sea_disposal` | sealed_fuel_cycle, liberated |
 | `construction_decom` | sealed_fuel_cycle, impounded, dispersed, liberated |
@@ -241,11 +347,29 @@ Allowed tiers per stage, as in METHODS §6.3 (`memo_earth_moved` is allowed only
 | `biomass_peat` | impounded, dispersed, liberated |
 | `hydro` | liberated |
 
-Event rows (`quantity` = `transfer_out`/`transfer_in`) may use any tier pair; the event's `from_tier`/`to_tier` must match.
+Transfer rows follow §3.1 instead of this matrix.
 
 ### 5.4 Technologies (lifecycle view, D22)
 
 `coal_power`, `gas_power`, `oil_power`, `nuclear`, `wind`, `solar`, `geothermal`, `biomass`, `hydro`.
+
+### 5.5 Products and commodities
+
+- **Oil and gas** (`stream = oil_gas`, every stage): `product` is **required**, one of `oil`, `gas`, `ngl`, `bitumen`. Residues shared between products are split by value (D6, `alloc:value`).
+- **Commodity stages** (`commodity_supply`, `end_of_life`, `construction`, `construction_decom`): `product` is **required**, one of `vocab.json` → `commodities`, except on rows in a Sealed tier (e.g. nuclear decommissioning waste), where it must be empty.
+- **Every other row:** `product` must be empty.
+
+### 5.6 Allocation-rule tokens
+
+`none`; `alloc:value`, `alloc:mass` (the default split); `alloc:main`, `alloc:radio` (the two bounds, METHODS §10.1); `elec_share` (electricity-share attribution, METHODS §8); `civil:doc`, `civil:pre1965`, `civil:ratio` (uranium, METHODS §9.2); `civil:throughput` (dual-use reprocessing, METHODS §9.2). A rule is one or more tokens, `;`-separated.
+
+### 5.7 Release routes (Liberated rows only)
+
+`air_stack`, `air_ventilation`, `air_process_vent`, `air_vented_gas`, `air_delivered_gas`, `air_dust`, `air_other`, `water_liquid_effluent`, `water_mine_drainage`, `water_produced_discharge`, `water_spill`, `water_other`, `sea_disposal_package`. There is deliberately no route for exhalation from residues or for seepage (§3.2).
+
+### 5.8 Other entries
+
+`quantities` (with units), `basis`, `allocation_variants`, `residue_tiers`, `civil_rule_stages`, `routine_transfers`, `opening_stock_year`, `event_types`, `event_inclusion`, `source_types`, `source_access`, `source_licence`, `source_url_required_access`, `banned_domains`, `banned_citation_terms`, `dose_tokens`, `forbidden_column_tokens`, `value_checked_columns`, `year_range`, and `derived` (§8).
 
 ---
 
@@ -268,99 +392,143 @@ class Issue:
 def validate(root: str | os.PathLike, master_files: Iterable[str | os.PathLike] | None = None) -> list[Issue]: ...
 ```
 
-- `root` is a project root laid out as in §2. The validator reads:
-  - `data/reference/vocab.json`, `countries.csv`, `nuclides.csv`, `groups.csv` (required);
-  - `schema/master.json`, `schema/sources.json`, `schema/events.json` (required);
-  - `data/sources.csv` (required);
-  - `data/events.csv` (optional: if absent, there are no events).
-- `master_files`: paths (absolute, or relative to `root`) of master-format CSVs to check. If `None`, every `data/streams/*.csv` (sorted by name). `build/master.csv` is checked only when passed explicitly, because it is the merge of the stream files and would otherwise duplicate every key. An empty list checks no master files.
-- Every call also validates `data/sources.csv`, `data/events.csv` (if present), `nuclides.csv` and `groups.csv`.
-- An empty list means everything is valid. Issues are returned in a stable order: by file, then row (file-level first), then rule.
-- A missing *required* reference file raises `FileNotFoundError`. It is not reported as an `Issue`.
-- **Cross-row rules (X\*) consider all master files together.** An `X01` duplicate across two files is reported on the later file's row; an `X02` imbalance is reported once per unbalanced (`event_id`, `year`, `group`, `allocation_variant`) with `row = None`, against the first file containing that event.
+- `root` is a project root laid out as in §2. Every call validates all the **required** files of §2, plus every **optional** file that exists: `data/events.csv`, `data/baselines.csv`, `data/reference/commodity_factors.csv`, `data/activity/*.csv`, `data/factors/*.csv`.
+- `master_files`: paths (absolute, or relative to `root`) of master-format CSVs to check. If `None`, every `data/streams/*.csv` (sorted by name). `build/master.csv` is checked only when passed explicitly. An empty list checks no master files.
+- An empty list of issues means everything is valid. Issues are returned sorted by file, then row (`None` first), then rule.
+- A missing *required* file raises `FileNotFoundError`. It is not reported as an `Issue`.
+- **Cross-row rules (X\*) consider all master files together**, in processing order (§6.5).
 
 ### 6.2 Command line
 
 `python -m pipeline.validate [--root DIR] [FILE ...]` (also `pixi run validate`).
 - `--root` defaults to the current directory; `FILE`s are master files (default as above).
-- Prints one line per issue, `file:row: RULE message` (`row` printed as `-` when `None`), then a summary line.
+- Prints one line per issue to stdout, `file:row: RULE message` (`row` printed as `-` when `None`), then a summary line. Errors go to stderr.
 - **Exit codes:** 0 = no issues; 1 = one or more issues; 2 = usage error or missing required file.
 
 ### 6.3 Rule codes
 
-One row may raise several codes. Each code below is raised **only** for the condition stated. Where a condition is expressible in the JSON schema it is reported as `R02`, not under another code.
+One row may raise several codes. Each code is raised **only** for the condition stated. Where a condition is expressible in the table's JSON schema it is reported under that table's schema code (`R02`, `S01`, `E01`, `T01`), not under another code.
 
-| Code | Scope | Condition |
+**File level (any CSV the validator reads)**
+
+| Code | Condition |
+|---|---|
+| `F01` | Header does not exactly match the specified columns, in order |
+| `F02` | A column name contains a dose token as a whole word (§1) |
+| `F03` | File cannot be read as UTF-8 CSV, or a listed master file does not exist |
+| `D01` | A cell value in a checked column (`series`, `unit`, `name`, `description`, `quantity_class`) contains a dose token as a whole word (§1). Reported once per row |
+
+**Master table**
+
+| Code | Condition |
+|---|---|
+| `R01` | A cell cannot be coerced to its type (§6.4) |
+| `R02` | The coerced row fails `schema/master.json` (types, fixed enums, and the conditionals: unit/quantity, `standing_inventory`/`sealed_in_core`, `opening_stock`, memo flows, `below_detection`, `embedded_fuel`, `residue_type` and `route` by tier, `factor_ids` for modelled rows, bound tokens, civil year rules) |
+| `R03` | `value_low ≤ value_central ≤ value_high` does not hold |
+| `V01` | `substream` not allowed for `stream` |
+| `V02` | `stage` not allowed for `stream` |
+| `V03` | `tier` not allowed for `stage` (§5.3); not raised for transfer rows |
+| `V04` | `group` not in `groups.csv` |
+| `V05` | `country` not in `countries.csv` |
+| `V06` | `country` has a validity window and `year` falls outside it |
+| `V07` | A `source_ids` entry not in `data/sources.csv` |
+| `V08` | `event_id` not in `data/events.csv` |
+| `V09` | A flow-only group used other than as allowed in §4.2 |
+| `V10` | `country = XWL` |
+| `V11` | `product` breaks the product rules (§5.5): missing where required, present where not allowed, or not in the vocabulary that applies |
+| `V12` | `residue_type` not in `residue_types.csv` |
+| `V13` | A `factor_ids` entry not in the factor registry |
+| `X01` | Duplicate unique key (§3) |
+| `X02` | Transfers do not balance for a balance key (§3.1; relative tolerance 10⁻⁶ for each of low/central/high). Reported once per key, with `row = None`, against the first file containing that key |
+| `X03` | Allocation completeness (§3.3 rule 3): a key has a non-default variant but not all three, **or** in a complete key a row's rule lacks the token for its variant (`default`: `alloc:value` or `alloc:mass`). Reported once per key, on the key's first row |
+| `X04` | A `nuclear` row at a civil-rule stage (§3.3 rule 4) with no `civil:` token |
+| `X05` | An illegitimate transfer (§3.1): an event transfer whose tier does not match the event (`transfer_out` ≠ `from_tier`, or `transfer_in` ∉ `to_tiers`); or a transfer with no `event_id` at a stage not in `routine_transfers`, or with tiers other than that stage's routine pair |
+
+**Reference and support tables**
+
+| Code | Table | Condition |
 |---|---|---|
-| `F01` | any CSV | Header does not exactly match the specified columns, in order |
-| `F02` | any CSV | A column name contains a forbidden token (`dose`, `sv`, `sievert`, `rem`) as a whole `_`-separated word, case-insensitive |
-| `F03` | any CSV | File cannot be read as UTF-8 CSV |
-| `R01` | master | A cell cannot be coerced to its type (int, float, bool, list) |
-| `R02` | master | The coerced row fails `schema/master.json` |
-| `R03` | master | `value_low ≤ value_central ≤ value_high` does not hold |
-| `V01` | master | `substream` not allowed for `stream` |
-| `V02` | master | `stage` not allowed for `stream` |
-| `V03` | master | `tier` not allowed for `stage` (§5.3); not raised for `transfer_out` / `transfer_in` rows |
-| `V04` | master | `group` not in `groups.csv` |
-| `V05` | master | `country` not in `countries.csv` |
-| `V06` | master | `country` is a code with a validity window (`valid_from`/`valid_to` in `countries.csv`) and `year` falls outside it |
-| `V07` | master | A `source_ids` entry not in `data/sources.csv` |
-| `V08` | master | `event_id` not in `data/events.csv` |
-| `V09` | master | A `flow_only` group with `quantity` ≠ `flow` |
-| `X01` | master | Duplicate unique key (§3) |
-| `X02` | master | Transfers for an (`event_id`, `year`, `group`, `allocation_variant`) do not balance (relative tolerance 10⁻⁶, each of low/central/high) |
-| `X03` | master | A key (all unique-key columns except `allocation_variant`) has at least one row with `allocation_variant` ≠ `default`, but does not have all three of `default`, `bound_main`, `bound_radio`. A key with only `default` is normal and is not flagged. Reported once per key, on the key's first row |
-| `X04` | master | A `nuclear` row at `u_mining_conv`, `u_mining_isl` or `u_milling` whose `allocation_rule` has no `civil:` component |
-| `X05` | master | A transfer row whose tier does not match its event (`transfer_out` tier ≠ `from_tier`, or `transfer_in` tier ≠ `to_tier`) |
-| `S01` | sources | Row fails `schema/sources.json`, or a duplicate `source_id` |
-| `S02` | sources | `url` on a banned domain (or any subdomain of one) |
-| `E01` | events | Row fails `schema/events.json`, or a duplicate `event_id` |
+| `S01` | sources | Row fails `schema/sources.json` (incl. coercion failure, and a missing `url` for paywalled/inaccessible), or a duplicate `source_id` |
+| `S02` | sources | `url` host on a banned domain or a subdomain of one; or `short_cite`/`full_citation` containing a banned citation term (case-insensitive) |
+| `E01` | events | Row fails `schema/events.json` (incl. coercion failure); or a date that is not a real calendar date; or `date_end` < `date_start`; or activity low ≤ central ≤ high fails; or `from_tier` ∈ `to_tiers`; or a duplicate `event_id` |
 | `E02` | events | `stage` not allowed for `stream`, `country` unknown, or a `source_ids` entry unknown |
+| `E03` | events | The inclusion criterion (§4.4) is not met: threshold or destination/source tier |
 | `N01` | nuclides | `branching` does not sum to 1 within 10⁻⁴, or `daughters` and `branching` lengths differ |
 | `N02` | nuclides | `e_total_mev` ≠ the sum of the five components (relative 10⁻⁶) |
 | `N03` | nuclides | `lambda_per_a` ≠ ln 2 / `half_life_a` (relative 10⁻⁶) |
-| `G01` | groups | A head or member not in `nuclides.csv` |
-| `G02` | groups | `multiplier` ≠ the sum of `member_weights` (relative 10⁻⁶) |
+| `G01` | groups | A head or member not in `nuclides.csv`, or the head is not the first member |
+| `G02` | groups | `multiplier` ≠ the sum of `member_weights` (relative 10⁻⁶), or the lengths of `members` and `member_weights` differ |
 | `G03` | groups | `multiplier_scope = flow_only` but `role ≠ released_gas`, or the reverse |
+| `G04` | groups | `chain`, `role` or `multiplier_scope` not in its enum; a `parent_group` not in `groups.csv`; or a duplicate `group` |
+| `G05` | groups | A released-gas group that names a `parent_group`, where that parent is not a `chain` group containing the gas group's head as a member (released gases with no parent, e.g. `Kr88+`, are not escape groups and are not checked) |
+| `T01` | countries, activity, baselines, commodity_factors, factors, residue_types, reference_bands | Row fails the table's JSON schema (incl. coercion failure) |
+| `T02` | same | Duplicate key (§4.5–4.11) |
+| `T03` | same | Bounds out of order (low ≤ central ≤ high; `year_from ≤ year_to`; residue parameter sets all-or-none and ordered; residue parameters filled without `basis` and `source_ids`) |
+| `T04` | same | A reference that does not resolve: `source_ids` (sources), `country`/`region` (countries), `group` (groups), `residue_type` (residue types), `driver_series` (activity series), `stage` for the stream (factors), `applies_to` (nuclides or groups) |
+| `T05` | commodity_factors | Allocation completeness, as `X03` |
 
-**Membership vs schema.** `schema/master.json` checks types, the fixed enums (stream, tier, quantity, unit, basis, allocation_variant, technology) and conditional rules. It does **not** check whether a substream, stage, country, group, source ID or event ID exists; those are V-codes only. So an unknown group raises `V04` alone, never `R02`. If `stream` itself is invalid (`R02`), `V01`–`V03` are skipped for that row; if `tier` is invalid, `V03` is skipped.
+**Membership vs schema.** The JSON schemas check types, fixed enums and conditional rules. They do **not** check whether a substream, stage, product, residue type, country, group, source, factor or event ID exists; those are V-, E02- and T04-codes only. If `stream` itself is invalid (`R02`), `V01`–`V03` and `V11` are skipped for that row; if `tier` is invalid, `V03` is skipped.
 
-Notes on rules: `below_detection = true` with `value_low ≠ 0`, unit/quantity mismatches, `standing_inventory` outside `sealed_in_core`, and `embedded_fuel = true` outside `wind_solar`/`construction*` are all in `schema/master.json`, so they raise `R02`. `X03` and `X04` are skipped for a row that already has `R01`.
+### 6.4 Coercion rules
 
-### 6.4 Coercion rules (master)
-
-- `year` → int; `value_*` → float (accepts exponent notation); `below_detection`, `embedded_fuel` → bool from `true`/`false` only (any other text → `R01`).
-- `source_ids` → list split on `;` (an empty cell → `R01`).
-- `technology`, `event_id` and `notes`: an empty cell → `null`.
-- Any other empty required cell → `R01`.
+Applied before schema validation, in every table:
+- integers (`year`, `rank`, `year_from`, `year_to`, `valid_from`, `valid_to`) from digit strings; floats (`value_*`, `mass_t`, `activity_*`, `lat`, `lon`, `rel_*`, `epsilon_*`, `seepage_*`, energies, branching) accept exponent notation; NaN and infinities are coercion failures;
+- booleans from `true` / `false` only;
+- lists (`source_ids`, `factor_ids`, `allocation_rule`, `to_tiers`, `streams`, `applies_to`, and the `;`-lists in nuclides and groups) split on `;`;
+- an empty cell in a nullable column → `null`. In the master table the nullable columns are `product`, `residue_type`, `factor_ids`, `technology`, `route`, `event_id` and `notes`; any other empty master cell → `R01`. In the other tables an empty cell becomes `null` and the schema decides whether that is allowed (so a missing required value is `S01`, `E01` or `T01`).
+- In the master table, `allocation_rule` is stored as its token string for the schema check (pattern), and also split into tokens for the cross-row rules.
 
 ### 6.5 Behaviour details
 
-These settle the edge cases the spec-blind tests raised (A1–A14 in `pipeline/tests/test_validate.py`), and match the implementation:
-
 | Case | Behaviour |
 |---|---|
-| A master file outside `root` (A1) | `Issue.file` is its absolute POSIX path |
-| "Later" across files (A2, A11) | Processing order: the order of `master_files` (or sorted names by default), then row order. X01 is reported on the later occurrence, and X03 on the key's first row in that order |
-| Duplicate `source_id` / `event_id` (A3) | Reported on the later row |
-| A row with `R01` (A4) | `R02` and `R03` are skipped for that row; V-checks still run on the cells that coerced; X01 and X05 still run; X02 skips the whole balance key; X03 and X04 skip the row |
-| A file with `F01`, `F02` or `F03` (A5) | Its data rows are not validated |
-| Country validity window (A6) | Inclusive: valid if `valid_from ≤ year ≤ valid_to` |
-| CLI paths and output (A7) | `FILE` arguments that are relative are taken relative to `--root`; issue lines and the summary go to stdout, errors to stderr; printed file names follow `Issue.file` |
-| Unknown or missing event (A8) | `V08` only; `X05` is skipped for that row |
-| Unknown stage (A9) | `V02` only; `V03` is skipped |
-| Banned domains (A10) | Matched on the URL's host only: the domain itself or any subdomain |
-| A header-only master file (A12) | Valid |
-| Issue order (A14) | Sorted by `file` (string), then `row` (`None` first), then `rule` |
+| A master file outside `root` | `Issue.file` is its absolute POSIX path |
+| "Later" and "first" across files | Processing order: the order of `master_files` (or sorted names by default), then row order. `X01` is reported on the later occurrence; `X03` on the key's first row |
+| Duplicate IDs in sources, events, groups, support tables | Reported on the later row |
+| A master row with `R01` | `R02` and `R03` are skipped for that row; V-checks still run on the cells that coerced; `X01` and `X05` still run; `X02` skips the whole balance key; `X03` and `X04` skip the row |
+| A file with `F01`, `F02` or `F03` | Its data rows are not validated (nor used for lookups) |
+| Country validity window | Inclusive: valid if `valid_from ≤ year ≤ valid_to` |
+| CLI paths | Relative `FILE` arguments are taken relative to `--root` |
+| Unknown or missing event | `V08` only; `X05` is skipped for that row |
+| Unknown stage | `V02` only; `V03` and `V11` are skipped |
+| Banned domains | Matched on the URL's host only: the domain itself or any subdomain |
+| A header-only CSV | Valid |
+| Issue order | Sorted by `file` (string), then `row` (`None` first), then `rule` |
 
 ---
 
-## 7. Change log
+## 7. Field-name mapping to PLAN Task 0.2
+
+PLAN Task 0.2 listed indicative columns. The schema uses the following, for the reasons given:
+
+| PLAN name | Schema name | Why |
+|---|---|---|
+| `process_stage` | `stage` | Shorter; the vocabulary is "stages" throughout METHODS |
+| `nuclide` | `group` | D24: data are stored per nuclide group (a single nuclide is a one-member group) |
+| `source_id` | `source_ids` | A value often rests on more than one source |
+
+---
+
+## 8. Derived outputs (provisional; settled in Tasks 3.2–3.7)
+
+The pipeline's outputs under `build/` are not inputs and are not validated by `validate.py` in v1. Their dimensions, recorded so that Phase 2 data carry everything Phase 3 needs:
+
+| Output | Dimensions |
+|---|---|
+| `build/stocks.csv` (Task 3.2) | year × stream × substream × stage × product × tier × group × `view` (`industry`/`lifecycle`) × `run` (`with_accidents`/`without_accidents`) × allocation variant; values in Bq (both `convention`s: `group` and `head`) and W; low/central/high |
+| `build/flows.csv` (Tasks 3.1–3.3) | As stocks, for flows (Bq/a, W), plus engine-generated exhalation and seepage flows marked `engine` |
+| `build/per_twh.csv` (Task 3.4) | lifecycle view only; technology × year × tier × group; per-TWh variants `levelised`/`annual` for construction and decommissioning; chronic horizons 100 / 500 / 10 000 a (D25) |
+| `build/radiopassive.json` (Task 3.7) | Page export; its own JSON schema is written in Task 3.7 |
+
+The vocabularies for these (`views`, `runs`, `conventions`, `horizons_a`, the tier roll-up to the four D2 tiers, and the stage-to-phase map used for levelising) are in `vocab.json` → `derived`.
+
+---
+
+## 9. Change log
 
 | Date | Change |
 |---|---|
 | 2026-10-20 | First draft (Task 0.2). |
 | 2026-10-20 | Added `role` and `multiplier_scope` to groups.csv (from Task 0.3). |
-| 2026-10-20 | Added §6 validator contract (API, CLI, rule codes, coercion). |
-| 2026-10-20 | Added §6.5 behaviour details from the spec-blind test ambiguities; aligned §4.2 V09 wording. |
-| 2026-10-20 | Clarified X03; default master files exclude build/master.csv; membership checks moved out of master.json so each fault raises one code. |
+| 2026-10-20 | Added the validator contract (API, CLI, rule codes, coercion) and behaviour details from the spec-blind test ambiguities. |
+| 2026-10-20 | **v2** after the independent schema review: master gains `product`, `residue_type`, `factor_ids`, `route`; routine vs event transfers; events gain `to_tiers` and activity bounds; `opening_stock` (pending PD8); new tables `residue_types.csv`, `reference_bands.csv`, factor registry; JSON schemas and rule codes (`T01`–`T05`, `D01`) for every support table; `V10`–`V13`, `E03`, `G04`, `G05`; dose tokens checked in values; URL required for inaccessible sources; field-name mapping; provisional derived-output dimensions. |

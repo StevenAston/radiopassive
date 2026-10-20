@@ -1,0 +1,152 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "radiopassive/schema/baselines.json",
+  "title": "Radiopassive baseline row",
+  "description": "One row of data/baselines.csv (SCHEMA.md §4.5).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "baseline_id",
+    "name",
+    "quantity",
+    "group",
+    "year",
+    "value_low",
+    "value_central",
+    "value_high",
+    "unit",
+    "basis",
+    "derivation",
+    "source_ids",
+    "notes"
+  ],
+  "properties": {
+    "baseline_id": {
+      "type": "string",
+      "pattern": "^B[0-9]{2}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 3
+    },
+    "quantity": {
+      "enum": [
+        "stock",
+        "flow",
+        "power"
+      ]
+    },
+    "group": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "year": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1800,
+      "maximum": 2025
+    },
+    "value_low": {
+      "type": "number",
+      "minimum": 0
+    },
+    "value_central": {
+      "type": "number",
+      "minimum": 0
+    },
+    "value_high": {
+      "type": "number",
+      "minimum": 0
+    },
+    "unit": {
+      "enum": [
+        "Bq",
+        "Bq/a",
+        "W"
+      ]
+    },
+    "basis": {
+      "enum": [
+        "measured",
+        "compiled",
+        "modelled",
+        "interpolated",
+        "extrapolated"
+      ]
+    },
+    "derivation": {
+      "type": "string",
+      "minLength": 3
+    },
+    "source_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "quantity": {
+            "const": "stock"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": {
+            "const": "Bq"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "quantity": {
+            "const": "flow"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": {
+            "const": "Bq/a"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "quantity": {
+            "const": "power"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": {
+            "const": "W"
+          }
+        }
+      }
+    }
+  ]
+}

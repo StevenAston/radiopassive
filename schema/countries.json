@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "radiopassive/schema/countries.json",
+  "title": "Radiopassive country code row",
+  "description": "One row of data/reference/countries.csv (SCHEMA.md §4.8).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "code",
+    "name",
+    "kind",
+    "valid_from",
+    "valid_to",
+    "notes"
+  ],
+  "properties": {
+    "code": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2
+    },
+    "kind": {
+      "enum": [
+        "iso3166_1",
+        "iso3166_3_former",
+        "user_assigned"
+      ]
+    },
+    "valid_from": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1900,
+      "maximum": 2100
+    },
+    "valid_to": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1900,
+      "maximum": 2100
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

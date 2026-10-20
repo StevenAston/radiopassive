@@ -1,0 +1,147 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "radiopassive/schema/residue_types.json",
+  "title": "Radiopassive residue-type parameter row",
+  "description": "One row of data/reference/residue_types.csv (SCHEMA.md §4.10). Parameter values may be empty until Phase 1; a parameter set is all-or-none, and any filled set needs basis and source_ids (checked by the validator, T03/T01).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "residue_type",
+    "description",
+    "streams",
+    "epsilon_rn222_low",
+    "epsilon_rn222_central",
+    "epsilon_rn222_high",
+    "epsilon_rn220_low",
+    "epsilon_rn220_central",
+    "epsilon_rn220_high",
+    "seepage_per_a_low",
+    "seepage_per_a_central",
+    "seepage_per_a_high",
+    "basis",
+    "source_ids",
+    "notes"
+  ],
+  "properties": {
+    "residue_type": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 3
+    },
+    "streams": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "nuclear",
+          "coal",
+          "oil_gas",
+          "wind_solar",
+          "other"
+        ]
+      }
+    },
+    "epsilon_rn222_low": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "epsilon_rn222_central": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "epsilon_rn222_high": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "epsilon_rn220_low": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "epsilon_rn220_central": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "epsilon_rn220_high": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "seepage_per_a_low": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "seepage_per_a_central": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "seepage_per_a_high": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "basis": {
+      "enum": [
+        null,
+        "measured",
+        "compiled",
+        "modelled",
+        "interpolated",
+        "extrapolated"
+      ]
+    },
+    "source_ids": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

@@ -114,7 +114,6 @@
    "liberated"
   ],
   "spent_fuel": [
-   "sealed_in_core",
    "sealed_fuel_cycle"
   ],
   "reprocessing": [
@@ -208,7 +207,8 @@
   "flow": "Bq/a",
   "transfer_out": "Bq",
   "transfer_in": "Bq",
-  "standing_inventory": "Bq"
+  "standing_inventory": "Bq",
+  "opening_stock": "Bq"
  },
  "basis": [
   "measured",
@@ -270,8 +270,229 @@
  ],
  "forbidden_column_tokens": [
   "dose",
-  "sv",
+  "doses",
   "sievert",
-  "rem"
+  "sieverts",
+  "sv",
+  "msv",
+  "usv",
+  "µsv",
+  "μsv",
+  "nsv",
+  "mansv",
+  "personsv",
+  "rem",
+  "mrem",
+  "manrem"
+ ],
+ "commodities": [
+  "ree_oxide",
+  "copper",
+  "aluminium",
+  "steel",
+  "cement",
+  "aggregate",
+  "glass",
+  "glass_fibre",
+  "silicon_mg",
+  "silver",
+  "tellurium",
+  "cadmium",
+  "indium",
+  "gallium",
+  "selenium",
+  "zinc",
+  "lead",
+  "tin",
+  "nickel",
+  "chromium",
+  "molybdenum",
+  "zirconium",
+  "other_commodity"
+ ],
+ "products": {
+  "oil_gas": [
+   "oil",
+   "gas",
+   "ngl",
+   "bitumen"
+  ],
+  "commodity": [
+   "ree_oxide",
+   "copper",
+   "aluminium",
+   "steel",
+   "cement",
+   "aggregate",
+   "glass",
+   "glass_fibre",
+   "silicon_mg",
+   "silver",
+   "tellurium",
+   "cadmium",
+   "indium",
+   "gallium",
+   "selenium",
+   "zinc",
+   "lead",
+   "tin",
+   "nickel",
+   "chromium",
+   "molybdenum",
+   "zirconium",
+   "other_commodity"
+  ]
+ },
+ "product_rules": {
+  "_doc": "Which product vocabulary a master row may use: by stream for oil_gas; by stage for commodity rows. Rows matching no rule must leave product empty.",
+  "by_stream": {
+   "oil_gas": "oil_gas"
+  },
+  "by_stage": {
+   "commodity_supply": "commodity",
+   "end_of_life": "commodity",
+   "construction": "commodity",
+   "construction_decom": "commodity"
+  }
+ },
+ "commodity_components": [
+  "own_residue",
+  "embedded_fuel"
+ ],
+ "routes": [
+  "air_stack",
+  "air_ventilation",
+  "air_process_vent",
+  "air_vented_gas",
+  "air_delivered_gas",
+  "air_dust",
+  "air_other",
+  "water_liquid_effluent",
+  "water_mine_drainage",
+  "water_produced_discharge",
+  "water_spill",
+  "water_other",
+  "sea_disposal_package"
+ ],
+ "residue_tiers": [
+  "impounded",
+  "reisolated",
+  "dispersed"
+ ],
+ "allocation_rule_tokens": [
+  "none",
+  "alloc:value",
+  "alloc:mass",
+  "alloc:main",
+  "alloc:radio",
+  "elec_share",
+  "civil:doc",
+  "civil:pre1965",
+  "civil:ratio",
+  "civil:throughput"
+ ],
+ "civil_rule_stages": [
+  "u_mining_conv",
+  "u_mining_isl",
+  "u_milling",
+  "reprocessing"
+ ],
+ "routine_transfers": {
+  "sea_disposal": {
+   "from": "sealed_fuel_cycle",
+   "to": "liberated"
+  },
+  "reprocessing": {
+   "from": "sealed_fuel_cycle",
+   "to": "liberated"
+  }
+ },
+ "opening_stock_year": 1950,
+ "dose_tokens": [
+  "dose",
+  "doses",
+  "sievert",
+  "sieverts",
+  "sv",
+  "msv",
+  "usv",
+  "µsv",
+  "μsv",
+  "nsv",
+  "mansv",
+  "personsv",
+  "rem",
+  "mrem",
+  "manrem"
+ ],
+ "value_checked_columns": [
+  "series",
+  "unit",
+  "name",
+  "description",
+  "quantity_class"
+ ],
+ "derived": {
+  "views": [
+   "industry",
+   "lifecycle"
+  ],
+  "runs": [
+   "with_accidents",
+   "without_accidents"
+  ],
+  "conventions": [
+   "group",
+   "head"
+  ],
+  "horizons_a": [
+   100,
+   500,
+   10000
+  ],
+  "tier_rollup": {
+   "sealed_in_core": "sealed",
+   "sealed_fuel_cycle": "sealed",
+   "sealed_damaged_core": "sealed",
+   "impounded": "impounded",
+   "reisolated": "impounded",
+   "dispersed": "dispersed",
+   "liberated": "liberated",
+   "memo_earth_moved": null
+  },
+  "stage_phase": {
+   "u_mining_conv": "operating",
+   "u_mining_isl": "operating",
+   "u_milling": "operating",
+   "conv_enrich_fab": "operating",
+   "reactor_operation": "operating",
+   "spent_fuel": "operating",
+   "reprocessing": "operating",
+   "sea_disposal": "operating",
+   "construction_decom": "construction_decom",
+   "accident": "event",
+   "coal_mining": "operating",
+   "combustion_power": "operating",
+   "combustion_nonpower": "operating",
+   "construction": "construction",
+   "drilling": "operating",
+   "production": "operating",
+   "oil_sands_mining": "operating",
+   "processing_transport": "operating",
+   "abandonment_scrap": "end_of_life",
+   "commodity_supply": "construction",
+   "end_of_life": "end_of_life",
+   "geothermal": "operating",
+   "biomass_peat": "operating",
+   "hydro": "operating"
+  }
+ },
+ "source_url_required_access": [
+  "paywalled",
+  "inaccessible"
+ ],
+ "banned_citation_terms": [
+  "grokipedia",
+  "wikipedia"
  ]
 }

@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "radiopassive/schema/activity.json",
+  "title": "Radiopassive activity-series row",
+  "description": "One row of data/activity/*.csv (SCHEMA.md §4.6). Years before 1950 are allowed, for the opening-stock estimate (PD8).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "series",
+    "year",
+    "country",
+    "value_low",
+    "value_central",
+    "value_high",
+    "unit",
+    "below_detection",
+    "basis",
+    "source_ids",
+    "notes"
+  ],
+  "properties": {
+    "series": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "year": {
+      "type": "integer",
+      "minimum": 1800,
+      "maximum": 2025
+    },
+    "country": {
+      "type": "string",
+      "minLength": 1
+    },
+    "value_low": {
+      "type": "number",
+      "minimum": 0
+    },
+    "value_central": {
+      "type": "number",
+      "minimum": 0
+    },
+    "value_high": {
+      "type": "number",
+      "minimum": 0
+    },
+    "unit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "below_detection": {
+      "type": "boolean"
+    },
+    "basis": {
+      "enum": [
+        "measured",
+        "compiled",
+        "modelled",
+        "interpolated",
+        "extrapolated"
+      ]
+    },
+    "source_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "below_detection": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "value_low": {
+            "const": 0
+          }
+        }
+      }
+    }
+  ]
+}

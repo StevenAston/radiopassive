@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "radiopassive/schema/reference_bands.json",
+  "title": "Radiopassive reference uncertainty band row",
+  "description": "One row of data/reference/reference_bands.csv (SCHEMA.md §4.11): relative inter-evaluation uncertainty bands for nuclide data (D27).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "band_id",
+    "quantity_class",
+    "applies_to",
+    "rel_low",
+    "rel_high",
+    "basis",
+    "source_ids",
+    "notes"
+  ],
+  "properties": {
+    "band_id": {
+      "type": "string",
+      "pattern": "^RB[0-9]{2}$"
+    },
+    "quantity_class": {
+      "enum": [
+        "half_life",
+        "e_alpha",
+        "e_beta",
+        "e_beta_forbidden",
+        "e_photon",
+        "e_photon_low",
+        "e_electron",
+        "e_electron_low",
+        "e_total_alpha_dominated",
+        "e_total_other",
+        "group_e_chain",
+        "group_e_k40",
+        "group_e_artificial"
+      ]
+    },
+    "applies_to": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "rel_low": {
+      "type": "number",
+      "maximum": 0,
+      "minimum": -1
+    },
+    "rel_high": {
+      "type": "number",
+      "minimum": 0
+    },
+    "basis": {
+      "enum": [
+        "measured",
+        "compiled",
+        "modelled",
+        "interpolated",
+        "extrapolated"
+      ]
+    },
+    "source_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

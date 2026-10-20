@@ -1,0 +1,269 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "radiopassive/schema/commodity_factors.json",
+  "title": "Radiopassive commodity footprint row",
+  "description": "One row of data/reference/commodity_factors.csv (SCHEMA.md §4.7): activity per tonne of refined commodity.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "commodity",
+    "component",
+    "group",
+    "tier",
+    "route",
+    "residue_type",
+    "region",
+    "year_from",
+    "year_to",
+    "allocation_variant",
+    "allocation_rule",
+    "value_low",
+    "value_central",
+    "value_high",
+    "unit",
+    "below_detection",
+    "basis",
+    "source_ids",
+    "notes"
+  ],
+  "properties": {
+    "commodity": {
+      "enum": [
+        "ree_oxide",
+        "copper",
+        "aluminium",
+        "steel",
+        "cement",
+        "aggregate",
+        "glass",
+        "glass_fibre",
+        "silicon_mg",
+        "silver",
+        "tellurium",
+        "cadmium",
+        "indium",
+        "gallium",
+        "selenium",
+        "zinc",
+        "lead",
+        "tin",
+        "nickel",
+        "chromium",
+        "molybdenum",
+        "zirconium",
+        "other_commodity"
+      ]
+    },
+    "component": {
+      "enum": [
+        "own_residue",
+        "embedded_fuel"
+      ]
+    },
+    "group": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tier": {
+      "enum": [
+        "impounded",
+        "reisolated",
+        "dispersed",
+        "liberated",
+        "memo_earth_moved"
+      ]
+    },
+    "route": {
+      "enum": [
+        null,
+        "air_stack",
+        "air_ventilation",
+        "air_process_vent",
+        "air_vented_gas",
+        "air_delivered_gas",
+        "air_dust",
+        "air_other",
+        "water_liquid_effluent",
+        "water_mine_drainage",
+        "water_produced_discharge",
+        "water_spill",
+        "water_other",
+        "sea_disposal_package"
+      ]
+    },
+    "residue_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "region": {
+      "type": "string",
+      "minLength": 1
+    },
+    "year_from": {
+      "type": "integer",
+      "minimum": 1800,
+      "maximum": 2100
+    },
+    "year_to": {
+      "type": "integer",
+      "minimum": 1800,
+      "maximum": 2100
+    },
+    "allocation_variant": {
+      "enum": [
+        "default",
+        "bound_main",
+        "bound_radio"
+      ]
+    },
+    "allocation_rule": {
+      "type": "string",
+      "pattern": "^(none|alloc:value|alloc:mass|alloc:main|alloc:radio|elec_share|civil:doc|civil:pre1965|civil:ratio|civil:throughput)(;(none|alloc:value|alloc:mass|alloc:main|alloc:radio|elec_share|civil:doc|civil:pre1965|civil:ratio|civil:throughput))*$"
+    },
+    "value_low": {
+      "type": "number",
+      "minimum": 0
+    },
+    "value_central": {
+      "type": "number",
+      "minimum": 0
+    },
+    "value_high": {
+      "type": "number",
+      "minimum": 0
+    },
+    "unit": {
+      "const": "Bq/t"
+    },
+    "below_detection": {
+      "type": "boolean"
+    },
+    "basis": {
+      "enum": [
+        "measured",
+        "compiled",
+        "modelled",
+        "interpolated",
+        "extrapolated"
+      ]
+    },
+    "source_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "tier": {
+            "enum": [
+              "impounded",
+              "reisolated",
+              "dispersed"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "residue_type": {
+            "type": "string"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "residue_type": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tier": {
+            "const": "liberated"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "route": {
+            "type": "string"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "route": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "below_detection": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "value_low": {
+            "const": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "allocation_variant": {
+            "const": "bound_main"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "allocation_rule": {
+            "pattern": "(^|;)alloc:main(;|$)"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "allocation_variant": {
+            "const": "bound_radio"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "allocation_rule": {
+            "pattern": "(^|;)alloc:radio(;|$)"
+          }
+        }
+      }
+    }
+  ]
+}

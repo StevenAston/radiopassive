@@ -1,0 +1,180 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "radiopassive/schema/factors.json",
+  "title": "Radiopassive factor registry row",
+  "description": "One row of data/factors/*.csv (SCHEMA.md §4.9): a factor that master rows cite through factor_ids.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "factor_id",
+    "description",
+    "stream",
+    "stage",
+    "driver_series",
+    "group",
+    "tier",
+    "route",
+    "residue_type",
+    "region",
+    "year_from",
+    "year_to",
+    "value_low",
+    "value_central",
+    "value_high",
+    "unit",
+    "below_detection",
+    "basis",
+    "source_ids",
+    "notes"
+  ],
+  "properties": {
+    "factor_id": {
+      "type": "string",
+      "pattern": "^[a-z_]+:[0-9]{4}$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 5
+    },
+    "stream": {
+      "enum": [
+        "nuclear",
+        "coal",
+        "oil_gas",
+        "wind_solar",
+        "other"
+      ]
+    },
+    "stage": {
+      "type": "string",
+      "minLength": 1
+    },
+    "driver_series": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "group": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "tier": {
+      "enum": [
+        null,
+        "sealed_in_core",
+        "sealed_fuel_cycle",
+        "sealed_damaged_core",
+        "impounded",
+        "reisolated",
+        "dispersed",
+        "liberated",
+        "memo_earth_moved"
+      ]
+    },
+    "route": {
+      "enum": [
+        null,
+        "air_stack",
+        "air_ventilation",
+        "air_process_vent",
+        "air_vented_gas",
+        "air_delivered_gas",
+        "air_dust",
+        "air_other",
+        "water_liquid_effluent",
+        "water_mine_drainage",
+        "water_produced_discharge",
+        "water_spill",
+        "water_other",
+        "sea_disposal_package"
+      ]
+    },
+    "residue_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "region": {
+      "type": "string",
+      "minLength": 1
+    },
+    "year_from": {
+      "type": "integer",
+      "minimum": 1800,
+      "maximum": 2100
+    },
+    "year_to": {
+      "type": "integer",
+      "minimum": 1800,
+      "maximum": 2100
+    },
+    "value_low": {
+      "type": "number",
+      "minimum": 0
+    },
+    "value_central": {
+      "type": "number",
+      "minimum": 0
+    },
+    "value_high": {
+      "type": "number",
+      "minimum": 0
+    },
+    "unit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "below_detection": {
+      "type": "boolean"
+    },
+    "basis": {
+      "enum": [
+        "measured",
+        "compiled",
+        "modelled",
+        "interpolated",
+        "extrapolated"
+      ]
+    },
+    "source_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "below_detection": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "value_low": {
+            "const": 0
+          }
+        }
+      }
+    }
+  ]
+}
