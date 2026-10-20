@@ -84,15 +84,21 @@ The work runs in seven phases:
 
 ## Open Questions
 
-| # | Question | Proposed default |
+None outstanding. OQ1–OQ7 were resolved on 2026-10-20 (the proposed defaults were accepted) and are now decisions:
+
+| ID | Was | Decision |
 |---|---|---|
-| OQ1 | Timeline start year: 1950 for all streams, or each stream from its own start (nuclear civil from 1954/1956)? | **1950 for all**, with nuclear naturally near zero before ~1956. |
-| OQ2 | Are accidents shown by default, or behind a toggle? (Chernobyl's activity will dominate nuclear's Liberated series in 1986.) | **Shown by default**, with an "exclude accidents" toggle. |
-| OQ3 | Civil/military split for early uranium mining and dual-use sites (e.g. Sellafield/Windscale, Marcoule). | Allocate by documented end use; where none is documented, treat all uranium mined before 1965 as military. Settle in Task 0.1. |
-| OQ4 | Which tier does deep-well injection of produced water go in? It puts radium back underground. | Proposed new label **"Re-isolated"** within Impounded; settle in Task 0.1. |
-| OQ5 | Uncertainty method: simple low/central/high bounds, or Monte Carlo with log-normal factors? | **Bounds for v1**; Monte Carlo considered if bounds prove too crude. |
-| OQ6 | Hosting beyond the Artifact (e.g. GitHub repo, Vercel/Netlify site)? | **Artifact only for v1**; revisit at publish. |
-| OQ7 | Should the page offer a downloadable dataset (CSV), subject to source licences? | **Yes**, for sources that permit redistribution. |
+| D14 | OQ1 | **Timeline starts 1950 for every stream**; nuclear reads near zero until ~1956. |
+| D15 | OQ2 | **Accidents shown by default**, with an "exclude accidents" toggle. |
+| D16 | OQ3 | **Civil/military split by documented end use**; where none is documented, uranium mined before 1965 counts as military. Operational rule in METHODS.md. |
+| D17 | OQ4 | **Deep-well injection is "Re-isolated"**, a sub-tier of Impounded. |
+| D18 | OQ5 | **Uncertainty as low/central/high bounds for v1**; Monte Carlo only if bounds prove too crude. |
+| D19 | OQ6 | **Hosting: Artifact only for v1**; revisit at publish. |
+| D20 | OQ7 | **Downloadable CSV on the page**, for sources whose licences permit redistribution. |
+
+Further decisions D21–D26 (from the methods spec) are recorded in `docs/DECISIONS.md`.
+
+Additions accepted with the plan: cosmogenic H-3 and C-14 as a baseline (D11); a factor-of-3 tolerance for the UNSCEAR check (Task 3.5); a findings review before design (Task 4.2).
 
 ---
 
@@ -198,7 +204,7 @@ Process stages to cover (from METHODS.md; indicative):
 - **Nuclear:** mining and milling (tailings inventory, radon); conversion and enrichment; fuel fabrication; reactor effluents by reactor type (PWR, BWR, PHWR/CANDU, GCR, RBMK); reprocessing; spent fuel and high-level waste (Sealed); civil accidents.
 - **Coal:** mining (radon, mine water); combustion stack emissions by control-technology era; ash and FGD gypsum inventory (Impounded / Dispersed via utilisation).
 - **Oil and gas:** produced water by disposal route (injection, surface discharge, road spreading); scale and sludge; gas processing (Rn-222, Pb-210, Po-210); radon in delivered gas; conventional and unconventional separately.
-- **Wind and solar materials:** material intensity per MW by technology (c-Si, CdTe, CIGS; geared and direct-drive wind) mapped to commodity supply chains (REE, Cu, Al/bauxite, Fe + coking coal, Ag, metallurgical Si via coal/coke, Te, In, glass, concrete); radioactivity per tonne of each commodity; D6 allocation with bounds.
+- **Wind and solar materials:** material intensity per MW by technology (c-Si, CdTe, CIGS; geared and direct-drive wind) mapped to commodity supply chains (REE, Cu, Al/bauxite, Fe + coking coal, Ag, metallurgical Si via coal/coke, Te, In, glass, concrete); radioactivity per tonne of each commodity; D6 allocation with bounds. Embedded-fuel contributions (coking coal, coal/coke for metallurgical Si, coal-fired smelting power) are counted in ④ **in the electricity lifecycle view only**; in the industry view they are already inside ② and ③ (D22).
 - **Other energy:** geothermal (non-condensable gas Rn-222, scale); biomass and peat (K-40, re-released fallout Cs-137); hydro (shown as negligible, with the basis stated).
 
 | Field | Detail |

@@ -1,6 +1,6 @@
 # Radiopassive — Methods Specification (v1, Energy Edition)
 
-> **Status:** DRAFT for sign-off (Task 0.1). Sections marked **PROPOSED** introduce rules beyond the confirmed plan and need Steve's approval.
+> **Status:** SIGNED OFF by Steve, 2026-10-20 (Task 0.1). All proposals PD1–PD6 approved; they are now decisions D21–D26.
 > **Governs:** every dataset, script and chart in this project. If anything here conflicts with `PLAN.md`, the plan wins until this document is updated.
 
 ---
@@ -80,7 +80,7 @@ Non-energy sources (phosphate, mineral sands, metals for non-energy uses) are **
 
 The becquerel is already a rate (1 Bq = 1 decay·s⁻¹). A flow is therefore "becquerels added per year", and a stock is "how fast the accumulated material is decaying right now".
 
-### 3.2 Counting convention — all decays counted (**PROPOSED, PD4**)
+### 3.2 Counting convention — all decays counted (D24)
 
 Activity is reported as the **total decays per second of every member of a nuclide group**, at the equilibrium assumed for that group (§4). For example, 1 Bq of U-238 in full secular equilibrium with its daughters is reported as 14 Bq of U-238 series activity, because 14 decays (8 α, 6 β) happen for each U-238 decay.
 
@@ -185,7 +185,7 @@ For spent-fuel **inventory**, a reduced set is used that together accounts for �
 - **Seepage** from impoundments is a Liberated flow paired with an equal subtraction from Impounded.
 - Once liberated, material **stays in the Liberated stock and decays there**. Dispersal reduces concentration, not activity.
 
-### 5.3 Moved earth vs processed residue (**PROPOSED, PD1**)
+### 5.3 Moved earth vs processed residue (D21)
 
 Mining moves enormous masses of rock. To keep the accounting meaningful:
 
@@ -206,7 +206,7 @@ Mining moves enormous masses of rock. To keep the accounting meaningful:
 
 ## 6. System boundary and stage map (D5)
 
-### 6.1 Two accounting views (**PROPOSED, PD2**)
+### 6.1 Two accounting views (D22)
 
 A single stacked total cannot be both "what each industry did" and "what each kind of electricity costs", because some flows sit in both places (e.g. coking coal for wind-tower steel is part of the coal industry *and* of wind's supply chain). Two views are therefore defined; **totals are only stacked within one view**.
 
@@ -217,7 +217,7 @@ A single stacked total cannot be both "what each industry did" and "what each ki
 
 In the industry view, streams ② and ③ cover the **whole industry** (as originally asked: "mining and burning coal"; "oil and gas wells"), not only fuel for power.
 
-*If PD2 is approved,* the stage list in `PLAN.md` Task 2.4 (which names "Fe + coking coal" and "metallurgical Si via coal/coke" inside ④) will be amended to say that those embedded-fuel contributions sit in ④ **in the lifecycle view only**.
+Following D22, `PLAN.md` Task 2.4 has been amended: embedded-fuel contributions (coking coal, metallurgical Si via coal/coke) sit in ④ **in the lifecycle view only**.
 
 ### 6.2 Construction materials — shared commodity footprint table
 
@@ -285,12 +285,12 @@ with $\bar{E}_k$ in joules. The calculation is reproduced by hand for H-3, `Cs13
 
 $$\text{intensity}_t(y)=\frac{F_t(y)}{E_t(y)}\quad[\mathrm{Bq\,TWh^{-1}}]$$
 
-- **Chronic flows from earlier residues — committed and attributed back (PROPOSED, PD5):** some flows in year $y$ come from residues created decades earlier, such as radon from tailings or ash ponds. If they were divided by year $y$'s generation, a retired fleet would read `n/a` while its legacy radon continued. Instead, for the per-TWh view, each residue created in year $y'$ is charged with the chronic flow it will emit over a fixed horizon $H$ (computed by the decay engine), and that is divided by the generation $E_t(y')$ that created it:
+- **Chronic flows from earlier residues — committed and attributed back (D25):** some flows in year $y$ come from residues created decades earlier, such as radon from tailings or ash ponds. If they were divided by year $y$'s generation, a retired fleet would read `n/a` while its legacy radon continued. Instead, for the per-TWh view, each residue created in year $y'$ is charged with the chronic flow it will emit over a fixed horizon $H$ (computed by the decay engine), and that is divided by the generation $E_t(y')$ that created it:
 
 $$\text{intensity}_{\mathrm{chronic},t}(y')=\frac{1}{E_t(y')}\int_{y'}^{y'+H}F_{\mathrm{chronic}}(\tau\,|\,\text{residue of }y')\,d\tau$$
 
   The default horizon is $H=100$ a, with 500 a and 10 000 a kept in the data. The absolute charts are unaffected: they show the chronic flows in the year they actually occur.
-- **Construction-phase flows — levelised (PROPOSED, PD3):** releases from building capacity in year $y$ are divided by the **expected lifetime generation** of that capacity, not by year $y$'s generation:
+- **Construction-phase flows — levelised (D23):** releases from building capacity in year $y$ are divided by the **expected lifetime generation** of that capacity, not by year $y$'s generation:
 
 $$\text{intensity}_{\mathrm{constr}}(y)=\frac{F_{\mathrm{constr}}(y)}{C(y)\,\mathrm{CF}\,L\times 8.766\ \mathrm{TWh\,GW^{-1}a^{-1}}}$$
 
@@ -465,7 +465,7 @@ Collective dose is calculated **for the 2010 reference year only**, in the lifec
 
 ---
 
-## 16. Proposed decisions needing sign-off
+## 16. Proposed decisions (approved 2026-10-20 as D21–D26)
 
 | ID | Section | Proposal |
 |---|---|---|
@@ -483,4 +483,5 @@ Collective dose is calculated **for the 2010 reference year only**, in the lifec
 | Date | Change |
 |---|---|
 | 2026-10-20 | First draft (Task 0.1). |
+| 2026-10-20 | Signed off; PD1–PD6 became D21–D26. |
 | 2026-10-20 | Revised after independent verification. Fixed the Rn220+ multiplier (5); rewrote the civil/military rule as a per-country-year rule order; added in-core inventory (§5.4) and the full accident-toggle mechanics. Also: per-nuclide NORM threshold; difference from the regulatory "+" convention; extra stages (non-power coal, sea disposal, tailings as fill, refining and pipeline scale, scrapping, oil sands, end of life); no-double-count rules; radon branching via $\varepsilon$; zero-bound and asymmetric uncertainty handling; Kr-85/H-3/C-14 persistence; per-TWh basic formula; country codes; rationale table; added PD5 and PD6. |

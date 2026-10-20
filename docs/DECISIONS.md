@@ -24,14 +24,11 @@ Each decision records what was decided, when, and where it is made operational. 
 | D18 | 2026-10-20 | Uncertainty as bounds for v1; Monte Carlo only if needed. | METHODS §11.1 |
 | D19 | 2026-10-20 | Hosting: Artifact only for v1. | PLAN |
 | D20 | 2026-10-20 | Downloadable CSV where licences permit. | PLAN, Task 5.4 |
+| D21 | 2026-10-20 | (was PD1) Processing residues counted; overburden/waste rock as memo series unless any U/Th-chain nuclide > 1 Bq/g or K-40 > 10 Bq/g. | METHODS §5.3 |
+| D22 | 2026-10-20 | (was PD2) Industry view (default, absolute) and electricity lifecycle view (per-TWh, UNSCEAR check); stacked totals only within one view. | METHODS §6.1 |
+| D23 | 2026-10-20 | (was PD3) Construction-phase releases levelised over expected lifetime generation for per-TWh; annual ratio kept as secondary. | METHODS §8 |
+| D24 | 2026-10-20 | (was PD4) Count all decays in each nuclide group; head-only activity kept as an alternative. | METHODS §3.2 |
+| D25 | 2026-10-20 | (was PD5) Per-TWh chronic residue flows committed over 100 a (500 a, 10 000 a kept) and charged to the creating generation; stocks not normalised per TWh. | METHODS §8 |
+| D26 | 2026-10-20 | (was PD6) Oil and gas sub-streams: conventional, unconventional, oil sands / extra-heavy oil. | METHODS §2.3 |
 
-## Proposed — awaiting sign-off
-
-| ID | Proposal | Section |
-|---|---|---|
-| PD1 | Processing residues counted; overburden/waste rock as memo unless above GSR Part 3 NORM thresholds. | METHODS §5.3 |
-| PD2 | Industry view and electricity lifecycle view; stacked totals only within one view. | METHODS §6.1 |
-| PD3 | Levelised per-TWh for construction-phase releases. | METHODS §8 |
-| PD4 | Count all decays in each nuclide group (head-only kept as alternative). | METHODS §3.2 |
-| PD5 | Per-TWh: chronic residue flows charged to the generation that created them over a 100-year horizon; stocks not normalised per TWh. | METHODS §8 |
-| PD6 | Oil and gas sub-streams: conventional, unconventional (fractured shale/tight + CBM), oil sands / extra-heavy oil. | METHODS §2.3 |
+No proposals outstanding. Task 0.1 signed off by Steve, 2026-10-20.
