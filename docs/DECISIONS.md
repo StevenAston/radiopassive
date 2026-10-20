@@ -34,4 +34,11 @@ Each decision records what was decided, when, and where it is made operational. 
 | D28 | 2026-10-20 | Radiopassive is non-commercial; ICRP 107 data used under ICRP's educational/research/not-for-profit terms. Revisit if the project ever becomes commercial. Reference tables derived from ICRP data are not offered in the page's CSV download. | sources S9001–S9003 |
 | D29 | 2026-10-20 | Environment: pixi (Steve's `pixi.toml`), platforms `win-64` + `linux-64`, Python 3.15; Claude's Linux environment is detached outside the project folder. | pixi.toml |
 
-No proposals outstanding. Task 0.1 signed off by Steve, 2026-10-20. Task 0.3 passes its amended done condition (D27) after independent verification; awaiting Steve's sign-off.
+## Proposed — awaiting sign-off
+
+| ID | Proposal | Section |
+|---|---|---|
+| PD7 | Decommissioning releases levelised like construction: over the plant's actual lifetime generation (or expected, if not yet retired). | METHODS §8, §16 |
+| PD8 | Opening stock at 1 January 1950 for residues created before 1950, estimated from pre-1950 production, flagged `modelled`, shown as a distinct band. | METHODS §2.1, §16 |
+
+Previously: Task 0.1 signed off by Steve, 2026-10-20. Task 0.3 passes its amended done condition (D27) after independent verification; awaiting Steve's sign-off.

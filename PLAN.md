@@ -233,10 +233,10 @@ Process stages to cover (from METHODS.md; indicative):
 
 | Field | Detail |
 |---|---|
-| Description | Merge all stream datasets, events and baselines into one validated table. |
+| Description | Merge all stream datasets into one validated master table; events and baselines are validated alongside it and exported separately (baselines are not master rows; SCHEMA §4.5). *(Amended 2026-10-20 after the schema review.)* |
 | Input | Tasks 2.1–2.5, 1.7, 1.8. |
 | Output / Effect | `build/master.csv`. |
-| Done condition | Passes `validate.py`; units harmonised to Bq; no duplicate keys; the sum of per-stream totals equals the master total for every year (exact). |
+| Done condition | `build/master.csv` passes `validate.py` together with every reference and support table; units harmonised to Bq; no duplicate keys; the sum of per-stream totals equals the master total for every year (exact). |
 | Verification | Automated checks in `pipeline/tests/`. |
 
 #### Task 3.2: Decay and ingrowth engine
