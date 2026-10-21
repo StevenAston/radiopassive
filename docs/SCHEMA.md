@@ -1,6 +1,6 @@
 # Radiopassive — Data Schema (v2)
 
-> **Status:** Task 0.2, revision v2.1 (re-review fixes) of v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
+> **Status:** SIGNED OFF by Steve, 2026-10-20. Task 0.2, revision v2.1 (re-review fixes) of v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
 
 ---
 
