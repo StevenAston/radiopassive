@@ -474,7 +474,7 @@ All baselines are given in both Bq and W wherever meaningful, with the derivatio
 
 ## 14. Internal dose check (D1; Task 3.5)
 
-Collective dose is calculated **for the 2010 reference year only**, in the lifecycle view, using UNSCEAR 2016 Annex A's own release-to-dose methodology, to check that our release estimates are of the right size. Tolerance: each stream within a factor of 3 of UNSCEAR's value, or the gap explained here. **No dose quantity is exported to the page data**; an automated check enforces this.
+Collective dose is calculated **for the 2010 reference year only**, in the lifecycle view, using UNSCEAR's own release-to-dose (2016 Annex A methodology, applied as in the 2016 Annex B electricity assessment) methodology, to check that our release estimates are of the right size. Tolerance: each stream within a factor of 3 of UNSCEAR's value, or the gap explained here. **No dose quantity is exported to the page data**; an automated check enforces this.
 
 ---
 

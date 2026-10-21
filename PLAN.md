@@ -69,7 +69,7 @@ The work runs in seven phases:
 ## Inputs & Resources
 
 - **Design:** Neobrutalism design system — https://claude.ai/artifact/P9xxwLW1LjV8APXFw8Hb6u (DM Sans; `chart-1`…`chart-5`; `border`/`shadow` signature; dark mode via `.dark`; 62 live React 19 components; 40 star shapes).
-- **Anchor/validation:** UNSCEAR 2016 Report, Annex A (public exposure from electricity generation, 2010 reference year), plus the earlier UNSCEAR fuel-cycle and natural-source annexes (1982, 1988, 1993, 2000, 2008).
+- **Anchor/validation:** UNSCEAR 2016 Report, Annex B (exposure of the public and workers from electricity generation, 2010 reference year), with Annex A's release-to-dose methodology for the internal check, plus the earlier UNSCEAR fuel-cycle and natural-source annexes (1982, 1988, 1993, 2000, 2008).
 - **Nuclear:** IAEA DIRATA; EU RADD; US NRC annual effluent reports; CNSC (CANDU tritium); OSPAR (Sellafield, La Hague); OECD-NEA/IAEA *Uranium* "Red Book"; WNA; IAEA PRIS (reactor fleet).
 - **Coal:** USGS COALQUAL; UNSCEAR coal annexes; published U/Th-in-coal literature (e.g. Finkelman); fly-ash production and use statistics (ACAA and international equivalents); Energy Institute Statistical Review.
 - **Oil and gas:** USGS National Produced Waters Geochemical Database; IAEA Safety Reports Series No. 34 (NORM in oil and gas); Pennsylvania DEP 2016 TENORM study; produced-water volume studies (e.g. Veil); EIA/EI production data.
@@ -111,7 +111,7 @@ Additions accepted with the plan: cosmogenic H-3 and C-14 as a baseline (D11); a
 | Field | Detail |
 |---|---|
 | Description | Write the full methodology, extending D1–D13 into operational rules. |
-| Input | This plan; UNSCEAR 2016 Annex A; ISO 14044 allocation guidance; open questions OQ1–OQ5. |
+| Input | This plan; UNSCEAR 2016 Annex B; ISO 14044 allocation guidance; open questions OQ1–OQ5. |
 | Output / Effect | `docs/METHODS.md`, `docs/DECISIONS.md`. |
 | Done condition | (a) Every decision D1–D13 has an operational rule and a rationale; (b) each stream lists its process stages and candidate nuclides; (c) tier assignment rules cover every process stage, including OQ4; (d) the civil/military rule (OQ3) and the accident rule are stated; (e) the decay, power and normalisation formulas are written in LaTeX; (f) OQ1–OQ5 are resolved and recorded; (g) the user has signed off. |
 | Verification | `verifier` checks completeness against (a)–(f); user sign-off for (g). |
@@ -144,7 +144,7 @@ Additions accepted with the plan: cosmogenic H-3 and C-14 as a baseline (D11); a
 
 | Field | Detail |
 |---|---|
-| Description | Read UNSCEAR 2016 Annex A (and the earlier fuel-cycle annexes); extract normalised release factors per stream and period, and find out what drives the solar/wind occupational-dose finding. |
+| Description | Read UNSCEAR 2016 Annex B (and the earlier fuel-cycle annexes); extract normalised release factors per stream and period, and find out what drives the solar/wind occupational-dose finding. |
 | Input | UNSCEAR reports. |
 | Output / Effect | `research/unscear_extraction.csv` + `research/unscear_notes.md`. |
 | Done condition | Release factors for every stream UNSCEAR covers, each with a page reference; a direct quote or table reference answering what drives the high solar/wind worker dose (rare earths vs total earth moved by low-grade ore mining); the 2010 reference values recorded for later validation (Task 3.5). |
