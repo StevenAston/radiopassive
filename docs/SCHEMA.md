@@ -1,6 +1,6 @@
 # Radiopassive — Data Schema (v2)
 
-> **Status:** Task 0.2, revision v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
+> **Status:** Task 0.2, revision v2.1 (re-review fixes) of v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
 
 ---
 
@@ -78,7 +78,7 @@ One row = one quantity of one nuclide group, in one tier, from one stage (and pr
 
 A transfer is a pair of rows, `transfer_out` from a source tier and `transfer_in` to a destination tier, that must balance.
 - **Event transfers** carry an `event_id`. The `transfer_out` tier must be the event's `from_tier`, and every `transfer_in` tier must be one of the event's `to_tiers`.
-- **Routine transfers** have no `event_id` and are allowed only at the stages in `vocab.json` → `routine_transfers` (`sea_disposal`, `reprocessing`: `sealed_fuel_cycle` → `liberated`).
+- **Routine transfers** have no `event_id` and are allowed only at the stages in `vocab.json` → `routine_transfers` (`sea_disposal`, `reprocessing`, `conv_enrich_fab`: `sealed_fuel_cycle` → `liberated`). At these stages a Liberated row must be a routine transfer, never a `flow` (`V15`).
 - **Balance key:** (`event_id`, `year`, `group`, `allocation_variant`) for event transfers; (`stage`, `country`, `year`, `group`, `allocation_variant`) for routine transfers.
 
 ### 3.2 What is never a data row
@@ -87,7 +87,7 @@ The decay engine generates these from parameters, so data rows for them would do
 - **chronic radon and thoron exhalation** from Impounded and Dispersed residues, from ε in `residue_types.csv`;
 - **seepage** from impoundments, from the seepage fraction in `residue_types.csv`.
 
-They are kept out by construction: every Liberated row must name a `route` (§5.7), and no route exists for exhalation from residues or for seepage. Radon released by an operating process (mine ventilation, vented and delivered gas, stack) is entered under its route.
+They are kept out by **convention**, which the route list supports. Every Liberated row must name a `route` (§5.7). No route describes exhalation from residues or seepage, and there is no general "other" route. The accident routes may be used only on event `transfer_in` rows (`V14`). The validator cannot tell a mis-entered tailings-radon row filed under, say, `air_ventilation` from a genuine mine-vent release, so the convention is restated in the factor registry and checked in the Task 4.1 audit. Radon released by an operating process (mine ventilation, vented and delivered gas, stack) is entered under its route.
 
 **`opening_stock` (D31).** Residues created before 1950 enter as `opening_stock` rows: year 1950 only, any stock tier except `sealed_in_core` and `memo_earth_moved`, the activity present on 1 January 1950 after decay, usually `basis = modelled` from pre-1950 activity series (which `data/activity/` allows back to 1800). The decay engine starts each stock from these values.
 
@@ -310,7 +310,7 @@ Each parameter set (the three ε-Rn222 values, the three ε-Rn220 values, the th
 
 | Stream | Stages |
 |---|---|
-| `nuclear` | `u_mining_conv`, `u_mining_isl`, `u_milling`, `conv_enrich_fab`, `reactor_operation`, `spent_fuel`, `reprocessing`, `sea_disposal`, `construction_decom`, `accident` |
+| `nuclear` | `u_mining_conv`, `u_mining_isl`, `u_milling`, `conv_enrich_fab`, `reactor_operation`, `spent_fuel`, `reprocessing`, `sea_disposal`, `construction`, `decommissioning`, `accident` |
 | `coal` | `coal_mining`, `combustion_power`, `combustion_nonpower`, `construction` |
 | `oil_gas` | `drilling`, `production`, `oil_sands_mining`, `processing_transport`, `abandonment_scrap`, `construction` |
 | `wind_solar` | `commodity_supply`, `end_of_life` |
@@ -330,7 +330,7 @@ Allowed tiers per stage for non-transfer rows, as in METHODS §6.3 (`memo_earth_
 | `spent_fuel` | sealed_fuel_cycle |
 | `reprocessing` | sealed_fuel_cycle, liberated |
 | `sea_disposal` | sealed_fuel_cycle, liberated |
-| `construction_decom` | sealed_fuel_cycle, impounded, dispersed, liberated |
+| `decommissioning` | sealed_fuel_cycle, impounded, dispersed, liberated |
 | `accident` | sealed_in_core, sealed_damaged_core, liberated |
 | `coal_mining` | impounded, liberated, memo_earth_moved |
 | `combustion_power` | impounded, reisolated, dispersed, liberated |
@@ -357,7 +357,8 @@ Transfer rows follow §3.1 instead of this matrix.
 
 - **Precedence:** the commodity-stage rule is applied first, then the oil-and-gas rule. So an `oil_gas` row at `construction` takes a commodity (building materials), not an oil or gas product.
 - **Oil and gas** (`stream = oil_gas`, every stage except `construction`): `product` is **required**, one of `oil`, `gas`, `ngl`, `bitumen`. Residues shared between products are split by value (D6, `alloc:value`).
-- **Commodity stages** (`commodity_supply`, `end_of_life`, `construction`, `construction_decom`): `product` is **required**, one of `vocab.json` → `commodities`, except on rows in a Sealed tier (e.g. nuclear decommissioning waste), where it must be empty.
+- **Commodity stages** (`commodity_supply`, `end_of_life`, `construction`): `product` is **required**, one of `vocab.json` → `commodities`.
+- **`decommissioning`** (nuclear): `product` must be empty. Decommissioning waste and releases are not commodities.
 - **Every other row:** `product` must be empty.
 
 ### 5.6 Allocation-rule tokens
@@ -366,7 +367,7 @@ Transfer rows follow §3.1 instead of this matrix.
 
 ### 5.7 Release routes (Liberated rows only)
 
-`air_stack`, `air_ventilation`, `air_process_vent`, `air_vented_gas`, `air_delivered_gas`, `air_dust`, `air_other`, `water_liquid_effluent`, `water_mine_drainage`, `water_produced_discharge`, `water_spill`, `water_other`, `sea_disposal_package`. There is deliberately no route for exhalation from residues or for seepage (§3.2).
+`air_stack`, `air_ventilation`, `air_process_vent`, `air_vented_gas`, `air_delivered_gas`, `air_dust`, `water_liquid_effluent`, `water_mine_drainage`, `water_produced_discharge`, `water_spill`, `sea_disposal_package`; and, **for event `transfer_in` rows only**, `air_accident_release` and `water_accident_release` (`vocab.json` → `accident_routes`). There is deliberately no general "other" route, and none for exhalation from residues or for seepage (§3.2).
 
 ### 5.8 Other entries
 
@@ -439,6 +440,8 @@ One row may raise several codes. Each code is raised **only** for the condition 
 | `V11` | `product` breaks the product rules (§5.5): missing where required, present where not allowed, or not in the vocabulary that applies |
 | `V12` | `residue_type` not in `residue_types.csv` |
 | `V13` | A `factor_ids` entry not in the factor registry |
+| `V14` | An accident route (`vocab.accident_routes`) on a row that is not an event `transfer_in` |
+| `V15` | A `flow` row in `liberated` at a routine-transfer stage (`vocab.routine_transfers`); those discharges must be routine transfers out of Sealed |
 | `X01` | Duplicate unique key (§3) |
 | `X02` | Transfers do not balance for a balance key (§3.1; relative tolerance 10⁻⁶ for each of low/central/high). Reported once per key, with `row = None`, against the first file containing that key |
 | `X03` | Allocation completeness (§3.3 rule 3): a key has a non-default variant but not all three, **or** in a complete key the `default` row's rule lacks `alloc:value`/`alloc:mass`. Reported once per key, on the key's first row. (A bound row lacking its own token is `R02`, not `X03`) |
@@ -537,6 +540,7 @@ The vocabularies for these (`views`, `runs`, `conventions`, `horizons_a`, the ti
 
 | Date | Change |
 |---|---|
+| 2026-10-20 | **v2.1** from the schema re-review: nuclear `construction_decom` split into `construction` and `decommissioning` (no product on decommissioning); `conv_enrich_fab` added to routine transfers; `V15` bars Liberated flows at routine stages; catch-all routes `air_other`/`water_other` replaced by event-only accident routes (`V14`); §3.2 claim reworded. |
 | 2026-10-20 | First draft (Task 0.2). |
 | 2026-10-20 | Added `role` and `multiplier_scope` to groups.csv (from Task 0.3). |
 | 2026-10-20 | Added the validator contract (API, CLI, rule codes, coercion) and behaviour details from the spec-blind test ambiguities. |

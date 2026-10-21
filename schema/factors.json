@@ -85,13 +85,13 @@
         "air_vented_gas",
         "air_delivered_gas",
         "air_dust",
-        "air_other",
         "water_liquid_effluent",
         "water_mine_drainage",
         "water_produced_discharge",
         "water_spill",
-        "water_other",
-        "sea_disposal_package"
+        "sea_disposal_package",
+        "air_accident_release",
+        "water_accident_release"
       ]
     },
     "residue_type": {

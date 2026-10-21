@@ -895,6 +895,14 @@ def _check_master_row(ctx: _Context, mrow: _MasterRow) -> None:
     if unknown_factors:
         add("V13", f"unknown factor(s) {unknown_factors}")
 
+    route = rec.get("route")
+    if route in vocab.get("accident_routes", []) and not (
+            quantity == "transfer_in" and rec.get("event_id") is not None):
+        add("V14", f"accident route {route!r} allowed only on event transfer_in rows")
+
+    if quantity == "flow" and tier == "liberated" and stage in vocab.get("routine_transfers", {}):
+        add("V15", f"liberated flow at routine-transfer stage {stage!r}; record it as a routine transfer out of Sealed")
+
 
 def _check_product(ctx: _Context, mrow: _MasterRow) -> None:
     """V11: product rules (SCHEMA §5.5). Called only when stream and stage are valid."""

@@ -47,7 +47,8 @@
    "spent_fuel",
    "reprocessing",
    "sea_disposal",
-   "construction_decom",
+   "construction",
+   "decommissioning",
    "accident"
   ],
   "coal": [
@@ -124,12 +125,6 @@
    "sealed_fuel_cycle",
    "liberated"
   ],
-  "construction_decom": [
-   "sealed_fuel_cycle",
-   "impounded",
-   "dispersed",
-   "liberated"
-  ],
   "accident": [
    "sealed_in_core",
    "sealed_damaged_core",
@@ -200,6 +195,12 @@
    "liberated"
   ],
   "hydro": [
+   "liberated"
+  ],
+  "decommissioning": [
+   "sealed_fuel_cycle",
+   "impounded",
+   "dispersed",
    "liberated"
   ]
  },
@@ -351,8 +352,7 @@
   "by_stage": {
    "commodity_supply": "commodity",
    "end_of_life": "commodity",
-   "construction": "commodity",
-   "construction_decom": "commodity"
+   "construction": "commodity"
   }
  },
  "commodity_components": [
@@ -366,13 +366,13 @@
   "air_vented_gas",
   "air_delivered_gas",
   "air_dust",
-  "air_other",
   "water_liquid_effluent",
   "water_mine_drainage",
   "water_produced_discharge",
   "water_spill",
-  "water_other",
-  "sea_disposal_package"
+  "sea_disposal_package",
+  "air_accident_release",
+  "water_accident_release"
  ],
  "residue_tiers": [
   "impounded",
@@ -403,6 +403,10 @@
    "to": "liberated"
   },
   "reprocessing": {
+   "from": "sealed_fuel_cycle",
+   "to": "liberated"
+  },
+  "conv_enrich_fab": {
    "from": "sealed_fuel_cycle",
    "to": "liberated"
   }
@@ -469,7 +473,6 @@
    "spent_fuel": "operating",
    "reprocessing": "operating",
    "sea_disposal": "operating",
-   "construction_decom": "construction_decom",
    "accident": "event",
    "coal_mining": "operating",
    "combustion_power": "operating",
@@ -484,7 +487,17 @@
    "end_of_life": "end_of_life",
    "geothermal": "operating",
    "biomass_peat": "operating",
-   "hydro": "operating"
+   "hydro": "operating",
+   "decommissioning": "decommissioning"
+  },
+  "phase_normalisation": {
+   "_doc": "Per-TWh treatment by phase (METHODS §8, D23, D25, D30)",
+   "operating": "same_year",
+   "construction": "levelised_expected",
+   "decommissioning": "levelised_actual_or_expected",
+   "end_of_life": "levelised_actual_or_expected",
+   "event": "same_year",
+   "opening_stock_chronic": "excluded"
   }
  },
  "source_url_required_access": [
@@ -494,5 +507,9 @@
  "banned_citation_terms": [
   "grokipedia",
   "wikipedia"
+ ],
+ "accident_routes": [
+  "air_accident_release",
+  "water_accident_release"
  ]
 }
