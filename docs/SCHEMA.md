@@ -497,6 +497,9 @@ Applied before schema validation, in every table:
 | Unknown stage | `V02` only; `V03` and `V11` are skipped |
 | Banned domains | Matched on the URL's host only: the domain itself or any subdomain |
 | A header-only CSV | Valid |
+| Nuclear `construction` | Has no Sealed tier (construction materials are never in licensed isolation), so every row carries a commodity |
+| Accident routes on non-accident events | Allowed: the accident routes mean "released by an event" (accident, impoundment failure or spill), whatever the event type |
+| `V15` scope | Only `flow` rows are barred; event transfers into `liberated` at routine stages are legitimate, and `opening_stock` never sits in a routine stage's Liberated tier in practice (not checked) |
 | An event row with `E01` | `E03` is skipped for that row (its inputs may be missing or invalid); `E02` still runs |
 | Flow-only groups (V09) | Every use not listed in §4.2 is `V09`, including `opening_stock`, `transfer_in` to a non-Liberated tier and `transfer_out` from a tier other than `sealed_in_core` |
 | T04 in the factor registry | Resolves `source_ids`, `region`, `group`, `residue_type`, `driver_series` and the stage for the stream (`tier` and `route` are enums, so `T01`) |

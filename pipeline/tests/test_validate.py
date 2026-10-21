@@ -92,8 +92,8 @@ MASTER_COLUMNS = [
 
 ROUTES = [
     "air_stack", "air_ventilation", "air_process_vent", "air_vented_gas", "air_delivered_gas",
-    "air_dust", "air_other", "water_liquid_effluent", "water_mine_drainage",
-    "water_produced_discharge", "water_spill", "water_other", "sea_disposal_package",
+    "air_dust", "water_liquid_effluent", "water_mine_drainage",
+    "water_produced_discharge", "water_spill", "sea_disposal_package",
 ]
 
 
@@ -125,7 +125,7 @@ def vrow(n, **changes):
 
 # Row-number cheat sheet for valid_rows.csv:
 #  1 nuclear u_milling dispersed flow (civil:doc)      2 nuclear reactor_operation standing_inventory
-#  3 E001 transfer_out                                  4 E001 transfer_in (liberated, route air_other)
+#  3 E001 transfer_out                                  4 E001 transfer_in (liberated, route air_accident_release)
 #  5 sea_disposal routine transfer_out                  6 sea_disposal routine transfer_in (route)
 #  7 coal coal_mining memo_earth_moved, modelled        8 oil_gas production oil, SUN 1980, liberated + route
 #  9 wind_solar commodity_supply silicon_mg, embedded   10 other geothermal reisolated
@@ -276,7 +276,7 @@ def test_default_only_keys_are_not_flagged_by_x03(tmp_root):
     assert_clean(validate(tmp_root, [rel]))
 
 
-SEALED_DECOM = dict(stage="construction_decom", tier="sealed_fuel_cycle", residue_type="", allocation_rule="none", product="")
+SEALED_DECOM = dict(stage="decommissioning", tier="sealed_fuel_cycle", residue_type="", allocation_rule="none", product="")
 COAL_CONSTRUCTION = dict(stage="construction", substream="power", tier="impounded", residue_type="coal_fly_ash",
                          basis="compiled", factor_ids="", product="cement")
 
@@ -306,7 +306,11 @@ COAL_CONSTRUCTION = dict(stage="construction", substream="power", tier="impounde
         pytest.param(8, dict(stage="drilling", tier="impounded", residue_type="og_sludge", route=""), id="oil-gas-product-at-drilling"),
         pytest.param(9, dict(product="copper"), id="commodity-copper"),
         pytest.param(9, dict(product="other_commodity"), id="commodity-other"),
-        pytest.param(1, SEALED_DECOM, id="sealed-decommissioning-without-product"),
+        pytest.param(1, SEALED_DECOM, id="decommissioning-without-product"),
+        pytest.param(1, dict(SEALED_DECOM, tier="liberated", route="water_liquid_effluent"), id="decommissioning-liberated-without-product"),
+        pytest.param(1, dict(SEALED_DECOM, tier="dispersed", residue_type="u_process_residue"), id="decommissioning-dispersed-without-product"),
+        pytest.param(1, dict(stage="construction", tier="impounded", residue_type="u_process_residue", product="cement", allocation_rule="none"), id="nuclear-construction-with-commodity"),
+        pytest.param(1, dict(stage="construction", tier="liberated", residue_type="", route="air_dust", product="steel", allocation_rule="none"), id="nuclear-construction-liberated-with-commodity"),
         pytest.param(7, COAL_CONSTRUCTION, id="coal-construction-with-commodity"),
         pytest.param(1, dict(stage="u_mining_isl", tier="impounded", residue_type="isl_pond_residue",
                              allocation_rule="civil:ratio;alloc:value", country="KAZ", year=1999),
@@ -318,8 +322,6 @@ COAL_CONSTRUCTION = dict(stage="construction", substream="power", tier="impounde
                              allocation_rule="civil:ratio"), id="civil-ratio-in-1965"),
         pytest.param(1, dict(stage="u_mining_conv", tier="memo_earth_moved", residue_type="", country="AUS", year=1995,
                              allocation_rule="civil:ratio"), id="civil-memo-earth-moved-flow"),
-        pytest.param(1, dict(stage="reprocessing", tier="liberated", residue_type="", route="air_stack", country="FRA",
-                             year=1990, allocation_rule="civil:throughput"), id="reprocessing-with-civil-throughput"),
         pytest.param(1, dict(stage="reprocessing", tier="sealed_fuel_cycle", residue_type="", country="GBR",
                              year=1990, allocation_rule="civil:doc;civil:throughput"), id="reprocessing-two-civil-tokens"),
         pytest.param(10, OPENING, id="opening-stock-1950"),
@@ -559,7 +561,17 @@ VOCAB_CASES = [
     pytest.param("V11", 9, dict(product="oil"), id="V11-commodity-stage-with-oil-product"),
     pytest.param("V11", 10, dict(product="copper"), id="V11-product-on-geothermal"),
     pytest.param("V11", 1, dict(product="copper"), id="V11-product-on-uranium-milling"),
-    pytest.param("V11", 1, dict(SEALED_DECOM, product="steel"), id="V11-product-on-sealed-tier-at-commodity-stage"),
+    pytest.param("V11", 1, dict(SEALED_DECOM, product="steel"), id="V11-product-on-decommissioning-sealed"),
+    pytest.param("V11", 1, dict(SEALED_DECOM, tier="liberated", route="air_stack", product="steel"), id="V11-product-on-decommissioning-liberated"),
+    pytest.param("V11", 1, dict(SEALED_DECOM, tier="dispersed", residue_type="u_process_residue", product="cement"), id="V11-product-on-decommissioning-dispersed"),
+    pytest.param("V11", 1, dict(stage="construction", tier="impounded", residue_type="u_process_residue", product="", allocation_rule="none"), id="V11-nuclear-construction-without-product"),
+    pytest.param("V11", 1, dict(stage="construction", tier="impounded", residue_type="u_process_residue", product="oil", allocation_rule="none"), id="V11-nuclear-construction-with-oil-product"),
+    pytest.param("V11", 1, dict(stage="construction", tier="impounded", residue_type="u_process_residue", product="kerosene", allocation_rule="none"), id="V11-nuclear-construction-unknown-product"),
+    pytest.param("V14", 8, dict(route="air_accident_release"), id="V14-air-accident-route-on-a-flow"),
+    pytest.param("V14", 8, dict(route="water_accident_release"), id="V14-water-accident-route-on-a-flow"),
+    pytest.param("V15", 1, dict(stage="sea_disposal", tier="liberated", residue_type="", route="sea_disposal_package", allocation_rule="none"), id="V15-flow-liberated-at-sea-disposal"),
+    pytest.param("V15", 1, dict(stage="reprocessing", tier="liberated", residue_type="", route="air_stack", allocation_rule="civil:throughput"), id="V15-flow-liberated-at-reprocessing"),
+    pytest.param("V15", 1, dict(stage="conv_enrich_fab", tier="liberated", residue_type="", route="air_stack", allocation_rule="none"), id="V15-flow-liberated-at-conv-enrich-fab"),
     pytest.param("V11", 7, dict(COAL_CONSTRUCTION, product=""), id="V11-coal-construction-without-product"),
     pytest.param("V12", 10, dict(residue_type="moon_dust"), id="V12-unknown-residue-type"),
     pytest.param("V13", 7, dict(factor_ids="coal:9999"), id="V13-unknown-factor"),
@@ -830,13 +842,13 @@ def test_x05_second_event(tmp_root):
 
 
 def test_x05_routine_transfer_outside_the_routine_stages(tmp_root):
-    rows = [vrow(3, event_id=""), vrow(4, event_id="")]  # stage accident is not a routine stage
+    rows = [vrow(3, event_id=""), vrow(4, event_id="", route="air_stack")]  # stage accident is not a routine stage
     rel = write_master(tmp_root, "x05f.csv", rows)
     assert_only(validate(tmp_root, [rel]), "X05", rows=[1, 2], file=rel)
 
 
 def test_x05_routine_transfer_at_a_non_routine_nuclear_stage(tmp_root):
-    rows = [vrow(5, stage="conv_enrich_fab"), vrow(6, stage="conv_enrich_fab")]
+    rows = [vrow(5, stage="spent_fuel"), vrow(6, stage="spent_fuel")]
     rel = write_master(tmp_root, "x05g.csv", rows)
     assert_only(validate(tmp_root, [rel]), "X05", rows=[1, 2], file=rel)
 
@@ -851,6 +863,42 @@ def test_x05_routine_transfer_in_the_reverse_direction(tmp_root):
     rows = [vrow(5, tier="liberated", route="sea_disposal_package"), vrow(6, tier="sealed_fuel_cycle", route="")]
     rel = write_master(tmp_root, "x05i.csv", rows)
     assert_only(validate(tmp_root, [rel]), "X05", rows=[1, 2], file=rel)
+
+
+@pytest.mark.parametrize("stage", ["sea_disposal", "reprocessing", "conv_enrich_fab"])
+def test_routine_transfer_pair_is_valid_at_every_routine_stage(tmp_root, stage):
+    common = dict(stage=stage, allocation_rule="civil:throughput" if stage == "reprocessing" else "none")
+    rel = write_master(tmp_root, "routine_stage.csv", [vrow(5, **common), vrow(6, **common)])
+    assert_clean(validate(tmp_root, [rel]))
+
+
+@pytest.mark.parametrize("stage", ["sea_disposal", "reprocessing", "conv_enrich_fab"])
+def test_v15_liberated_flow_alongside_a_valid_routine_pair(tmp_root, stage):
+    rule = "civil:throughput" if stage == "reprocessing" else "none"
+    pair = [vrow(5, stage=stage, allocation_rule=rule), vrow(6, stage=stage, allocation_rule=rule)]
+    flow = vrow(1, stage=stage, tier="liberated", residue_type="", route="air_stack", allocation_rule=rule)
+    rel = write_master(tmp_root, "v15.csv", pair + [flow])
+    assert_only(validate(tmp_root, [rel]), "V15", rows=[3], file=rel)
+
+
+def test_v14_accident_routes_are_valid_on_event_transfer_in_rows(tmp_root):
+    for route in ("air_accident_release", "water_accident_release"):
+        rel = write_master(tmp_root, f"acc_{route}.csv", [vrow(3), vrow(4, route=route)])
+        assert_clean(validate(tmp_root, [rel]))
+
+
+@pytest.mark.parametrize("route", ["air_accident_release", "water_accident_release"])
+def test_v14_accident_route_on_a_routine_transfer_in_or_a_non_transfer_row(tmp_root, route):
+    rel = write_master(tmp_root, "v14b.csv", [vrow(5), vrow(6, route=route)])
+    assert_has(validate(tmp_root, [rel]), "V14", 2, rel)
+    rel2 = write_master(tmp_root, "v14c.csv", kingston_pair()[:1] + [dict(kingston_pair()[1], route=route)])
+    assert_clean(validate(tmp_root, [rel2]))  # E002 transfer_in is an event transfer_in
+
+
+@pytest.mark.parametrize("route", ["air_other", "water_other"])
+def test_removed_catch_all_routes_are_rejected(tmp_root, route):
+    rel = write_master(tmp_root, "gone.csv", [vrow(8, route=route)])
+    assert_has(validate(tmp_root, [rel]), "R02", 1, rel)
 
 
 def test_routine_reprocessing_transfers_are_valid_with_a_civil_token(tmp_root):

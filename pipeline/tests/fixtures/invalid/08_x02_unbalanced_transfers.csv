@@ -1,4 +1,4 @@
 year,stream,substream,stage,product,residue_type,country,group,tier,quantity,unit,value_low,value_central,value_high,below_detection,basis,source_ids,factor_ids,allocation_variant,allocation_rule,embedded_fuel,technology,route,event_id,notes
 2005,other,geothermal,geothermal,,geothermal_scale,ITA,Ra226+,reisolated,flow,Bq/a,5.0e12,1.0e13,2.5e13,false,compiled,S0001,,default,none,false,geothermal,,,
 1986,nuclear,lwgr,accident,,,UKR,Cs137+,sealed_in_core,transfer_out,Bq,7.0e16,8.5e16,1.0e17,false,compiled,S0001,,default,none,false,,,E001,Chernobyl release from core
-1986,nuclear,lwgr,accident,,,UKR,Cs137+,liberated,transfer_in,Bq,3.5e16,4.25e16,5.0e16,false,compiled,S0001,,default,none,false,,air_other,E001,Chernobyl release to the environment
+1986,nuclear,lwgr,accident,,,UKR,Cs137+,liberated,transfer_in,Bq,3.5e16,4.25e16,5.0e16,false,compiled,S0001,,default,none,false,,air_accident_release,E001,Chernobyl release to the environment
