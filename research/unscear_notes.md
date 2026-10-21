@@ -88,7 +88,7 @@ Implications for METHODS §10.2 and Tasks 1.5/1.9:
 
 - U mining 66 (non-ISL), ISL 3, milling 3, operational tailings 3, closed tailings 0.1 (×100 y).
 - Reactors, Table 11 (all 7 types × 8 categories in CSV). PWR: noble gases 5.8, H-3 1.5 air and 18 liquid, C-14 0.083. BWR: noble gases 18. HWR: H-3 200 air and 170 liquid. LWGR: noble gases 460. GCR: noble gases 1,700.
-- Reprocessing (La Hague): Kr-85 1.5 × 10⁸, H-3 3.8 × 10⁴ air and 6.7 × 10⁶ liquid, C-14 1.1 × 10⁴ air.
+- Reprocessing (La Hague): Kr-85 1.5 × 10⁸, H-3 3.8 × 10⁴ air and 6.7 × 10⁶ liquid, C-14 1.1 × 10⁴ air. **Unit caveat (verifier):** UNSCEAR prints these as TBq/(GW a), but they are Bq s⁻¹ per GW a (the Bq/s column ÷ 47 GW a). In true TBq/(GW a): Kr-85 ≈ 4.7 × 10³, H-3 air ≈ 1.2, H-3 liquid ≈ 2.1 × 10², C-14 air ≈ 0.35 (× 3.156 × 10⁻⁵).
 - Coal: mining Rn-222 2.8; stack Rn-222 0.07; older plants Po-210 and Pb-210 1.4 × 10⁻³ each, modern plants 9.3 × 10⁻⁵; ash radon 0.03/yr (1.8 under the 100-y convention). Th-232 series and K-40 were **not assessed**.
 - Gas 0.75; oil 0.002; geothermal 150 (all Rn-222).
 
@@ -133,7 +133,7 @@ Implications for METHODS §10.2 and Tasks 1.5/1.9:
 - 2008 Table 18: GCR noble gas "148 × 10⁻¹ PBq" printed. I recorded 14.8 PBq; it looks inconsistent with a GCR share of only about 2% of energy.
 - UNSCEAR 1993 ¶83 says 75 TBq/(GW a) is "a factor of almost 4" above the 1982/1988 value, but 1988B ¶27 says ~70 TBq/(GW a), the same as 1982.
 - 2016 Table 43: Mo ore figure is inconsistent with its metal figure (§3). Table 45 solar 0.8 versus my sum 0.75.
-- 2016 Table 13: the Bq/s block's column assignment (Sellafield / La Hague / Mayak, air / aquatic) was read from linearised text; verify against p. 163 before relying on a specific site.
+- 2016 Table 13: the Bq/s block's column assignment was read from linearised text; the verifier checked all 51 values against the p. 163 page image and they match.
 - 2000B Table 28 oil extraction water-release column (Th-228 217 > Ra-226 174) is as printed.
 - Reactor tables from 1993 and 1988 were not transcribed because their scans are unreadable and 2000/2008 restate them. Original 1970–89 values therefore equal the 2000 Table 37 values.
 
@@ -177,3 +177,8 @@ All ten documents were downloaded (open). Items not obtainable or not machine-re
 - UNSCEAR 2016 Annex A electronic attachments 1–5, for Task 3.5 (zip not downloaded): https://www.unscear.org/unscear/uploads/documents/publications/UNSCEAR_2016_Annex-A_Attach_5.zip
 - UNSCEAR 2008 Annex A tables A-4 to A-14 (site-level effluents), possibly in the same Vol. I PDF appendix: https://www.unscear.org/unscear/uploads/documents/publications/UNSCEAR_2008_Annex-B-CORR2.pdf
 - Direct guessed URL `www.unscear.org/docs/publications/2016/UNSCEAR_2016_Annex-A.pdf` and the 2017/2020 corrigendum PDFs under `/docs/publications/2016/` return 404. The corrigenda are already incorporated in the CORR2 PDF.
+
+
+## 9. Independent verification (2026-10-20)
+
+Verdict: passes with fixes. All high-value rows (every 2010 reference value, the "why solar" quotes and tables) match the PDFs. Stratified random sample (seed 1101, 70 rows): 0 value or unit errors; 3 page-reference errors (U0018–U0020, Table 7 is on p. 157), now corrected. Fixes applied: unit corrected on U0140–U0162; in-row "printed value suspect" flags on U0442 (use 48) and U1020 (~0.14 PBq implied); U0300–U0301 flagged as dose coefficients (validation only); U0302–U0308 marked non-numeric. GCR noble gases 1990–97: prefer the 2008 series (monotonic, later revision), with 2000 as the alternative.
