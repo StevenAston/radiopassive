@@ -1,0 +1,57 @@
+material,play_or_group,nuclide,unit,n,p5,median_or_mean,p95,max_or_range,basis,source_ids,notes
+produced_water,Marcellus,Ra-226,Bq/L,100,0.48,46.6,378,626,computed by task from database,S0303,NPWGD v3 statistics (median)
+produced_water,Marcellus,Ra-228,Bq/L,96,,4.7,41,114,computed by task from database,S0303,ratio Ra-228/Ra-226 median 0.16
+produced_water,Utica,Ra-226,Bq/L,43,,48.5,,134,computed by task from database,S0303,
+produced_water,Utica,Ra-228,Bq/L,17,,44.7,,53.5,computed by task from database,S0303,
+produced_water,Appalachian conventional,Ra-226,Bq/L,101,0.85,16.7,75,196,computed by task from database,S0303;S0302,
+produced_water,Appalachian conventional,Ra-228,Bq/L,65,,18.5,81,888 (outlier),computed by task from database,S0303;S0302,ratio ~1.1
+produced_water,Williston Bakken/Three Forks,Ra-226,Bq/L,17,48,73.4,135,157,computed by task from database,S0303,Gallegos 2021 samples (MT/ND)
+produced_water,Williston Bakken/Three Forks,Ra-228,Bq/L,17,38,63.8,72,73,computed by task from database,S0303,Scanlon total-Ra median 1200 pCi/L (44 Bq/L) disagrees; flagged
+produced_water,Gulf Coast (Mississippi 1984),Ra-226,Bq/L,17,,18.6,,38.6,computed by task from database,S0302;S0303,
+produced_water,Gulf Coast (Mississippi 1984),Ra-228,Bq/L,12,,22.7,,48,computed by task from database,S0302;S0303,
+produced_water,Fayetteville,Ra-226,Bq/L,5,,5.2,,9.6,computed by task from database,S0303,
+produced_water,Fayetteville,Ra-228,Bq/L,5,,0.9,,,computed by task from database,S0303,
+produced_water,Powder River conventional,Ra-226,Bq/L,14,,0.4,,5.1,computed by task from database,S0303,
+produced_water,Coalbed methane,Ra-226,Bq/L,,,~0-0.1,,,computed by task from database,S0303,
+produced_water,Marcellus (total Ra),Ra-226+Ra-228,Bq/L,,,91,,666,converted from pCi/L (2460; 18000),S0300,
+produced_water,non-Marcellus N Appalachia (total Ra),Ra-226+Ra-228,Bq/L,,,27 (abstract) / 37 (text),,248,converted from pCi/L (734; 1011; 6700),S0300,median inconsistent within source
+produced_water,PA unconventional,Ra-226,Bq/L,9,,233 (mean 309),,63-984,converted from pCi/L Table 3-15,S0301,median/mean recomputed by task
+produced_water,PA unconventional,Ra-228,Bq/L,,,,,13.5-70,converted from pCi/L,S0301,
+produced_water,PA conventional,Ra-226,Bq/L,,,,,<3-30,converted from pCi/L,S0301,
+produced_water,PA conventional,Ra-228,Bq/L,,,,,1-33,converted from pCi/L,S0301,
+flowback,PA unconventional,Ra-226,Bq/L,,,168,,20-944,converted from pCi/L,S0301,
+produced_water,Permian (NM),Ra-226,Bq/L,46,,1.6 (mean),,0.03-4.1,converted from pCi/L (43.9; 0.74-111),S0316,
+produced_water,Permian (NM),Ra-228,Bq/L,46,,5.6 (mean),,0.09-10.8,converted from pCi/L (151; 2.56-291),S0316,Ra-228 > Ra-226
+produced_water,Permian/Marcellus/Bakken/Eagle Ford total Ra medians,Ra-226+Ra-228,Bq/L,,,20/73/44/10.5,,,converted from pCi/L (535/1980/1200/284),S0315 via S0316,second-hand
+produced_water,Wyoming discharges (conventional),Ra-226,Bq/L,,,,,0.03-1.24,as reported,S0324,
+produced_water,PA road-spread brine,Ra-226,Bq/L,14,,17,,65,computed by task from database,S0303;S0325,
+produced_water,Norwegian shelf,Ra-226,Bq/L,,,4.1 (mean),,0.5-10,as reported,S0304;S0308,
+produced_water,Norwegian shelf,Ra-228,Bq/L,,,2.1 (mean),,0.5-8.7,as reported,S0304;S0308,
+produced_water,Global range,Ra-226,Bq/L,,,,,0.002-1200,as reported,S0304,no typical value stated
+produced_water,Global range,Ra-228,Bq/L,,,,,0.3-180,as reported,S0304,
+produced_water,Global range,Pb-210,Bq/L,,,,,0.05-190,as reported,S0304,Norwegian Pb-210 mostly <0.2 (S0308)
+scale,global range,Ra-226,Bq/g,,,,,0.1-15000,as reported,S0304,
+scale,global range,Ra-228,Bq/g,,,,,0.05-2800,as reported,S0304,
+scale,USA average,Ra (total),Bq/g,,,17.8,,to 14800,as reported,S0328;S0320,
+scale,Norway typical,Ra,Bq/g,,,,,10-300,as reported,S0309,
+scale,pipe scale site means (OK MI KY TX),Ra-226,Bq/g,,,,,15-76,converted from pCi/g (416-2056),S0321,
+scale,Syria (oil field),Ra-226,Bq/g,,,,,147-1050,as compiled,S0327,
+sludge,global range,Ra-226,Bq/g,,,,,0.05-800,as reported,S0304,
+sludge,global range,Pb-210,Bq/g,,,,,0.1-1300,as reported,S0304,
+sludge,USA average,Ra,Bq/g,,,2.8,,,as reported,S0328,
+sludge,Norway typical,Ra,Bq/g,,,,,0.1-20,as reported,S0309,
+sludge,Norway company means,Ra-226,Bq/g,,,19-40,,4.9-100,as reported,S0310,
+gas_radon,wellhead world,Rn-222,Bq/m3,879,,625 (mean),,,as reported via UNSCEAR,S0001,
+gas_radon,sales gas,Rn-222,Bq/m3,,,300,,,as reported via UNSCEAR,S0001,
+gas_radon,PA wellhead (DEP),Rn-222,Bq/m3,22,,1547,,111-5476,converted from pCi/L,S0301,
+gas_radon,PA Devonian (USGS),Rn-222,Bq/m3,19,,1369,,37-2923,converted from pCi/L,S0317,
+gas_radon,Marcellus pipelines,Rn-222,Bq/m3,,,1983 (weighted),,1520-2750,as reported,S0318,
+gas_radon,US conventional 1952-73,Rn-222,Bq/m3,~2100,,1370,,7-54000,as compiled,S0318,
+gas_pb210,propanizer filter,Pb-210,Bq/g,1,,132,,,converted from pCi/g (3580),S0301,
+drill_cuttings,PA vertical,U-238,Bq/g,,,0.054,,,converted from pCi/g (1.47),S0301,
+drill_cuttings,Marcellus horizontal,U-238,Bq/g,18,,0.31 (mean),,1.0,converted from pCi/g (8.4; 27.0),S0301,
+drill_cuttings,Marcellus shale (core),U-238,Bq/g,22,,,,0.10-0.65,converted from ppm U (8-53) at 12.35 Bq/kg per ppm,S0330,
+radon_emanation,barite pipe scale,Rn-222 emanation fraction,1,4,,"0.05 (cited, Nielson/Baird)",,0.037-0.138 (site means),as reported,S0321,TX 0.037 OK 0.087 KY 0.137 MI 0.138
+radon_emanation,mill tailings reference,Rn-222 emanation fraction,1,,,0.153,,,as reported,S0321,
+radon_emanation,proposed og_scale epsilon,epsilon,1,,0.01,0.05,0.14,,proposed (modelled): low/central/high,S0321;S0306,emanation fraction is not epsilon; not entered in residue_types.csv
+radon_emanation,proposed og_sludge epsilon,epsilon,1,,0.05,0.15,0.25,,proposed (modelled): sludge 4-5x scale,S0321,not entered in residue_types.csv
