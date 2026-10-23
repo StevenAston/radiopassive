@@ -16,7 +16,7 @@ Files: `bibliography.md`, `availability.csv` (133 rows), `sources_task16.csv` (S
 | Item | Value | Source |
 |---|---|---|
 | UNSCEAR adopted | 150 TBq/(GW a) (1988, 1993, 2016); 400 in 1982 | S0001, S0008, S0010 |
-| Larderello | 260 TBq/(GW a) (300 GBq/d at about 420 MW); 110 TBq/a at 400 MW (1988) | S0001, S0008 |
+| Larderello | 260 TBq/(GW a) (300 GBq/d at about 420 MW; UNSCEAR 2016 ¶157 first attaches "38.5" to Larderello, then "260"; the arithmetic shows 260 is Larderello and 38.5 The Geysers); 110 TBq/a at 400 MW (1988) | S0001, S0008 |
 | The Geysers | 38.5 TBq/(GW a); 19.3 to 21 TBq/a at 502 MW (1970s to 1980) | S0001, S0008 |
 | Larderello, independent | about 8 Ci/day = 108 TBq/a (derived: $8\times3.7\times10^{10}\times365.25$) | S0509 (citing George et al. 1980) |
 | RSE (2013) model | $1.9\times10^{5}$ Bq/s for 20 MW and $4.8\times10^{5}$ Bq/s for 50 MW, i.e. about $9.5\times10^{3}$ Bq/s per MW. Derived: $9.5\times10^{3}\times3.156\times10^{7}\approx3.0\times10^{11}$ Bq/(MW a), about 300 TBq per GW installed running continuously. Modelled, not measured | S0509 |
@@ -73,7 +73,7 @@ Units Bq/kg. Caveat: the Dutch plants are low-temperature heat installations, so
 | Cs-137 in US wood ash (weapons fallout) | 2.9 to 780; New England mean about 440 | S0520 |
 | Cs-137 in peat | Finland mean 16, max 622 | S0519 |
 | Cs-137 in peat ash, Sweden | 43 to 34,480; mean about 10,000 (1986 to 89); 1,000 to 43,500 (36 samples from fallout counties). Reference 1,000 normal, 10,000 high | S0519 |
-| Ash enrichment over fuel | wood: 14 to 370 (Lithuania), about 50 to 100 (Ukraine), about 90 (Sweden); peat about 20 | S0514, S0516, S0515, S0519 |
+| Ash concentration factor (dry fuel mass to ash mass; S0514 terminology) | wood: 95 to 370 (Lithuania), 14 to 368 (Ukraine, S0514 Table 1), about 50 to 100 (Ukraine, S0516), about 90 (Sweden); peat about 20 | S0514, S0516, S0515, S0519 |
 | Fraction of fuel Cs-137 to flue gas | 0.10 assumed (not measured) | S0515 |
 | Peat U-238 | 5 to 140 (Finland mean 11); UNSCEAR 40 sits inside | S0519, S0008 |
 | Peat ash U-238 | mean 865, median 420, max 9,260 (146 Swedish bogs); reference 420 and 4,500 | S0519 |
@@ -116,7 +116,7 @@ Household firewood (S0515, S0516, S0521) probably dominates biomass Cs-137 ash. 
 
 Basis for negligibility (METHODS 10.3):
 1. UNSCEAR 2016 omitted hydro (400.8 GW a in 2010) as negligible (S0001, para 27 per Task 1.1). That is a judgement, not a measurement.
-2. Operation has no fuel, no residue and no discharge. The `hydro` stage permits only `liberated` flow. The central operational estimate is therefore zero by process, below 0.1% of any stream total in Bq and W in every decade.
+2. Operation has no fuel, no residue and no discharge. The `hydro` stage permits only `liberated` flow. The central operational estimate is therefore zero by process, below 0.1% of any stream total in Bq and W in every decade. **Status: provisional.** METHODS §10.3 asks for a recorded numeric estimate; for operation the estimate is zero by process (reservoir radon and sediment arguments are inference, no measurement found), and for construction the numeric test waits on Task 1.9 intensities (point 4). Negligibility is not final until that test is recorded (verification 2026-10-22).
 3. Reservoir radon (inference, no measurement found): impoundment does not mobilise crustal Ra-226. Water cover reduces soil exhalation, and dissolved radon degassing from rivers is already in the natural baselines (Task 1.7). Sediment Cs-137 and natural nuclides are catchment fallout and soil redistributed, not an energy-process source. Not additional to baselines.
 4. Construction materials are counted through commodity factors, $\sigma_c=\sum_t C_t I_{t,c}/Q_c$ (METHODS 10.2), in the `construction` stage. Hydro's cement and steel per GW are large, so the construction share must be **tested numerically** once Task 1.9 supplies intensities. The negligibility rule is a test, not an assumption, for that stage. No intensity was obtained here (lead S0522).
 

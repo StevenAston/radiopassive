@@ -38,18 +38,18 @@ Bounds $1.30\times10^{14}$ (J) to $1.347\times10^{14}$ (Greenland counted as lan
 
 | Estimate | Heat (TW) | Source |
 |---|---|---|
-| Borexino 2020, total U+Th (68 %) | $38.2^{+13.6}_{-12.7}$ (mantle $24.6^{+11.1}_{-10.4}$, lithosphere $8.1^{+1.9}_{-1.4}$) | S0600 |
-| KamLAND 2022, mantle U+Th, Th/U fixed 3.9 | $10.6^{+5.2}_{-4.2}$ (Th/U free: $15.4^{+8.3}_{-7.9}$; modern crust model: $9.2^{+9.0}_{-4.6}$) | S0601 |
+| Borexino 2020, whole-Earth total incl. mantle K-40 (68 %) | $38.2^{+13.6}_{-12.7}$ (mantle $24.6^{+11.1}_{-10.4}$, lithosphere $8.1^{+1.9}_{-1.4}$) | S0600 |
+| KamLAND 2022, crust + mantle U+Th, Th/U fixed 3.9 | $10.6^{+5.2}_{-4.2}$ (Th/U free: $15.4^{+8.3}_{-7.9}$; modern crust model: $9.2^{+9.0}_{-4.6}$) | S0601 |
 | KamLAND 2022, crust (reference model) | U 3.4, Th 3.6 | S0601 |
 | KamLAND 2022, total Earth incl. ~4 TW K-40 | ~14.6 | S0601 |
 | Huang et al. 2013, BSE total | 20.1 (continental crust $6.8^{+1.4}_{-1.1}$) | S0602 |
 | Surface heat loss (context) | $47\pm2$ | S0603 |
 
-**B01.** Low $=14.6$ TW (KamLAND total), central $=20.1$ TW (Huang BSE, matching D11's ~20 TW), high $=38.2+4.0=42.2$ TW (Borexino U+Th plus the ~4 TW K-40 quoted by KamLAND/BSE):
+**B01.** Low $=14.6$ TW (KamLAND total), central $=20.1$ TW (Huang BSE, matching D11's ~20 TW), high $=38.2$ TW (Borexino whole-Earth total, which already includes mantle K-40 at an assumed 18 % of the mantle signal plus 8.1 TW of lithosphere: $24.6/0.82+8.1\approx38.1$; corrected 2026-10-22, previously 42.2 TW double-counted K-40):
 
-$$P_{\mathrm{rad}}\in[1.46,\ 2.01,\ 4.22]\times10^{13}\ \mathrm{W}$$
+$$P_{\mathrm{rad}}\in[1.46,\ 2.01,\ 3.82]\times10^{13}\ \mathrm{W}$$
 
-These are published central estimates spanning the field, not a 5th-95th interval. The Borexino 68 % band alone runs to $38.2+13.6=51.8$ TW (U+Th), above the 47 TW surface heat loss.
+These are published central estimates spanning the field, not a 5th-95th interval. The KamLAND low is its Th/U-fixed central value (Th/U free gives about 19.4 TW with K-40). The Borexino 68 % band alone runs to $38.2+13.6=51.8$ TW, above the 47 TW surface heat loss.
 
 **B02-B04 split (modelled).** Specific radiogenic power $h$ (W per kg of element) from the energy per chain, summing `e_per_head_decay_mev` of the chain groups (antineutrino excluded):
 
@@ -93,7 +93,7 @@ Taken directly from UNSCEAR 2000 Annex B Table 4 (S0604): H-3 72 PBq/a, 1275 PBq
 
 $$\frac{72}{0.05626}=1280\ \mathrm{PBq}\ (\text{table: }1275),\qquad\frac{1.54}{1.216\times10^{-4}}=1.27\times10^{4}\ \mathrm{PBq}\ (\text{table: }12\,750)$$
 
-(The table's units are "PBq a$^{-1}$", i.e. activity of the atoms made per year.) **Caveats:** (i) UNSCEAR gives no uncertainty; the $\pm30\ \%$ bounds are J; (ii) 25 000 atoms m$^{-2}$ s$^{-1}$ (2.5 atoms cm$^{-2}$ s$^{-1}$) for C-14 is at the high end of the published range (more recent modelling gives roughly 1.6-2.0), so the true value may lie below the stated low bound. Not re-checked this session; the verifier should compare with Masarik and Beer (2009) or Kovaltsov et al. (2012); (iii) the C-14 inventory is the natural, pre-1950 one (excludes bomb and fossil perturbations); (iv) the H-3 inventory in the table is the atmosphere-ocean steady-state total.
+(The table's units are "PBq a$^{-1}$", i.e. activity of the atoms made per year.) **Caveats:** (i) UNSCEAR gives no uncertainty; the $\pm30\ \%$ bounds are J; (ii) 25 000 atoms m$^{-2}$ s$^{-1}$ (2.5 atoms cm$^{-2}$ s$^{-1}$) for C-14 is at the high end. Kovaltsov, Mishev and Usoskin (2012, S0614) give 1.64 atoms cm$^{-2}$ s$^{-1}$ for the modern epoch and 1.88 for the pre-industrial, so the C-14 low bounds (B10, B11) are set at central $\times\,1.64/2.5=0.656$, i.e. about $1.0\times10^{15}$ Bq a$^{-1}$ and $8.4\times10^{18}$ Bq; the high bounds stay at $+30\ \%$ J (corrected 2026-10-22); (iii) the C-14 inventory is the natural, pre-1950 one (excludes bomb and fossil perturbations); (iv) the H-3 inventory in the table is the atmosphere-ocean steady-state total.
 
 ## B12-B14 Top metre of global soil
 

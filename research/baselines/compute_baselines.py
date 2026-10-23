@@ -38,9 +38,10 @@ INPUTS = {
     "bse_total_W": (None, 20.1e12, None),
     "th_over_u": 3.9,
     "k_over_u": 14000.0,
-    # S0601 KamLAND 2022 total ~14.6 TW; S0600 Borexino 2020 U+Th 38.2 (+13.6/-12.7) TW
+    # S0601 KamLAND 2022 whole-Earth total ~14.6 TW (Th/U fixed); S0600 Borexino 2020 whole-Earth total 38.2 (+13.6/-12.7) TW,
+    # which already includes mantle K-40 (18 % assumption) and 8.1 TW lithosphere -- do not add K again
     "geo_low_W": 14.6e12,
-    "geo_high_W": (38.2e12 + 4.0e12),    # Borexino central (U+Th) + ~4 TW K-40 (KamLAND 2022 / BSE)
+    "geo_high_W": 38.2e12,              # Borexino 2020 total radiogenic heat (incl. K-40)
     # ocean: S0608 volume, S0610 K, S9005 abundance
     "ocean_vol_m3": (1.325e18, 1.332e18, 1.340e18),
     "sw_density": (1025.0, 1028.0, 1031.0),                  # kg/m3, TEOS-10 style constant (judgement bounds)
@@ -56,6 +57,8 @@ INPUTS = {
     # cosmogenic (S0604 Table 4), PBq/a and PBq, bounds judgement +-30 %
     "h3_prod_PBq_a": 72.0, "h3_inv_PBq": 1275.0, "c14_prod_PBq_a": 1.54, "c14_inv_PBq": 12750.0,
     "cosmo_rel": (0.7, 1.3),
+    # S0614 Kovaltsov et al. 2012: modern C-14 production 1.64 atoms/cm2/s vs UNSCEAR 2.5 -> C-14 low bound
+    "c14_rel": (1.64 / 2.5, 1.3),
     # fallout (S0605 Table 9, 'global release', PBq); bounds judgement
     "fallout_PBq": {"H3": 186000.0, "C14": 213.0, "Sr90": 622.0, "Cs137": 948.0, "I131": 675000.0},
     "fallout_rel": {"H3": (0.5, 1.5), "C14": (0.5, 1.5), "Sr90": (0.8, 1.2), "Cs137": (0.8, 1.2), "I131": (0.7, 1.3)},
@@ -156,7 +159,7 @@ def build():
     add("B01", "Earth radiogenic heat (U + Th + K), total", "power", None, None, (g_lo, g_c, g_hi), "W",
         "compiled",
         "Published geoneutrino/BSE totals: low KamLAND 2022 total 14.6 TW; central Huang 2013 BSE 20.1 TW; "
-        "high Borexino 2020 U+Th 38.2 TW + ~4 TW K-40. See derivations.md B1",
+        "high Borexino 2020 total 38.2 TW (incl. mantle K-40). See derivations.md B1",
         "S0600;S0601;S0602;S0603",
         "Bounds span published central estimates, not a statistical 5th-95th interval. Surface heat loss 47 +- 2 TW (S0603).")
     share_u = H_U
@@ -209,10 +212,18 @@ def build():
             ("B10", "Cosmogenic C-14 production", "c14_prod_PBq_a", "C14", "flow", "Bq/a", 1e15),
             ("B11", "Cosmogenic C-14 natural inventory", "c14_inv_PBq", "C14", "stock", "Bq", 1e15)):
         c = INPUTS[key] * uf
-        add(bid, nm, q, grp, None, rel(c, r), unit, "compiled",
-            f"UNSCEAR 2000 Annex B Table 4: {INPUTS[key]} PBq{'/a' if q == 'flow' else ''} (x 1e15); "
-            "bounds +-30 % judgement; steady-state check P = A lambda^-1 in derivations.md B4",
-            "S0604", "UNSCEAR gives no uncertainty; bounds are a judgement. Modern C-14 production estimates may be lower (see notes in derivations.md).")
+        if grp == "C14":
+            add(bid, nm, q, grp, None, rel(c, INPUTS["c14_rel"]), unit, "compiled",
+                f"UNSCEAR 2000 Annex B Table 4: {INPUTS[key]} PBq{'/a' if q == 'flow' else ''} (x 1e15); "
+                "low = central x 1.64/2.5 (Kovaltsov 2012 modern production); high +30 % judgement; "
+                "steady-state check P = A lambda^-1 in derivations.md B4",
+                "S0604;S0614", "UNSCEAR's 2.5 atoms/cm2/s is at the high end; Kovaltsov 2012 gives 1.64 (modern) and "
+                "1.88 (pre-industrial), so the low bound uses 1.64/2.5. High bound is a judgement.")
+        else:
+            add(bid, nm, q, grp, None, rel(c, r), unit, "compiled",
+                f"UNSCEAR 2000 Annex B Table 4: {INPUTS[key]} PBq{'/a' if q == 'flow' else ''} (x 1e15); "
+                "bounds +-30 % judgement; steady-state check P = A lambda^-1 in derivations.md B4",
+                "S0604", "UNSCEAR gives no uncertainty; bounds of +-30 % are a judgement.")
 
     # ---- B12-B14 soil
     soil_mass = prod(LAND_T, const(INPUTS["soil_depth_m"]), INPUTS["soil_density"])
