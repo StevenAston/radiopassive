@@ -1,0 +1,16 @@
+site,year,product,quantity,unit,value_basis_note,basis,source_ids,notes
+Bayan Obo / Baotou,2006,ore processed at BTISP,12000000.0,t/a,,compiled,S0405,Ore mined about 10 Mt/a (Main and East mines) plus West Mine from 2006; 276 Mt mined to end 2006.
+Bayan Obo / Baotou,2006,iron concentrate,4500000.0,t/a,Fe grade not given in the source read,compiled,S0405,Iron concentrate Th 0.0073% ThO2 (was 0.024% early).
+Bayan Obo / Baotou,2006,rare earth concentrate,100000,t/a,REO grade 50-60% (61% REO in S0404),compiled,S0405;S0404,Conflicts with the statement of 7000 t/a REO at BTISP in the same source (S0405) and with China-wide Bayan Obo REO of about 58 kt in 2004 (S0404). Treat as unreconciled.
+Bayan Obo / Baotou,2006,iron and steel (BTISP),9000000.0,t/a,,compiled,S0405,
+Bayan Obo / Baotou,2004,REO from Bayan Obo (derived),57820,t REO,,modelled,S0404,59% of China 98 000 t REO (2004) (S0404 section 2.3).
+Bayan Obo / Baotou,2008,China REO production,120000,t REO,,compiled,S0404,97% of 124 kt world (Table 4).
+Bayan Obo / Baotou,2024,China REO mine production,270000,t REO,,compiled,S0411,World 390 kt; Bayan Obo share of China not given in S0411.
+Bayan Obo / Baotou,2006,ore grade,,"34% Fe, 5% REO, 0.032% ThO2, 0.13% Nb (main+east)",,compiled,S0405;S0404,Niobium is a third product; no Nb output figure retrieved.
+Olympic Dam,FY2023,refined copper (cathode),212500.0,t,Cu resource price assumption US$4.29/lb,compiled,S0407,"FY2022 138.4 kt (smelter maintenance), FY2021 205.3 kt."
+Olympic Dam,FY2023,"uranium (payable, as U3O8 tonnes, unconfirmed)",3406,t,U3O8 resource price assumption US$43.17/lb,compiled,S0407,FY2022 2375 t; FY2021 3267 t.
+Olympic Dam,FY2023,refined gold,186029,troy oz,US$1852/oz,compiled,S0407,FY2022 119 517; FY2021 145 998.
+Olympic Dam,FY2023,refined silver,1089000.0,troy oz,US$25.30/oz,compiled,S0407,FY2022 743 koz; FY2021 810 koz.
+Olympic Dam,FY2023,ore milled,10800000.0,t,,compiled,S0407,Record; concentrate smelted 508 kt. Tailings ~ ore milled minus products (modelled equal to ore milled).
+Olympic Dam,FY2023,"indicative value split (mine-gate resource prices, not realised)",Cu 74.3%; Au 12.7%; U3O8 12.0%; Ag 1.0%,share of value,Cu 2010 M USD; Au 345; U3O8 324; Ag 28; total 2706 M USD,modelled,S0407,"Computed by the extractor from the FY2023 20-F production and the price assumptions behind its Mineral Resource estimates. Use only as a sanity check: the pipeline should use DS140 unit values (Cu, Au, Ag) plus a uranium price series (not in DS140: unconfirmed)."
+Olympic Dam,1989-1995,Ra-226 in process feed,,"15 Bq/g (1989, 1993); 6.8-8.2 Bq/g (1994-95)",,compiled,S0408,Ore grade fell from 1110 ppm U (to 1993) to 690 ppm (after).

@@ -1,0 +1,22 @@
+year,scope,sector,magnet_kt,share_pct,unit_basis,basis,source_ids,notes
+2006,global,magnets (all),20.5,19,kt REO and share of REO consumption by mass,compiled,S0404,"SRS 68 Table 1: REE consumption 108 kt REO; magnets 20.5 kt REO (19% by mass, 37% by value). Wind not separated; wind PM generators were negligible."
+2008,global,NdFeB magnets (all),26.0,,kt REO,compiled,S0414,About 26 000 t REO/a into NdFeB magnets (2008 data).
+2015,global,conventional cars,,43,share of incomplete statistics,compiled,S0414,Yang et al. compilation; tonnage not given.
+2015,global,wind turbines,,17,share of incomplete statistics,compiled,S0414,Alternative six-sector subset (37 500 t): wind 23%.
+2015,global,computer hard-disk drives,,15,share of incomplete statistics,compiled,S0414,
+2015,global,EV/HEV,,14,share of incomplete statistics,compiled,S0414,
+2015,global,e-bikes,,12,share of incomplete statistics,compiled,S0414,
+2019,global,NdFeB magnets (all),130.0,,kt magnet,compiled,S0401,About 130 000 t NdFeB produced worldwide in 2019 (EUR 6.5 bn).
+2020,global,wind turbines (labelled offshore in source),16.9,14.2,kt magnet; share of 119.2 kt,compiled,S0413,"DOE Table 9 label is offshore wind; onshore PM turbines (22% of onshore in 2020, S0401) may sit in industrial or other: unresolved."
+2020,global,electric vehicles,7.3,6.1,kt magnet; share of 119.2 kt,compiled,S0413,
+2020,global,"consumer electronics (HDD, phones, speakers, other)",35.1,29.4,kt magnet; share of 119.2 kt,compiled,S0413,
+2020,global,industrial motors,36.0,30.2,kt magnet; share of 119.2 kt,compiled,S0413,
+2020,global,non-drivetrain motors in vehicles,9.4,7.9,kt magnet; share of 119.2 kt,compiled,S0413,
+2020,global,"other sintered (power tools, e-bikes)",6.5,5.5,kt magnet; share of 119.2 kt,compiled,S0413,
+2020,global,bonded magnets,8.0,6.7,kt magnet; share of 119.2 kt,compiled,S0413,
+2020,US,consumer electronics,,45,share,compiled,S0413,"DOE Table 3: US share: electronics 45%, industrial 30%, EV 11%, vehicle non-drivetrain 9%, bonded 4%, other 1%, wind 0%."
+2030,global,wind turbines (high-growth projection),139.2,36.0,kt magnet; share of 387 kt,modelled,S0413,"Projection, not a measurement. EVs 114.1 kt (29.5%)."
+2050,global,wind turbines (high-growth projection),273.7,36.3,kt magnet; share of 753.2 kt,modelled,S0413,EVs 266 kt (35.3%).
+2020,global wind fleet,share of new offshore turbines with PM generators,,72,% of turbines installed in 2020,compiled,S0401,JRC 2023: nearly 100% in the EU.
+2020,global wind fleet,share of new onshore turbines with PM generators,,22,% of turbines installed in 2020,compiled,S0401,JRC 2023: about 13% in the EU.
+2024,global,"all magnet REE (Nd, Pr, Dy, Tb)",40.0,,"kt magnet REE (about 40 kt today, IEA)",compiled,S0403,IEA 2026 text: from about 40 kt to about 70 kt by 2040; EVs become the largest share by the mid-2030s. Wind and EV shares not read from charts.
