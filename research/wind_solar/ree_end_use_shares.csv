@@ -19,4 +19,4 @@ year,scope,sector,magnet_kt,share_pct,unit_basis,basis,source_ids,notes
 2050,global,wind turbines (high-growth projection),273.7,36.3,kt magnet; share of 753.2 kt,modelled,S0413,EVs 266 kt (35.3%).
 2020,global wind fleet,share of new offshore turbines with PM generators,,72,% of turbines installed in 2020,compiled,S0401,JRC 2023: nearly 100% in the EU.
 2020,global wind fleet,share of new onshore turbines with PM generators,,22,% of turbines installed in 2020,compiled,S0401,JRC 2023: about 13% in the EU.
-2024,global,"all magnet REE (Nd, Pr, Dy, Tb)",40.0,,"kt magnet REE (about 40 kt today, IEA)",compiled,S0403,IEA 2026 text: from about 40 kt to about 70 kt by 2040; EVs become the largest share by the mid-2030s. Wind and EV shares not read from charts.
+2024,outside China,"all magnet REE (Nd, Pr, Dy, Tb)",40.0,,"kt magnet REE outside China (about 40 kt today, IEA)",compiled,S0403,IEA 2026 text: magnet rare-earth demand OUTSIDE CHINA from about 40 kt today to about 70 kt by 2040 (global demand crossing 120 kt by 2030 and 175 kt by 2050). EVs become the largest share by the mid-2030s. Wind and EV shares not read from charts.

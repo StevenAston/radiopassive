@@ -17,7 +17,7 @@ Full table: `material_intensity.csv`. Headline values (JRC 2020, 2018 vintage, S
 | Technology | Material | t/GW | Notes |
 |---|---|---|---|
 | Wind, all types | Steel | 107 000-132 000 | plus cast iron 18 000-20 800 |
-| | Concrete | 243 000-413 000 | DD-PMSG (offshore proxy) lowest, GB-PMSG highest |
+| | Concrete | 243 000-413 000 | DD-PMSG (offshore proxy) lowest, GB-PMSG highest; JRC Table 2 prints the range as 243 500-413 000 but the DD-PMSG cell as 243 000 |
 | | Copper | 950-5 000 | DD-EESG 5 000, DD-PMSG 3 000, GB-DFIG 1 400, GB-PMSG 950; array cables excluded |
 | | Aluminium | 500-1 600 | |
 | | Glass/carbon composites | 7 700-8 400 | glass fibre at most 88% |
@@ -26,7 +26,7 @@ Full table: `material_intensity.csv`. Headline values (JRC 2020, 2018 vintage, S
 | Wind, DD-PMSG | Nd / Pr / Dy / Tb | 180 / 35 / 17 / 7 | |
 | Wind, GB-PMSG (hybrid) | Nd / Pr / Dy / Tb | 51 / 4 / 6 / 1 | |
 | Wind, GB-DFIG | Nd / Dy | 12 / 2 | small magnets in tower fixtures |
-| Wind, NdFeB magnet mass | | 250-600 kg/MW (S0414); about 620 kg/MW for DD-PMSG implied by JRC Nd at 29% | the two differ by about 1.5x at the top |
+| Wind, NdFeB magnet mass | | 250-600 kg/MW (S0414); about 620 kg/MW for DD-PMSG implied by JRC Nd at 29% | the two differ by about 1.5x at the top; JRC element splits are themselves inconsistent (Nd 29% gives 621 kg/MW, Dy 4% gives 425, B 1% gives 600) and JRC text quotes 186 kg/MW Nd for direct drive vs 62 for hybrid |
 | PV, balance of system and module (2018) | Concrete / steel / glass | 60 700 / 67 900 / 46 400 | from Jean et al. 2015 via JRC |
 | | Aluminium / copper / plastic | 7 500 / 4 600 / 8 600 | |
 | c-Si | Silicon (solar grade) | 16 000 (2004); 4 000 (2018); 2 100-3 000 expected 2028 | thrifting of 4x in 14 years |
@@ -45,7 +45,7 @@ Seed values are in `footprint_inputs.csv` (Bq per tonne of refined commodity, he
 
 | Commodity / residue | Group | Low | Central | High | Basis and key input |
 |---|---|---|---|---|---|
-| REE oxide, Bayan Obo tailings | Th232 | 1.1e8 | 1.5e8 | 1.9e8 | 113 t tailings per t REO at 1.0-1.6 Bq/g; ore route agrees (S0404, S0405) |
+| REE oxide, Bayan Obo tailings | Th232 | 1.1e8 | 1.5e8 | 1.8e8 | 113 t tailings per t REO at 1.0-1.6 Bq/g (high = 113 x 1.6 = 1.81e8); ore route agrees (S0404, S0405) |
 | REE, Bayan Obo process residue (RE slag) | Th232 | 7.6e6 | 1.2e7 | 2.0e7 | concentrate 5.3-10 Bq/g at 50-70% REO |
 | REE, Mount Weld to Lynas WLP | Th232 | 6e6 | 1.5e7 | 3.7e7 | ore 0.075% ThO2 at 17-18% REO; WLP measured 6.2 Bq/g, about 75 000 t/a (S0406) |
 | REE, ionic clay | Th232 | 1.8e7 | 8.9e7 | 3.6e8 | ThO2 0.005%, REO 0.05-1%; soil-like concentrations, large tonnage |
@@ -71,7 +71,7 @@ Other residue activities for context (S0423, S0404, S0405): REE-extraction sludg
 - The REE-mineral phase is a bastnaesite plus thorium-deficient monazite. Th is not an ore-wide constant: it follows the monazite fraction.
 - Distribution in processing (S0405 Table 12 and text): iron concentrate 0.0073% ThO2 (0.26 Bq/g; was 0.024% early on); REE concentrate 0.2% ThO2 (7.1 Bq/g); tailings 0.028-0.048% ThO2 (1.0-1.6 Bq/g Th-232, U-238 0.022); ferrous slag 0.5-1.6 Bq/g; REE oxide product 0.0069% ThO2. In iron-making 96-98% of the Th goes to slag, 0.1-0.5% to off-gas, 0.6-2.0% to liquid effluent.
 - Inventories (to end 2006): tailings 149 Mt (6.55 Mt in 2006), blast-furnace slag 55 Mt, alloy slag 0.96 Mt, RE slag 261 000 t produced (437 300 t stored), waste rock 560 Mt. Tailings pond covers 11 km2. Waste-rock Th is above 1 Bq/g only near the ore boundary.
-- Implied thorium per tonne REO produced is about 1.1e8-1.9e8 Bq Th-232 (about 1.5e9 Bq for the whole series); only about 8% of the Th follows the REE concentrate. This implies an overall REO recovery near 15% (my inference).
+- Implied thorium per tonne REO produced is about 1.1e8-1.8e8 Bq Th-232 (about 1.5e9 Bq for the whole series); only about 8% of the Th follows the REE concentrate. This implies an overall REO recovery near 15% (my inference).
 - Not reconciled: S0405 gives 100 000 t/a RE concentrate and also "more than 7000 t/a of REO" at BTISP; China-wide REO was 98 kt in 2004 with 59% from Bayan Obo (S0404). Bayan Obo REO output by year is needed from Task 1.9.
 
 ## 5. Co-product allocation inputs (D6)
@@ -89,13 +89,14 @@ Table: `co_product_inputs.csv`.
 Table: `ree_end_use_shares.csv`.
 
 - NdFeB magnet demand 2020 (S0413): total 119.2 kt; **wind 14.2% (16.9 kt)**, EVs 6.1%, consumer electronics 29.4%, industrial motors 30.2%, non-drivetrain vehicle motors 7.9%, other sintered 5.5%, bonded 6.7%. The DOE label says "offshore wind turbines"; whether onshore PM turbines are missing or included in "industrial" is unresolved. Projected high-growth shares: wind 36% in 2030 and 2050; EVs 29.5% and 35%.
+- IEA 2026 (S0403): magnet rare-earth demand OUTSIDE CHINA is about 40 kt today, about 70 kt by 2040; global demand crosses 120 kt by 2030 and 175 kt by 2050.
 - Earlier: 2015 wind 17% (23% in a six-sector subset), cars 43%, HDD 15%, EV/HEV 14% (S0414, incomplete statistics); 2006 magnets were 19% of REE consumption by mass (S0404 Table 1); 2008 about 26 kt REO into NdFeB.
 - Gaps for sigma_c: no annual series 1990-2024 and no pre-2006 end-use split. Proposed method: wind magnet demand = annual capacity additions x PM penetration x magnet kg/MW (250-600) divided by annual NdFeB production, calibrated to the 2015 and 2020 shares. Heim and Vander Wal 2023 (S0416, not read) is the lead for a longer series.
 - **Solar PV uses no rare earths** in the JRC 2020 and 2023 element lists (Si, Ag, Cd, Te, Cu, In, Ga, Se, Ge, Al, Sn, Pb and others). UNSCEAR 2016 mentions "small amounts of rare earth elements" in c-Si cells (paras 182-187) without any quantity; JRC does not support it. Set solar REE intensity to zero.
 
 ## 7. End of life
 
-- Volumes: PV panel waste about 78 Mt cumulative by 2050 (S0417); blade waste 43.4 Mt cumulative by 2050 (range 21.4-69.4 Mt), above 2 Mt/a in the 2040s (S0418); wind could supply about half of end-of-life magnet feedstock by 2030 (S0403). By-year series are a gap (the IRENA full report and the IEA-PVPS tables were not opened).
+- Volumes: PV panel waste about 78 Mt cumulative by 2050 (S0417); blade waste 43.4 Mt cumulative by 2050 (range 21.4-69.4 Mt; includes manufacturing, testing and in-service waste as well as end of life), with more than 2 Mt of blade waste in 2050 (S0418); IEA says that by 2030 Europe (not the world) is set to generate about 50% of global end-of-life magnet feedstock from wind turbines and 25% from EV motors (S0403). By-year series are a gap (the IRENA full report and the IEA-PVPS tables were not opened).
 - **Radiologically negligible, with this basis:** (i) end-of-life panels and blades are made of refined commodities, in which U and Th have been separated into residues during refining (for example 96-98% of Bayan Obo Th goes to iron-making slag, S0405); (ii) there is no new mobilisation: any activity associated with making the materials was counted at the commodity-supply stage; (iii) the one REE-bearing component, the NdFeB magnet, carries about 0.09 Bq/g Th-232 at most (REE oxide product 0.0069% ThO2 = 0.25 Bq/g, times about 35% oxide-equivalent in the magnet; my arithmetic), below the 1 Bq/g D21 threshold. Recycling-smelter off-gas Pb-210/Po-210 is a small fraction of the primary-smelter figures.
 - Caveat for the orchestrator: if all end-of-life mass were assumed to carry soil-level activity (0.04 Bq/g), the cumulative activity to 2050 would be of order 4e15 Bq. The METHODS 10.3 test (0.1% of the stream total in every decade) would then depend on the comparison basis. The robust argument is the D21 threshold plus "already counted at supply", not a comparison of totals.
 
@@ -106,14 +107,14 @@ Residue types asked for: ree_tailings, ree_process_residue, red_mud, metal_taili
 Measured or published inputs:
 
 - Emanation coefficient E (fraction of Rn atoms formed that leave the grain): mill tailings, rocks and soils 0.1-0.3, fly ash below 0.1 (S0203, from the Task 1.3 notes); **untreated dry red mud 0.20** (S0425); monazite grains 0.002 for Rn-222 and 0.0002 for Rn-220 (S0404 Table 26; the mineral is bound, ground tailings will be higher: no value found).
-- Measured flux: Olympic Dam tailings 0.3-1.27 Bq/m2/s (mean 0.48; 2010 monitoring 0.3, 31 samples); completed tailings facility 13.9 MBq/s, 520 TBq/a (S0408). Ore in the pit 2.5 Bq/m2/s unbroken, 12.5 broken.
+- Measured flux: Olympic Dam tailings 0.3-1.27 Bq/m2/s (mean 0.48; 2010 monitoring 0.3, 31 samples); completed tailings facility 13.9 MBq/s, 520 TBq/a (S0408; source quirk: 13.9 MBq/s is about 439 TBq/a, about 18% below the 520 TBq/a in Table 4 of the same document). Ore in the pit 2.5 Bq/m2/s unbroken, 12.5 broken.
 - No measured flux found for REE tailings, red mud, iron-ore tailings or slag. Thoron (Rn-220) near the Bayan Obo disposal site was measured as potential alpha energy concentration only (S0405).
 
 **Important finding for the engine (METHODS 5.2):** the provisional epsilon of 0.2 (0.05-0.35) equals the emanation coefficient, not the fraction that escapes from a thick deposit. In a deposit of depth H only a surface layer of thickness about the diffusion length L contributes to the flux, so
 
 $$\varepsilon\approx E\,\frac{L}{H},\qquad \varepsilon=\frac{J\,A_{\text{area}}}{\lambda_{\text{Rn}}\,A_{\text{Ra}}}$$
 
-where $J$ is the measured flux in Bq m$^{-2}$ s$^{-1}$, $A_{\text{area}}$ the surface area, $\lambda_{\text{Rn}}=2.1\times10^{-6}$ s$^{-1}$ and $A_{\text{Ra}}$ the Ra-226 inventory in Bq. With $L\approx1$-$2$ m for Rn-222 in unsaturated material and $H\approx5$-$30$ m, $\varepsilon\approx0.002$-$0.05$. Check against Olympic Dam (extractor's arithmetic, assuming about 100-800 Mt of tailings at 7 Bq/g Ra-226, which is an assumption): $J\,A_{\text{area}}=1.39\times10^{7}$ Bq/s gives $\varepsilon\approx0.1$-$1\%$. So 0.2 may overstate radon from deep tailings by one to two orders of magnitude; thin or shallow residues (spread fly ash, thin red-mud layers) approach $E$. For thoron the diffusion length is a few centimetres, so for a deep deposit $\varepsilon_{\mathrm{Rn220}}$ is of order $10^{-4}$-$10^{-3}$. Whether the pipeline's flow in Bq/a for Rn-222+ counts decays or Bq-exhaled needs a check against the UNSCEAR flux convention (a flux of 1 Bq m$^{-2}$ s$^{-1}$ is an atom flux times $\lambda$).
+where $J$ is the measured flux in Bq m$^{-2}$ s$^{-1}$, $A_{\text{area}}$ the surface area, $\lambda_{\text{Rn}}=2.1\times10^{-6}$ s$^{-1}$ and $A_{\text{Ra}}$ the Ra-226 inventory in Bq. With $L\approx1$-$2$ m for Rn-222 in unsaturated material and $H\approx5$-$30$ m, $\varepsilon\approx0.002$-$0.05$. Check against Olympic Dam (extractor's arithmetic; the 100-800 Mt tailings inventory is my own unsourced assumption, as is the 7 Bq/g Ra-226 used with it): $J\,A_{\text{area}}=1.39\times10^{7}$ Bq/s gives $\varepsilon\approx0.1$-$1\%$. The implied ε of about 0.004 (0.1-1%) is therefore only as good as that assumed inventory. A further datum (leads, not read by me): effective radon diffusion coefficients measured at western US uranium tailings average about $1.4\times10^{-7}$ m$^2$/s (WISE Uranium calculator page, after Nielson 1986), which gives $L=\sqrt{D/\lambda}\approx0.25$ m, so ε could be lower still than the 1-2 m slab case above. So 0.2 may overstate radon from deep tailings by one to two orders of magnitude; thin or shallow residues (spread fly ash, thin red-mud layers) approach $E$. For thoron the diffusion length is a few centimetres, so for a deep deposit $\varepsilon_{\mathrm{Rn220}}$ is of order $10^{-4}$-$10^{-3}$. Whether the pipeline's flow in Bq/a for Rn-222+ counts decays or Bq-exhaled needs a check against the UNSCEAR flux convention (a flux of 1 Bq m$^{-2}$ s$^{-1}$ is an atom flux times $\lambda$).
 
 Proposed values (all `modelled`; slab model $E\,L/H$; need Task 3 review):
 
@@ -128,6 +129,7 @@ Proposed values (all `modelled`; slab model $E\,L/H$; need Task 3 review):
 
 ## 9. Contradictions, quality flags and assumptions I made
 
+- Silicon commodity code: `silicon_mg` is used in availability.csv for the silicon intensity of c-Si modules. Solar-grade polysilicon is made from metallurgical-grade silicon, so the code refers to the upstream MG-Si (quartz, reductant, electrodes, electricity) and the Si t/GW figures are solar-grade output; the MG-Si input is larger by the process yield (not sourced).
 - Bayan Obo REE output: 100 000 t/a concentrate vs "7000 t/a REO" in the same paper (S0405); the 2004 China figure (S0404) is in a different year from the 2006 tailings figure used for the per-REO value. Result is robust (two routes agree within 30%) but rests on an inferred 15% recovery.
 - Bayan Obo ThO2: 0.04% (S0404, 1.4 Bq/g) vs 0.032% (S0405) vs 0.07% (2.6 Bq/g): all kept as a range.
 - Lynas data: the author calculates Th mass 1532 mg/kg and 1655 mg/kg from the same activity (S0406), and Lynas Malaysia supported the work. WLP tonnage 75 000 t/a is one reported average.
@@ -149,7 +151,7 @@ Proposed values (all `modelled`; slab model $E\,L/H$; need Task 3 review):
 ## 11. Inaccessible or unread sources (for Steve to try)
 
 - MDPI Minerals 2023, Heim and Vander Wal, NdFeB sector shares: https://www.mdpi.com/2075-163X/13/10/1274 (S0416, HTTP 403).
-- BHP Olympic Dam Draft EIS appendix on uranium and radiation (ore, slag, tailings, smelter stack): https://www.bhp.com/-/media/bhp/regulatory-information-media/copper/olympic-dam/0000/draft-eis-appendices/odxeisappendixsuraniumandradiation.pdf (S0428, 403 to curl).
+- BHP Olympic Dam Draft EIS Appendix S, Uranium and Radiation (2009): https://www.bhp.com/-/media/bhp/regulatory-information-media/copper/olympic-dam/0000/draft-eis-appendices/odxeisappendixsuraniumandradiation.pdf (S0428; curl gives 403, but the fetch tool retrieves it). The extract has no tailings Ra-226, slag Pb-210/Po-210 values or stack data; it says only that Pb-210 in flash-furnace slag is about 10 times Po-210.
 - BHP Supplementary EIS Appendix M (read only through the fetch tool; curl gives 403): https://www.bhp.com/-/media/bhp/regulatory-information-media/copper/olympic-dam/0000/supplementary-eis-appendices/appendix-m_radiation.pdf (S0408).
 - Poffijn, NORM in the non-ferrous industry in Belgium: https://ena-norm.eu/wp-content/uploads/2024/04/1_2_06_Poffijn-Experience-non-ferrous-Belgium.pdf (S0427, 403).
 - IRENA full end-of-life report (403 to curl): https://www.irena.org/publications/2016/Jun/End-of-life-management-Solar-Photovoltaic-Panels (S0417; only the IEA-PVPS summary was read).
