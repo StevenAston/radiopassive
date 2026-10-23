@@ -89,7 +89,7 @@ Caution: S0321 measures emanation fractions, not the effective exhalation fracti
 
 
 ## Verification note (2026-10-22)
-Independent check: passes with fixes. Exactly reproduced from NPWGD v3.0: the Marcellus, Utica, Williston, Fayetteville and Gulf Coast medians. Confirmed against source: PA DEP Tables 3-15 and 3-18 and the cuttings/filter values; OSPAR 2018 (including its text/table inconsistency); Rowan 2011 (including its 734 vs 1,011 inconsistency).
+Independent check: passes with fixes. Second pass (2026-10-22): the seven sources unchecked in the first pass (S0308, S0311, S0314, S0316, S0319, S0321, S0326) were read in full and all confirm the values used here; no errors. Exactly reproduced from NPWGD v3.0: the Marcellus, Utica, Williston, Fayetteville and Gulf Coast medians. Confirmed against source: PA DEP Tables 3-15 and 3-18 and the cuttings/filter values; OSPAR 2018 (including its text/table inconsistency); Rowan 2011 (including its 734 vs 1,011 inconsistency).
 
 ¹ **Appalachian conventional not reproduced:** the builder's filter was undocumented. The verifier's filter (Appalachian basin excluding Marcellus and Utica) gives n = 109/72, Ra-226 median 17.4, p95 122 Bq/L. Phase 2 should use a documented filter, and carry the two results as a band until then.
 
