@@ -32,7 +32,7 @@ Pre-1950: radium era only; qualitative (S0119); `no_data` for quantities. Red Bo
 Total activity of PWR 40 GWd/t, Bq/tHM: 2.48e16 (5 a), 9.46e15 (30 a), 1.83e15 (100 a), 1.35e14 (500 a), 7.85e13 (1,000 a), 4.29e13 (2,000 a), 2.84e13 (5,000 a), 2.09e13 (10⁴ a).
 - PWR 20/60 at 5 a: 1.40e16 / 3.40e16. BWR 15/30/50 at 5 a: 1.12e16 / 1.89e16 / 2.87e16.
 - Decay power, W/tHM (PWR 40, same eight times): 2266, 930, 373, 117, 67, 35, 23, 16. PWR 60 at 5 a: 3711; BWR 30 at 5 a: 1601.
-- Dominant: Cs-137+, Sr-90+, Pu-241 (5–100 a); Am-241 68% at 500 a; Pu-239 (~35%) and Pu-240 (~24%) at 10⁴ a.
+- Dominant: Cs-137+, Sr-90+, Pu-241 (5–100 a); Am-241 68% at 500 a; Pu-239 and Pu-240 at 10⁴ a (BWR 15 GWd/t: Pu-239 63%, Pu-240 31%; BWR 30 GWd/t: Pu-239 54%, Pu-240 36%; BWR 50 GWd/t: Pu-239 47%, Pu-240 39%; PWR 20 GWd/t: Pu-239 61%, Pu-240 32%; PWR 40 GWd/t: Pu-239 53%, Pu-240 36%; PWR 60 GWd/t: Pu-239 45%, Pu-240 42%; corrected after verification).
 
 **Reduced set (33 heads)**: H-3, C-14, Ni-59, Ni-63, Co-60, Kr-85, Sr-90, Zr-93, Tc-99, Ru-106, Sb-125, I-129, Cs-134, Cs-135, Cs-137, Ce-144, Pm-147, Sm-151, Eu-154, Eu-155, U-234, U-236, Np-237, Pu-238, Pu-239, Pu-240, Pu-241, Pu-242, Am-241, Am-243, Cm-244, Cm-245, Cm-246 (daughters in head activity as reported).
 - Covers at least 99.02% of activity (PWR 60, 10⁴ a) and 99.58% of known-energy decay power, in all six burnup cases for 5 a to 10⁴ a.
@@ -140,3 +140,19 @@ No annual throughput found for Sellafield B205, Marcoule UP1 or Mayak RT-1.
 
 - `ospar_liquid_discharges_1989_2023.csv`: year, sub_sector, quantity, value_tbq_per_a (S0122).
 - `spent_fuel_inventory_derived.csv`: reactor, burnup_gwd_per_thm, cooling_time_a, group_head, activity_bq_per_thm, share_of_total. PWR 20/40/60 and BWR 15/30/50 GWd/t at 5, 30, 100, 500, 1,000, 2,000, 5,000, 10,000 a; 33 heads plus other_unlisted and totals (activity and W/tHM). Basis: modelled from S0100 with S9004. Daughters are collapsed into heads.
+
+
+## Verification note (2026-10-22, provisional)
+The independent check passes with fixes, but is **provisional**: the external spot-checks could not run (a tool outage), so they will be re-run.
+
+Confirmed internally:
+- the decay from 500 a to 10⁴ a (Pu-239, Pu-240, Pu-242, Cm-245 and Am-241 recomputed);
+- the reduced-set activity coverage (≥ 99.02%);
+- the ε derivation, $\varepsilon = E\,(L/h)\tanh(h/L)$.
+
+Open items:
+1. **Decay-power coverage.** The ≥ 99.58% decay-power claim cannot be reproduced from the derived file: it holds total W only, not W per head. Per-head W is to be added.
+2. **Short cooling times.** The reduced set is shown for 5 a to 10⁴ a. METHODS §4.2 asks for 1 a; that needs Zr-95, Nb-95 and Cm-242 (S0102). To be closed.
+3. **Missing nuclides.** nuclides.csv lacks Ni-59, Zr-93, Nb-93m, Nb-94, Sn-126 and Am-242m (a Task 0.3 addendum). U-235m is deliberately omitted (negligible energy).
+4. **ε for uranium tailings.** The 0.01–0.14 range is physically sound for deep covered piles, but rests on one parameter set. It is a candidate for per-residue values in residue_types.csv, with 0.2 kept as an upper bound. This needs no METHODS change, since ε is set per residue type in Phase 1.
+5. **availability.csv "None" methods.** Rows whose method is "None" mean *not applicable / zero by construction* (e.g. ISL before the 1960s, civil reprocessing pre-1950).

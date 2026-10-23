@@ -22,9 +22,9 @@ Produced water, Bq/L (median; p95; max), from task statistics of NPWGD v3.0 (S03
 |---|---|---|
 | Marcellus (n=100/96) | 46.6; 378; 626 | 4.7; 41; 114 |
 | Utica (43/17) | 48.5; max 134 | 44.7; max 53.5 |
-| Appalachian conventional (101/65) | 16.7; 75; 196 | 18.5; 81; 888 (outlier) |
+| Appalachian conventional (101/65) ¹ | 16.7; 75; 196 | 18.5; 81; 888 (outlier) |
 | Bakken/Three Forks (17) | 73.4; 135; 157 | 63.8; 72; 73 |
-| Gulf Coast, Mississippi 1984 (17/12) | 18.6; 38.6 | 22.7; 48 |
+| Gulf Coast basin (TX, LA, MS, AL, FL; label corrected) (17/12) | 18.6; 38.6 | 22.7; 48 |
 | Fayetteville (5) | 5.2; 9.6 | 0.9 |
 | Permian, NM (46; S0316) | mean 1.6 (0.03–4.1) | mean 5.6 (0.09–10.8) |
 | Norwegian shelf (S0304, S0308) | mean 4.1 (0.5–10) | mean 2.1 (0.5–8.7) |
@@ -35,7 +35,7 @@ Scale, Bq/g Ra-226: global 0.1–15,000 (S0304); US average 17.8 (S0328); Norway
 
 Gas radon, Bq/m³: UNSCEAR mean 625 wellhead, 300 sales gas (S0001); PA DEP median 1,547 (111–5,476) (S0301); USGS PA median 1,369 (S0317); Marcellus pipelines 1,983 weighted (S0318); historical US conventional mean 1,370, range 7–54,000 (S0318 citing Johnson 1973). Pb-210 on propanizer filters 132 Bq/g (S0301).
 
-Drill cuttings, U-238: PA vertical 0.054 Bq/g; Marcellus horizontal mean 0.31, max 1.0 Bq/g (S0301); Marcellus core 0.10–0.65 Bq/g (S0330); Bakken within soil range (S0331).
+Drill cuttings, U-238: PA vertical 0.054 Bq/g; Marcellus/Burkett/Utica horizontal mean 0.31, max 1.0 Bq/g (the max is a Utica sample; Marcellus-only max 0.61 Bq/g) (S0301); Marcellus core 0.10–0.65 Bq/g (S0330); Bakken within soil range (S0331).
 
 Volumes and routes (S0311): US 20.2, 21.2, 24.4 Gbbl (2007, 2012, 2017). 2017 routes: EOR 44.0%, disposal 37.9%, commercial 9.9%, discharge 5.5%, reuse 2.3%, evaporation 0.4%. Unconventional share about 16% in 2017 (my inference from S0315 and S0311, mixed sources). IOGP 2018: 58% re-injected.
 
@@ -86,3 +86,17 @@ Caution: S0321 measures emanation fractions, not the effective exhalation fracti
 - IOGP Report 412 (2016), not obtained: https://www.iogp.org/bookstore/product/412/
 - Not fetchable by my tools (bot walls): PMC, DukeSpace and ResearchGate pages. S0322's DukeSpace link was reached via an alternate route; test it.
 - S0311 slides were read through a summarising tool: confirm the numbers by opening https://www.gwpc.org/uploads/documents/2019_Annual_Forum/Veil_John.pdf.
+
+
+## Verification note (2026-10-22)
+Independent check: passes with fixes. Exactly reproduced from NPWGD v3.0: the Marcellus, Utica, Williston, Fayetteville and Gulf Coast medians. Confirmed against source: PA DEP Tables 3-15 and 3-18 and the cuttings/filter values; OSPAR 2018 (including its text/table inconsistency); Rowan 2011 (including its 734 vs 1,011 inconsistency).
+
+¹ **Appalachian conventional not reproduced:** the builder's filter was undocumented. The verifier's filter (Appalachian basin excluding Marcellus and Utica) gives n = 109/72, Ra-226 median 17.4, p95 122 Bq/L. Phase 2 should use a documented filter, and carry the two results as a band until then.
+
+Corrections applied: Gulf Coast label; cuttings label; drilling × oil_sands rows added. Primary-source count is 22 by type (the bibliography heading said 24). S0323 (Van Sice 2018) access to be confirmed: its figures came via press and abstracts.
+
+Not yet spot-checked (tool outage): S0308, S0311, S0314, S0316, S0319, S0321, S0326. These need checking before Phase 2 relies on them.
+
+Open decisions for Phase 2 (not blocking):
+- Bakken total Ra: NPWGD about 137 vs Scanlon about 44 Bq/L. Carry both as bounds.
+- og_scale and og_sludge ε: the proposed values are emanation, not exhalation. Treat them as upper bounds.

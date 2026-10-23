@@ -7,8 +7,8 @@ produced_water,Appalachian conventional,Ra-226,Bq/L,101,0.85,16.7,75,196,compute
 produced_water,Appalachian conventional,Ra-228,Bq/L,65,,18.5,81,888 (outlier),computed by task from database,S0303;S0302,ratio ~1.1
 produced_water,Williston Bakken/Three Forks,Ra-226,Bq/L,17,48,73.4,135,157,computed by task from database,S0303,Gallegos 2021 samples (MT/ND)
 produced_water,Williston Bakken/Three Forks,Ra-228,Bq/L,17,38,63.8,72,73,computed by task from database,S0303,Scanlon total-Ra median 1200 pCi/L (44 Bq/L) disagrees; flagged
-produced_water,Gulf Coast (Mississippi 1984),Ra-226,Bq/L,17,,18.6,,38.6,computed by task from database,S0302;S0303,
-produced_water,Gulf Coast (Mississippi 1984),Ra-228,Bq/L,12,,22.7,,48,computed by task from database,S0302;S0303,
+produced_water,Gulf Coast basin,Ra-226,Bq/L,17,,18.6,,38.6,computed by task from database,S0302;S0303,
+produced_water,Gulf Coast basin,Ra-228,Bq/L,12,,22.7,,48,computed by task from database,S0302;S0303,
 produced_water,Fayetteville,Ra-226,Bq/L,5,,5.2,,9.6,computed by task from database,S0303,
 produced_water,Fayetteville,Ra-228,Bq/L,5,,0.9,,,computed by task from database,S0303,
 produced_water,Powder River conventional,Ra-226,Bq/L,14,,0.4,,5.1,computed by task from database,S0303,
@@ -49,7 +49,7 @@ gas_radon,Marcellus pipelines,Rn-222,Bq/m3,,,1983 (weighted),,1520-2750,as repor
 gas_radon,US conventional 1952-73,Rn-222,Bq/m3,~2100,,1370,,7-54000,as compiled,S0318,
 gas_pb210,propanizer filter,Pb-210,Bq/g,1,,132,,,converted from pCi/g (3580),S0301,
 drill_cuttings,PA vertical,U-238,Bq/g,,,0.054,,,converted from pCi/g (1.47),S0301,
-drill_cuttings,Marcellus horizontal,U-238,Bq/g,18,,0.31 (mean),,1.0,converted from pCi/g (8.4; 27.0),S0301,
+drill_cuttings,Marcellus/Burkett/Utica horizontal,U-238,Bq/g,18,,0.31 (mean),,1.0,converted from pCi/g (8.4; 27.0),S0301,
 drill_cuttings,Marcellus shale (core),U-238,Bq/g,22,,,,0.10-0.65,converted from ppm U (8-53) at 12.35 Bq/kg per ppm,S0330,
 radon_emanation,barite pipe scale,Rn-222 emanation fraction,1,4,,"0.05 (cited, Nielson/Baird)",,0.037-0.138 (site means),as reported,S0321,TX 0.037 OK 0.087 KY 0.137 MI 0.138
 radon_emanation,mill tailings reference,Rn-222 emanation fraction,1,,,0.153,,,as reported,S0321,

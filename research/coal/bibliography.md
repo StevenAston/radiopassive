@@ -20,7 +20,7 @@ IDs S0200-S0254 (55 sources, full records in `sources_task13.csv`). UNSCEAR sour
 - **S0216 Lauer et al. 2015, ES&T 49:11227.** US coals Ra 28-39 Bq/kg; CCRs 213-297 Bq/kg; enrichment 7-10x. Quality: peer-reviewed, best modern US ash data.
 - **S0220 Chen et al. 2017.** China coal U 2.43 mg/kg (n=1883) and world 2.40 mg/kg (Ketris and Yudovich) by citation. Quality: secondary; primary papers paywalled.
 - **S0221 Karangelos, NORM III (Greece lignite).** Lignite Ra-226 346 Bq/kg; fly ash Ra-226 904, Pb-210 1158; ash-field exhalation 2-24 mBq/m2/s. Year inferred. Quality: peer-reviewed proceedings, one country.
-- **S0222 Chalupnik and Wysocka 2007; S0224, S0225, S0226.** Upper Silesian mine water: Ra-226 releases 400 (1987) to 77 (2006) MBq/d, Ra-228, waters to 390 kBq/m3, BaSO4 deposits to 400 kBq/kg, sediments median 409 Bq/kg (n=39). Contradiction on retention (over 70% vs about 40%). Quality: good measurements, Poland only.
+- **S0222 Chalupnik and Wysocka 2007; S0224, S0225, S0226.** Upper Silesian mine water: Ra-226 releases 400 (1987) to 77 (2006) MBq/d, Ra-228, waters to 390 kBq/m3 of Ra (nuclide unspecified, cited from Skubacz 1990; the paper's Ra-226 maximum is 110 kBq/m3), BaSO4 deposits to 400 kBq/kg, sediments median 409 Bq/kg (n=39). Contradiction on retention (over 70% vs about 40%). Quality: good measurements, Poland only.
 - **S0227 Trotti, coke-oven residues (Italy).** Only coke-oven data: dust Pb-210 14, Po-210 2; tar 181/177 Bq/kg. Quality: single plant.
 - **S0230 OWID / Energy Institute (Etemad and Luciani; Smil).** World coal TWh from 1800 (97; 569 in 1850; 5350 in 1900; 11333 in 1950); country series. Quality: compilation; energy units; US/Germany/China start 1900.
 - **S0231 UK DESNZ, Historical coal data 1853-.** Tonnes and consumption by sector; electricity share 2.5% (1913), 8.4% (1938), 15% (1949). Quality: official, best long UK series.
@@ -34,3 +34,7 @@ S0201 COALQUAL, S0233 USGS COALPROD, S0235 Klimont, S0236 Lei, S0237-S0246 (Cole
 
 ## Coverage judgement
 Strong: modern US/UK/Polish/Indian/Chinese composition and ash volumes, 1966-2024. Weak: everything before 1960 (only production and UK/US sector splits), FGD residue activities, coke ovens, domestic emissions, strip ratios.
+
+
+## Verification note (2026-10-20)
+Independent check: passes with fixes. Spot-checked figures confirmed (OWID coal energy; UK and US power shares; Silesian mine water; TRS 419 Table X; NRPB UK ash). Corrections applied: S0222 Ra label; enrichment conflict recorded; ash-radon flag rewritten (see notes.md). Read-source count is 21–28 depending on how S0224–S0226 are counted; either way ≥ 10.

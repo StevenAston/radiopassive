@@ -2,7 +2,7 @@
 
 IDs S0300–S0333 (34 sources; full records in `sources_task14.csv`). Existing UNSCEAR sources S0001, S0005 and S0008 are cited by ID and not repeated. Conversions: 1 pCi = 0.037 Bq; 1 pCi/L = 37 Bq/m³; 1 pCi/g = 0.037 Bq/g. Rank follows the source hierarchy (1 regulator, 2 compilation, 3 peer reviewed, 4 agency, 5 grey).
 
-## A. Primary sources (24)
+## A. Primary sources (24 listed; 22 by source type)
 
 ### Produced water: radium by play
 
