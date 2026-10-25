@@ -179,7 +179,7 @@ One task per stream: **1.2 Nuclear · 1.3 Coal · 1.4 Oil and gas · 1.5 Wind an
 | Description | Catalogue discrete events that move inventory between tiers. |
 | Input | Literature, regulator reports. |
 | Output / Effect | `data/events.csv`. |
-| Done condition | ≥ 15 events across ≥ 4 streams, each with date, location, stream, tier movement, activity estimate (low/central/high) and ≥ 1 source; the inclusion threshold is stated in METHODS.md; military events excluded per D9. |
+| Done condition | ≥ 15 events across ≥ 3 streams, with a recorded negative search for every stream that has no qualifying event (amended 2026-10-25, D32), each with date, location, stream, tier movement, activity estimate (low/central/high) and ≥ 1 source; the inclusion threshold is stated in METHODS.md; military events excluded per D9. |
 | Verification | `verifier` checks 5 random events against sources. |
 
 #### Task 1.9: Activity data spine

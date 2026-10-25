@@ -331,8 +331,8 @@ Allowed tiers per stage for non-transfer rows, as in METHODS §6.3 (`memo_earth_
 | `reprocessing` | sealed_fuel_cycle, liberated |
 | `sea_disposal` | sealed_fuel_cycle, liberated |
 | `decommissioning` | sealed_fuel_cycle, impounded, dispersed, liberated |
-| `accident` | sealed_in_core, sealed_damaged_core, liberated |
-| `coal_mining` | impounded, liberated, memo_earth_moved |
+| `accident` | sealed_in_core, sealed_fuel_cycle, sealed_damaged_core, liberated |
+| `coal_mining` | impounded, dispersed, liberated, memo_earth_moved |
 | `combustion_power` | impounded, reisolated, dispersed, liberated |
 | `combustion_nonpower` | impounded, dispersed, liberated |
 | `construction` | impounded, dispersed, liberated |

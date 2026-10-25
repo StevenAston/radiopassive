@@ -271,8 +271,8 @@ The same table serves **every** stream's construction materials, which satisfies
 | ① | Waste disposal at sea (civil share, 1946–1993) | — | — | — | packaged LLW dumped at sea (transfer from Sealed) |
 | ① | Plant construction | — | commodity own-residues | commodity residues used in products | commodity off-gas |
 | ① | Decommissioning | decommissioning waste | decommissioning residues | decommissioning residues released for reuse | decommissioning releases |
-| ① | Civil accidents | damaged core (remainder) | — | — | event releases (§9) |
-| ② | Coal mining | — | washery refuse; above-threshold waste | — | mine radon, mine water (radium) |
+| ① | Civil accidents | damaged core (remainder); fuel-cycle material at a fuel-cycle accident (source tier, D36) | — | — | event releases (§9) |
+| ② | Coal mining | — | washery refuse; above-threshold waste | refuse or slurry spread over land by an event (D36) | mine radon, mine water (radium) |
 | ② | Combustion — power | — | fly ash, bottom ash, FGD residue landfilled or ponded (↳ ash backfilled into mines) | ash and FGD gypsum used in products or fill | stack fly ash and volatiles (Pb-210, Po-210), ash-pond radon (§5.2 branch) |
 | ② | Combustion — non-power (industrial, residential, coke ovens) | — | ash and coke-oven residues landfilled | domestic ash spread on gardens and land | stack and chimney emissions; coke-oven gas |
 | ② | Plant construction | — | commodity own-residues | commodity residues used in products | commodity off-gas |
@@ -339,7 +339,7 @@ $$\text{intensity}_{\mathrm{constr,annual}}(y)=\frac{F_{\mathrm{constr}}(y)}{E_t
 
 An event is included if its central estimate meets **either**:
 - ≥ 1 TBq moved into the Liberated or Dispersed tier; **or**
-- ≥ 10⁵ t of NORM-bearing material released from impoundment.
+- ≥ 10⁵ t of NORM-bearing material released from impoundment, counted as **gross released mass**, including entrained water or process liquor (D33). Activity is always computed on the solids only, and each event states which basis its mass uses.
 
 Each event records: date, location, stream, a source tier and **one or more destination tiers** (e.g. Chernobyl: in core → liberated and → damaged core; an ash spill: impounded → liberated and → dispersed), total activity (low/central/high) with the detail by group in master transfer rows, and ≥ 1 source. The activity criterion counts only activity moved **into Liberated or Dispersed**; the mass criterion applies only to material released **from Impounded**. Events appear as markers on the timeline, and their activity transfers are included in the tier stocks.
 
@@ -358,8 +358,8 @@ $$\phi_{\mathrm{civil}}(c,y)=\min\left(1,\ \frac{R_{\mathrm{civil}}(y)-U_{\mathr
 
   Each row records which rule applied (`allocation_rule`).
 - **Dual-use reprocessing sites** (e.g. Sellafield, Marcoule, and Mayak's RT-1, which reprocessed civil VVER fuel from the late 1970s): discharges are split by the civil fraction of documented throughput. Where throughput is undocumented, the site-year is excluded and flagged.
-- **Excluded military events:** Windscale 1957, Kyshtym 1957, SL-1 1961, Hanford releases, and all weapons testing (which appears as a baseline only).
-- **Included civil events (indicative):** Chernobyl 1986, Fukushima Daiichi 2011, Three Mile Island 1979, Church Rock 1979; coal ash and slurry failures (e.g. TVA Kingston 2008, Dan River 2014, Martin County 2000); large produced-water spills; tailings failures in commodity chains attributable to ④ (e.g. Mount Polley 2014, copper; Brumadinho 2019, iron ore), each attributed by the allocation rules in §10.
+- **Excluded military events:** Windscale 1957, Kyshtym 1957, SL-1 1961, Hanford releases, Chalk River NRX 1952 (D34: its plutonium went to the US weapons programme and military personnel ran the clean-up; recorded in research/events/notes.md), and all weapons testing (which appears as a baseline only).
+- **Included civil events (indicative):** Chernobyl 1986, Fukushima Daiichi 2011, Three Mile Island 1979, Church Rock 1979; coal ash and slurry failures (e.g. TVA Kingston 2008, Dan River 2014, Martin County 2000); large produced-water spills (none found that meets §9.1; the negative search is recorded in research/events/notes.md, D32); tailings failures in commodity chains attributable to ④ (e.g. Mount Polley 2014, copper; Brumadinho 2019, iron ore), each attributed by the allocation rules in §10.
 
 ---
 
@@ -522,3 +522,4 @@ Collective dose is calculated **for the 2010 reference year only**, in the lifec
 | 2026-10-20 | From the Task 0.2 schema review: routine vs event transfers; chronic exhalation and seepage are engine processes, never data rows; release routes on Liberated rows; spent-fuel discharge recorded as a flow (clarification of §5.4); in-core inventory is the no-accident baseline; construction stages may write Dispersed and ⑤ gains a construction row; events may have several destination tiers. Added PD7 (decommissioning) and PD8 (pre-1950 opening stock). |
 | 2026-10-20 | Updated from Task 0.3 (ICRP 107): U238+ multiplier 3.0016; Cs137+ 1.944; C-14 half-life 5700 a; Ba-140/La-140 and Zr-95/Nb-95 kept separate; Te132+, Mo99+, Np237+ formed; equilibrium vs released-gas multipliers (§4.1a); Kr88+, Xe138+ added. |
 | 2026-10-20 | Revised after independent verification. Fixed the Rn220+ multiplier (5); rewrote the civil/military rule as a per-country-year rule order; added in-core inventory (§5.4) and the full accident-toggle mechanics. Also: per-nuclide NORM threshold; difference from the regulatory "+" convention; extra stages (non-power coal, sea disposal, tailings as fill, refining and pipeline scale, scrapping, oil sands, end of life); no-double-count rules; radon branching via $\varepsilon$; zero-bound and asymmetric uncertainty handling; Kr-85/H-3/C-14 persistence; per-TWh basic formula; country codes; rationale table; added PD5 and PD6. |
+| 2026-10-25 | Steve's decisions D32–D37: event mass criterion is gross released mass (§9.1); Chalk River NRX 1952 excluded as military (§9.2); no produced-water spill qualifies (§9.2); coal mining gains a Dispersed cell and accidents a fuel-cycle source tier (§6.3). Household biomass in scope for ⑤ (D37; text to follow with the addendum). |

@@ -127,11 +127,13 @@
   ],
   "accident": [
    "sealed_in_core",
+   "sealed_fuel_cycle",
    "sealed_damaged_core",
    "liberated"
   ],
   "coal_mining": [
    "impounded",
+   "dispersed",
    "liberated",
    "memo_earth_moved"
   ],

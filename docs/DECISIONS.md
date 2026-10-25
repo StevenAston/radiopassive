@@ -35,7 +35,14 @@ Each decision records what was decided, when, and where it is made operational. 
 | D29 | 2026-10-20 | Environment: pixi (Steve's `pixi.toml`), platforms `win-64` + `linux-64`, Python 3.15; Claude's Linux environment is detached outside the project folder. | pixi.toml |
 | D30 | 2026-10-20 | (was PD7) Decommissioning releases levelised like construction: over the plant's actual lifetime generation, or expected lifetime generation if not yet retired. | METHODS §8 |
 | D31 | 2026-10-20 | (was PD8) Opening stock at 1 January 1950 for residues created before 1950, estimated from pre-1950 production with the same factors, decayed to 1950, flagged `modelled`, shown as a distinct band. | METHODS §2.1; SCHEMA §3.2 |
+| D32 | 2026-10-25 | Events catalogue accepted with 3 streams (nuclear, coal, wind and solar materials): no civil oil and gas or other-energy event meets §9.1; the negative search is recorded and is itself a finding. | PLAN Task 1.8; research/events/notes.md |
+| D33 | 2026-10-25 | Event mass criterion counts gross released mass including entrained water or process liquor; activity always computed on solids. Keeps Dan River, Partizansk and Obed Mountain. | METHODS §9.1 |
+| D34 | 2026-10-25 | Chalk River NRX 1952 excluded as military (plutonium to the US weapons programme; military clean-up). Steve's reading, recorded as such. | METHODS §9.2 |
+| D35 | 2026-10-25 | Nuclide reference addendum approved (additions only): Ni-59, Zr-93, Nb-93m, Nb-94, Sn-126, Am-242m, Zr-95, Nb-95, Cm-242, Sr-89, Te-129m, Cs-136, Ce-141. | data/reference/nuclides.csv, groups.csv |
+| D36 | 2026-10-25 | Stage tiers: `coal_mining` gains `dispersed`; `accident` gains `sealed_fuel_cycle` (Tokaimura refiled to `accident`). | vocab.json; SCHEMA §5; METHODS §6.3 |
+| D37 | 2026-10-25 | Household (domestic) biomass heating is in scope for stream ⑤, consistent with coal including non-power use. | METHODS §2.3 / §6.3 (to be written with the addendum) |
+| D38 | 2026-10-25 | Steve's local USGS DS140 mirror may be read but never written; all outputs go to the radiopassive folder. | research/activity |
 
 No proposals outstanding.
 
-Previously: Task 0.1 signed off by Steve, 2026-10-20. Task 0.3 passes its amended done condition (D27) after independent verification; awaiting Steve's sign-off.
+**Phase 0 closed 2026-10-20.** Task 0.1 (methods), Task 0.2 (schema v2.1, validator, 556 spec-blind tests) and Task 0.3 (nuclide reference table) signed off by Steve.
