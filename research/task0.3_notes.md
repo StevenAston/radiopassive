@@ -277,3 +277,66 @@ Basis: the 103-nuclide IAEA comparison, with β intensities normalised as in §1
 **Group-level `e_per_head_decay_mev`** (IAEA-based vs ICRP, members weighted): natural-chain groups agree to within 1.3% (U238+ −0.2%, U235+ +0.6%, Ra226+ −0.1%, Ac227+ −0.1%, Th228+ +0.02%, Ra228+ −1.1%, Pb210+ −1.3%); `K40` −3.3%. Proposed **±1.5% for the U/Th-chain groups (`K40` ±3.5%)**. For the 52 artificial groups the median difference is 0.2% and the 95th percentile 16% (largest: Fe-55 +61%, Co-58 +15%, Xe-133m, Tc-99, Cs-135 about −16%). Proposed **±15% by default for artificial groups**, with the individual outliers listed above. The new groups `Ru103+`, `Sb125+`, `Kr88+`, `Xe138+` were not cross-checked: IAEA data were not fetched for the four added nuclides, so use ±15% for them.
 
 **Caveats.** (a) ICRP-107 and ENSDF share lineage, so for half-life, α and γ the real uncertainty could exceed these bands; the bands capture only the disagreement that remains after that shared ancestry. (b) The photon and electron bands reflect different X-ray/Auger procedures more than measurement error. (c) None of these bands include the uncertainty in the source activity data, which will dominate in the pipeline. (d) No change has been made to `nuclides.csv` or `groups.csv` for these bands (no uncertainty columns exist in SCHEMA §4.1–4.2); they are recommendations for the pipeline's factor tables.
+
+---
+
+## 12. Addendum D35 (2026-10-25): additions only
+
+Source: ICRP-107 via S9001–S9003, same method as §1 (energies = Σ yield × energy by ICRP radiation code; half-lives in ICRP units, Julian-year conversion; weights as in §2 J1/J2). Existing rows are byte-identical (new rows appended; checked by prefix comparison). Scratch scripts: `/tmp/claude-0/-home-claude/7f015155-d930-5c34-900b-ab275f11b117/scratchpad/addendum03/`.
+
+### 12.1 Nuclides added (15 rows; 107 → 122)
+
+Requested: Ni-59, Zr-93, Nb-93m, Nb-94, Sn-126, Am-242m, Sr-89, Te-129m, Cs-136, Ce-141. Progeny needed by the chains: **Sb-126m, Sb-126** (Sn-126), **Am-242, Np-238** (Am-242m), **Te-129** (Te-129m). **Zr-95, Nb-95 and Cm-242 were already present** (original 103-row list and their groups `Zr95`, `Nb95`, `Cm242`), so nothing was added or changed for them.
+
+| Nuclide | T½ | Mode → daughters (branching) | e_total (MeV) |
+|---|---|---|---|
+| Ni-59 | 1.01e5 a | EC/β⁺ → Co-59 | 0.006903 |
+| Zr-93 | 1.53e6 a | β⁻ → Nb-93m 0.975, Nb-93 0.025 | 0.019420 |
+| Nb-93m | 16.13 a | IT → Nb-93 | 0.031446 |
+| Nb-94 | 2.03e4 a | β⁻ → Mo-94 | 1.726542 |
+| Sn-126 | 2.3e5 a | β⁻ → Sb-126m | 0.194884 |
+| Sb-126m | 19.15 min | β⁻/IT → Te-126 0.86, Sb-126 0.14 | 2.180453 |
+| Sb-126 | 12.35 d | β⁻ → Te-126 | 3.109745 |
+| Am-242m | 141 a | IT/α → Am-242 0.9955, Np-238 0.0045 | 0.073350 |
+| Am-242 | 16.02 h | β⁻/EC → Cm-242 0.827, Pu-242 0.173 | 0.199434 |
+| Np-238 | 2.117 d | β⁻ → Pu-238 | 0.839812 |
+| Sr-89 | 50.53 d | β⁻ → Y-89 | 0.584626 |
+| Te-129m | 33.6 d | IT/β⁻ → Te-129 0.63, I-129 0.37 | 0.308461 |
+| Te-129 | 69.6 min | β⁻ → I-129 | 0.606108 |
+| Cs-136 | 13.16 d | β⁻ → Ba-136 | 2.273211 |
+| Ce-141 | 32.508 d | β⁻ → Pr-141 | 0.247832 |
+
+### 12.2 Groups added (9 rows; 69 → 78)
+
+All have `role = artificial`, `multiplier_scope = stock_and_flow`, empty `parent_group` (SCHEMA: artificial groups carry none; G05 concerns released-gas groups only and is untouched). Weights follow the existing artificial convention: daughter weight = Σ over parent paths of weight × branching × $\lambda_d/(\lambda_d-\lambda_h)$ (with $\lambda_h$ the head's decay constant), and $\bar E_k=\sum_i w_i\,\bar E_{\text{tot},i}$.
+
+| Group | Members and weights | m | $\bar E_k$ (MeV) | Derivation of $\bar E_k$ |
+|---|---|---|---|---|
+| `Ni59` | Ni-59 (1) | 1 | 0.0069032 | single nuclide |
+| `Zr93+` | Zr-93 (1); Nb-93m (0.97501028) | 1.97501028 | 0.050080183 | 0.01941981 + 0.97501028 × 0.031446205. Nb-93m / Zr-93 half-life ratio 1.05 × 10⁻⁵; weight = 0.975 × 1.0000105. |
+| `Nb94` | Nb-94 (1) | 1 | 1.7265416 | single |
+| `Sn126+` | Sn-126 (1); Sb-126m (1.0000000); Sb-126 (0.14000002) | 2.14000002 | 2.8107017 | 0.19488447 + 2.1804529 + 0.14 × 3.10974474. Ratios 1.6 × 10⁻¹¹ and 1.5 × 10⁻⁷. |
+| `Am242m+` | Am-242m (1); Am-242 (0.9955129); Np-238 (0.004500185) | 2.00001308 | 0.2756685 | 0.0733503 + 0.9955129 × 0.19943376 + 0.004500185 × 0.83981159. Cm-242 and Pu-242 (Am-242 products) and Pu-238 (Np-238 product) are separate heads. |
+| `Sr89` | Sr-89 (1) | 1 | 0.58462585 | single |
+| `Te129m+` | Te-129m (1); Te-129 (0.63090756) | 1.63090756 | 0.69085958 | 0.30846145 + 0.63090756 × 0.60610802. Te-129 / Te-129m ratio 1.44 × 10⁻³ (factor 1.001442). I-129 (existing head) takes the other 37% and Te-129's decays. |
+| `Cs136` | Cs-136 (1) | 1 | 2.2732111 | single |
+| `Ce141` | Ce-141 (1) | 1 | 0.2478322 | single |
+
+**Independent recomputation** (script `verify.py`; parses the raw icrp.org `ICRP-07.NDX`, not the RadData copy used for the build): `Te129m+` m = 1.630908 (table 1.63090756); `Sn126+` m = 2.140000 (2.14000002); `Am242m+` m = 2.000013 (2.00001308); Cs-136 e_total summed straight from the `.RAD` lines = 2.273211 (table 2.27321114). All agree to the stated rounding.
+
+### 12.3 Judgement calls
+
+1. **Zr-95 / Nb-95 stay separate** (precedent: `Zr95`, `Nb95`, §3). Nb-95 (35.0 d) / Zr-95 (64.0 d) = 0.546, far above 1/10, so Nb-95 is not in equilibrium with its parent; unchanged. Likewise Ba-140/La-140. The Zr-95 → Nb-95m branch (1.08%, 0.32% of energy) remains omitted, as before.
+2. **Zr93+ includes Nb-93m as progeny** although Nb-93m (16 a) is long enough to matter on century timescales. The 1/10 rule is met by five orders of magnitude, so a head-only engine with a fixed multiplier is consistent: Nb-93m is in equilibrium with Zr-93 whenever Zr-93 is old enough to matter (≫ 16 a). For *young* Zr-93 (< ~50 a, e.g. fresh in-core inventory) the Nb-93m activity is still building up and the multiplier overstates the Nb-93m part; the effect on $\bar E_k$ is small (Nb-93m is 0.031 MeV against Zr-93's 0.019 MeV, so up to ~0.03 MeV of 0.05).
+3. **Am242m+ does not absorb Cm-242**, although Cm-242 (162.8 d) is < 1/10 of Am-242m's half-life. Cm-242 is an existing independent head fed from other sources (Am-241 neutron capture via Am-242, not only Am-242m), and the schema has no parent link for artificial groups. The Am-242 → Cm-242 (0.827) and Pu-242 (0.173) flows are available from `nuclides.csv` `daughters`. Np-238 (0.45%) is included for completeness (D24).
+4. **Te129m+ weight for Te-129 is 0.6309**, not 1: only the IT branch passes through Te-129; the β⁻ branch goes straight to I-129. I-129 is not folded in (T½ 1.57e7 a).
+5. **Sb-126m and Sb-126 are not heads of their own groups**; they appear only inside `Sn126+`. Sb-126m → Sb-126 is 14%.
+6. **Nb-93m, Sb-126m, Sb-126, Am-242, Np-238 and Te-129 have no single-nuclide groups** (not heads), as for other progeny.
+
+### 12.4 Possible issues in existing rows (reported, not changed)
+
+- None found that affect values. Observations only: (a) METHODS §4.2's table does not yet list the new groups; (b) `Zr95` still omits its Nb-95m branch (0.32%), already noted in §8; (c) `Cm242` and `Am242m+` are not linked at group level (artificial groups carry no parent links by design, §2 J6).
+
+### 12.5 Checks run
+
+`python3 -m pipeline.validate --root /mnt/user-data/outputs` → `OK: no issues`. `cd pipeline && python3 -m pytest -q` → 556 passed.
