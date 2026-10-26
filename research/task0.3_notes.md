@@ -395,3 +395,9 @@ For U-238, U-235 and Th-232, all members with cumulative branching weight >= 1e-
 - `python3 -m pipeline.validate --root /mnt/user-data/outputs`: `OK: no issues` (data/reference clean).
 - `cd pipeline && python3 -m pytest -q`: 556 passed (with `Zr95+` renamed and `Pu239` kept). With `Pu239` also renamed to `Pu239+`: 528 passed, 28 failed (fixture use of `Pu239`; reverted).
 - Independent recompute from the raw `ICRP-07.NDX` zip and RadData `.rda` (`verify2.py`) matches: `Ce144+` 2.0098054 / 1.3489219 MeV, `Zr95+` 1.0114474 / 0.8535061, `Pu239` 1.9994000 / 5.2443171, `Sr91+` 1.6372989 / 1.7165671, `Th229+` 7.9997014 / 34.200467.
+
+### 13.6 Verification fixes (2026-10-25)
+
+1. **Pr-143 added.** Ce-143 -> Pr-143 (100%, 13.57 d, beta; longer-lived than Ce-143, so not folded). New nuclide row `Pr-143` (Ē 0.3150020 MeV) and group `Pr143` (single, multiplier 1; Nd-143 stable). Note on `Ce143` updated (the only change to an existing group row). Totals now 196 nuclide rows and 132 group rows.
+2. **D42 re-scan with the verifier's rule** (`d42b.py`): for every group, member weight x branching >= 1e-3 where the daughter is neither a member of that group nor the head of any group. Daughters with T½ >= ~5e10 a are excluded as effectively stable: Nd-144 (2.3e15 a), Rb-87 (4.92e10 a), Sm-147 (1.06e11 a), Cd-113 (7.7e15 a), Gd-152 (1.08e14 a). **No other hits.**
+3. **At-217 note reworded.** The `Th229+` weights use ICRP's 0.99988 (Bi-213 weight 0.9998893); only the nuclide row's `branching` is stored as 1 so that N01 passes.
