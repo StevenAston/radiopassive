@@ -47,7 +47,7 @@ Total activity of PWR 40 GWd/t, Bq/tHM: 2.48e16 (5 a), 9.46e15 (30 a), 1.83e15 (
 
 | Cooling (a) | 33-head set: activity / heat | + 10 addendum heads: activity / heat | + Np-239: activity / heat |
 |---|---|---|---|
-| 1 | 93.6% / 85.0% | 98.3% / 98.8% | 98.3% / 98.8% |
+| 1 | 93.9% / 85.1% | 98.4% / 98.9% | 98.4% / 98.9% |
 | 2 | 99.0% / 95.4% | 99.5% / 99.7% | 99.5% / 99.7% |
 | 3 | 99.6% / 98.5% | 99.6% / 99.8% | 99.6% / 99.8% |
 | 4 | 99.7% / 99.5% | 99.7% / 99.9% | 99.7% / 99.9% |
@@ -58,19 +58,24 @@ Total activity of PWR 40 GWd/t, Bq/tHM: 2.48e16 (5 a), 9.46e15 (30 a), 1.83e15 (
 | 1,000 | 97.8% / 99.8% | 97.9% / 99.8% | 99.9% / 100.0% |
 | 2,000 | 96.4% / 99.6% | 96.5% / 99.7% | 99.8% / 99.9% |
 | 5,000 | 95.7% / 99.5% | 95.8% / 99.5% | 99.7% / 99.9% |
-| 10,000 | 95.8% / 99.2% | 96.0% / 99.3% | 99.3% / 99.6% |
+| 10,000 | 95.8% / 99.2% | 96.0% / 99.2% | 99.3% / 99.6% |
 
 - The 33 heads are those listed above (H-3 to Cm-246); "addendum heads" are Zr-95, Nb-95, Cm-242, Ce-141, Sr-89, Te-129m, Cs-136, Nb-94, Sn-126 and Am-242m, all now in `groups.csv` (D35).
 - **This supersedes the earlier "≥ 99.02% activity" claim.** That figure collapsed Np-239 into the Am-243 head and used a denominator of Carter-listed nuclides only; under the `groups.csv` definitions Np-239 is its own group (Am-243's group does not carry it), and its activity equals Am-243's: 1.2% of total at 500 a, 3.4% at 10⁴ a (BWR 50).
-- **Result: the set passes at every cooling time from 2 a to 10⁴ a once the ten addendum heads and Np-239 (already a group) are in it; it does not pass at 1 a** (98.3% of activity, 98.8% of heat in the worst case, BWR 15).
-- **What closes the 1 a gap:** Y-91 (0.7–0.9% of activity, 0.6–0.8% of heat; **not in `nuclides.csv`**), then Pr-144m (0.2–0.3% of activity; not in a group), Ag-110m (0.2–0.3% of heat; not in `nuclides.csv`), Ru-103 (0.1%; group `Ru103+` exists) and Fe-55 (0.1%; group `Fe55` exists). Y-91 alone lifts the worst case to 99.2% (activity) and 99.6% (heat). I have not added anything.
+- **Result: the set passes at every cooling time from 2 a to 10⁴ a once the ten addendum heads and Np-239 (already a group) are in it; it does not pass at 1 a** (98.4% of activity, 98.9% of heat in the worst case, BWR 15).
+- **What closes the 1 a gap (an upper-bound estimate, and marginal):** Y-91 (0.5–0.8% of activity, 0.4–0.7% of heat; **not in `nuclides.csv`**), then Pr-144m (0.2–0.3% of activity), Ag-110m (0.1–0.3% of heat; not in `nuclides.csv`), Ru-103 (group `Ru103+` exists) and Fe-55 (group `Fe55` exists).
+  - Y-91 alone lifts the worst case to 99.2% (activity) and 99.5% (heat). Adding Y-91, Ag-110m and Pr-144m together (the D40 addendum) gives at least 99.5% (activity) and 99.84% (heat) at 1 a in all six cases, and at least 99.7% / 99.9% at 2 a.
+  - **The Y-91 figure is an upper bound.** It scales from Zr-95 with U-235 thermal cumulative-yield ratios (below); Pu-239 fission yields, which matter at higher burnup, are unverified. The verifier expects Y-91-only closure to land nearer 99.0–99.1% than 99.2%. **Treat the Y-91-only conclusion as marginal** (about 0.2 percentage points above the 99% line); the three-nuclide conclusion has more room.
+  - I have not added anything.
 - **How reliable the 1–4 a rows are:** Carter's tables start at 5 a, so these rows are modelled, not tabulated.
   - Nuclides with half-life of 100 d or more are reconstructed from the 5 a column by exact back-decay with in-growth correction; short-lived progeny are set at the `groups.csv` equilibrium weight.
   - Zr-95, Nb-95 and Cm-242 are scaled to Ce-144 and Cm-244 using the 1 a decay-heat table of the JRC pin model (S0102, Table B.1, UO2, 1,000 d at 250 W/cm). The ratios come from one burnup, so treat them as ±30% (my judgement).
-  - **Ce-141, Sr-89, Te-129m, Cs-136, Y-91 and Ru-103 are upper bounds**, set by assuming the same cumulative fission yield as Zr-95 and the same irradiation saturation. This is conservative for the coverage test (it overstates what the set misses). The assumption is textbook, not verified here: the ENDF/B fission-yield files could not be downloaded (see section 5).
+  - **Ce-141, Sr-89, Te-129m, Cs-136, Y-91 and Ru-103 are upper-bound estimates** scaled from the modelled Zr-95 by U-235 thermal cumulative-yield ratios (Y-91 5.83%, Zr-95 6.50%, Sr-89 4.73%, Ru-103 3.03%, Te-129m 0.0902%; coordinator-supplied from ENDF/B-VIII.0), with the same irradiation saturation and the exact decay ratio. Ce-141 5.86% comes from a Wikipedia table (JEFF-3.1) used only as a lead; the same table gives Ru-103 3.103%, 2% above the ENDF/B-VIII.0 value used. Cs-136 has essentially independent yield only, so it is set to zero at 1 a or later (13 d half-life). **Pu-239 yields are unverified** and no proper source is registered: the ENDF/B files could not be downloaded (see section 5). This replaces my first version, which assumed equal yields for all six and gave 98.3% / 98.8% at 1 a.
+  - Np-239 is set to its secular-equilibrium value from Am-243 (factor 1.0000009) at every cooling time. Carter's tabulated Np-239 differs from that by up to 0.6–0.7% at 5, 30, 100 and 500 a (three-figure rounding of the table masses; it is exactly 1 for the times decayed from 500 a), which is not physical.
   - Check against Carter Table 3-11 to 3-14 totals at 1 a (W/tHM, modelled vs tabulated): PWR 40 10,272 vs 10,444 (−1.6%); PWR 60 14,486 vs 13,936 (+3.9%); BWR 30 7,359 vs 7,603 (−3.2%); BWR 50 11,435 vs 11,008 (+3.9%).
   - Decay-heat shares at 1 a agree with the JRC table within a few percentage points (Ce-144+ 33% vs 36.5%; Ru-106+ about 25% vs 25.6%; Cs-134 15% vs 14.6%).
-- **Convention issue for Task 0.3/METHODS owner:** under strict D24 counting, Pu-239 decays through U-235m (26 min), so every Pu-239 decay carries a second decay that no group counts (D35 omitted U-235m for its negligible energy). Counting it would lower the activity coverage (not the heat coverage) to 98.8% at 100 a, 88.5% at 500 a, 82% at 10³ a and 61% at 10⁴ a (last column of `reduced_set_coverage.csv`). Either `Pu239` needs a multiplier of about 2, or METHODS §3.2 needs a stated exemption for sub-hour isomeric transitions. Pr-144m (1.8% branch of Ce-144, 7 min) is the same kind of case.
+- **U-235m convention: D41 adopted (METHODS §3.2), issue closed.** I raised that under strict D24 counting every Pu-239 decay carries a second decay (U-235m, 26 min) that no group counts, which would cut activity coverage to 98.8% at 100 a, 88.5% at 500 a, 82% at 10³ a and 61% at 10⁴ a (last column of `reduced_set_coverage.csv`). Steve decided (option b) that isomeric transitions emitting less than 1 keV are not counted. This exempts U-235m, `Pu239` keeps multiplier 1, and the main coverage columns (which exclude U-235m) stand; the U-235m-inclusive column is retained only as information. **The verifier's dissenting recommendation** was option (a), a rule based on branching (≥ 1e-3), which would treat the 61% figure as a denominator artefact rather than a reason to change the convention. Recorded here for the decision log; Steve chose (b).
+- Pr-144m is a different case from U-235m: ICRP-107 gives Ce-144 → Pr-144m at **0.977%** (T½ 7.2 min, IT 99.93%, mean energy about 61 keV), so it is above the 1 keV exemption and is counted. It is 0.2–0.3% of activity at 1 a and is covered by the D40 addendum (with Y-91 and Ag-110m).
 - Hardware activation (S0101) is not in these numbers (Carter is fuel-only). Nb-94 from hardware is about 1% of activity at 10⁴ a in the SKB data.
 
 ### 3.2 In-core inventory per GW(e)
@@ -150,7 +155,7 @@ No annual throughput found for Sellafield B205, Marcoule UP1 or Mayak RT-1.
 
 ## 4. Open issues
 
-1. `nuclides.csv` lacks Ni-59, Zr-93 and Nb-93m. Under D24 Pu-239 needs U-235m (multiplier about 2) and Am-243 needs Np-239; `groups.csv` currently treats these as single or separate groups. Flag for Task 0.3 and the pipeline.
+1. Nuclide coverage: Ni-59, Zr-93, Nb-93m, Nb-94, Sn-126, Am-242m and others were added by D35 and are now in `nuclides.csv` and `groups.csv`. U-235m is exempt under D41 (sub-1 keV isomeric transitions are not counted), so `Pu239` keeps multiplier 1. Np-239 is a separate group from Am-243 and must be in the reduced set. Y-91, Ag-110m and Pr-144m are still missing and are being added by the D40 addendum; I add nothing.
 2. Carter Table C-2 Fe-55 at 500 a (24,500 g/MTIHM for every burnup) is a clear defect; excluded.
 3. Fuel-only inventories; hardware activation from SKB only (Swedish fleet).
 4. Post-500 a spent-fuel values are my decay calculation, not published.
@@ -180,7 +185,7 @@ No annual throughput found for Sellafield B205, Marcoule UP1 or Mayak RT-1.
 
 - `ospar_liquid_discharges_1989_2023.csv`: year, sub_sector, quantity, value_tbq_per_a (S0122).
 - `spent_fuel_inventory_derived.csv` (rewritten 2026-10-25): reactor, burnup, cooling time, group, group_head, set_membership, head and all-decays activity, head-only and group power (W/tHM), shares, basis. PWR 20/40/60 and BWR 15/30/50 GWd/t at 1, 2, 3, 4, 5, 30, 100, 500, 1,000, 2,000, 5,000, 10,000 a; 44 heads (33 base, 10 addendum, Np-239) plus `UNCOVERED_BY_SET` and `TOTAL_ALL_NUCLIDES` rows. Basis: modelled (Carter tables at 5, 30, 100, 500 a; decay of the 500 a column for 10³–10⁴ a; reconstruction for 1–4 a). Tools: S9004.
-- `reduced_set_coverage.csv` (new): activity and decay-heat coverage by set (33 heads; plus the 10 addendum heads; plus Np-239), cooling time and case, with the U-235m-inclusive activity coverage.
+- `reduced_set_coverage.csv` (new): activity and decay-heat coverage by set (33 heads; plus the 10 addendum heads; plus Np-239), cooling time and case, with the U-235m-inclusive activity coverage (information only after D41).
 
 
 ## Verification note (2026-10-22; updated 2026-10-25)
@@ -198,7 +203,7 @@ Confirmed internally:
 
 The four open items of 2026-10-22 are closed or restated:
 1. **Decay-power coverage:** closed. Per-head power is now in the CSV (section 3.1) and the coverage is recomputed from it. The earlier 99.58% figure is superseded by the table in section 3.1.
-2. **Short cooling times:** closed for 1–5 a, with the 1 a result a shortfall (98.3% / 98.8%) and Y-91 as the closer; the 1–4 a rows are modelled.
-3. **Missing nuclides:** Ni-59, Zr-93, Nb-93m, Nb-94, Sn-126 and Am-242m were added by the Task 0.3 addendum (D35). U-235m is deliberately omitted there; see the convention issue in section 3.1.
+2. **Short cooling times:** closed for 1–5 a, with the 1 a result a shortfall (98.4% / 98.9%) and Y-91 as the main closer, an upper-bound and marginal conclusion; the 1–4 a rows are modelled.
+3. **Missing nuclides:** Ni-59, Zr-93, Nb-93m, Nb-94, Sn-126 and Am-242m were added by the Task 0.3 addendum (D35). U-235m is exempt under D41; see section 3.1.
 4. **ε for uranium tailings:** recorded as a per-residue proposal in section 3.4; it needs no METHODS change since ε is set per residue type in Phase 1.
 5. **availability.csv "None" methods:** rows whose method is "None" mean *not applicable / zero by construction* (e.g. ISL before the 1960s, civil reprocessing pre-1950).
