@@ -6,6 +6,7 @@ import math
 import pytest
 
 from pipeline.lib import LibError
+from pipeline.lib import factors as _factors_module
 from pipeline.lib.bounds import Bounds
 from pipeline.lib.factors import apply, result_unit, select
 
@@ -294,3 +295,265 @@ def test_result_unit(driver, factor, want):
 def test_result_unit_mismatch_raises(driver, factor):
     with pytest.raises(LibError):
         result_unit(driver, factor)
+
+
+# ======================================================================
+# v1.2 additions (LIB_SPEC section 8)
+# ======================================================================
+
+# ------------------------------------------------ select: mutation gaps
+
+def test_select_none_region_row_is_not_an_exact_region_match():
+    # A row whose region is None is neither the requested region nor XWL.
+    nameless = frow("coal:0001", region=None)
+    world = frow("coal:0002", region="XWL")
+    assert select([nameless, world], year=2000, region="CHN") == world
+    assert select([world, nameless], year=2000, region="CHN") == world
+
+
+def test_select_only_none_region_row_is_no_candidate():
+    with pytest.raises(LibError):
+        select([frow(region=None)], year=2000, region="CHN")
+
+
+def test_select_none_region_row_does_not_make_exact_level_ambiguous():
+    exact = frow("coal:0001", region="CHN")
+    nameless = frow("coal:0002", region=None)
+    assert select([exact, nameless], year=2000, region="CHN") == exact
+
+
+def test_select_returns_a_copy_not_the_input_row():
+    r = frow()
+    got = select([r], year=2000, region="CHN")
+    assert got is not r
+    assert got == r
+
+
+def test_select_result_mutation_does_not_change_input():
+    r = frow()
+    snapshot = dict(r)
+    got = select([r], year=2000, region="CHN")
+    got["value_central"] = 999.0
+    got["notes"] = "changed"
+    del got["unit"]
+    assert r == snapshot
+
+
+def test_select_result_copy_holds_for_xwl_fallback_too():
+    r = frow(region="XWL")
+    got = select([r], year=2000, region="CHN")
+    got["value_low"] = -1.0
+    assert r["value_low"] == 5.0
+
+
+# --------------------------------------------------- select: wrong types
+
+@pytest.mark.parametrize("bad", [5, None, 2.5])
+def test_select_non_iterable_factors_raises_liberror(bad):
+    with pytest.raises(LibError):
+        select(bad, year=2000, region="CHN")
+
+
+@pytest.mark.parametrize("bad_row", ["row", 5, None, ["a"]])
+def test_select_non_mapping_row_raises_liberror(bad_row):
+    with pytest.raises(LibError):
+        select([frow(), bad_row], year=2000, region="CHN")
+
+
+@pytest.mark.parametrize("bad_year", ["2000", True, False, None, [2000]])
+def test_select_non_int_year_raises_liberror(bad_year):
+    with pytest.raises(LibError):
+        select([frow()], year=bad_year, region="CHN")
+
+
+@pytest.mark.parametrize("bad_region", [5, True, ["CHN"], b"CHN"])
+def test_select_non_string_region_raises_liberror(bad_region):
+    with pytest.raises(LibError):
+        select([frow()], year=2000, region=bad_region)
+
+
+# ------------------------------------------------------ apply: types
+
+def test_apply_non_bounds_driver_raises_liberror():
+    for bad in (4.0, "4", None, (1.0, 2.0, 3.0)):
+        with pytest.raises(LibError):
+            apply(bad, "t", frow())
+
+
+@pytest.mark.parametrize("bad", [None, 5, True, b"t", ["t"]])
+def test_apply_non_string_driver_unit_raises_liberror(bad):
+    with pytest.raises(LibError):
+        apply(Bounds.exact(1.0), bad, frow())
+
+
+@pytest.mark.parametrize("bad", [None, 5, "row", [("unit", "Bq/t")]])
+def test_apply_non_mapping_factor_row_raises_liberror(bad):
+    with pytest.raises(LibError):
+        apply(Bounds.exact(1.0), "t", bad)
+
+
+@pytest.mark.parametrize("bad_unit", [None, 5, True])
+def test_apply_non_string_factor_unit_raises_liberror(bad_unit):
+    with pytest.raises(LibError):
+        apply(Bounds.exact(1.0), "t", frow(unit=bad_unit))
+
+
+@pytest.mark.parametrize("field", ["value_low", "value_central", "value_high"])
+@pytest.mark.parametrize("bad", [None, "5", True])
+def test_apply_non_numeric_factor_values_raise_liberror(field, bad):
+    with pytest.raises(LibError):
+        apply(Bounds.exact(1.0), "t", frow(**{field: bad}))
+
+
+@pytest.mark.parametrize("bad", ["false", "true", "False", "", 0, 1, 0.0, [], ["x"]])
+def test_apply_below_detection_wrong_type_raises_liberror(bad):
+    with pytest.raises(LibError):
+        apply(Bounds.exact(1.0), "t", frow(below_detection=bad))
+
+
+def test_apply_below_detection_string_false_is_not_treated_as_false():
+    # Regression guard: the string "false" is truthy in Python; it must be
+    # rejected, not silently treated as a non-detect.
+    with pytest.raises(LibError):
+        apply(Bounds.exact(2.0), "t",
+              frow(value_low=0.0, value_central=4.0, value_high=10.0, below_detection="false"))
+
+
+def test_apply_below_detection_none_is_treated_as_false():
+    out = apply(Bounds.exact(2.0), "t", frow(below_detection=None))
+    assert out.central == pytest.approx(20.0)
+
+
+def test_apply_below_detection_true_and_false_bools_accepted():
+    row_true = frow(value_low=0.0, value_central=4.0, value_high=10.0, below_detection=True)
+    row_false = frow(value_low=1.0, value_central=4.0, value_high=10.0, below_detection=False)
+    assert apply(Bounds.exact(2.0), "t", row_true).central == pytest.approx(8.0)
+    assert apply(Bounds.exact(2.0), "t", row_false).central == pytest.approx(8.0)
+
+
+# ------------------------------- apply: below_detection carried into flag
+
+def test_apply_below_detection_flag_visible_when_only_the_flag_can_carry_it():
+    # Exact-zero driver: product returns exact(0), flagged only if an input
+    # was flagged (8.1).  The factor row (0, 4, 10) is a non-detect only if the
+    # row says so, so the two cases must differ.
+    zero = Bounds.exact(0.0)
+    nd_row = frow(value_low=0.0, value_central=4.0, value_high=10.0, below_detection=True)
+    plain_row = frow(value_low=0.0, value_central=4.0, value_high=10.0, below_detection=False)
+    flagged = apply(zero, "t", nd_row)
+    unflagged = apply(zero, "t", plain_row)
+    assert (flagged.low, flagged.central, flagged.high) == (0.0, 0.0, 0.0)
+    assert flagged.nd_floored is True
+    assert (unflagged.low, unflagged.central, unflagged.high) == (0.0, 0.0, 0.0)
+    assert unflagged.nd_floored is False
+
+
+def test_apply_row_low_zero_below_detection_true_gives_flagged_zero_low():
+    row = frow(value_low=0.0, value_central=4.0, value_high=10.0, below_detection=True)
+    out = apply(Bounds.exact(2.0), "t", row)
+    assert out.low == 0.0 and out.nd_floored is True
+
+
+def test_apply_row_low_zero_below_detection_false_floor_rule_still_flags():
+    # Floor rule: single floored term is 100% of the log sum -> low 0, flagged.
+    row = frow(value_low=0.0, value_central=4.0, value_high=10.0, below_detection=False)
+    out = apply(Bounds.exact(2.0), "t", row)
+    assert out.low == 0.0 and out.nd_floored is True
+
+
+def test_apply_row_low_positive_below_detection_false_is_unflagged():
+    row = frow(value_low=2.0, value_central=4.0, value_high=10.0, below_detection=False)
+    out = apply(Bounds.exact(2.0), "t", row)
+    assert out.low > 0.0 and out.nd_floored is False
+
+
+def test_apply_row_low_positive_with_below_detection_true_raises():
+    # LIB_SPEC 7.6 builds the factor with nd_floored=True from the row's own
+    # values; 8.1 makes that an error when low > 0 (row violates SCHEMA 3).
+    row = frow(value_low=2.0, value_central=4.0, value_high=10.0, below_detection=True)
+    with pytest.raises(LibError):
+        apply(Bounds.exact(2.0), "t", row)
+
+
+# --------------------------------------------------------- master_unit
+
+def master_unit(*args, **kwargs):
+    """Late-bound so a missing v1.2 function fails these tests, not collection."""
+    fn = getattr(_factors_module, "master_unit", None)
+    assert fn is not None, "pipeline.lib.factors.master_unit is not implemented (LIB_SPEC 8.5)"
+    return fn(*args, **kwargs)
+
+
+@pytest.mark.parametrize("unit,kind,want", [
+    ("Bq", "flow", "Bq/a"),
+    ("Bq/a", "flow", "Bq/a"),
+    ("Bq", "stock", "Bq"),
+    ("t", "flow", "t"),
+    ("t", "stock", "t"),
+    ("GWa", "flow", "GWa"),
+    ("TWh", "stock", "TWh"),
+    ("1", "flow", "1"),
+])
+def test_master_unit_cases(unit, kind, want):
+    assert master_unit(unit, kind) == want
+
+
+def test_master_unit_stock_with_bq_per_a_raises():
+    with pytest.raises(LibError) as ei:
+        master_unit("Bq/a", "stock")
+    assert str(ei.value)
+
+
+@pytest.mark.parametrize("kind", ["Flow", "STOCK", "", "flux", "memo", "flow ", None, 1, True])
+def test_master_unit_bad_kind_raises(kind):
+    with pytest.raises(LibError):
+        master_unit("Bq", kind)
+
+
+@pytest.mark.parametrize("kind", ["Flow", "", None])
+def test_master_unit_bad_kind_raises_even_for_passthrough_unit(kind):
+    with pytest.raises(LibError):
+        master_unit("t", kind)
+
+
+@pytest.mark.parametrize("bad", [None, 5, True, b"Bq", ["Bq"]])
+def test_master_unit_non_string_unit_raises_liberror(bad):
+    with pytest.raises(LibError):
+        master_unit(bad, "flow")
+
+
+def test_master_unit_composes_with_result_unit():
+    assert master_unit(result_unit("t", "Bq/t"), "flow") == "Bq/a"
+    assert master_unit(result_unit("t", "Bq/t"), "stock") == "Bq"
+    assert master_unit(result_unit("t", "Bq/a per t"), "flow") == "Bq/a"
+    with pytest.raises(LibError):
+        master_unit(result_unit("t", "Bq/a per t"), "stock")
+
+
+@pytest.mark.parametrize("bad", [None, 5, True])
+def test_result_unit_non_string_arguments_raise_liberror(bad):
+    with pytest.raises(LibError):
+        result_unit(bad, "Bq/t")
+    with pytest.raises(LibError):
+        result_unit("t", bad)
+
+
+# ------------------------------------- LIB_SPEC 8.8 (round 2) and gap tests
+
+def test_select_unknown_match_key_raises_liberror():
+    # 3.1 lists the permitted match keys; an unknown key must not be silently ignored.
+    with pytest.raises(LibError):
+        select([frow()], year=2000, region="CHN", bogus=None)
+
+
+def test_select_unknown_match_key_with_value_raises_liberror():
+    with pytest.raises(LibError):
+        select([frow()], year=2000, region="CHN", bogus="x")
+
+
+@pytest.mark.parametrize("kind", ["flux", "Flow", "STOCK", "", None, 1, ["flow"]])
+@pytest.mark.parametrize("unit", ["Bq", "Bq/a"])
+def test_master_unit_invalid_kind_raises_liberror(unit, kind):
+    # 8.5: any other kind raises.
+    with pytest.raises(LibError):
+        _factors_module.master_unit(unit, kind)

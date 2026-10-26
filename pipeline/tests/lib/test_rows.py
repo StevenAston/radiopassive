@@ -25,11 +25,11 @@ KEY_COLUMNS = ["year", "stream", "substream", "stage", "product", "residue_type"
 
 
 def base_fields(**over):
-    f = dict(
-        year=1998, stream="nuclear", substream="fuel_cycle", stage="u_milling",
-        country="CAN", group="Ra226+", tier="dispersed", quantity="flow",
-        unit="Bq/a", basis="compiled", source_ids="S0001",
-    )
+    f = {
+        "year": 1998, "stream": "nuclear", "substream": "fuel_cycle", "stage": "u_milling",
+        "country": "CAN", "group": "Ra226+", "tier": "dispersed", "quantity": "flow",
+        "unit": "Bq/a", "basis": "compiled", "source_ids": "S0001",
+    }
     f.update(over)
     return f
 
@@ -80,12 +80,33 @@ def test_make_row_below_detection_follows_nd_floored():
     assert plain["below_detection"] is False
 
 
-def test_make_row_explicit_below_detection_wins():
-    row = make_row(bounds=Bounds(1.0, 2.0, 3.0), below_detection=True, **base_fields())
+def test_make_row_explicit_below_detection_agreeing_with_bounds_is_kept():
+    # Converted for LIB_SPEC 8.2: explicit values must agree with the bounds.
+    row = make_row(bounds=Bounds(0.0, 1.0, 2.0), below_detection=True, **base_fields())
     assert row["below_detection"] is True
     row = make_row(bounds=Bounds(0.0, 1.0, 2.0, nd_floored=True),
-                   below_detection=False, **base_fields())
+                   below_detection=True, **base_fields())
+    assert row["below_detection"] is True
+    row = make_row(bounds=Bounds(1.0, 2.0, 3.0), below_detection=False, **base_fields())
     assert row["below_detection"] is False
+    # low == 0 but not flagged: an explicit False is consistent
+    row = make_row(bounds=Bounds(0.0, 1.0, 2.0), below_detection=False, **base_fields())
+    assert row["below_detection"] is False
+
+
+def test_make_row_explicit_true_with_positive_low_raises():
+    # was: "explicit below_detection wins" (True with low 1.0); now SCHEMA 3
+    # (below_detection => value_low == 0) is enforced.
+    with pytest.raises(LibError) as ei:
+        make_row(bounds=Bounds(1.0, 2.0, 3.0), below_detection=True, **base_fields())
+    assert "below_detection" in str(ei.value)
+
+
+def test_make_row_explicit_false_with_flagged_bounds_raises():
+    # was: "explicit below_detection wins" (False over a flagged Bounds)
+    with pytest.raises(LibError):
+        make_row(bounds=Bounds(0.0, 1.0, 2.0, nd_floored=True),
+                 below_detection=False, **base_fields())
 
 
 def test_make_row_nullable_defaults_are_none():
@@ -389,3 +410,384 @@ def test_write_master_accepts_lists_or_joined_strings(tmp_path):
     r = read_raw(a)[1]
     assert r[EXPECTED_COLUMNS.index("source_ids")] == "S0001;S0004"
     assert r[EXPECTED_COLUMNS.index("allocation_rule")] == "civil:doc;alloc:value"
+
+
+# ======================================================================
+# v1.2 additions (LIB_SPEC section 8.2, 8.3, 8.4)
+# ======================================================================
+
+H = EXPECTED_COLUMNS
+
+
+def cells(path):
+    """Header-keyed list of dicts of raw cell text."""
+    raw = read_raw(path)
+    return [dict(zip(raw[0], r)) for r in raw[1:]]
+
+
+# ------------------------------------------------- make_row: explicit None
+
+@pytest.mark.parametrize("col,want", [
+    ("allocation_variant", "default"),
+    ("allocation_rule", "none"),
+    ("embedded_fuel", False),
+])
+def test_make_row_explicit_none_takes_default(col, want):
+    row = make_row(bounds=Bounds(1.0, 2.0, 3.0), **base_fields(**{col: None}))
+    assert row[col] == want
+    assert type(row[col]) is type(want)
+
+
+def test_make_row_all_three_explicit_none_together():
+    row = make_row(bounds=Bounds(1.0, 2.0, 3.0),
+                   **base_fields(allocation_variant=None, allocation_rule=None,
+                                 embedded_fuel=None))
+    assert (row["allocation_variant"], row["allocation_rule"], row["embedded_fuel"]) == (
+        "default", "none", False)
+
+
+def test_make_row_explicit_none_on_nullable_columns_stays_none():
+    row = make_row(bounds=Bounds(1.0, 2.0, 3.0),
+                   **base_fields(product=None, route=None, notes=None, factor_ids=None))
+    assert row["product"] is None and row["route"] is None
+    assert row["notes"] is None and row["factor_ids"] is None
+
+
+# ------------------------------------------------ make_row: source_ids
+
+@pytest.mark.parametrize("empty", [[], ""])
+def test_make_row_empty_source_ids_raises(empty):
+    with pytest.raises(LibError) as ei:
+        make_row(bounds=Bounds(1.0, 2.0, 3.0), **base_fields(source_ids=empty))
+    assert "source_ids" in str(ei.value)
+
+
+def test_make_row_single_element_source_ids_list():
+    row = make_row(bounds=Bounds(1.0, 2.0, 3.0), **base_fields(source_ids=["S0009"]))
+    assert row["source_ids"] == "S0009"
+
+
+# ---------------------------------------------------------- make_row: year
+
+@pytest.mark.parametrize("bad", [True, False])
+def test_make_row_bool_year_raises(bad):
+    with pytest.raises(LibError) as ei:
+        make_row(bounds=Bounds(1.0, 2.0, 3.0), **base_fields(year=bad))
+    assert "year" in str(ei.value)
+
+
+@pytest.mark.parametrize("bad", ["1998", 1998.0, None])
+def test_make_row_non_int_year_raises_liberror(bad):
+    with pytest.raises(LibError):
+        make_row(bounds=Bounds(1.0, 2.0, 3.0), **base_fields(year=bad))
+
+
+@pytest.mark.parametrize("year", [1800, 1949, 2026, 9999])
+def test_make_row_does_not_range_check_year(year):
+    # 8.2: range checks belong to the validator.
+    row = make_row(bounds=Bounds(1.0, 2.0, 3.0), **base_fields(year=year))
+    assert row["year"] == year
+
+
+# ------------------------------------------------- make_row: argument types
+
+@pytest.mark.parametrize("bad", [None, (1.0, 2.0, 3.0), 5.0, "b", {"low": 1}])
+def test_make_row_non_bounds_raises_liberror(bad):
+    with pytest.raises(LibError):
+        make_row(bounds=bad, **base_fields())
+
+
+# ------------------------------------------------ write_master: coercion
+
+def test_write_master_int_value_columns_formatted_like_floats(tmp_path):
+    p = tmp_path / "m.csv"
+    write_master([full_row(value_low=2, value_central=12345678, value_high=3 * 10**9)], p)
+    c = cells(p)[0]
+    # format(float(12345678), '.6g') == '1.23457e+07'; int would give '12345678'
+    assert c["value_low"] == "2"
+    assert c["value_central"] == "1.23457e+07"
+    assert c["value_high"] == "3e+09"
+
+
+def test_write_master_int_and_float_inputs_are_byte_identical(tmp_path):
+    a, b = tmp_path / "a.csv", tmp_path / "b.csv"
+    write_master([full_row(value_low=1, value_central=12345678, value_high=20000000)], a)
+    write_master([full_row(value_low=1.0, value_central=12345678.0, value_high=20000000.0)], b)
+    assert a.read_bytes() == b.read_bytes()
+
+
+def test_write_master_zero_int_and_float_identical(tmp_path):
+    a, b = tmp_path / "a.csv", tmp_path / "b.csv"
+    write_master([full_row(value_low=0, value_central=0, value_high=0)], a)
+    write_master([full_row(value_low=0.0, value_central=0.0, value_high=0.0)], b)
+    assert a.read_bytes() == b.read_bytes()
+    assert cells(a)[0]["value_low"] == "0"
+
+
+def test_exact_integer_bounds_round_trip_is_byte_stable(tmp_path):
+    from pipeline.lib.io import read_table
+
+    row = make_row(bounds=Bounds.exact(12345678), **base_fields())
+    first, second = tmp_path / "first.csv", tmp_path / "second.csv"
+    write_master([row], first)
+    assert cells(first)[0]["value_central"] == "1.23457e+07"
+    write_master(read_table(first), second)
+    assert first.read_bytes() == second.read_bytes()
+
+
+def test_write_master_does_not_coerce_non_value_numeric_columns(tmp_path):
+    # year stays an integer string; only value_* are float-coerced
+    p = tmp_path / "m.csv"
+    write_master([full_row(year=1998)], p)
+    assert cells(p)[0]["year"] == "1998"
+
+
+# ------------------------------------------- write_master: column checks
+
+def test_write_master_unknown_column_raises(tmp_path):
+    row = full_row()
+    row["colour"] = "red"
+    with pytest.raises(LibError) as ei:
+        write_master([row], tmp_path / "m.csv")
+    assert "colour" in str(ei.value)
+
+
+def test_write_master_missing_column_raises(tmp_path):
+    row = full_row()
+    del row["notes"]
+    with pytest.raises(LibError) as ei:
+        write_master([row], tmp_path / "m.csv")
+    assert "notes" in str(ei.value)
+
+
+@pytest.mark.parametrize("col", EXPECTED_COLUMNS)
+def test_write_master_each_missing_column_raises(tmp_path, col):
+    row = full_row()
+    del row[col]
+    with pytest.raises(LibError):
+        write_master([row], tmp_path / "m.csv")
+
+
+def test_write_master_bad_second_row_raises_even_if_first_is_fine(tmp_path):
+    bad = full_row(year=1999)
+    bad["extra"] = 1
+    with pytest.raises(LibError):
+        write_master([full_row(), bad], tmp_path / "m.csv")
+
+
+@pytest.mark.parametrize("col", ["value_low", "value_central", "value_high"])
+@pytest.mark.parametrize("bad", [float("nan"), float("inf"), float("-inf")])
+def test_write_master_non_finite_value_raises(tmp_path, col, bad):
+    with pytest.raises(LibError) as ei:
+        write_master([full_row(**{col: bad})], tmp_path / "m.csv")
+    assert col in str(ei.value) or "finite" in str(ei.value)
+
+
+@pytest.mark.parametrize("bad", [5, None, "abc", 3.5])
+def test_write_master_rows_not_iterable_of_mappings_raises(tmp_path, bad):
+    with pytest.raises(LibError):
+        write_master(bad, tmp_path / "m.csv")
+
+
+@pytest.mark.parametrize("bad_row", ["row", 5, None, ["year"]])
+def test_write_master_non_mapping_row_raises(tmp_path, bad_row):
+    with pytest.raises(LibError):
+        write_master([bad_row], tmp_path / "m.csv")
+
+
+# ------------------------------------------------- write_master: ordering
+
+def test_write_master_none_first_across_mixed_key_columns(tmp_path):
+    # Rows differ in two nullable key columns; None must precede any value in
+    # each column in key-column order (product before technology).
+    p = tmp_path / "m.csv"
+    write_master([
+        full_row(product="copper", technology=None),
+        full_row(product=None, technology="wind"),
+        full_row(product=None, technology=None),
+        full_row(product="copper", technology="wind"),
+    ], p)
+    got = [(c["product"], c["technology"]) for c in cells(p)]
+    assert got == [("", ""), ("", "wind"), ("copper", ""), ("copper", "wind")]
+
+
+def test_write_master_none_first_regardless_of_input_order(tmp_path):
+    rows = [full_row(route="stack"), full_row(route="air_ventilation"), full_row(route=None)]
+    a, b = tmp_path / "a.csv", tmp_path / "b.csv"
+    write_master(rows, a)
+    write_master(list(reversed(rows)), b)
+    assert [c["route"] for c in cells(a)] == ["", "air_ventilation", "stack"]
+    assert a.read_bytes() == b.read_bytes()
+
+
+def test_write_master_none_before_false_like_values(tmp_path):
+    # None must sort before a real value even where that value is "smaller"
+    # as text or falsy; 'A' < 'copper' by ordinary comparison but None < 'A'.
+    p = tmp_path / "m.csv"
+    write_master([full_row(event_id="A"), full_row(event_id=None)], p)
+    assert [c["event_id"] for c in cells(p)] == ["", "A"]
+
+
+def test_write_master_sorts_year_numerically_not_textually(tmp_path):
+    p = tmp_path / "m.csv"
+    write_master([full_row(year=1998), full_row(year=2001), full_row(year=999)], p)
+    assert [c["year"] for c in cells(p)] == ["999", "1998", "2001"]
+
+
+# --------------------------------------------------- write_master: bytes
+
+def test_write_master_lf_only_and_final_newline(tmp_path):
+    p = tmp_path / "m.csv"
+    write_master([full_row(year=1998), full_row(year=1999, notes="x")], p)
+    raw = p.read_bytes()
+    assert b"\r" not in raw
+    assert raw.endswith(b"\n") and not raw.endswith(b"\n\n")
+    assert raw.count(b"\n") == 3  # header + 2 rows
+
+
+def test_write_master_header_only_is_lf_terminated(tmp_path):
+    p = tmp_path / "m.csv"
+    write_master([], p)
+    raw = p.read_bytes()
+    assert raw == (",".join(EXPECTED_COLUMNS) + "\n").encode("utf-8")
+
+
+def test_write_master_lf_endings_with_quoted_fields(tmp_path):
+    p = tmp_path / "m.csv"
+    write_master([full_row(notes='say "hi", ok')], p)
+    raw = p.read_bytes()
+    assert b"\r" not in raw
+    assert cells(p)[0]["notes"] == 'say "hi", ok'
+
+
+# ------------------------------------- LIB_SPEC 8.8 (round 2) and gap tests
+
+def test_make_row_unflagged_bounds_gives_below_detection_false():
+    # Most important gap: Bounds(0, 1, 2) has low == 0 but is NOT flagged;
+    # below_detection follows nd_floored, not low == 0 (8.1, 4.2).
+    r = make_row(bounds=Bounds(0.0, 1.0, 2.0), **base_fields())
+    assert r["below_detection"] is False
+    assert r["value_low"] == 0.0
+
+
+def test_make_row_flagged_bounds_gives_below_detection_true():
+    r = make_row(bounds=Bounds(0.0, 1.0, 2.0, nd_floored=True), **base_fields())
+    assert r["below_detection"] is True
+    assert r["value_low"] == 0.0
+
+
+def test_make_row_not_detected_bounds_gives_below_detection_true():
+    r = make_row(bounds=Bounds.not_detected(4.0), **base_fields())
+    assert r["below_detection"] is True
+
+
+def test_make_row_enforces_below_detection_low_consistency():
+    # 8.8.8 (enforced half): explicit True with low > 0 raises; explicit False with flagged raises.
+    with pytest.raises(LibError):
+        make_row(bounds=Bounds(1.0, 2.0, 3.0), below_detection=True, **base_fields())
+    with pytest.raises(LibError):
+        make_row(bounds=Bounds(0.0, 1.0, 2.0, nd_floored=True), below_detection=False,
+                 **base_fields())
+
+
+def test_write_master_raw_dict_inconsistent_below_detection_does_not_raise(tmp_path):
+    # 8.8.8 (documented, not enforced): validator R02 is the backstop.
+    row = full_row(below_detection=True, value_low=1.0)
+    p = tmp_path / "m.csv"
+    write_master([row], p)
+    rows = read_raw(p)
+    hdr = rows[0]
+    assert rows[1][hdr.index("below_detection")] == "true"
+    assert rows[1][hdr.index("value_low")] == "1"
+
+
+@pytest.mark.parametrize("col", ["value_low", "value_central", "value_high"])
+def test_write_master_negative_zero_written_as_zero(tmp_path, col):
+    row = full_row(**{col: -0.0})
+    if col == "value_low":
+        row.update(value_central=2.0, value_high=3.0)
+    p = tmp_path / "m.csv"
+    write_master([row], p)
+    rows = read_raw(p)
+    assert rows[1][rows[0].index(col)] == "0"
+
+
+@pytest.mark.parametrize("col", ["value_low", "value_central", "value_high"])
+@pytest.mark.parametrize("bad", [10**400, -(10**400)])
+def test_write_master_huge_int_value_raises_liberror(tmp_path, col, bad):
+    # 8.8.1
+    with pytest.raises(LibError):
+        write_master([full_row(**{col: bad})], tmp_path / "m.csv")
+
+
+@pytest.mark.parametrize("col", ["value_low", "value_central", "value_high"])
+@pytest.mark.parametrize("bad", [True, False])
+def test_write_master_bool_in_value_column_raises_liberror(tmp_path, col, bad):
+    # 8.8.5
+    with pytest.raises(LibError):
+        write_master([full_row(**{col: bad})], tmp_path / "m.csv")
+
+
+@pytest.mark.parametrize("field", ["source_ids", "factor_ids"])
+@pytest.mark.parametrize("items", [["S0001", ""], ["S0001", "  "], [""], ["\t"], ["S0001", " ", "S0002"]])
+def test_make_row_empty_or_blank_list_item_raises(field, items):
+    # 8.8.2
+    fields = base_fields()
+    fields[field] = items
+    with pytest.raises(LibError):
+        make_row(bounds=Bounds(1.0, 2.0, 3.0), **fields)
+
+
+@pytest.mark.parametrize("blank", ["   ", "\t", " \n "])
+def test_make_row_whitespace_only_source_ids_string_raises(blank):
+    # 8.2 / 8.8.2
+    with pytest.raises(LibError):
+        make_row(bounds=Bounds(1.0, 2.0, 3.0), **base_fields(source_ids=blank))
+
+
+@pytest.mark.parametrize("field", REQUIRED)
+def test_make_row_explicit_none_for_required_field_raises(field):
+    # 8.8.7
+    with pytest.raises(LibError):
+        make_row(bounds=Bounds(1.0, 2.0, 3.0), **base_fields(**{field: None}))
+
+
+@pytest.mark.parametrize("field", ["stream", "substream", "stage", "country", "group",
+                                   "tier", "unit", "basis", "quantity"])
+@pytest.mark.parametrize("bad", [5, 1.5, b"x", ["x"], True])
+def test_make_row_required_string_fields_must_be_str(field, bad):
+    # 8.8.7
+    with pytest.raises(LibError):
+        make_row(bounds=Bounds(1.0, 2.0, 3.0), **base_fields(**{field: bad}))
+
+
+@pytest.mark.parametrize("bad", ["false", "true", 0, 1, "", [False]])
+def test_make_row_embedded_fuel_must_be_bool(bad):
+    with pytest.raises(LibError):
+        make_row(bounds=Bounds(1.0, 2.0, 3.0), embedded_fuel=bad, **base_fields())
+
+
+@pytest.mark.parametrize("flag", [True, False])
+def test_make_row_embedded_fuel_bool_accepted(flag):
+    r = make_row(bounds=Bounds(1.0, 2.0, 3.0), embedded_fuel=flag, **base_fields())
+    assert r["embedded_fuel"] is flag
+
+
+@pytest.mark.parametrize("bad", [123, None, 1.5, ["a.csv"], b"x.csv"])
+def test_write_master_non_path_raises_liberror(bad):
+    # 8.8.4
+    with pytest.raises(LibError):
+        write_master([full_row()], bad)
+
+
+def test_write_master_to_directory_raises_liberror_naming_path(tmp_path):
+    with pytest.raises(LibError) as ei:
+        write_master([full_row()], tmp_path)
+    assert str(tmp_path) in str(ei.value)
+
+
+def test_write_master_unwritable_location_raises_liberror_naming_path(tmp_path):
+    target = tmp_path / "no_such_dir" / "m.csv"
+    with pytest.raises(LibError) as ei:
+        write_master([full_row()], target)
+    assert str(target) in str(ei.value)

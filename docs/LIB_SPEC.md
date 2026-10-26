@@ -195,3 +195,69 @@ These resolutions follow the spec-blind test review and **override** the section
 8. **§1.4 equality.** `product(a, Bounds.exact(k))` equals `a.scale(k)` in its three values. The flags may differ, because `product` can apply the floor rule where `scale` cannot.
 9. **Output unit.** Add `result_unit(driver_unit, factor_unit) -> str` to `factors.py`. It returns `"Bq"`, `"Bq/a"` or `driver_unit` according to the §3.2 rules, including the TWh↔GWa case, and raises on a mismatch. `apply` is unchanged and returns only `Bounds`. Callers use `result_unit` to set the master `unit`.
 10. **`write_master([])`** writes a header-only file.
+
+---
+
+## 8. v1.2 resolutions (2026-10-25, after independent verification; Steve approved Option A)
+
+These **override** sections 1–7 where they differ.
+
+### 8.1 `nd_floored` follows the schema (supersedes 7.1 and 7.7's flag wording)
+
+SCHEMA §3 and `schema/master.json` require `value_low = 0` whenever `below_detection` is true. The flag therefore means "the low bound is zero because of a non-detect or the floor rule", and cannot be true when low > 0.
+
+- **Constructor.** `Bounds(..., nd_floored=True)` raises `LibError` unless `low == 0`.
+- **Combining operations** (`product`, `sum_independent`, `sum_correlated`, `sum_grouped`): output `nd_floored = (result.low == 0) AND (any input is nd_floored OR the floor-dominance rule fired OR the zero-central rule fired)`. A sum of a non-detect and a detected term has low > 0, so its flag is false.
+- `scale` keeps the flag (low stays 0 or the flag was already false). `product(a, Bounds.exact(k))` follows the same rule as any product.
+- `Bounds.exact(0)` has low 0 and flag false. A product containing an exact-zero term returns `Bounds.exact(0.0)`, flagged only if some input was flagged.
+
+### 8.2 `make_row`
+
+- An explicit `below_detection=True` with `bounds.low > 0` raises `LibError`. An explicit `below_detection=False` with `bounds.nd_floored` true raises `LibError`.
+- Explicit `None` for `allocation_variant`, `allocation_rule` or `embedded_fuel` takes the default (`"default"`, `"none"`, `False`).
+- `source_ids` given as an empty list or empty string raises `LibError`.
+- `year` must be an `int` (not `bool`). Range checks belong to the validator.
+
+### 8.3 `write_master`
+
+- Numeric value columns (`value_low`, `value_central`, `value_high`) are coerced with `float()` before formatting, so an integer-valued input and the same value read back from CSV produce identical bytes.
+- A row with a column not in `MASTER_COLUMNS`, or missing any of them, raises `LibError`.
+- A non-finite float raises `LibError`.
+- Output uses LF endings on every platform (open with `newline="\n"`).
+- None sorts before any value in each key column; this is explicit, not "falsy first".
+
+### 8.4 `read_table` (F7, F8)
+
+- The type maps cover every table the validator knows: master, factors, commodity_factors, activity, baselines, events (`lat`, `lon`, `mass_t`, `activity_*_bq` as float; `is_accident`, `military` as bool; `to_tiers` as list), countries (`valid_from`, `valid_to` as int), sources (`rank` as int), reference bands (`rel_*` as float; `applies_to` as list), residue_types (`streams` as list). The code-writer takes these from `pipeline/validate.py`.
+- `allocation_rule`, `source_ids`, `factor_ids` are list columns: `read_table` returns lists; `write_master` accepts lists or `;`-joined strings.
+- A data row whose width differs from the header raises `LibError` naming file and line. A duplicate header name raises `LibError`.
+
+### 8.5 `master_unit(result_unit, kind) -> str` (new, in `factors.py`)
+
+`kind` is `"flow"` or `"stock"`. `"flow"` maps `"Bq"` to `"Bq/a"` and leaves `"Bq/a"` unchanged. `"stock"` leaves `"Bq"` unchanged and raises `LibError` for `"Bq/a"`. Any other result unit passes through unchanged. Any other `kind` raises. The caller decides the kind; the library never guesses.
+
+### 8.6 Hardening
+
+- **Overflow and underflow.** Any non-finite result from `product`, `sum_*`, `shares` or `split` raises `LibError` (including `OverflowError` from internals and a non-finite share total). A `product` whose central underflows to 0 while every term's central is > 0 raises `LibError`.
+- **Types.** Wrong argument types raise `LibError`, never `TypeError` or `AttributeError`: non-`Bounds` terms, non-numeric or `bool` numbers, non-string units or years, non-mapping `products`, non-iterable inputs, unhashable group keys, non-string variant.
+- **Numbers.** `Bounds` rejects `bool` values and normalises `-0.0` to `0.0`.
+- **`split`.** Each share must be in `[0, 1 + 1e-12]`, otherwise `LibError`.
+- **`apply`.** A factor row's `below_detection` must be `bool` or `None`; any other type (including the string `"false"`) raises `LibError`.
+- **`attribution_share`.** Tolerance 1e-12 above 1 is clamped to exactly 1.0; anything larger raises.
+
+### 8.7 Documented limitation
+
+A term built from two factors cannot express two `factor_id` keys in `sum_grouped`. Stream scripts must split such terms so each term has one `factor_id`, or pass the shared key explicitly. This is not an API change.
+
+### 8.8 Verification round 2 (2026-10-25)
+
+Added after the second independent check. These extend 8.6.
+
+1. **Huge integers.** Any Python `int` too large for a float (for example `10**400`) passed as a number to `Bounds`, `shares`, `attribution_share`, `split`, or as a `value_*` cell in `write_master` raises `LibError`, never `OverflowError`.
+2. **`source_ids` / `factor_ids` items.** A list item that is empty or whitespace-only raises `LibError` in `make_row` (this extends 8.2's empty-list rule).
+3. **`shares` named products.** `main` and `radio` must be `str` (or `None`), otherwise `LibError`.
+4. **File I/O.** `read_table` and `write_master` with a path that is not `str` or `os.PathLike`, a directory, or an unreadable or unwritable location raise `LibError` naming the path. `read_table` of an empty file raises `LibError`.
+5. **`write_master` value columns.** A `bool` in a `value_*` column raises `LibError`.
+6. **`Bounds`** rejects any `nd_floored` that is not a `bool` (including `None`, `"yes"`, `1`) with `LibError`.
+7. **`make_row` required string fields.** `stream`, `substream`, `stage`, `country`, `group`, `tier`, `unit`, `basis`, `quantity` must be `str`, and `embedded_fuel` must be `bool`; otherwise `LibError`. Explicit `None` for a required field raises `LibError`.
+8. **Documented, not enforced.** `write_master` does not check `below_detection => value_low == 0` for raw dicts (the validator rule R02 is the backstop; `make_row` does enforce it). A factor unit written `Bq/a` without "per" is read as Bq per driver unit `a`; write annual factors as `Bq/a per <driver_unit>`.

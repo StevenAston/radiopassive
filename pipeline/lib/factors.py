@@ -15,17 +15,53 @@ WORLD_REGION = "XWL"
 GWA_TWH = 8.766  # 1 GW·a in TWh, a = 365.25 d (exact)
 
 
+MATCH_KEYS = frozenset(
+    {
+        "stream",
+        "stage",
+        "group",
+        "tier",
+        "route",
+        "residue_type",
+        "driver_series",
+        "commodity",
+        "component",
+        "allocation_variant",
+    }
+)
+
+
 def select(factors: Iterable[Mapping[str, Any]], *, year: int, region: str, **match: Any) -> dict:
     """Pick the single factor row valid for ``year`` and ``region``.
 
     An exact-region row beats an ``XWL`` row. Raises ``LibError`` when nothing
     matches or the registry is ambiguous at the winning precedence level.
     """
+    if not isinstance(year, int) or isinstance(year, bool):
+        raise LibError(f"year must be an int, got {year!r}")
+    if not isinstance(region, str):
+        raise LibError(f"region must be a string, got {region!r}")
+    # An unknown key would otherwise silently match nothing (or everything).
+    unknown = sorted(set(match) - MATCH_KEYS)
+    if unknown:
+        raise LibError(f"unknown match key(s) {unknown}; allowed: {sorted(MATCH_KEYS)}")
+    try:
+        rows = list(factors)
+    except TypeError as exc:
+        raise LibError(f"factors must be an iterable of mappings, got {factors!r}") from exc
+    for row in rows:
+        if not isinstance(row, Mapping):
+            raise LibError(f"factor rows must be mappings, got {row!r}")
+
     exact: list[Mapping[str, Any]] = []
     world: list[Mapping[str, Any]] = []
-    for row in factors:
+    for row in rows:
         yf, yt = row.get("year_from"), row.get("year_to")
-        if yf is None or yt is None or not (yf <= year <= yt):
+        if yf is None or yt is None:
+            continue
+        if not all(isinstance(v, int) and not isinstance(v, bool) for v in (yf, yt)):
+            raise LibError(f"factor {row.get('factor_id')!r}: year_from/year_to must be ints")
+        if not (yf <= year <= yt):
             continue
         if any(row.get(k) != v for k, v in match.items()):
             continue
@@ -56,7 +92,9 @@ def _driver_conversion(driver_unit: str, per_unit: str) -> float:
 
 def _parse_unit(unit: str) -> tuple[str, str | None]:
     """Return (kind, per_unit): kind is 'Bq', 'Bq/a' or '1'."""
-    unit = (unit or "").strip()
+    if not isinstance(unit, str):
+        raise LibError(f"unit must be a string, got {unit!r}")
+    unit = unit.strip()
     if unit == "1":
         return "1", None
     if unit.startswith("Bq/a per "):
@@ -68,6 +106,8 @@ def _parse_unit(unit: str) -> tuple[str, str | None]:
 
 def result_unit(driver_unit: str, factor_unit: str) -> str:
     """Unit of ``apply``'s result (LIB_SPEC §3.2, §7.9); raises on a mismatch."""
+    if not isinstance(driver_unit, str):
+        raise LibError(f"driver unit must be a string, got {driver_unit!r}")
     kind, per = _parse_unit(factor_unit)
     if kind == "1":
         return driver_unit
@@ -81,19 +121,44 @@ def apply(driver_value: Bounds, driver_unit: str, factor_row: Mapping[str, Any])
     Factor units: ``Bq/<u>`` (result Bq), ``Bq/a per <u>`` (Bq/a), or ``1``
     (result in the driver's unit). Only TWh <-> GWa is converted.
     """
+    if not isinstance(driver_value, Bounds):
+        raise LibError(f"driver value must be a Bounds, got {driver_value!r}")
+    if not isinstance(driver_unit, str):
+        raise LibError(f"driver unit must be a string, got {driver_unit!r}")
+    if not isinstance(factor_row, Mapping):
+        raise LibError(f"factor row must be a mapping, got {factor_row!r}")
     kind, per = _parse_unit(factor_row.get("unit"))
     conv = 1.0 if kind == "1" else _driver_conversion(driver_unit, per)
+    name = factor_row.get("factor_id")
+    nd = factor_row.get("below_detection")
+    if nd is not None and not isinstance(nd, bool):
+        raise LibError(f"factor row {name!r}: below_detection must be a bool or None, got {nd!r}")
     try:
-        # The row's own bounds are kept for non-detects (LIB_SPEC §7.6).
+        # The row's own bounds are kept for non-detects (LIB_SPEC §7.6); a flag
+        # on a row whose low is positive is rejected by Bounds (§8.1).
         factor = Bounds(
             factor_row["value_low"],
             factor_row["value_central"],
             factor_row["value_high"],
-            nd_floored=bool(factor_row.get("below_detection")),
+            nd_floored=bool(nd),
         )
-    except (KeyError, TypeError) as exc:
-        raise LibError(
-            f"factor row {factor_row.get('factor_id')!r} lacks usable value_low/central/high: {exc}"
-        ) from exc
+    except KeyError as exc:
+        raise LibError(f"factor row {name!r} lacks {exc}") from exc
     driver = driver_value if conv == 1.0 else driver_value.scale(conv)
     return product(driver, factor)
+
+
+def master_unit(result_unit: str, kind: str) -> str:
+    """Master-table ``unit`` for a result unit (LIB_SPEC §8.5).
+
+    ``kind`` is ``"flow"`` or ``"stock"``; the caller decides, the library never guesses.
+    """
+    if not isinstance(result_unit, str):
+        raise LibError(f"result unit must be a string, got {result_unit!r}")
+    if not isinstance(kind, str) or kind not in ("flow", "stock"):
+        raise LibError(f"kind must be 'flow' or 'stock', got {kind!r}")
+    if kind == "flow" and result_unit == "Bq":
+        return "Bq/a"
+    if kind == "stock" and result_unit == "Bq/a":
+        raise LibError("a stock cannot have unit 'Bq/a'")
+    return result_unit

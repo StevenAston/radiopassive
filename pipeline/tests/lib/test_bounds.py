@@ -54,7 +54,7 @@ def test_bounds_is_frozen():
 
 def test_bounds_equality_is_exact_dataclass_equality():
     assert Bounds(1.0, 2.0, 3.0) == Bounds(1.0, 2.0, 3.0)
-    assert Bounds(1.0, 2.0, 3.0) != Bounds(1.0, 2.0, 3.0, nd_floored=True)
+    assert Bounds(0.0, 2.0, 3.0) != Bounds(0.0, 2.0, 3.0, nd_floored=True)
 
 
 @pytest.mark.parametrize(
@@ -227,11 +227,22 @@ def test_product_propagates_input_nd_floored():
     approx3(out, 0.0, 5.0, 10.0)
 
 
-def test_product_input_flag_with_positive_low_still_flags():
-    flagged = Bounds(0.5, 1.0, 2.0, nd_floored=True)
-    out = product(flagged, Bounds(1.0, 1.0, 1.0))
-    assert out.nd_floored is True
-    assert out.low > 0.0  # floor rule not triggered; only the flag propagates
+def test_constructor_rejects_flag_with_positive_low():
+    # LIB_SPEC 8.1 (supersedes the old 7.1 test that built a flagged input
+    # with low > 0 and expected the flag to propagate).
+    with pytest.raises(LibError):
+        Bounds(0.5, 1.0, 2.0, nd_floored=True)
+
+
+def test_product_flagged_input_but_low_positive_is_not_flagged():
+    # Converted from the old OR-propagation test.  The flagged input (0,1,2)
+    # has floor term ln^2(1000) = 47.72; the other term has ln^2(e^10) = 100,
+    # so the floored share is 0.32 < 0.5 and the result low stays > 0.
+    # 8.1: flag = (low == 0) AND (...), so the flag must be False.
+    e = math.exp
+    out = product(Bounds.not_detected(2.0), Bounds(e(-10), 1.0, 2.0))
+    assert out.low > 0.0
+    assert out.nd_floored is False
 
 
 def test_product_not_detected_central_is_half_limit():
@@ -259,8 +270,18 @@ def test_sum_independent_accepts_any_iterable():
     approx3(sum_independent(iter([A, B])), 25.0, 30.0, 35.0)
 
 
-def test_sum_independent_or_of_flags():
+def test_sum_independent_flag_false_when_low_positive():
+    # 8.1: a sum of a non-detect and a detected term has low > 0 -> flag False.
+    # low = 11 - sqrt(1^2 + 4^2) > 0
     out = sum_independent([A, Bounds(0.0, 1.0, 2.0, nd_floored=True)])
+    assert out.low > 0.0
+    assert out.nd_floored is False
+
+
+def test_sum_independent_flag_true_when_low_zero_and_input_flagged():
+    # single flagged term (0,1,2): low = 1 - sqrt(1) = 0 exactly -> flagged.
+    out = sum_independent([Bounds(0.0, 1.0, 2.0, nd_floored=True)])
+    assert out.low == 0.0
     assert out.nd_floored is True
 
 
@@ -317,16 +338,29 @@ def test_sum_grouped_empty_is_exact_zero():
     assert sum_grouped([], []) == Bounds.exact(0.0)
 
 
-def test_all_sums_or_of_flags():
-    # LIB_SPEC 7.1: every combining operation ORs nd_floored.
+def test_all_sums_flag_follows_low_zero_and_input_flag():
+    # LIB_SPEC 8.1 (converted from the 7.1 OR-of-flags test).
     flagged = Bounds(0.0, 1.0, 2.0, nd_floored=True)
-    assert sum_independent([A, flagged]).nd_floored is True
-    assert sum_correlated([A, flagged]).nd_floored is True
-    assert sum_grouped([A, flagged], ["a", "b"]).nd_floored is True
-    assert sum_grouped([A, flagged], ["a", "a"]).nd_floored is True
+    # mixed with a detected term: low > 0 -> False in every combiner
+    assert sum_independent([A, flagged]).nd_floored is False
+    assert sum_correlated([A, flagged]).nd_floored is False
+    assert sum_grouped([A, flagged], ["a", "b"]).nd_floored is False
+    assert sum_grouped([A, flagged], ["a", "a"]).nd_floored is False
+    # all-flagged, fully correlated: low = 0 + 0 = 0 -> True
+    assert sum_correlated([flagged, flagged]).nd_floored is True
+    assert sum_grouped([flagged, flagged], ["k", "k"]).nd_floored is True
+    # unflagged inputs never produce a flag
     assert sum_independent([A, B]).nd_floored is False
     assert sum_correlated([A, B]).nd_floored is False
     assert sum_grouped([A, B], ["a", "b"]).nd_floored is False
+
+
+def test_sum_correlated_zero_low_without_flagged_input_is_not_flagged():
+    # low == 0 but nothing was flagged and no floor/zero rule fires in a sum.
+    z = Bounds(0.0, 1.0, 2.0)
+    out = sum_correlated([z, z])
+    assert out.low == 0.0
+    assert out.nd_floored is False
 
 
 def test_product_exact_zero_term_gives_exact_zero():
@@ -362,7 +396,7 @@ def _random_bounds(rng: random.Random) -> Bounds:
         high = c
     else:
         high = c * 10 ** rng.uniform(0, 1.5)
-    return Bounds(low, c, high, nd_floored=rng.random() < 0.1)
+    return Bounds(low, c, high, nd_floored=(low == 0.0 and rng.random() < 0.5))
 
 
 def _bounds_list(rng, n):
@@ -445,3 +479,352 @@ def test_sweep_sum_grouped_between_independent_and_correlated():
         assert out.high >= ind.high * (1 - tol) - 1e-12
         assert out.low >= cor.low * (1 - tol) - 1e-12
         assert out.low <= ind.low * (1 + tol) + 1e-12
+
+
+# ======================================================================
+# v1.2 additions (LIB_SPEC section 8)
+# ======================================================================
+
+E = math.exp
+LN1000_SQ = math.log(1000.0) ** 2  # squared log distance of one floored term
+
+
+# ---------------------------------------------------- 8.1 flag constructor
+
+def test_flagged_constructor_accepts_zero_low():
+    b = Bounds(0.0, 1.0, 2.0, nd_floored=True)
+    assert b.nd_floored is True
+    Bounds(0.0, 0.0, 0.0, nd_floored=True)  # all-zero is still low == 0
+
+
+@pytest.mark.parametrize("low", [1e-300, 0.1, 1.0])
+def test_flagged_constructor_rejects_any_positive_low(low):
+    with pytest.raises(LibError):
+        Bounds(low, 1.0, 2.0, nd_floored=True)
+
+
+def test_exact_zero_has_zero_low_and_is_not_flagged():
+    b = Bounds.exact(0)
+    assert (b.low, b.central, b.high) == (0.0, 0.0, 0.0)
+    assert b.nd_floored is False
+
+
+def test_not_detected_still_flagged_and_valid_under_new_constructor():
+    b = Bounds.not_detected(4.0)
+    assert (b.low, b.central, b.high, b.nd_floored) == (0.0, 2.0, 4.0, True)
+
+
+def test_scale_zero_of_flagged_bounds_stays_valid():
+    out = Bounds(0.0, 1.0, 2.0, nd_floored=True).scale(0.0)
+    assert (out.low, out.central, out.high) == (0.0, 0.0, 0.0)
+
+
+def test_scale_negative_on_zero_bounds_raises():
+    # mutation gap: the k < 0 check must not be skipped when the values are 0
+    with pytest.raises(LibError):
+        Bounds(0.0, 0.0, 0.0).scale(-0.5)
+    with pytest.raises(LibError):
+        Bounds.exact(0).scale(-1e-9)
+
+
+# ------------------------------------------- 8.1 product flag semantics
+
+def test_product_flag_true_when_floor_dominates_and_low_zero():
+    out = product(Bounds(0.0, 1.0, 2.0))
+    assert out.low == 0.0 and out.nd_floored is True
+
+
+def test_product_flag_true_when_input_flagged_and_result_low_zero():
+    # flagged (0,1,2) x exact: floor term is 100% of the log sum -> low 0.
+    out = product(Bounds.not_detected(2.0), Bounds.exact(3.0))
+    assert out.low == 0.0 and out.nd_floored is True
+
+
+def test_product_flag_true_when_zero_central_rule_fires():
+    out = product(Bounds(0.0, 0.0, 5.0), Bounds(1.0, 2.0, 3.0))
+    assert out.low == 0.0 and out.nd_floored is True
+
+
+def test_product_unflagged_no_floor_has_false_flag():
+    out = product(Bounds(1.0, 2.0, 3.0), Bounds(2.0, 3.0, 5.0))
+    assert out.nd_floored is False
+
+
+def test_product_with_exact_k_follows_same_flag_rule_as_any_product():
+    # product(a, exact(k)) of a floored a: floor rule fires -> low 0 -> True
+    out = product(Bounds(0.0, 1.0, 2.0), Bounds.exact(5.0))
+    assert out.low == 0.0 and out.nd_floored is True
+    # a with positive low: no flag
+    out = product(Bounds(0.5, 1.0, 2.0), Bounds.exact(5.0))
+    assert out.nd_floored is False
+
+
+def test_product_exact_zero_unflagged_inputs_gives_unflagged_exact_zero():
+    out = product(Bounds.exact(0.0), Bounds(1.0, 2.0, 3.0))
+    assert out == Bounds(0.0, 0.0, 0.0, nd_floored=False)
+
+
+def test_product_exact_zero_with_flagged_input_is_flagged():
+    out = product(Bounds.exact(0.0), Bounds.not_detected(2.0))
+    assert (out.low, out.central, out.high) == (0.0, 0.0, 0.0)
+    assert out.nd_floored is True
+
+
+# ------------------------------------- floor-dominance threshold (mutants)
+# One floored term (low 0, c = 1) contributes F = ln^2(1000) = 47.717 to the
+# low-side log sum.  The other term has low = c * exp(-r), contributing r^2.
+# Floored share = F / (F + r^2).
+
+def _floor_case(r):
+    floored = Bounds(0.0, 1.0, 2.0)
+    other = Bounds(E(-r), 1.0, 2.0)
+    return product(floored, other)
+
+
+def test_floor_share_between_one_third_and_one_half_is_not_dominant():
+    # r = 8.4 -> r^2 = 70.56 ; share = 47.717 / 118.277 = 0.4034
+    r = 8.4
+    out = _floor_case(r)
+    expected_low = E(-math.sqrt(LN1000_SQ + r * r))
+    assert 1 / 3 < LN1000_SQ / (LN1000_SQ + r * r) < 0.5
+    assert out.low > 0.0
+    assert out.low == pytest.approx(expected_low, rel=1e-9)
+    assert out.nd_floored is False
+
+
+def test_floor_share_just_over_one_half_is_dominant():
+    # r = 6.8 -> r^2 = 46.24 ; share = 47.717 / 93.957 = 0.5079
+    r = 6.8
+    assert LN1000_SQ / (LN1000_SQ + r * r) > 0.5
+    out = _floor_case(r)
+    assert out.low == 0.0
+    assert out.nd_floored is True
+
+
+def test_floor_share_exactly_one_half_is_not_dominant():
+    # Other term has c/l = 1000 exactly, so both squared logs are identical
+    # and the floored share is exactly 1/2: "more than half" is false.
+    floored = Bounds(0.0, 1.0, 2.0)
+    other = Bounds(1e-3, 1.0, 2.0)
+    out = product(floored, other)
+    assert out.low > 0.0
+    assert out.low == pytest.approx(E(-math.sqrt(2 * LN1000_SQ)), rel=1e-9)
+    assert out.nd_floored is False
+
+
+def test_floor_share_clear_minority_is_not_dominant():
+    # r = 12 -> share 0.249
+    out = _floor_case(12.0)
+    assert out.low > 0.0 and out.nd_floored is False
+
+
+def test_floor_share_clear_majority_is_dominant():
+    out = _floor_case(1.0)  # share 0.98
+    assert out.low == 0.0 and out.nd_floored is True
+
+
+def test_floor_dominance_counts_all_floored_terms_together():
+    # two floored terms: 2F = 95.43 vs r^2 = 70.56 -> share 0.575 -> dominant,
+    # although each floored term alone would be 0.4034 (not dominant).
+    r = 8.4
+    out = product(Bounds(0.0, 1.0, 2.0), Bounds(0.0, 1.0, 2.0), Bounds(E(-r), 1.0, 2.0))
+    assert out.low == 0.0 and out.nd_floored is True
+
+
+# ------------------------------------------------ 8.6 number hardening
+
+@pytest.mark.parametrize("args", [
+    (True, True, True), (0.0, True, 2.0), (0.0, 1.0, True), (False, 1.0, 2.0),
+])
+def test_bounds_rejects_bool_values(args):
+    with pytest.raises(LibError):
+        Bounds(*args)
+
+
+@pytest.mark.parametrize("args", [
+    ("1", 2.0, 3.0), (1.0, None, 3.0), (1.0, 2.0, [3.0]), (None, None, None),
+])
+def test_bounds_rejects_non_numeric_values_with_liberror(args):
+    with pytest.raises(LibError):
+        Bounds(*args)
+
+
+def test_bounds_accepts_plain_ints():
+    b = Bounds(1, 2, 3)
+    assert (b.low, b.central, b.high) == (1, 2, 3)
+
+
+def test_bounds_negative_zero_normalised_to_positive_zero():
+    b = Bounds(-0.0, 1.0, 2.0)
+    assert b.low == 0.0 and math.copysign(1.0, b.low) == 1.0
+    z = Bounds(-0.0, -0.0, -0.0)
+    for v in (z.low, z.central, z.high):
+        assert math.copysign(1.0, v) == 1.0
+
+
+def test_exact_negative_zero_normalised():
+    b = Bounds.exact(-0.0)
+    assert all(math.copysign(1.0, v) == 1.0 for v in (b.low, b.central, b.high))
+
+
+def test_scale_by_negative_zero_gives_positive_zero():
+    b = Bounds(1.0, 2.0, 3.0).scale(-0.0)
+    assert all(math.copysign(1.0, v) == 1.0 for v in (b.low, b.central, b.high))
+
+
+@pytest.mark.parametrize("bad", [True, False, "2", None, [2.0]])
+def test_scale_rejects_non_numeric_and_bool(bad):
+    with pytest.raises(LibError):
+        Bounds(1.0, 2.0, 3.0).scale(bad)
+
+
+@pytest.mark.parametrize("bad", [True, "3", None])
+def test_exact_and_not_detected_reject_bad_types(bad):
+    with pytest.raises(LibError):
+        Bounds.exact(bad)
+    with pytest.raises(LibError):
+        Bounds.not_detected(bad)
+
+
+def test_scale_overflow_raises_liberror():
+    with pytest.raises(LibError):
+        Bounds(1.0, 1e300, 1e300).scale(1e300)
+
+
+# ------------------------------------------------ 8.6 wrong argument types
+
+@pytest.mark.parametrize("bad", [1.0, "x", None, (1.0, 2.0, 3.0), {"low": 1}])
+def test_product_rejects_non_bounds_terms(bad):
+    with pytest.raises(LibError):
+        product(bad)
+    with pytest.raises(LibError):
+        product(Bounds.exact(1.0), bad)
+
+
+@pytest.mark.parametrize("fn", [sum_independent, sum_correlated])
+@pytest.mark.parametrize("bad", [[1.0], ["x"], [None], [(1, 2, 3)]])
+def test_sums_reject_non_bounds_members(fn, bad):
+    with pytest.raises(LibError):
+        fn(bad)
+
+
+@pytest.mark.parametrize("fn", [sum_independent, sum_correlated])
+@pytest.mark.parametrize("bad", [5, 2.5, None, True])
+def test_sums_reject_non_iterable_input(fn, bad):
+    with pytest.raises(LibError):
+        fn(bad)
+
+
+def test_sum_grouped_rejects_non_bounds_members():
+    with pytest.raises(LibError):
+        sum_grouped([1.0, A], ["a", "b"])
+
+
+@pytest.mark.parametrize("terms,keys", [(5, ["a"]), ([A], 5), (None, None), ([A], None)])
+def test_sum_grouped_rejects_non_iterable_input(terms, keys):
+    with pytest.raises(LibError):
+        sum_grouped(terms, keys)
+
+
+def test_sum_grouped_unhashable_key_raises_liberror():
+    with pytest.raises(LibError):
+        sum_grouped([A, B], [["k"], ["k"]])
+    with pytest.raises(LibError):
+        sum_grouped([A], [{"k": 1}])
+
+
+def test_sum_grouped_accepts_hashable_non_string_keys():
+    out = sum_grouped([A, B], [1, (2, 3)])
+    approx3(out, 25.0, 30.0, 35.0)
+
+
+# -------------------------------------------- 8.6 overflow and underflow
+
+def test_product_central_overflow_raises_liberror():
+    t = Bounds.exact(1e200)
+    with pytest.raises(LibError):
+        product(t, t)
+
+
+def test_product_three_large_terms_overflow_raises_liberror():
+    t = Bounds.exact(1e150)
+    with pytest.raises(LibError):
+        product(t, t, t)
+
+
+def test_product_high_side_exp_overflow_raises_liberror_not_overflowerror():
+    # each term has ln(h/c) = ln(1e300) = 690.8; quadrature of two = 977 > 709,
+    # so exp() inside the implementation overflows.
+    t = Bounds(1.0, 1.0, 1e300)
+    with pytest.raises(LibError):
+        product(t, t)
+
+
+def test_product_zero_central_conservative_high_overflow_raises():
+    # zero-central rule: high = product of highs = 1e300 * 1e300 = inf
+    with pytest.raises(LibError):
+        product(Bounds(0.0, 0.0, 1e300), Bounds(1.0, 1.0, 1e300))
+
+
+def test_product_central_underflow_with_positive_centrals_raises():
+    t = Bounds.exact(1e-200)
+    with pytest.raises(LibError):
+        product(t, t)
+
+
+def test_product_zero_central_input_is_not_an_underflow_error():
+    # a genuine zero central is the zero-central rule, not underflow
+    out = product(Bounds(0.0, 0.0, 5.0), Bounds.exact(1e-200))
+    assert out.central == 0.0
+
+
+@pytest.mark.parametrize("fn", [sum_independent, sum_correlated])
+def test_sums_overflow_raise_liberror(fn):
+    big = Bounds.exact(1.7e308)
+    with pytest.raises(LibError):
+        fn([big, big])
+
+
+def test_sum_grouped_overflow_raises_liberror():
+    big = Bounds.exact(1.7e308)
+    with pytest.raises(LibError):
+        sum_grouped([big, big], ["a", "a"])
+    with pytest.raises(LibError):
+        sum_grouped([big, big], ["a", "b"])
+
+
+def test_sum_independent_quadrature_overflow_raises_liberror():
+    # deviations (h - c) ~ 1.7e308 each; squares overflow inside the sqrt
+    t = Bounds(0.0, 0.0, 1.7e308)
+    with pytest.raises(LibError):
+        sum_independent([t, t])
+
+
+# ------------------------------------- LIB_SPEC 8.8 (round 2) and gap tests
+
+@pytest.mark.parametrize("bad", ["yes", "true", "", 1, 0, 1.0, [], object()])
+def test_bounds_non_bool_nd_floored_raises_liberror(bad):
+    # 8.8.6: nd_floored must be bool or None; "yes" must be a LibError, not accepted.
+    with pytest.raises(LibError):
+        Bounds(0.0, 1.0, 2.0, nd_floored=bad)
+
+
+@pytest.mark.parametrize("args", [
+    (10**400, 10**400, 10**400),
+    (0.0, 1.0, 10**400),
+    (0, 10**400, 10**401),
+])
+def test_bounds_huge_int_raises_liberror_not_overflowerror(args):
+    # 8.8.1: an int too large for a float is a LibError, never OverflowError.
+    with pytest.raises(LibError):
+        Bounds(*args)
+
+
+def test_bounds_huge_negative_int_raises_liberror():
+    with pytest.raises(LibError):
+        Bounds(-(10**400), 0.0, 1.0)
+
+
+def test_bounds_exact_huge_int_raises_liberror():
+    with pytest.raises(LibError):
+        Bounds.exact(10**400)
