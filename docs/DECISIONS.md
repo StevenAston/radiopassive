@@ -43,6 +43,8 @@ Each decision records what was decided, when, and where it is made operational. 
 | D37 | 2026-10-25 | Household (domestic) biomass heating is in scope for stream ⑤, consistent with coal including non-power use. | METHODS §2.3 / §6.3 (to be written with the addendum) |
 | D38 | 2026-10-25 | Steve's local USGS DS140 mirror may be read but never written; all outputs go to the radiopassive folder. | research/activity |
 | D39 | 2026-10-25 | Commodity prices stored as USD/t (nominal) and USD1998/t (constant 1998 dollars), US-market unit values from DS140; a documented non-SI exception. | data/activity/commodity_prices.csv; SCHEMA §4.6 |
+| D40 | 2026-10-25 | Second nuclide addendum approved, to be exhaustive: Y-91 and the other nuclides needed to close the 1 a reduced-set shortfall (e.g. Pr-144m, Ag-110m), plus any others the coverage tests show missing. Additions only. | data/reference/nuclides.csv, groups.csv |
+| D41 | 2026-10-25 | Isomeric transitions emitting < 1 keV per decay are not counted as separate decays (U-235m in Pu-239 decay); Pu239 multiplier stays 1. | METHODS §3.2 |
 
 No proposals outstanding.
 
