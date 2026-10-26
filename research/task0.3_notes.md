@@ -340,3 +340,58 @@ All have `role = artificial`, `multiplier_scope = stock_and_flow`, empty `parent
 ### 12.5 Checks run
 
 `python3 -m pipeline.validate --root /mnt/user-data/outputs` → `OK: no issues`. `cd pipeline && python3 -m pytest -q` → 556 passed.
+
+## 13. D40 second addendum and D42 isomer rule (2026-10-25)
+
+Before-copies: `scratchpad/addendum03b/{nuclides,groups,notes}.before`. `nuclides.csv` grew from 122 to 195 data rows (73 added, old bytes unchanged). `groups.csv` grew from 78 to 131 data rows (53 added, 3 existing rows changed). All values from ICRP-107 (S9001–S9003) with the same method as §§2–12. Generator: `scratchpad/addendum03b/make2.py`; independent recompute: `verify2.py` (raw NDX zip and RadData `.rda`).
+
+### 13.1 Rule change (D42)
+
+D41 (1 keV exemption) is superseded: every ICRP-107 branch with branching >= 1e-3 is counted, whatever its energy (precedent Pa-234 in `U238+`). Scan (`d42scan.py`) of every non-gas group, every member, every daughter with branching >= 1e-3 that is radioactive, shorter-lived than head/10 and not a member:
+
+- Omitted and fixed: Ce-144 -> Pr-144m (0.977%), Zr-95 -> Nb-95m (1.08%), Pu-239 -> U-235m (99.94%).
+- Radioactive daughters that are longer-lived or independent heads with their own group are not omissions: Pa-234m/Pa-234 -> U-234, Th-231 -> Pa-231, Th-232 -> Ra-228, Pa-233 -> U-233, Am-243 -> Np-239, Cm-245 -> Pu-241, Am-242 -> Cm-242 (all have their own groups, or are intentionally separate as in §12).
+- **Gap found:** U-233 -> Th-229 (100%, 7340 a) had no Th-229 group. Closed by the new `Th229+` (9 members). `U233` is unchanged (Th-229 is a long-lived independent head, not folded in).
+- Not changed, weight below threshold: At-218 -> Rn-218 (branching 0.001, but At-218 weight is 2e-4, so the Rn-218 weight is 2e-7).
+- Stable-in-practice daughters ignored: Kr-87 -> Rb-87 (4.9e10 a), Pm-147 -> Sm-147 (1.1e11 a), Pr-144 -> Nd-144 (2.3e15 a).
+- New groups: only `U232` (U-232 -> Th-228 100%) trips the scan; Th-228 is the independent head of `Th228+` (as U-234 and Th-230 are for their parents), so it is deliberately not folded in.
+
+### 13.2 Changed existing rows (old -> new)
+
+| Group | Members | Weights | Multiplier | Ē per head decay (MeV) |
+|---|---|---|---|---|
+| `Ce144+` | `Ce-144;Pr-144` -> `Ce-144;Pr-144;Pr-144m` | `1;1.0000352` -> `1;1.0000354;0.0097700715` | 2.0000352 -> **2.00980547** | 1.3483273 -> **1.3489218** |
+| `Zr95` (ID kept, see below) -> `Zr95+` | `Zr-95` -> `Zr-95;Nb-95m` | `1` -> `1;0.011447381` | 1 -> **1.01144738** | 0.85064814 -> **0.85350609** |
+| `Pu239` (ID kept) | `Pu-239` -> `Pu-239;U-235m` | `1` -> `1;0.9994` | 1 -> **1.9994** | 5.2442411 -> **5.2443176** |
+
+Group IDs: `Zr95` was renamed to `Zr95+` (passes all 556 tests). **`Pu239` was NOT renamed to `Pu239+`**: renaming it makes 28 spec-blind tests in `tests/test_validate.py` fail (the fixture `tests/fixtures/valid_rows.csv` uses nuclide ID `Pu239`; the failures are the X01, X02, X05, V15, routine-transfer, CLI and real-project tests that load it). Tests were not edited. Decision for Steve: keep `Pu239` and treat it as meaning "Pu-239 + U-235m", or rename and update the fixture. Other references to the old ID `Zr95` (METHODS, `research/nuclear/spent_fuel_inventory_derived.csv`, `research/events/notes.md`) are outside this task and need the coordinator.
+
+Changed notes on the three rows describe the D42 change and the old values. Ē for Pr-144m uses ICRP-107 (0.0608 MeV per decay); U-235m is 7.65e-5 MeV; Nb-95m is 0.2497 MeV. New nuclide rows: Pr-144m, U-235m, Nb-95m (the last two are required by the changes above). Pr-144 weight is 1.0000354 vs 1.0000352 only because Pr-144m now carries its own transient factor.
+
+### 13.3 Sweep result by criterion
+
+Presence scan of the extracted text of UNSCEAR 2016 Annex B, 2000 Annexes C and J, 2008 Annexes B and D, 2013 Annex A, 2020/21 Vol. II, UNSCEAR 1988 Annex B, OSPAR 2022/2023 discharge reports, RIFE-24, NEA 7201 and the other task 1.2 texts (`pres2.py`, `pres3.py`; nuclide-symbol regex, ICRP nuclides only, so tables that are images are not seen) plus the spent-fuel model (`sweep_a.py`, `res.pkl`, 72 cases).
+
+- **(a) >= 0.1% of activity or heat at 1 to 1e4 a** (maximum over the 72 cases; added): Y-91 (0.81% / 0.75%), Ag-110m (0.12% / 0.40%), Pr-144m (0.27% activity, row only, now in `Ce144+`), Sn-119m (0.12%), Cm-243 (0.105% heat at 30 a), Te-127m and Te-127 (0.075%). Also added below the threshold, since "exhaustive": Ir-192n, Sn-123, Pd-107, Gd-153, Se-79, Rh-102, Sn-113 with In-113m, Cd-113m. All already-present nuclides were skipped.
+  - **Ir-192m mapping:** the ORIGEN/Carter "Ir-192m" (241 a) is ICRP-107's `Ir-192n`; ICRP's `Ir-192m` is the 1.45 min isomer. Row `Ir-192n` and group `Ir192n+` (with Ir-192, multiplier 2.0008) are used; mapping inferred from the half-life, not stated in any source.
+- **(b) Effluent tables (UNSCEAR 2016B, 2000C, OSPAR, RIFE, UNSCEAR 1988/2008B) not yet present, added:** Ag-110m, Zn-65, Cr-51, Co-57, Sb-124, Eu-152, Cl-36, Kr-81, I-125, S-35, P-32, Na-24, Fe-59, Ca-45, Cd-109, W-185, Be-7, N-16, U-232, Y-91, Sr-91 (Y-91m), Ce-143, Nd-147, Kr-89, Rb-89, Xe-137, Ba-139, Zr-97 (Nb-97). Already present from the coordinator's list: I-133, Te-132, Ru-106, Cs-134, La-140, Pm-147, Sm-151, Eu-154, Eu-155, Tc-99, Mn-54, Cs-135, I-129, Ni-63 and the others in §§2 to 12.
+- **(c) Chernobyl, Fukushima and TMI source terms:** added I-135 (Xe-135m), I-134, Te-131m (Te-131), Sr-91, Zr-97, Ba-139, Ce-143, Nd-147, Te-127m, Ag-110m, Kr-89, Rb-89, Xe-137. Not found in any scanned source text (so not added): Sr-92, Y-92, Y-93, Ru-105, Rh-105, Sb-127, Sb-129, Pr-143. Check the PDFs if Steve wants those.
+- **(d) Decommissioning and disposal long-lived products:** added Ho-166m, Ca-41, Mo-93 (`Mo93+` with Nb-93m), Be-10, Ar-39, Se-79, Pd-107, Eu-150, Ba-133, Nb-92, Mn-53, Ag-108m (+ Ag-108). Present from D35 and earlier: C-14, Ni-59, Ni-63, Zr-93, Nb-94, Tc-99, Sn-126, I-129, Cs-135, Sm-151.
+- **Judged out of scope, not added** (positron emitters, medical or accelerator-only, found in UNSCEAR 2008 Annex B or 2020 texts): C-10, C-11, N-13, O-14, O-15, O-19, F-17, F-18, Al-28, P-30, S-37, S-38, K-38 to K-46, Mn-56, Ga-67, Tl-201, I-121, I-123, I-124, Re-186, Er-169, Na-22, Ir-192, Pd-103, Cs-131, Rb-86. Say if you want them (all exist in ICRP-107).
+- **Absent from ICRP-107:** Nb-97m (so `Zr97+` carries no Nb-97m); no other requested nuclide is missing. Nothing was invented.
+
+New groups (53): `Y91`, `Sr91+`, `Ag110m+`, `Sn119m`, `Cm243`, `Te127m+`, `Ir192n+`, `Sn123`, `Pd107`, `Gd153`, `Se79`, `Rh102`, `Sn113+`, `Cd113m`, `I135+`, `I134`, `Sb124`, `Zn65`, `Cr51`, `Co57`, `Ce143`, `Nd147`, `Eu152`, `Ho166m`, `Cl36`, `Ca41`, `Mo93+`, `Be10`, `Ar39`, `Kr81`, `Na24`, `S35`, `P32`, `Fe59`, `Ca45`, `I125`, `Cd109`, `W185`, `Be7`, `Zr97+`, `Ba139`, `Te131m+`, `Kr89`, `Rb89`, `Xe137`, `N16`, `U232`, `Ba133`, `Nb92`, `Mn53`, `Eu150`, `Ag108m+`, `Th229+`. Multipliers: `Sr91+` 1.63729888, `Ag110m+` 1.01360002, `Te127m+` 1.97950089, `Ir192n+` 2.0008394, `Sn113+` 2.0005806, `I135+` 1.17236562, `Mo93+` 1.88356297, `Zr97+` 2.0773157, `Te131m+` 1.22512676, `Ag108m+` 1.087, `Th229+` 7.99970145; all others 1. Convention as before: daughters folded only if half-life < head/10 (asserted in the generator); independent long-lived heads (Y-91, Xe-135, I-131, Pm-147, Pu-239, Am-243, Th-228, Cs-137, Sr-89) are not folded. Short-lived progeny with no head role (Y-91m, Ag-110, Te-127, Ir-192, In-113m, Xe-135m, Nb-97, Te-131, Ag-108, Ra-225 to Pb-209) are table nuclides only. Every new nuclide row has its criterion tag in `notes`.
+
+Edge cases: ICRP-107 lists At-217 -> Bi-213 at 0.99988 only (the 0.012% beta branch is not tabulated); stored as 1 so `N01` passes (effect 1.2e-4, below 1e-3). Po-213 (4.2 microseconds) is stored in seconds like Po-212.
+
+Effect on the 1 a spent-fuel coverage (§4.2 of METHODS): Y-91, Ag-110m and Pr-144m (now in `Ce144+`) are the three closers named in `research/nuclear/notes.md`; the coverage table was not recomputed in this task.
+
+### 13.4 Natural-series completeness
+
+For U-238, U-235 and Th-232, all members with cumulative branching weight >= 1e-3 (`series.py`, from ICRP-107 `.NDX`) are in some group, including Pa-234 (0.16%, `U238+`), At-218 (0.02%, `Ra226+`/`Rn222+`), Tl-210 (0.021%), Bi-210, Po-211 (0.276%), Fr-223 (1.38%) and Tl-208 (35.9%). No gap. Not covered, each below 1e-3: Rn-218 (2e-7), Hg-206 (1.9e-8), Tl-206 (1.3e-6), At-219 (8e-7), Bi-215 (8e-7). The end products Pb-206, Pb-207 and Pb-208 are stable.
+
+### 13.5 Checks run
+
+- `python3 -m pipeline.validate --root /mnt/user-data/outputs`: `OK: no issues` (data/reference clean).
+- `cd pipeline && python3 -m pytest -q`: 556 passed (with `Zr95+` renamed and `Pu239` kept). With `Pu239` also renamed to `Pu239+`: 528 passed, 28 failed (fixture use of `Pu239`; reverted).
+- Independent recompute from the raw `ICRP-07.NDX` zip and RadData `.rda` (`verify2.py`) matches: `Ce144+` 2.0098054 / 1.3489219 MeV, `Zr95+` 1.0114474 / 0.8535061, `Pu239` 1.9994000 / 5.2443171, `Sr91+` 1.6372989 / 1.7165671, `Th229+` 7.9997014 / 34.200467.
