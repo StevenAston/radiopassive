@@ -9,3 +9,6 @@ build/*.tmp
 .pixi/*
 !.pixi/config.toml
 .pytest_cache/
+
+# Steve-supplied external data (not tracked; see research/nuclear/notes.md for source and version)
+import/
