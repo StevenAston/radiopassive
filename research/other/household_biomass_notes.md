@@ -1,6 +1,6 @@
 # Task 1.6 addendum: household (domestic) biomass heating, factors for stream 5
 
-Scope per D37: household and small-scale combustion of wood, pellets and briquettes, and charcoal production and use. Factors only; activity series are Task 1.9 (FAOSTAT wood fuel and charcoal, UNSD household use: S0846, S0847, S0848). New sources are S0530 to S0564 in `sources_task16b.csv` (35 rows, validated against `schema/sources.json`, 0 problems). Availability rows: `household_biomass_availability.csv` (12 factor lines x 9 decade rows = 108 rows; decades pre1950 to 2020s). The Task 1.6 files are untouched and vocab is not edited.
+Scope per D37: household and small-scale combustion of wood, pellets and briquettes, and charcoal production and use. Factors only; activity series are Task 1.9 (FAOSTAT wood fuel and charcoal, UNSD household use: S0846, S0847, S0848). New sources are S0530 to S0566 in `sources_task16b.csv` (37 rows, validated against `schema/sources.json`, 0 problems). Availability rows: `household_biomass_availability.csv` (12 factor lines x 9 decade rows = 108 rows; decades pre1950 to 2020s). The Task 1.6 files are untouched and vocab is not edited.
 
 ## 1. Method and limits
 
@@ -20,7 +20,7 @@ Scope per D37: household and small-scale combustion of wood, pellets and briquet
 | Cs-137 pine shoots Sweden 1986-91 / 1995 | 200-900 / up to 2,000 | S0536 |
 | Cs-137 wood chips Sweden 1990-91 (all Sweden) | 0.4-4 | S0536 |
 | Cs-137 logging residue Sweden 1998 | 180-700 | S0536 |
-| Cs-137 fuelwood Ukraine (Polissya, abstract, year not given) | <2 to 690; about 98% under the 600 limit | S0539 |
+| Cs-137 fuelwood, northern Zhytomyr and Rivne regions, Ukraine (no sampling year given; 690 is in the Results, not the abstract) | <2 to 690; paper inconsistent: about 98% under the 600 limit in one place, 1.1% over it in another | S0539 |
 | Cs-137 wood Polissya pine plot (derived from Tag x deposition) | 1,240 (1991), 2,300 (2002), 730 (2020) | S0543 |
 | Cs-137 firewood Belarus | no survey found; hygienic limit 740 (oak wood standard also 1,480) | S0540, S0541 |
 | Cs-137 pellets Lithuania imports 2010 | Ukraine <=156, Belarus 30, Poland 4, Kaliningrad 1 | S0514 |
@@ -35,8 +35,8 @@ Scope per D37: household and small-scale combustion of wood, pellets and briquet
 | K-40 wood | 6-164 (building timber, Turkey); 12-37 (Greece) | S0559, S0531 |
 | Ra-226 wood | 1.6-13; about 2.0 in one spruce | S0559, S0558 |
 | Th-232 series wood | 0.8-9.5 (no separate Ra-228 or Th-228) | S0559 |
-| Pb-210 wood (trunk) / bark | 1.0-3.3 / 1.9-2.8; 1.7 in spruce rings | S0556, S0558 |
-| Po-210 wood (trunk) / bark | 1.0-5.5 / 2.6-2.9 | S0556 |
+| Pb-210 wood (trunk) / bark | 0.98-10.24 (olive 10.24, others 0.98-3.3) / 0.79-2.8 (palm bark 0.79); 1.7 in spruce rings | S0556, S0565, S0558 |
+| Po-210 wood (trunk) / bark | 0.33-5.51 (olive 0.33) / 0.21-2.9 (palm bark 0.21) | S0556, S0565 |
 
 Regions with no wood-fuel data found: Russia (only tree-ring behaviour, S0545), global South (only a student report that I reject, S0561), most of Asia and Africa. Eastern Europe has fuel limits and one abstract (S0539), not a survey.
 
@@ -63,7 +63,8 @@ Reading: with $\mathrm{ACF}=\rho_{\mathrm{ret}}/y_{\mathrm{ash}}$, an ash yield 
 | Evidence | Implied flue-gas fraction $f_v$ | Type | Source |
 |---|---|---|---|
 | Sweden houses, wood/ash Cs ratio 1.1% vs K-40 ratio 1.2% | about 0 (Cs retained about 1.09 times K; scatter huge) | derived from unpaired means | S0515 |
-| Japan charcoal burning: ash 30 g/kg, ACF 28 vs full-retention 33 | 0.16 (reported about 90% retained, so 0.10) | derived; demonstration | S0564 |
+| Japan charcoal burning: ash 30 g/kg, ACF 28 vs full-retention 33 | 0.10-0.16 (my derivation from the 28x factor and the "about 90% retained" statement; not stated in the source) | derived; demonstration | S0564 |
+| Japan firewood: ash 5 g/kg, ACF 182 (per verifier) | about 0.09 | derived | S0564 |
 | Greek domestic fireplaces, stoves, pellet stove | 0.41-0.79 | indirect mass balance, unpaired samples, K-40 as ash proxy | S0531 |
 | Lab, cedar bark, 10 g | 0.02 at 300 C; 0.15-0.25 at 350-450 C; 0.30-0.35 above 500 C | measured, lab | S0551 |
 | Lab, Chalk River vegetation at 800 C | litter 0.45, alder twigs 0.77, alder leaves 0.92, organic soil 0.024 | measured, lab | S0550 |
@@ -73,7 +74,9 @@ Reading: with $\mathrm{ACF}=\rho_{\mathrm{ret}}/y_{\mathrm{ash}}$, an ash yield 
 | Large-plant condensate scenario | 0.10 or 0.003 assumed | assumption | S0536 |
 | Swedish household report | 0.10, "a fairly free assumption" | assumption | S0515 |
 
-The 0.10 in the Task 1.6 notes traces to S0536 via S0515. It is an assumption, not a measurement, and the only domestic-appliance estimate (S0531) is four to eight times higher. The lab results show strong temperature dependence, with a step between 300 and 500 C; household stoves run hotter than that in the bed. No stack measurement of any household stove or boiler was found. Proposed modelled $f_v$ for Cs-137: low 0.10, central 0.30, high 0.70 (central is the middle of the evidence, not a measurement).
+The 0.10 in the Task 1.6 notes appears to trace to S0536 via S0515; that chain is still unverified, and the figure is an assumption, not a measurement. The direct domestic points (Sweden about 0, Japan firewood about 0.09, Japan charcoal 0.10-0.16, cedar bark 0.15-0.35 at 350-500 C) sit at or below 0.10, so 0.10 is not a floor. The Greek 0.41-0.79 is the share "not accounted for in ash", an upper-leaning proxy. Lab results show strong temperature dependence, with a step between 300 and 500 C. No stack measurement of any household stove or boiler was found.
+
+Proposed modelled $f_v$ for Cs-137: low 0.05, central 0.25 to 0.30, high 0.70. The central value is mid-range, not evidence-weighted. The geometric mean of 0.05 and 0.70 is about 0.19; I chose 0.25 to 0.30 because the lab and Greek evidence sits above the direct domestic points. Treat 0.19 as an equally defensible alternative.
 
 Chimney soot: Swedish soot has the same concentration as ash (2-23 vs 2-21 kBq/kg, S0515) but its mass is unquantified. Treat soot with ash (swept and landfilled) until a mass is found.
 
@@ -85,7 +88,7 @@ No measurement of Pb-210 or Po-210 volatility in wood, charcoal or peat combusti
 - Coal analogue: about 50% of Po-210 and 5% of Pb-210 not retained by electrofilters (S0557). Domestic stoves have no filters.
 - Wood content is low (section 2.1), so activity per tonne is small, but the fuel tonnage is global.
 
-Proposed placeholders (modelled, replace on any measurement): Po-210 $f_v$ 0.5 to 1.0; Pb-210 $f_v$ 0.05 to 0.5. Illustrative magnitude only, not for display: if the 1.4 Gt of the `wood_fuel_t` series (2020, basis `modelled` in `biomass.csv`, moisture basis unstated) were dry, fuel Po-210 would be 1.4-7.7 TBq/a and K-40 8-230 TBq/a (derived: $1.4\times10^{12}\ \mathrm{kg}\times$ range above).
+Proposed placeholders (modelled, replace on any measurement): Po-210 $f_v$ 0.5 to 1.0; Pb-210 $f_v$ 0.05 to 0.5. Illustrative magnitude only, not for display: if the 1.4 Gt of the `wood_fuel_t` series (2020, basis `modelled` in `biomass.csv`, moisture basis unstated) were dry, fuel Po-210 would be 0.5-7.7 TBq/a and K-40 8-230 TBq/a (derived: $1.4\times10^{12}\ \mathrm{kg}\times$ range above).
 
 ### 2.5 Fate of household ash
 
@@ -98,13 +101,14 @@ Proposed placeholders (modelled, replace on any measurement): Po-210 $f_v$ 0.5 t
 
 - No radionuclide concentration in charcoal was found for any country, and none for Africa or Asia.
 - Only partition evidence: Japanese charcoal combustion (ash 3%, ACF 28, about 84-90% of radiocaesium stays in the ash; S0564) and an indicator value of 280 Bq/kg that is a limit, not a measurement (S0560).
-- Carbonisation: lab data say Cs retention in the residue falls as temperature rises (S0551: about 0.98 at 300 C, 0.75-0.85 at 350-450 C, 0.65-0.70 above 500 C). Kiln temperatures and yields are not sourced here; FAO Forestry Paper 41 (S0563) is the lead (not read beyond contents).
+- Carbonisation: lab data say Cs retention in the residue falls as temperature rises (S0551: about 0.98 at 300 C, 0.75-0.85 at 350-450 C, 0.65-0.70 above 500 C). Kiln temperatures are not sourced here.
+- Mass yield (S0563 section 8.12, supplied on verification, not re-read by me): 0.26 kg charcoal per kg dry wood (range 0.19-0.31), i.e. about 3.1-5.3 t dry wood per t charcoal; charcoal bulk density 250-300 kg/m3. The pre-1997 FAO factor was 6 m3 of wood per t charcoal (S0566); at about 0.5 t/m3 that is about 3 t per t, so it is generous (cited figure from the verifier; the FAO page gives only the factor of 6).
 - Proposed: $C_{\mathrm{char}}=C_{\mathrm{wood}}\,r_c/y_c$, with $y_c$ the carbonisation mass yield and $r_c$ the Cs kept in char. Natural nuclides other than Pb-210 and Po-210 are assumed fully retained (inference), so they concentrate by $1/y_c$.
 
 ### 2.7 Time variation (Cs-137 in wood)
 
 - Wood is not a decaying surface deposit. Stemwood activity peaks roughly 15 years after deposition and then falls mainly by decay (S0544); young stands plateau at about 25 years (S0544).
-- One Polissya plot (S0543): Tag 2.3e-3 (1991), 5.5e-3 (about 2002), 2.7e-3 m2/kg (2020), with deposition 539.6 to 269.9 kBq/m2. Derived wood activity 1,240, 2,300 and 730 Bq/kg. Post-peak effective half-life of the activity about 11 years (derived: $18\ \mathrm{a}\,\ln2/\ln(2305/729)$); Tag alone halves in about 17.5 years. Single 1-ha plot, three felled trees: a bound, not a regional value.
+- One Polissya plot (S0543): Tag 2.3e-3 (1991), 5.5e-3 (about 2002), 2.7e-3 m2/kg (2020), with deposition 539.6 to 269.9 kBq/m2. Derived wood activity 1,240, 2,300 and 730 Bq/kg. Post-peak effective half-life of the activity about 11 years (derived: $18\ \mathrm{a}\,\ln2/\ln(2305/729)$); Tag alone halves in about 17.5 years. All three activities are my derivations from Tag x deposition; the 2002 value assumes a decay-corrected deposition of about 419 kBq/m2. The 11-year figure may be exaggerated if 2002 was an anomalous peak. Single 1-ha plot, three felled trees: a bound, not a regional value.
 - Russia: no 1986 ring peak, Cs-137 penetrates into core wood (S0545). Forest components decline with T1/2 of 20-30 years (Chernobyl Forum 2005, via S0542).
 - Fukushima, 2011-2020 (different soils and climate): whole wood rose 2.1-6.4 times in six of nine plots; decreasing plots show 6.8-7.2 years (S0547). Models project a decline for conifer wood (S0548).
 - Consequence: a "physical half-life only" default is wrong in both directions. It overstates wood activity at 10-25 years after deposition and understates it in the first decade.
@@ -134,7 +138,7 @@ For nuclide group $n$, fuel $k$ (fuelwood, pellets and briquettes, charcoal), co
 $$A_{n,r}(c,y)=\sum_{k}M_{k}(c,y)\,C_{n,k}(c,y)\,\phi_{n,k,r}$$
 
 - $M_k$: dry fuel mass (t/a). Wood: FAOSTAT item 1864 (m3, roundwood equivalent; S0846) x household share (UNSD, S0847, 1990 on) x dry density (S0848). Charcoal: FAOSTAT item 1630 (t; S0846) and UNSD household charcoal.
-  - **Double-count guard:** item 1864 includes wood converted to charcoal (note N378 in Task 1.9). Charcoal feedstock = charcoal t / $y_c$ must be subtracted before burning the remainder as fuelwood.
+  - **Double-count guard:** item 1864 includes wood converted to charcoal (note N378 in Task 1.9). FAO states that woodfuel includes charcoal wood from 1997, but whether countries comply is uncertain (S0566). Charcoal feedstock = charcoal t / $y_c$ must be subtracted before burning the remainder as fuelwood; where countries did not include it, subtraction would over-correct. Bound both cases.
   - Moisture basis of the 725 kg/m3 density (S0848) is unstated; factors here are Bq/kg dry.
 - $C_{n,k}$:
   - Cs-137: $C=T_{ag}(t)\,D_0\,\mathrm{e}^{-\lambda t}$, with $D_0$ the deposition density from Task 1.7 baselines (weapons fallout and Chernobyl) and $T_{ag}(t)$ rising to a peak 10-16 years after deposition and then declining (section 2.7). Bounds 1e-4 to 5.5e-3 m2/kg; central is a geometric mean pending calibration against S0515, S0530, S0539 (modelled). Where deposition is unavailable, use regional measured ranges in section 2.1.
@@ -152,7 +156,7 @@ $$A_{n,r}(c,y)=\sum_{k}M_{k}(c,y)\,C_{n,k}(c,y)\,\phi_{n,k,r}$$
 - Tier-wise, yes. `biomass_peat` allows impounded, dispersed and liberated, and the METHODS §6.3 row (ash landfilled, ash spread on soil, stack emissions) fits household burning. A route exists (`air_stack`, as used for coal chimney emissions) and residue types exist (`biomass_ash`, `peat_ash`).
 - Not enough for the stated goal of matching coal. Coal separates `combustion_power` from `combustion_nonpower`, substreams `power` and `non_power`, and has `coal_domestic_ash`. Stream ⑤ has no end-use split, so household rows cannot be told apart from power and heating-plant rows, and the lifecycle view (D22) would attribute them to technology `biomass` by electricity share.
 
-**Recommendation (Option A):**
+**Option A (my original proposal):**
 
 | Item | Proposal |
 |---|---|
@@ -165,7 +169,9 @@ $$A_{n,r}(c,y)=\sum_{k}M_{k}(c,y)\,C_{n,k}(c,y)\,\phi_{n,k,r}$$
 | `biomass_peat` stage | unchanged, restricted to power, heating-plant and industrial use |
 | METHODS §6.3 | add row "⑤ Biomass / peat, household": ash landfilled (impounded), ash spread on soil (dispersed), chimney and kiln emissions (liberated) |
 
-Alternatives: (B) stage only, with no new substream, if the pipeline can key lifecycle exclusion on stage; (C) no vocabulary change, with household rows distinguished only by `residue_type`, which cannot separate the Liberated rows and is not recommended. If charcoal must be separable on the page, a `charcoal` substream would be needed (optional; not recommended for v1). The availability CSV uses the existing code `biomass_peat` and names the proposed stage in the notes.
+**Option B (verifier's alternative, neutral):** a substream `biomass_domestic` plus residue type `biomass_domestic_ash`, with no new stage. It works because the tier set is identical to `biomass_peat` and nothing in the pipeline keys on stage; it needs the smaller vocabulary change but leaves household and plant rows sharing one stage code. Options A and B are both workable; the choice turns on whether Steve wants the stage column to show the end-use split as coal's does.
+
+Other alternatives: (C) stage only, with no new substream, if the pipeline can key lifecycle exclusion on stage; (D) no vocabulary change, with household rows distinguished only by `residue_type`, which cannot separate the Liberated rows and is not recommended. If charcoal must be separable on the page, a `charcoal` substream would be needed (optional; not recommended for v1). The availability CSV uses the existing code `biomass_peat` and names the proposed stage in the notes.
 
 ## 6. Open issues
 
@@ -190,6 +196,7 @@ Alternatives: (B) stage only, with no new substream, if the pipeline can key lif
 
 ## 8. Inaccessible or partial sources (URLs for Steve)
 
+- FAO Forestry Paper 41 section 8.12 (S0563) was supplied on verification and not re-read by me: https://www.fao.org/4/X5328E/X5328E00.htm
 - Pepin et al. 2023 review (S0513, paywalled; likely the best compilation of ash enrichment, emission factors and national rules): https://academic.oup.com/rpd/article/199/8-9/759/7205049 (DOI 10.1093/rpd/ncad077)
 - NCASI TB 0639 (S0562, only the catalogue introduction read): https://ncasi.org/resource/technical-bulletin-no-0639-cesium-137-in-industrial-wood-ash-concentrations-fate-and-human-health-risks
 - Finnish government household wood-burning survey (fetch failed; may hold ash-handling shares): https://valtioneuvosto.fi/sv/-/1410903/enkat-belyser-finlandarnas-vedeldningsvanor and https://yle.fi/a/7-1352074
