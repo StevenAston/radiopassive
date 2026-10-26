@@ -36,7 +36,11 @@ from pathlib import Path
 import pytest
 
 from pipeline.validate import validate
-from tests.test_validate import (
+import sys  # make `tests` importable whatever the working directory (orchestrator fix, no assertion changed)
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from tests.test_validate import (  # noqa: E402
+
     append_copy, assert_clean, assert_has, assert_only, corrupt, describe,
     rules_of, vrow, write_master,
 )
