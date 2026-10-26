@@ -304,7 +304,7 @@ Each parameter set (the three ε-Rn222 values, the three ε-Rn220 values, the th
 | `coal` | `power`, `non_power`, `all` (stages not split by end use, e.g. mining) |
 | `oil_gas` | `conventional`, `unconventional`, `oil_sands` (D26) |
 | `wind_solar` | `wind`, `solar` |
-| `other` | `geothermal`, `biomass_peat`, `hydro` |
+| `other` | `geothermal`, `biomass_peat`, `hydro`, `biomass_domestic` (household heating, D45; uses stage `biomass_peat`) |
 
 ### 5.2 Stages (from METHODS §6.3)
 

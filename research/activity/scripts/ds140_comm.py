@@ -1,4 +1,4 @@
-import sys; sys.path.insert(0,'/tmp/claude-0/-home-claude/7f015155-d930-5c34-900b-ab275f11b117/scratchpad/task19/scripts')
+import os,sys; sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
 from lib import *
 from ds140 import *
 # key: (workbook, sheet, source_id, production series, world mult, US production col, apparent-consumption series, cons col, price tag, commodity label)

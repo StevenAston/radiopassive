@@ -1,0 +1,9 @@
+# large downloads (see ../scripts/fetch_inputs.py) and derived files; the small inputs in this folder are tracked
+eia_annual.json
+INTL.zip
+INTL.txt
+owid-energy.csv
+fao/
+eta_us.json
+ember.csv
+*.zip

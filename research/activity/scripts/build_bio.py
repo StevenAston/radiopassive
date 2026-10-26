@@ -1,4 +1,4 @@
-import sys; sys.path.insert(0,'/tmp/claude-0/-home-claude/7f015155-d930-5c34-900b-ab275f11b117/scratchpad/task19/scripts')
+import os,sys; sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
 from lib import *
 from common import *
 import csv,collections,math,pycountry
@@ -65,7 +65,12 @@ W=collections.defaultdict(lambda:[0.0,0.0,0])
 for (com,c,y),(val,cf,st) in sorted(hh.items(),key=lambda t:(t[0][0],t[0][1],t[0][2])):
     b=0.15 if st=='A' else 0.30
     if com=='5110':
-        O.add('household_fuelwood_m3',y,c,val*(1-b),val,val*(1+b),'m3','compiled',SU,'UNSD Energy Statistics (UNdata DF_UNDATA_ENERGY), commodity 5110 Fuelwood, transaction 1231 Consumption by households, status %s. Bands assumed: +-15%% for A (official), +-30%% for E (estimated).'%st)
+        fa=fw.get((c,y),(None,))[0]
+        head='UNSD 5110/1231 status %s.'%st
+        if fa is not None and val>fa:
+            if fa>0 and val/fa>=5 or fa==0: head='WORST CASE UN>FAO x%s (%.3g vs %.3g m3).'%(('%.0f'%(val/fa)) if fa>0 else 'inf',val,fa)
+            else: head='CAUTION UN>FAO x%.1f (%.3g vs %.3g m3).'%(val/fa,val,fa)
+        O.add('household_fuelwood_m3',y,c,val*(1-b),val,val*(1+b),'m3','compiled',SU,head+' ||UNSD Energy Statistics (UNdata DF_UNDATA_ENERGY), commodity 5110 Fuelwood, transaction 1231 Consumption by households. Bands assumed (approx. 5th-95th percentile): +-15% for status A (official), +-30% for E (estimated). Where the head of the note shows UN>FAO, the UN household figure exceeds FAO national wood fuel production (wood_fuel_m3) for that year; the sources use different coverage (UN fuelwood may include residues, branches and imports; FAO counts roundwood production), so one is likely wrong or incomplete. WORST CASE means the ratio is 5 or more.')
         if cf:
             e=val*cf/3.6e6
             O.add('household_fuelwood_energy_twh',y,c,e*(1-b-0.05),e,e*(1+b+0.05),'TWh','compiled',SU,'Household fuelwood energy = UNSD volume x UNSD country conversion factor (%.2f GJ/m3) / 3.6e6. Gross energy content. Bands: volume band plus 5 percentage points for the conversion factor.'%cf)
@@ -79,9 +84,9 @@ for (com,c,y),(val,cf,st) in sorted(hh.items(),key=lambda t:(t[0][0],t[0][1],t[0
 for (com,y),(v,e,n) in sorted(W.items()):
     if n<140: continue
     if com=='5110':
-        O.add('household_fuelwood_m3',y,'XWL',v*0.85,v,v*1.2,'m3','compiled',SU,'Sum of %d countries reporting household fuelwood to UNSD (ISO-coded countries in the project list only; non-reporters absent, so a lower bound on the world total - hence the asymmetric band). Same series as the country rows.'%n)
-        O.add('household_fuelwood_energy_twh',y,'XWL',e*0.85,e,e*1.2,'TWh','compiled',SU,'Sum of %d reporting countries, UNSD volumes x country conversion factors; lower-bound world total.'%n)
+        O.add('household_fuelwood_m3',y,'XWL',v*0.85,v,v*1.2,'m3','compiled',SU,'Sum of %d countries reporting household fuelwood to UNSD (ISO-coded project-list countries only). NOT a strict lower bound: non-reporters (notably China) are absent, but UN household figures exceed FAO national wood fuel production in about 40%% of reporting countries (in 2023 the excess over FAO is 2.65e8 m3, 18%% of the world sum), so the sum may also overstate. Bands assumed asymmetric (-15%%/+20%%). Same series as the country rows.'%n)
+        O.add('household_fuelwood_energy_twh',y,'XWL',e*0.85,e,e*1.2,'TWh','compiled',SU,'Sum of %d reporting countries, UNSD volumes x country conversion factors; not a strict lower bound (China absent; some countries exceed FAO production). Bands assumed -15%%/+20%%.'%n)
     else:
-        O.add('household_charcoal_t',y,'XWL',v*0.85,v,v*1.2,'t','compiled',SU,'Sum of %d countries reporting household charcoal to UNSD; lower-bound world total.'%n)
-        O.add('household_charcoal_energy_twh',y,'XWL',e*0.85,e,e*1.2,'TWh','compiled',SU,'Sum of %d reporting countries, UNSD tonnes x conversion factor; lower-bound world total.'%n)
+        O.add('household_charcoal_t',y,'XWL',v*0.85,v,v*1.2,'t','compiled',SU,'Sum of %d countries reporting household charcoal to UNSD; incomplete coverage (China absent), not a strict bound. Bands assumed -15%%/+20%%.'%n)
+        O.add('household_charcoal_energy_twh',y,'XWL',e*0.85,e,e*1.2,'TWh','compiled',SU,'Sum of %d reporting countries, UNSD tonnes x conversion factor; incomplete coverage (China absent). Bands assumed -15%%/+20%%.'%n)
 O.write()

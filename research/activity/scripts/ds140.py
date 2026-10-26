@@ -1,5 +1,9 @@
 import csv,glob,re,os,collections
-D='/mnt/user-data/uploads/usgs.140/derived/csv/s3fs-public/media/files/'
+import os,sys
+sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
+from lib import MIRROR
+if MIRROR is None: raise SystemExit('DS140 mirror root required: pass --mirror /path/to/usgs.140 (or set USGS_MIRROR)')
+D=MIRROR+'derived/csv/s3fs-public/media/files/'
 def load(wb,sheet):
     """return (header list, {year:{col:float|None}}, raw-nonnumeric counter)"""
     p=D+wb+'/'+sheet+'.csv'

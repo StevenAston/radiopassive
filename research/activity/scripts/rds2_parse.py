@@ -1,5 +1,7 @@
-import re,json,collections
-T=open('/tmp/claude-0/-home-claude/7f015155-d930-5c34-900b-ab275f11b117/scratchpad/task19/raw/rds2.txt').read().split('\n')
+import re,json,collections,os,sys
+sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
+from lib import RAW
+T=open(RAW+'rds2.txt').read().split('\n')
 # locate table ranges
 def find(pat,start=0):
     for i in range(start,len(T)):
@@ -33,5 +35,5 @@ for i,l in enumerate(T):
     if not nums or not ds: continue
     rows.append(dict(tab=cur,cc=cc,id=num,name=name.strip(),type=typ,thermal=int(nums.group(1)),gross=int(nums.group(2)),net=int(nums.group(3)),dates=ds,line=i))
 print(len(rows),collections.Counter(r['tab'] for r in rows))
-json.dump(rows,open('/tmp/claude-0/-home-claude/7f015155-d930-5c34-900b-ab275f11b117/scratchpad/task19/raw/rds2_rows.json','w'))
+json.dump(rows,open(RAW+'rds2_rows.json','w'))
 print(collections.Counter(r['type'] for r in rows))

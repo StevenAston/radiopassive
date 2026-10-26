@@ -34,7 +34,8 @@
   "other": [
    "geothermal",
    "biomass_peat",
-   "hydro"
+   "hydro",
+   "biomass_domestic"
   ]
  },
  "stages": {

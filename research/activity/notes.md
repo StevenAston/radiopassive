@@ -1,6 +1,6 @@
 # Task 1.9 activity data spine: notes
 
-Files: `data/activity/{electricity_generation,coal,oil_gas,uranium,nuclear,commodity_production,commodity_prices,capacity_additions,planning_parameters,biomass,peat}.csv` (172,582 rows, 215 series). Sources S0800-S0848 (all rows, old and new) in `research/activity/sources_task19.csv`. Long notes are abbreviated in the CSVs as `[Nxxx, see research/activity/note_registry.csv]`. Converters kept here (paths inside point to the scratch folder; edit before reuse): `ds140.py` (DS140 CSV sheet loader), `ds140_comm.py` (DS140 to commodity series), `build_prices.py`, `build_bio.py`, `build_peat.py`, `make_sources2.py`, `rds2_parse.py` (RDS-2 reactor table to fleet by type and year) and `redbook_u.py` (hand-transcribed Red Book uranium production table, column sums checked against printed totals).
+Files: `data/activity/{electricity_generation,coal,oil_gas,uranium,nuclear,commodity_production,commodity_prices,capacity_additions,planning_parameters,biomass,peat}.csv` (172,828 rows, 215 series). Sources S0800-S0860 (all rows, old and new) in `research/activity/sources_task19.csv`. Long notes are abbreviated in the CSVs as `[Nxxx, see research/activity/note_registry.csv]`. Converters kept here (paths inside point to the scratch folder; edit before reuse): `ds140.py` (DS140 CSV sheet loader), `ds140_comm.py` (DS140 to commodity series), `build_prices.py`, `build_bio.py`, `build_peat.py`, `make_sources2.py`, `rds2_parse.py` (RDS-2 reactor table to fleet by type and year) and `redbook_u.py` (hand-transcribed Red Book uranium production table, column sums checked against printed totals).
 
 Conventions: bounds are analyst-assumed approximate 5th-95th percentile bands, propagated in log-space quadrature (METHODS 11.1); they are not published uncertainties. `modelled` rows state their method in the note. No dose quantities are present.
 
@@ -116,23 +116,23 @@ World = XWL. "World years" blank (-) means no XWL row (country-only series).
 | commodity_production.csv | prod_gold | t | 1900-2022 | 2 | 1900-2022 | 246 |
 | commodity_production.csv | prod_indium | t | 1972-2025 | 2 | 1941-2025 | 99 |
 | commodity_production.csv | prod_iron_ore | t | 1904-2024 | 18 | 1900-2024 | 325 |
-| commodity_production.csv | prod_lead | t | 1900-2025 | 74 | 1900-2025 | 2511 |
+| commodity_production.csv | prod_lead | t | 1900-2025 | 74 | 1900-2025 | 2521 |
 | commodity_production.csv | prod_lead_primary | t | - | 1 | 1900-2021 | 122 |
 | commodity_production.csv | prod_lead_refined | t | - | 96 | 1970-2023 | 3139 |
-| commodity_production.csv | prod_molybdenum | t | 1900-2025 | 27 | 1900-2025 | 884 |
+| commodity_production.csv | prod_molybdenum | t | 1900-2025 | 27 | 1900-2025 | 885 |
 | commodity_production.csv | prod_nickel | t | 1900-2025 | 10 | 1900-2025 | 278 |
 | commodity_production.csv | prod_nickel_plant | t | 1970-2019 | 1 | 1970-2019 | 50 |
 | commodity_production.csv | prod_nickel_processing | t | 1977-2023 | 39 | 1977-2023 | 1194 |
 | commodity_production.csv | prod_peat | t | 1935-2021 | 2 | 1904-2021 | 197 |
 | commodity_production.csv | prod_phosphate_rock | t | 1900-2022 | 2 | 1900-2022 | 246 |
 | commodity_production.csv | prod_pig_iron | t | 1910-2024 | 17 | 1900-2024 | 313 |
-| commodity_production.csv | prod_ree_oxide | t | 1900-2025 | 18 | 1900-2025 | 279 |
+| commodity_production.csv | prod_ree_oxide | t | 1900-2025 | 21 | 1900-2025 | 505 |
 | commodity_production.csv | prod_selenium | t | 1938-2024 | 16 | 1938-2024 | 152 |
 | commodity_production.csv | prod_selenium_primary | t | - | 1 | 1900-1996 | 88 |
 | commodity_production.csv | prod_silicon_mg | t | 1964-2022 | 14 | 1954-2022 | 161 |
 | commodity_production.csv | prod_silver | t | 1900-2025 | 93 | 1900-2025 | 3485 |
 | commodity_production.csv | prod_steel | t | 1943-2024 | 109 | 1900-2024 | 4357 |
-| commodity_production.csv | prod_tellurium | t | 1930-2025 | 2 | 1926-2025 | 134 |
+| commodity_production.csv | prod_tellurium | t | 1930-2025 | 2 | 1926-2025 | 143 |
 | commodity_production.csv | prod_thorium | t | 1960-1977 | 2 | 1959-2020 | 54 |
 | commodity_production.csv | prod_tin | t | 1905-2025 | 16 | 1905-2025 | 194 |
 | commodity_production.csv | prod_tin_primary | t | - | 1 | 1916-2021 | 82 |
@@ -228,45 +228,47 @@ World = XWL. "World years" blank (-) means no XWL row (country-only series).
 
 ## 2. Gaps (not filled; nothing invented)
 
-- Uranium 2025 production absent (WNA 2025 not yet available to me). Red Book 2022 and earlier editions inaccessible via oecd-nea.org; 1945-2003 transcribed from the edition obtained, 2004-2014 from OWID uranium, 2015-2024 WNA.
-- Tellurium and indium world only 2018-2025; zirconium and primary gallium world only 2020-2024; refined zinc, lead, tin, copper, and smelter tin have country rows only (no world total).
+- Uranium 2025 production and requirements are absent (WNA 2025 production and the matching requirements were not obtained), so there is **no 2025 `phi_civil` row**: phi is a ratio of the two world series, which both end in 2024. Red Book 2022 and earlier editions are inaccessible via oecd-nea.org; 1945-2003 transcribed from the edition obtained, 2004-2014 from OWID uranium, 2015-2024 WNA.
+- Refined zinc, lead, tin and copper and smelter tin have country rows only (DS140 has no refined world total; its world column is mine output). Gallium primary world only 2020-2024 (MCS); thorium world only 1960-1977.
 - Per-country coal ash, power share and burn exist only for XWL (power share also USA, GBR).
 - Fly-ash utilisation: ACAA data not obtained (https://acaa-usa.org/publications/production-and-use-reports/).
 - Wind direct-drive vs geared split and PV c-Si/CdTe/CIGS split: only the 2025 thin-film share anchor.
 - Produced-water unconventional share: USA 2017 only. Wells drilled: US 1949-2010 only; none elsewhere or after 2010.
-- Peat: only IRENA peat generation (7 countries, 2000-2024); no peat energy use by country.
-- Material intensity is Task 1.5's. Capacity additions before 1950 absent (non-nuclear start 1951 modelled, wind/solar/etc. 2001 or later).
-- Sanity plots not produced.
+- Country REE production before 1990 (China, including Bayan Obo by year, Australia, USSR/CIS, USA before DS140): not reachable; see section 8.3 for the files needed.
+- Peat before 1990 and peat products; wood fuel before 1961; household fuelwood for China.
+- Capacity additions before 1950 absent (non-nuclear start 1951 modelled, wind/solar/etc. 2001 or later).
+- Material intensity is **not** duplicated in the spine: it is in `research/wind_solar/material_intensity.csv` (Task 1.5).
 
 ## 3. Gap-filling and conversions
 
 - Electricity by source: OWID/Ember/Pinto compilations; pre-1965 and world pre-1985 values modelled (basis modelled, notes give method).
 - Coal energy-to-tonne: calorific divisor extremes 6.85 and 8.14 MWh/t; EIA 1985-89 ratio 5.52 used where needed; 2025 uses last observed ratio. Tonnes before ratios exist are modelled.
-- Power shares: fuel burn derived from generation via UK/US efficiency proxies, then divided by consumption.
-- Nuclear fleet by type reconstructed from the RDS-2 reactor table; generation by type is modelled from capacity and realised CF; spent fuel from generation and burn-up assumptions.
-- phi_civil (METHODS 9.2): 0 before 1965, then min(1, (R_civil - U_doc,civil)/(U_prod - U_doc)); modelled.
-- Commodities: OWID Minerals explorer (USGS DS140 + MCS + BGS) substituting for DS140 itself.
-- Planning parameters: IPCC AR5 Annex III (2010 vintage) lifetimes and CFs; realised CFs from IRENA (and nuclear from PRIS-derived reactor table).
+- Power shares: fuel burn derived from generation via a US/UK efficiency proxy scaled to the IEA/EIA anchors (section 8.1), then divided by consumption.
+- Nuclear fleet by type reconstructed from the RDS-2 reactor table; generation by type is modelled from capacity and realised CF; spent fuel from generation and burn-up assumptions (section 8.2).
+- phi_civil (METHODS 9.2): 0 before 1965, then min(1, R_civil / U_prod); modelled; saturated years carry an assumed lower bound (section 8.4).
+- Commodities: DS140 world and US columns (from section 7); OWID minerals explorer where DS140 does not reach; Minerals Yearbooks for REE by country.
+- Planning parameters: IPCC AR5 Annex III (2010 vintage) lifetimes and CFs; realised CFs from IRENA (and nuclear from the RDS-2-derived reactor table).
 
 ## 4. Conflicts and judgements
 
 - Red Book total differs from sum of countries by 100 tU; two typos in printed totals column (Portugal, Spain). Sums of the entries were used.
-- Modelled world coal power share is about 81% in 2020; likely overshoots (inference: nearer two-thirds, unsourced). Treat as upper-leaning; bands are wide.
-- Modelled spent-fuel discharge is about 40% above IAEA's 7,000 tHM/a figure; flagged, not tuned.
+- World coal power share: the first version gave 81% (2020) because the efficiency bounds were mis-ordered in the code (central efficiency was 0.85 of the US value, an implied fleet efficiency of about 27%). Fixed and recalibrated: 63.5% in 2020 and 65% in 2023 (section 8.1).
+- Modelled spent-fuel discharge: 9,500 tHM in 2020 vs IAEA/NEA 7,000 tHM/a (about +36%); cumulative to 2020 is 402,000 tHM, matching IAEA's over 400,000 (section 8.2). IAEA itself publishes two annual figures (7,000 and about 10,000).
 - EIA coal tonnes 1980-84 unreliable; EIA oil 1973-79 incomplete (physical-volume threshold 1980, ratio years 1980-89).
-- Tellurium 2023 USGS revision. Red Book vs OWID vs WNA world uranium agree to under 0.1% in 2015 and 2023.
+- Tellurium 2023 USGS revision (+62%, documented on the row). Red Book vs OWID vs WNA world uranium agree to under 0.1% in 2015 and 2023.
 
 ## 5. Inaccessible items and URLs
 
-- USGS DS140 per-commodity files (usgs.gov/media/files returned 403). Pattern: https://www.usgs.gov/media/files/<commodity>-historical-statistics-data-series-140 for copper, aluminum, bauxite-and-alumina, iron-ore, iron-and-steel, cement, silver, zinc, lead, tin, nickel, zirconium-and-hafnium, silicon, gallium, selenium, tellurium, indium, cadmium, rare-earths, molybdenum, chromium (plus uranium, coal if mirrored). Catalogue: https://pubs.usgs.gov/publication/ds140
+- USGS DS140: the usgs.gov/media/files pages still return 403, but the files are **now available** from Steve's S3 mirror (section 7) and the live S3 URLs answer HTTP 200 (pattern in the source rows S0821-S0845). Catalogue: https://pubs.usgs.gov/publication/ds140
 - Energy Institute Statistical Review: https://www.energyinst.org/statistical-review (403)
 - Red Book editions: https://www.oecd-nea.org (uranium resources, production and demand)
-- IEA data portal; PRIS: https://pris.iaea.org; Stanford WGC geothermal papers (SSL error).
+- IEA data portal (World Energy Balances): https://www.iea.org/data-and-statistics/data-product/world-energy-balances (licence); PRIS: https://pris.iaea.org; Stanford WGC geothermal papers (SSL error).
+- IAEA/NEA/EC/WNA Status and Trends in Spent Fuel and Radioactive Waste Management (3rd ed.): primary document not accessed (only the NEI report, S0853).
 
 ## 6. Validation
 
-`python3 -m pipeline.validate --root <scratch>` with data, schema, pipeline copied, my sources merged into the scratch `data/sources.csv` and activity files added: "OK: no issues" (T01-T04 clean). Task 1.6's S0525 (no year, S01) was dropped from the scratch sources only; `data/sources.csv` untouched.
-
+- Against the real tree: `python3 -m pipeline.validate --root /mnt/user-data/outputs` reports only T04 "unresolved source" for the twelve new source IDs S0849-S0860 (not yet merged into `data/sources.csv`); no other rule fires. Earlier IDs (S0800-S0848) are already in the real `data/sources.csv`.
+- Against a scratch copy of the tree with the unmerged rows of `sources_task19.csv` appended to `data/sources.csv`: "OK: no issues" (T01-T04 clean). Low <= central <= high holds on all 172,828 rows. `data/sources.csv` untouched.
 
 ## 7. Follow-up (25 Oct 2026): DS140 mirror, prices, biomass, peat
 
@@ -291,7 +293,7 @@ World = XWL. "World years" blank (-) means no XWL row (country-only series).
 ### 7.4 Household biomass (D37): `biomass.csv`
 - `wood_fuel_m3` (FAOSTAT item 1864, 1961-2024, XWL and about 205 countries, 11,493 rows), plus `wood_fuel_t` (x0.725 t/m3, range 0.625-0.75) and `wood_fuel_energy_twh` (x9.4 GJ/m3, range 7.2-14.0), both `modelled` from FAO/ITTO/UNECE/Eurostat questionnaire factors (S0848). `charcoal_production_t` (FAOSTAT 1630, 1961-2024). World wood fuel is about $1.5\times10^{9}$ m3 in 1961 and $1.95\times10^{9}$ m3 in 2023-24 (about 5,100 TWh gross).
 - Household use: `household_fuelwood_m3`, `household_fuelwood_energy_twh`, `household_charcoal_t`, `household_charcoal_energy_twh` from the UN Energy Statistics database (S0847), 1990-2023, about 195 countries. The XWL row is the sum of reporting countries (a lower bound; about $1.11\times10^{9}$ m3 in 1990, $1.47\times10^{9}$ m3 in 2023, about 75% of FAO wood fuel). It was the substitute for IEA residential consumption of primary solid biofuels (IEA World Energy Balances: https://www.iea.org/data-and-statistics/data-product/world-energy-balances; not accessible without a licence, not tried).
-- Caveats: China reports no household fuelwood to UNSD (so the world sum omits its household use); India's UN household fuelwood (3.8e8 m3 in 2023) exceeds FAO's national wood fuel production (3.0e8 m3), so the two sources are not mutually consistent (UN likely includes non-roundwood fuelwood such as branches and residues); FAO wood fuel includes the roundwood converted to charcoal, so do not add charcoal to wood fuel. FAO values for most developing countries are estimated (flag E). Pre-1961 not covered; no compilation was found.
+- Caveats: China reports no household fuelwood to UNSD. UN household use exceeds FAO national wood fuel production in 73 of 185 reporting countries in 2023 (62 where FAO production is positive and exceeded; the rest have no FAO row); the excess is 2.65e8 m3, 18% of the XWL household sum. Worst cases: Iran (8.1e6 m3 UN vs 3e4 m3 FAO, x270), Canada (8.4e6 vs 1.2e6, x7), Nepal, Poland, Cameroon (x1.4-2.7) and India (3.8e8 vs 3.0e8, x1.3). The country rows are flagged in the first characters of the note ("WORST CASE UN>FAO" at ratio 5 or more, "CAUTION UN>FAO" below that). The UN fuelwood likely includes residues, branches and imports that FAO roundwood production does not count, so the XWL household sum is not a strict lower bound (China missing, but some countries too high). FAO wood fuel includes the roundwood converted to charcoal, so do not add charcoal to wood fuel. FAO values for most developing countries are estimated (flag E). Pre-1961 not covered; no compilation was found.
 
 ### 7.5 Peat by country: `peat.csv`
 - UN Energy Statistics commodity 1100 Peat (S0847): `peat_production_t`/`_twh`, `peat_supply_t`/`_twh` (total energy supply, a proxy for energy use), `peat_household_t`, `peat_power_heat_t` (electricity and CHP transformation), 1990-2024, 29 countries. All six requested countries are covered: Finland and Ireland and Sweden from 1990; Belarus, Russia and Estonia from 1992. Examples (peat supply): Finland about 27 TWh (2010), 7 TWh (2023); Ireland about 15 TWh (1990), 3 TWh (2023); Belarus about 6 TWh (2023); Russia about 2.5 TWh (2023); Sweden 0.3 TWh (2023); Estonia 0.07 TWh (2023). Finland and Ireland 1990 values match the national statistics I know of (about 25 and 16 TWh) but I did not check them against a primary source.
@@ -303,3 +305,37 @@ World = XWL. "World years" blank (-) means no XWL row (country-only series).
 - DS140 ends 2019-2022 by commodity; 2021-2025 relies on OWID/MCS (splice risk noted above).
 - Uranium price series; wood fuel pre-1961; household biomass for China; IEA residential data; fly-ash utilisation (ACAA); wind/PV technology splits; wells outside the US; the other earlier gaps in section 2.
 - Slag workbook (ds140-iron-steel-slag-2021) staged but unused; `Employment`, `Net import reliance`, stocks and trade columns of DS140 not extracted.
+
+
+## 8. Fixes after independent verification (25 Oct 2026)
+
+### 8.1 World coal power share, burn and ash (recalibrated)
+- Cause of the 81% (2020) / 84% (2023) bias: in `build_coal.py` the efficiency tuple was returned as (central, low, high) but consumed as (low, central, high), so the central efficiency was 0.85 of the US value (about 27%). Fixed.
+- Calibration: world efficiency = US/UK proxy x k, with k = 1 to 1950, rising linearly to 1.05 in 2012 and 1.10 in 2023 (world fleets less efficient than the US only slightly once the ordering bug is removed). Anchors: 59% of world coal consumption in power in 2012 (EIA IEO coal chapter, energy basis, S0850) and 2023: IEA Coal 2024 gives 5,855 of 8,687 Mt = 67.4% by mass (S0849); because power-sector coal has a below-average calorific value the energy-basis anchor is taken as 0.65 (inference, +-0.04). Efficiency band +-10% after 1950, +-15% before. 2025 consumption (missing in OWID) extrapolated from 2024 by the production ratio.
+- Result (central, 5-95% band): share 0.098 (1920), 0.163 (1950), 0.37 (1970), 0.50 (1990), 0.61 (2000), 0.59 (2012), 0.635 (0.57-0.71) in 2020, 0.65 (0.59-0.73) in 2023, 0.65 in 2025. Burn 26,900 TWh (2020), 29,500 TWh (2023). Ash from coal burned for power 584 Mt (2020), 640 Mt (2023); fly ash 467 Mt (2020), 512 Mt (2023). The ash and fly-ash bands remain wide (ash yield 0.08-0.16 and fly fraction assumed).
+- Limits: only two anchors; the linear interpolation of k, and the assumption that the efficiency ratio to the US applies to the energy rather than mass share, are assumptions. The EIA IEO edition year (2016) is approximate.
+
+### 8.2 Spent-fuel discharge
+- GCR was split: UK units first connected 1976 or later are AGR (efficiency 0.38 = 600 MWe / 1560 MWth; discharge burnup 27 GWd/tHM, within 24-32 given for Hartlepool in arXiv:2301.07153, S0851); all other gas-graphite units are Magnox/UNGG type (efficiency 0.27, burnup 4 rising to 6). After the Magnox closures only AGR remains (GCR line 2020: about 180 tHM, was about 870). LWR burnup 2020 lowered from 50 to 48 GWd/tHM (TECDOC-1975: USA and most others above 45; Germany 50-65). PHWR left unchanged after review: natural-uranium CANDU at 7-7.5 GWd/tHM and net efficiency 0.30 gives about 2,700 tHM/a for about 145 TWh modelled PHWR output, which is consistent with Canadian bundle counts (about 1,600 tU/a) plus India, Korea and China.
+- Result: 9,517 tHM in 2020 (6,660-12,370 band), 9,403 in 2015; components 2020: PWR 5,022, BWR 1,277, PHWR 2,678, AGR 182, LWGR 358. Cumulative to 2020 = 402,470 tHM (IAEA TECDOC-1975: over 400,000 tHM discharged to end-2020).
+- Residual: +36% against the 7,000 tHM/a of TECDOC-1975 and of the IAEA/EC/NEA/WNA Status and Trends 3rd edition (data to end-2019; read via a NEI report, S0853). An IAEA web article (S0852) gives about 10,000 t/a for the same quantity, so IAEA's own annual figures differ by more than the model residual; the cumulative matches. The 7,000 tHM/a is inside the 5-95% band (lower bound 6,660). Not forced to 7,000: that would need LWR burnups of about 65 GWd/tHM or efficiencies far above 0.33.
+
+### 8.3 Rare earths by country (Minerals Yearbooks)
+- Seven yearbook tables parsed (S0854-S0860: MYB 1994, 1999, 2003, 2008, 2013, 2018 advance release, 2022): country rows in `prod_ree_oxide` for AUS, BDI, BRA, CHN, COD, IND, LKA, MDG, MMR, MYS, RUS (and SUN for 1990-91), THA, USA (gap years only; DS140 US kept where present), VNM, ZAF, covering 1990-2022 (plus OWID/MCS values to 2024 where they already existed). Later yearbook values override earlier ones; in the overlap years (1999, 2018) the figures were identical, so no revisions were found. XWL stays the DS140 world column (to 2020, then OWID/MCS).
+- DS140 world differs from the yearbook totals as originally published: 1990 52,900 vs 60,100 (MYB 1994), 1999 86,600 vs 80,400 (MYB 1999)/81,600 (MYB 2003), because DS140 was revised and the yearbook totals include differently estimated producers; the country rows therefore need not sum to XWL.
+- CIS/USSR: the 1992-2008 tables give one USSR/CIS figure (8,000 t in 1992, 2,000 t from 1995). It is booked to RUS with a band of +-40% and a note; Kazakhstan, Kyrgyzstan, Ukraine and Uzbekistan cannot be separated. Myanmar enters in 2014 (200 t) and reaches 35,500 t in 2020; Australia is large from 2014.
+- Not reachable: China REE by year before 1990 (Bayan Obo), Australia and USSR before 1990, and US 1900-1989 beyond DS140. Files needed (from the mirror's catalogue): Minerals Yearbook rare-earth chapters for 1989 and earlier (USBM Minerals Yearbook Vol. I, "Rare-Earth Minerals and Metals"), if the mirror has them (its README says MYB coverage starts 1993), Mineral Industry Surveys on rare earths 1965-1993, and MYB rare-earth chapters 1995-1998, 2000-2002, 2004-2007, 2009-2012, 2014-2017, 2019-2021 to confirm revisions year by year. China REE by year from other sources: BGS World Mineral Statistics.
+
+### 8.4 Bands, notes, seams, gap fills
+- Every row's note now states that the band is analyst-assumed (approx. 5th-95th percentile), unless it is a zero-width band by definition (exact zeros or phi = 0 by rule), in which case the note says so. The 9,406 empty notes in `electricity_generation.csv` and 358 in `coal.csv` are filled (data source, units, bands). No zero-width band remains on a non-zero value (the 27 saturated phi_civil rows now carry a lower bound of 0.9, below).
+- phi_civil: 1991-2011 and 2018-2023 are saturated (R_civil above U_prod beyond the bands). The value 1 is an upper bound under rule 3; the data give no lower bound (R minus P is secondary supply, not military use). Low bound set to 0.9, an analyst assumption (no weapons-purpose mining of new uranium after the Cold War); noted on each row. No 2025 row (section 2).
+- Seams documented on the rows: tellurium 2022 to 2023 (+62%, USGS revision of Chinese output); REE 2020 to 2021 (+19%: DS140 243,000 to OWID/MCS 290,000; Minerals Yearbook 2022 gives 250,000 to 290,000, +16%, so about 3 points is source revision).
+- Gaps filled: `prod_lead` XWL 1901-1905 and 1914-1918 and `prod_tellurium` XWL 2004-2012 by linear interpolation (basis interpolated; +-25% and +-40% bands; notes say why); `prod_molybdenum` XWL 2024 = 256,000 t from MCS 2026 (S0808). MCS tellurium chapters for 2005-2013 (mcs-YYYY-tellu in the mirror, if present) would replace the interpolation.
+
+### 8.5 Reproducibility
+- All builders are in `research/activity/scripts/` (see `research/activity/README.md`): lib.py, common.py, build_{elec,coal,og,u,nuc,cap,comm,prices,bio,peat}.py, ds140.py, ds140_comm.py, ree_myb.py, make_sources.py, make_sources2.py, eia_extract.py, irena_fetch.py, fetch_minerals.py, rds2_parse.py, redbook_u.py, fetch_inputs.py, run_all.py, plot_sanity.py. Paths are relative to the repository root; `--raw` and `--mirror` are arguments; nothing writes into `data/activity/` without `--write`.
+- Small raw inputs (below 5 MB each, 27 MB in all) are in `research/activity/raw/`; large ones (OWID energy, FAOSTAT forestry, EIA INTL) are fetched by `fetch_inputs.py` and listed in `raw/.gitignore`. The note registry is `research/activity/note_registry.json` (append-only, 2,823 notes; readable copy `note_registry.csv`).
+- Checked: `run_all.py` run twice (once with `--write`, once without) gives byte-identical files in `research/activity/out/` and `data/activity/` for all eleven CSVs and `sources_task19.csv`. The `out/` folder holds those check copies and can be deleted.
+
+### 8.6 Sanity plots
+- `research/activity/plots/<file>.png`, one per data file (11), headline series with world (or USA, or the four peat countries) central line and shaded band: regenerate with `scripts/plot_sanity.py`.
