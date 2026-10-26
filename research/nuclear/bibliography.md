@@ -80,3 +80,10 @@ Quality codes follow METHODS §11.3: 1 regulator, 2 compilation, 3 peer reviewed
 
 - **S0001, S0003, S0004, S0009:** release factors by reactor type and period (1970–2010), reprocessing (1970–2010), mining and milling radon, conversion/enrichment/fabrication c.1980–85, material intensities. See `research/unscear_notes.md`.
 - Gaps confirmed here: UNSCEAR has no post-1985 conversion, enrichment or fabrication data, no spent-fuel or in-core inventories, no civil/military split, no decommissioning releases, and no accident source terms (these are in S0104–S0107).
+
+## H. Fission-product yields and fission mix (added 2026-10-25)
+
+| ID | Source | What it gives | Quality and caveats |
+|---|---|---|---|
+| **S0141** | Brown et al. 2018, ENDF/B-VIII.0, *Nucl. Data Sheets* 148, 1-142 (fission-product-yield sublibrary) | Cumulative yields (MF=8, MT=459) for U-235, Pu-239, Pu-241 (thermal) and U-238 (0.5 MeV) used to scale Y-91, Sr-89, Ru-103, Ce-141, Te-129m and Cs-136 from Zr-95 in the 1-4 a spent-fuel rows. | Rank 3, read from Steve's local copy. The sublibrary is unchanged from ENDF/B-VII.1 (England and Rider, 1992). Evaluated, not measured at our burnups. |
+| **S0142** | An et al. (Daya Bay) 2017, *Phys. Rev. Lett.* 118, 251801 | Core-average fission fractions U-235 0.571, Pu-239 0.299, Pu-241 0.054, U-238 0.076. | Rank 3. Reactor-simulation averages for Chinese PWR cores, not batch-integrated shares; low and high mixes in notes.md are my assumptions. |
