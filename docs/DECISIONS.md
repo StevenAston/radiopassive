@@ -50,7 +50,14 @@ Each decision records what was decided, when, and where it is made operational. 
 | D44 | 2026-10-25 | Natural K-40, Pb-210, Po-210 in wood are biosphere cycling: memo, not flow. Peat remains a flow. | METHODS §5.2, §6.3 |
 | D45 | 2026-10-25 | Household biomass is a substream `biomass_domestic` of stream ⑤ with residue type `biomass_domestic_ash`; no new stage. | vocab.json; residue_types.csv; SCHEMA §5.1 |
 | D46 | 2026-10-25 | Existing rows Ce144+ and Zr95 (and Pu239 under D42) may be corrected to count Pr-144m, Nb-95m and U-235m; old → new values logged. | groups.csv; research/task0.3_notes.md |
+| D47 | 2026-10-25 | Memo series for biosphere cycling (D43/D44) stored as master rows in a new tier `memo_biosphere`, outside tier totals, flow only. | vocab.json; schema/master.json; SCHEMA v2.2 |
+| D48 | 2026-10-25 | Re-released fallout Cs-137 marked by an explicit route `air_rerelease` (only at `biomass_peat`, group `Cs137+`, flow). | vocab.json; schema/master.json; SCHEMA §5.7 |
+| D49 | 2026-10-25 | Combined Pu-239+240 reports split by published activity ratios by facility type, with bounds; the Pu239 multiplier applies to the Pu-239 share. | METHODS §3.2; Phase 2 |
+| D50 | 2026-10-25 | Group ID `Pu239` kept (now Pu-239 + U-235m). | groups.csv |
+| D51 | 2026-10-25 | Phase 2 benchmarks: UNSCEAR 2016 Annex B per GW a for ①②③⑤; IAEA SRS-68 and TRS-419 plus Task 1.5 references for ④. | docs/PHASE2_PLAN.md |
 
 No proposals outstanding.
 
 **Phase 0 closed 2026-10-20.** Task 0.1 (methods), Task 0.2 (schema v2.1, validator, 556 spec-blind tests) and Task 0.3 (nuclide reference table) signed off by Steve.
+
+**Phase 1 closed 2026-10-25.** Tasks 1.1–1.9 (with the household-biomass and nuclide addenda) signed off by Steve; tag `phase-1`. **Phase 2 plan approved** the same day (docs/PHASE2_PLAN.md).

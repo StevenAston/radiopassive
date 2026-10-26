@@ -86,7 +86,8 @@
         "reisolated",
         "dispersed",
         "liberated",
-        "memo_earth_moved"
+        "memo_earth_moved",
+        "memo_biosphere"
       ]
     },
     "quantity": {
@@ -181,6 +182,7 @@
       "enum": [
         null,
         "air_stack",
+        "air_rerelease",
         "air_ventilation",
         "air_process_vent",
         "air_vented_gas",
@@ -285,7 +287,8 @@
             "not": {
               "enum": [
                 "sealed_in_core",
-                "memo_earth_moved"
+                "memo_earth_moved",
+                "memo_biosphere"
               ]
             }
           }
@@ -296,7 +299,10 @@
       "if": {
         "properties": {
           "tier": {
-            "const": "memo_earth_moved"
+            "enum": [
+              "memo_earth_moved",
+              "memo_biosphere"
+            ]
           }
         }
       },
@@ -480,6 +486,31 @@
         "properties": {
           "year": {
             "minimum": 1965
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "route": {
+            "const": "air_rerelease"
+          }
+        },
+        "required": [
+          "route"
+        ]
+      },
+      "then": {
+        "properties": {
+          "stage": {
+            "const": "biomass_peat"
+          },
+          "group": {
+            "const": "Cs137+"
+          },
+          "quantity": {
+            "const": "flow"
           }
         }
       }

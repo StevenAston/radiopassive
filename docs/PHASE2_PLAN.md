@@ -1,6 +1,6 @@
 # Phase 2 plan: stream datasets (proposal for Steve's approval)
 
-Status: **proposal, 2026-10-25**. Nothing in here is built yet. Per Steve's standing rule, no pipeline code is written until this plan is approved.
+Status: **APPROVED by Steve, 2026-10-25.** Section 4 decisions recorded as D47 (memo_biosphere), D48 (air_rerelease), D49 (Pu-239/240 split), D50 (Pu239 ID kept), D51 (benchmarks). Schema v2.2 carries D47/D48.
 
 ## 1. What Phase 2 produces
 

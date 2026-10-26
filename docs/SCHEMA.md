@@ -1,6 +1,6 @@
 # Radiopassive — Data Schema (v2)
 
-> **Status:** SIGNED OFF by Steve, 2026-10-20. Task 0.2, revision v2.1 (re-review fixes) of v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
+> **Status:** SIGNED OFF by Steve, 2026-10-20; **v2.2 additions (2026-10-25, D36, D43–D48) approved by Steve.** Task 0.2, revision v2.1 (re-review fixes) of v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
 
 ---
 
@@ -54,7 +54,7 @@ One row = one quantity of one nuclide group, in one tier, from one stage (and pr
 | `residue_type` | code | conditional | In `residue_types.csv`; **required** when `tier` is `impounded`, `reisolated` or `dispersed`, **empty** otherwise |
 | `country` | code | yes | In `countries.csv`; **not** `XWL` (global data without a country breakdown go in `XXX`) |
 | `group` | code | yes | In `groups.csv` (head code, e.g. `Ra226+`, `Cs137+`, `H3`) |
-| `tier` | enum | yes | `sealed_in_core`, `sealed_fuel_cycle`, `sealed_damaged_core`, `impounded`, `reisolated`, `dispersed`, `liberated`, `memo_earth_moved`; allowed for the stage (§5.3) |
+| `tier` | enum | yes | `sealed_in_core`, `sealed_fuel_cycle`, `sealed_damaged_core`, `impounded`, `reisolated`, `dispersed`, `liberated`, `memo_earth_moved`, `memo_biosphere`; allowed for the stage (§5.3). Both memo tiers are outside the tier totals, `flow` only, and never `opening_stock` |
 | `quantity` | enum | yes | `flow` (Bq/a added), `transfer_out`, `transfer_in` (Bq moved between tiers in the year), `standing_inventory` (Bq present in `sealed_in_core`; the no-accident baseline, METHODS §5.4), `opening_stock` (Bq present on 1 January 1950; D31, §3.2) |
 | `unit` | enum | yes | `Bq/a` for `flow`; `Bq` for every other quantity |
 | `value_low` | float ≥ 0 | yes | |
@@ -89,7 +89,7 @@ The decay engine generates these from parameters, so data rows for them would do
 
 They are kept out by **convention**, which the route list supports. Every Liberated row must name a `route` (§5.7). No route describes exhalation from residues or seepage, and there is no general "other" route. The accident routes may be used only on event `transfer_in` rows (`V14`). The validator cannot tell a mis-entered tailings-radon row filed under, say, `air_ventilation` from a genuine mine-vent release, so the convention is restated in the factor registry and checked in the Task 4.1 audit. Radon released by an operating process (mine ventilation, vented and delivered gas, stack) is entered under its route.
 
-**`opening_stock` (D31).** Residues created before 1950 enter as `opening_stock` rows: year 1950 only, any stock tier except `sealed_in_core` and `memo_earth_moved`, the activity present on 1 January 1950 after decay, usually `basis = modelled` from pre-1950 activity series (which `data/activity/` allows back to 1800). The decay engine starts each stock from these values.
+**`opening_stock` (D31).** Residues created before 1950 enter as `opening_stock` rows: year 1950 only, any stock tier except `sealed_in_core` and the memo tiers (`memo_earth_moved`, `memo_biosphere`), the activity present on 1 January 1950 after decay, usually `basis = modelled` from pre-1950 activity series (which `data/activity/` allows back to 1800). The decay engine starts each stock from these values.
 
 ### 3.3 Cross-row rules
 
@@ -344,7 +344,7 @@ Allowed tiers per stage for non-transfer rows, as in METHODS §6.3 (`memo_earth_
 | `commodity_supply` | impounded, dispersed, liberated, memo_earth_moved |
 | `end_of_life` | impounded, liberated |
 | `geothermal` | impounded, reisolated, liberated |
-| `biomass_peat` | impounded, dispersed, liberated |
+| `biomass_peat` | impounded, dispersed, liberated, memo_biosphere |
 | `hydro` | liberated |
 
 Transfer rows follow §3.1 instead of this matrix.
@@ -367,7 +367,7 @@ Transfer rows follow §3.1 instead of this matrix.
 
 ### 5.7 Release routes (Liberated rows only)
 
-`air_stack`, `air_ventilation`, `air_process_vent`, `air_vented_gas`, `air_delivered_gas`, `air_dust`, `water_liquid_effluent`, `water_mine_drainage`, `water_produced_discharge`, `water_spill`, `sea_disposal_package`; and, **for event `transfer_in` rows only**, `air_accident_release` and `water_accident_release` (`vocab.json` → `accident_routes`). There is deliberately no general "other" route, and none for exhalation from residues or for seepage (§3.2).
+`air_stack`, `air_ventilation`, `air_process_vent`, `air_vented_gas`, `air_delivered_gas`, `air_dust`, `water_liquid_effluent`, `water_mine_drainage`, `water_produced_discharge`, `water_spill`, `sea_disposal_package`, `air_rerelease` (fallout Cs-137 re-emitted by biomass combustion, D43/D48: allowed only with `stage = biomass_peat`, `group = Cs137+`, `quantity = flow`; such rows are reported separately in cross-stream totals); and, **for event `transfer_in` rows only**, `air_accident_release` and `water_accident_release` (`vocab.json` → `accident_routes`). There is deliberately no general "other" route, and none for exhalation from residues or for seepage (§3.2).
 
 ### 5.8 Other entries
 
@@ -549,3 +549,4 @@ The vocabularies for these (`views`, `runs`, `conventions`, `horizons_a`, the ti
 | 2026-10-20 | Added the validator contract (API, CLI, rule codes, coercion) and behaviour details from the spec-blind test ambiguities. |
 | 2026-10-20 | v2 behaviour details from the second spec-blind test pass (B1–B11); bound-token coupling is `R02` only; `E03` skipped after `E01`; commodity-stage product rule takes precedence. |
 | 2026-10-20 | **v2** after the independent schema review: master gains `product`, `residue_type`, `factor_ids`, `route`; routine vs event transfers; events gain `to_tiers` and activity bounds; `opening_stock` (D31); new tables `residue_types.csv`, `reference_bands.csv`, factor registry; JSON schemas and rule codes (`T01`–`T05`, `D01`) for every support table; `V10`–`V13`, `E03`, `G04`, `G05`; dose tokens checked in values; URL required for inaccessible sources; field-name mapping; provisional derived-output dimensions. |
+| 2026-10-25 | **v2.2** (Steve): tier `memo_biosphere` (D47; biosphere-cycling memo for wood ash and wood natural nuclides, D43/D44; allowed at `biomass_peat`; flow only; not in tier totals); route `air_rerelease` (D48; schema conditional ties it to `biomass_peat`/`Cs137+`/flow); substream `biomass_domestic` and residue type `biomass_domestic_ash` (D45); `dispersed` at `coal_mining` and `sealed_fuel_cycle` at `accident` (D36). |

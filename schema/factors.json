@@ -73,13 +73,15 @@
         "reisolated",
         "dispersed",
         "liberated",
-        "memo_earth_moved"
+        "memo_earth_moved",
+        "memo_biosphere"
       ]
     },
     "route": {
       "enum": [
         null,
         "air_stack",
+        "air_rerelease",
         "air_ventilation",
         "air_process_vent",
         "air_vented_gas",

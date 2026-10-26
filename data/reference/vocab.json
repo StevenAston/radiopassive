@@ -85,7 +85,8 @@
   "reisolated",
   "dispersed",
   "liberated",
-  "memo_earth_moved"
+  "memo_earth_moved",
+  "memo_biosphere"
  ],
  "stage_tiers": {
   "u_mining_conv": [
@@ -195,7 +196,8 @@
   "biomass_peat": [
    "impounded",
    "dispersed",
-   "liberated"
+   "liberated",
+   "memo_biosphere"
   ],
   "hydro": [
    "liberated"
@@ -375,7 +377,8 @@
   "water_spill",
   "sea_disposal_package",
   "air_accident_release",
-  "water_accident_release"
+  "water_accident_release",
+  "air_rerelease"
  ],
  "residue_tiers": [
   "impounded",
@@ -465,7 +468,8 @@
    "reisolated": "impounded",
    "dispersed": "dispersed",
    "liberated": "liberated",
-   "memo_earth_moved": null
+   "memo_earth_moved": null,
+   "memo_biosphere": null
   },
   "stage_phase": {
    "u_mining_conv": "operating",
