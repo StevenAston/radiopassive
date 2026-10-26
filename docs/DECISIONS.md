@@ -42,6 +42,7 @@ Each decision records what was decided, when, and where it is made operational. 
 | D36 | 2026-10-25 | Stage tiers: `coal_mining` gains `dispersed`; `accident` gains `sealed_fuel_cycle` (Tokaimura refiled to `accident`). | vocab.json; SCHEMA §5; METHODS §6.3 |
 | D37 | 2026-10-25 | Household (domestic) biomass heating is in scope for stream ⑤, consistent with coal including non-power use. | METHODS §2.3 / §6.3 (to be written with the addendum) |
 | D38 | 2026-10-25 | Steve's local USGS DS140 mirror may be read but never written; all outputs go to the radiopassive folder. | research/activity |
+| D39 | 2026-10-25 | Commodity prices stored as USD/t (nominal) and USD1998/t (constant 1998 dollars), US-market unit values from DS140; a documented non-SI exception. | data/activity/commodity_prices.csv; SCHEMA §4.6 |
 
 No proposals outstanding.
 

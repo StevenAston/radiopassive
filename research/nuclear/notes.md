@@ -34,10 +34,44 @@ Total activity of PWR 40 GWd/t, Bq/tHM: 2.48e16 (5 a), 9.46e15 (30 a), 1.83e15 (
 - Decay power, W/tHM (PWR 40, same eight times): 2266, 930, 373, 117, 67, 35, 23, 16. PWR 60 at 5 a: 3711; BWR 30 at 5 a: 1601.
 - Dominant: Cs-137+, Sr-90+, Pu-241 (5–100 a); Am-241 68% at 500 a; Pu-239 and Pu-240 at 10⁴ a (BWR 15 GWd/t: Pu-239 63%, Pu-240 31%; BWR 30 GWd/t: Pu-239 54%, Pu-240 36%; BWR 50 GWd/t: Pu-239 47%, Pu-240 39%; PWR 20 GWd/t: Pu-239 61%, Pu-240 32%; PWR 40 GWd/t: Pu-239 53%, Pu-240 36%; PWR 60 GWd/t: Pu-239 45%, Pu-240 42%; corrected after verification).
 
-**Reduced set (33 heads)**: H-3, C-14, Ni-59, Ni-63, Co-60, Kr-85, Sr-90, Zr-93, Tc-99, Ru-106, Sb-125, I-129, Cs-134, Cs-135, Cs-137, Ce-144, Pm-147, Sm-151, Eu-154, Eu-155, U-234, U-236, Np-237, Pu-238, Pu-239, Pu-240, Pu-241, Pu-242, Am-241, Am-243, Cm-244, Cm-245, Cm-246 (daughters in head activity as reported).
-- Covers at least 99.02% of activity (PWR 60, 10⁴ a) and 99.58% of known-energy decay power, in all six burnup cases for 5 a to 10⁴ a.
-- Add Nb-94, Sn-126, Am-242m, Cm-242 to reach at least 99.30% everywhere. Hardware activation (S0101) makes Nb-94 about 1% at 10⁴ a.
-- **1–5 a gap**: Carter tables start at 5 a. At 1 a also need Zr-95, Nb-95, Cm-242 (S0102 Table B.1). The set above is valid only from 5 a.
+**Per-head radioactive power (added 2026-10-25).** `spent_fuel_inventory_derived.csv` now carries, for every head and cooling time:
+- `activity_head_bq_per_thm`: the head nuclide only (source convention, METHODS §3.2);
+- `activity_all_decays_bq_per_thm`: head activity times the `groups.csv` multiplier (D24);
+- `power_w_per_thm_head_only`: head activity times the head nuclide's own `e_total_mev` (ICRP-107, antineutrino excluded), so it ignores progeny;
+- `power_w_per_thm_group_all_decays`: head activity times `e_per_head_decay_mev` from `groups.csv`, i.e. $P_k=A_k\bar E_k$ (METHODS §7), which already includes the progeny. **Do not multiply the all-decays activity by $\bar E_k$ as well: that would double count.**
+- Example, PWR 40 GWd/t at 5 a: Cs-137+ 123 W (head only) and 530 W (group); Sr-90+ 90 W and 517 W; Ru-106+ 1 W and 171 W; Ce-144+ 8 W and 97 W; Cs-134 406 W; Pu-238 145 W; Cm-244 122 W; Eu-154 77 W; Co-60 76 W. Total 2,268 W/tHM (ICRP-107 energies for every nuclide in the table).
+- Total rows use the energy of every listed nuclide from ICRP-107 (same sum as `nuclides.csv`; identical for all 122 rows there), not only nuclides in `nuclides.csv`. The earlier "known energies only" total is superseded; the 5 a PWR 40 value changes from 2,266 to 2,268 W/tHM.
+- The old `activity_bq_per_thm` column (daughters collapsed into heads, Np-239 inside Am-243) was dropped because it duplicated the new columns under a different counting rule.
+
+**Reduced-set coverage test (METHODS §4.2), re-run 2026-10-25 at 1, 2, 3, 4, 5, 30, 100, 500, 1,000, 2,000, 5,000 and 10⁴ a** (`reduced_set_coverage.csv`). Group-based: covered activity is $\sum_k m_kA_k$ and covered power $\sum_kA_k\bar E_k$ over the groups in the set, against the sum over every nuclide in the inventory (all listed nuclides and their listed progeny). Worst case of the six burnup cases at each time:
+
+| Cooling (a) | 33-head set: activity / heat | + 10 addendum heads: activity / heat | + Np-239: activity / heat |
+|---|---|---|---|
+| 1 | 93.6% / 85.0% | 98.3% / 98.8% | 98.3% / 98.8% |
+| 2 | 99.0% / 95.4% | 99.5% / 99.7% | 99.5% / 99.7% |
+| 3 | 99.6% / 98.5% | 99.6% / 99.8% | 99.6% / 99.8% |
+| 4 | 99.7% / 99.5% | 99.7% / 99.9% | 99.7% / 99.9% |
+| 5 | 99.7% / 99.7% | 99.7% / 99.8% | 99.7% / 99.8% |
+| 30 | 99.9% / 99.8% | 99.9% / 99.9% | 99.9% / 99.9% |
+| 100 | 99.8% / 99.8% | 99.9% / 100.0% | 100.0% / 100.0% |
+| 500 | 98.3% / 99.8% | 98.7% / 99.9% | 99.9% / 100.0% |
+| 1,000 | 97.8% / 99.8% | 97.9% / 99.8% | 99.9% / 100.0% |
+| 2,000 | 96.4% / 99.6% | 96.5% / 99.7% | 99.8% / 99.9% |
+| 5,000 | 95.7% / 99.5% | 95.8% / 99.5% | 99.7% / 99.9% |
+| 10,000 | 95.8% / 99.2% | 96.0% / 99.3% | 99.3% / 99.6% |
+
+- The 33 heads are those listed above (H-3 to Cm-246); "addendum heads" are Zr-95, Nb-95, Cm-242, Ce-141, Sr-89, Te-129m, Cs-136, Nb-94, Sn-126 and Am-242m, all now in `groups.csv` (D35).
+- **This supersedes the earlier "≥ 99.02% activity" claim.** That figure collapsed Np-239 into the Am-243 head and used a denominator of Carter-listed nuclides only; under the `groups.csv` definitions Np-239 is its own group (Am-243's group does not carry it), and its activity equals Am-243's: 1.2% of total at 500 a, 3.4% at 10⁴ a (BWR 50).
+- **Result: the set passes at every cooling time from 2 a to 10⁴ a once the ten addendum heads and Np-239 (already a group) are in it; it does not pass at 1 a** (98.3% of activity, 98.8% of heat in the worst case, BWR 15).
+- **What closes the 1 a gap:** Y-91 (0.7–0.9% of activity, 0.6–0.8% of heat; **not in `nuclides.csv`**), then Pr-144m (0.2–0.3% of activity; not in a group), Ag-110m (0.2–0.3% of heat; not in `nuclides.csv`), Ru-103 (0.1%; group `Ru103+` exists) and Fe-55 (0.1%; group `Fe55` exists). Y-91 alone lifts the worst case to 99.2% (activity) and 99.6% (heat). I have not added anything.
+- **How reliable the 1–4 a rows are:** Carter's tables start at 5 a, so these rows are modelled, not tabulated.
+  - Nuclides with half-life of 100 d or more are reconstructed from the 5 a column by exact back-decay with in-growth correction; short-lived progeny are set at the `groups.csv` equilibrium weight.
+  - Zr-95, Nb-95 and Cm-242 are scaled to Ce-144 and Cm-244 using the 1 a decay-heat table of the JRC pin model (S0102, Table B.1, UO2, 1,000 d at 250 W/cm). The ratios come from one burnup, so treat them as ±30% (my judgement).
+  - **Ce-141, Sr-89, Te-129m, Cs-136, Y-91 and Ru-103 are upper bounds**, set by assuming the same cumulative fission yield as Zr-95 and the same irradiation saturation. This is conservative for the coverage test (it overstates what the set misses). The assumption is textbook, not verified here: the ENDF/B fission-yield files could not be downloaded (see section 5).
+  - Check against Carter Table 3-11 to 3-14 totals at 1 a (W/tHM, modelled vs tabulated): PWR 40 10,272 vs 10,444 (−1.6%); PWR 60 14,486 vs 13,936 (+3.9%); BWR 30 7,359 vs 7,603 (−3.2%); BWR 50 11,435 vs 11,008 (+3.9%).
+  - Decay-heat shares at 1 a agree with the JRC table within a few percentage points (Ce-144+ 33% vs 36.5%; Ru-106+ about 25% vs 25.6%; Cs-134 15% vs 14.6%).
+- **Convention issue for Task 0.3/METHODS owner:** under strict D24 counting, Pu-239 decays through U-235m (26 min), so every Pu-239 decay carries a second decay that no group counts (D35 omitted U-235m for its negligible energy). Counting it would lower the activity coverage (not the heat coverage) to 98.8% at 100 a, 88.5% at 500 a, 82% at 10³ a and 61% at 10⁴ a (last column of `reduced_set_coverage.csv`). Either `Pu239` needs a multiplier of about 2, or METHODS §3.2 needs a stated exemption for sub-hour isomeric transitions. Pr-144m (1.8% branch of Ce-144, 7 min) is the same kind of case.
+- Hardware activation (S0101) is not in these numbers (Carter is fuel-only). Nb-94 from hardware is about 1% of activity at 10⁴ a in the SKB data.
 
 ### 3.2 In-core inventory per GW(e)
 
@@ -69,6 +103,11 @@ $$\varepsilon = \frac{J/\lambda}{\rho A h} = E\,\frac{L}{h}\tanh\!\left(\frac{h}
 | 0.35 | 2.0 | 0.323 | 0.267 | 0.138 | 0.070 |
 
   Deep dry piles (5–10 m) give $\varepsilon\approx0.01$–$0.14$; only thin covers approach $E$. **The METHODS provisional default of 0.2 (bounds 0.05–0.35) looks high for deep impoundments** and is a candidate for revision (flag to Task 0.3/METHODS owner). Caveat: one parameter set, uniform pile, no moisture or cover effects, no temporal drying.
+- **Per-residue ε proposal for Task 3 review (not a decision).** For uranium mill tailings (stages `u_milling`, `u_mining_conv`) and uranium-bearing impoundments:
+  - **0.01–0.14 for deep covered piles** ($h\approx5$–$10$ m, $E=0.2$–$0.35$, $L=0.5$–$2$ m; rows above), **0.2 kept as the upper bound** (thin or uncovered layers approach $E$); suggest a central value of about 0.03 (E = 0.35, L = 0.47 m, h = 5 m gives 0.033).
+  - Cross-check with Task 1.5 (`research/wind_solar/notes.md` §8): the same slab form $\varepsilon\approx E\,L/H$ with a measured effective diffusion coefficient $D\approx1.4\times10^{-7}$ m²/s (western US tailings; WISE calculator page after Nielson 1986, which that task did not read) gives $L=0.26$ m. With that $L$: $E=0.2$–$0.35$ gives $\varepsilon=0.010$–$0.018$ at $H=5$ m, 0.005–0.009 at 10 m and 0.002–0.003 at 30 m.
+  - The two analyses agree on the form; they differ on $L$ (0.26 m there, 0.47 m from S0119 here, and S0119's 200 cm "relaxation length" gives the 0.14 corner). Because $L=0.26$–$0.47$ m gives 0.002–0.033 for $H=5$–$30$ m, the **0.14 end is the least supported number**; the range for Task 3 to test is 0.002–0.14 with 0.2 as a ceiling, not 0.01–0.14.
+  - Basis flag `modelled`; no uranium-tailings ε has been calibrated against a measured flux and inventory (Task 1.5 did that arithmetic only for Olympic Dam, with an unsourced inventory).
 - UNSCEAR flux convention: 10 Bq m⁻² s⁻¹ operating, 1 abandoned, 0.1 closed (S0003). 1 TBq/ha/a = 3.17 Bq m⁻² s⁻¹. Regulatory cap 0.74 Bq m⁻² s⁻¹ (40 CFR 192, S0120).
 - Tailings: 938 Mm³ (2004, no Africa); 8,718 Mt (2019), of which 7,000 Mt is South African gold tailings, leaving about 1,718 Mt uranium-mill tailings (S0118).
 - Waste rock: Rössing 2010–2018 11.5–40.0 Mt/a against 6.9–12.2 Mt/a tailings, i.e. 1.3–3.5 times tailings mass (S0118). Single mine; open-pit.
@@ -133,26 +172,33 @@ No annual throughput found for Sellafield B205, Marcoule UP1 or Mayak RT-1.
 - Hertwich 2015 PNAS: https://pmc.ncbi.nlm.nih.gov/articles/PMC4443343/
 - Gray et al. 1995 (paywalled): via https://amap.no/work-area/document/678; journal URL not verified
 - NRC (blocks programmatic download): NUREG/CR-2907 Vol. 27 https://www.nrc.gov/docs/ML2413/ML24134A119.pdf; series page https://www.nrc.gov/reactors/operating/ops-experience/tritium/plant-info.html; TMI letter https://www.nrc.gov/docs/ML1921/ML19210E952.pdf
+- ENDF/B-VIII.0 and VIII.1 neutron-induced fission yields (wanted for Y-91, Ce-141, Sr-89 and Te-129m cumulative yields): https://www.nndc.bnl.gov/endf-b8.0/zips/ENDF-B-VIII.0_nfy.zip (TLS certificate failure through the proxy), https://www-nds.iaea.org/public/download-endf/ENDF-B-VIII.0/nfpy/ and https://www.oecd-nea.org/dbdata/jeff/jeff33/downloads/JEFF33-nfy.asc (both HTTP 403). Not used; the 1–4 a bounds use an equal-yield assumption instead.
 - CNSC Appendix H: fetch truncated; not read (see S0127 URL in sources file)
 - Carried over from Task 1.1: UNSCEAR 2016 Annex A attachments; UNSCEAR 1982 Annex F and 1993 Annex B scans.
 
 ## 6. Derived files
 
 - `ospar_liquid_discharges_1989_2023.csv`: year, sub_sector, quantity, value_tbq_per_a (S0122).
-- `spent_fuel_inventory_derived.csv`: reactor, burnup_gwd_per_thm, cooling_time_a, group_head, activity_bq_per_thm, share_of_total. PWR 20/40/60 and BWR 15/30/50 GWd/t at 5, 30, 100, 500, 1,000, 2,000, 5,000, 10,000 a; 33 heads plus other_unlisted and totals (activity and W/tHM). Basis: modelled from S0100 with S9004. Daughters are collapsed into heads.
+- `spent_fuel_inventory_derived.csv` (rewritten 2026-10-25): reactor, burnup, cooling time, group, group_head, set_membership, head and all-decays activity, head-only and group power (W/tHM), shares, basis. PWR 20/40/60 and BWR 15/30/50 GWd/t at 1, 2, 3, 4, 5, 30, 100, 500, 1,000, 2,000, 5,000, 10,000 a; 44 heads (33 base, 10 addendum, Np-239) plus `UNCOVERED_BY_SET` and `TOTAL_ALL_NUCLIDES` rows. Basis: modelled (Carter tables at 5, 30, 100, 500 a; decay of the 500 a column for 10³–10⁴ a; reconstruction for 1–4 a). Tools: S9004.
+- `reduced_set_coverage.csv` (new): activity and decay-heat coverage by set (33 heads; plus the 10 addendum heads; plus Np-239), cooling time and case, with the U-235m-inclusive activity coverage.
 
 
-## Verification note (2026-10-22, provisional)
-The independent check passes with fixes, but is **provisional**: the external spot-checks could not run (a tool outage), so they will be re-run.
+## Verification note (2026-10-22; updated 2026-10-25)
+The independent check passes with fixes. The external spot-checks that could not run on 2026-10-22 were re-run on 2026-10-25 with WebFetch, which worked. **I do not have the verifier's own list of spot-checks, so I chose these**, and I removed the "provisional" label on that basis. Re-checked against the originals:
+- S0115 (WNA): world production 60,342 (2015), 47,731 (2020), 60,213 tU (2024); Kazakhstan 23,270, Canada 14,309, Namibia 7,333 tU (2024). All agree.
+- S0105 (UNSCEAR 2008 Annex D, Table 1): Xe-133 6,500; Kr-85 33; I-131 about 1,760; Te-132 about 1,150; Cs-134 about 47; Cs-137 about 85; Sr-90 about 10; Ru-106 above 73; Ce-144 about 50; Pu-241 about 2.6 PBq. All agree.
+- S0103 (TECDOC-1105): Atlantic 45,263.5, Arctic 38,369.1, Pacific 1,445.4, total 85,078.0 TBq (Table V); UK 35,087.5, Switzerland 4,419.3, USA 2,942, Belgium 2,120 TBq (Table IV). All agree.
+- S0122 (OSPAR 2023): reprocessing tritium 5,800 (1989), 17,000 (2004 peak), 9,500 TBq (2023); all-facility beta 930 (1989) and 10 TBq (2023), consistent with the 690 and 3.6 TBq reprocessing-only values in the derived CSV.
+- S0118 (TECDOC-1952): WebFetch could not reach the global tailings section, so the 938 Mm³ (Table 24) and 8,718 Mt figures were re-checked in my local text of the PDF instead.
+- Not re-checked externally: S0106 Table B4, S0107, S0116, S0113 (image tables), S0121 and the NRC/CNSC documents that block download.
 
 Confirmed internally:
 - the decay from 500 a to 10⁴ a (Pu-239, Pu-240, Pu-242, Cm-245 and Am-241 recomputed);
-- the reduced-set activity coverage (≥ 99.02%);
 - the ε derivation, $\varepsilon = E\,(L/h)\tanh(h/L)$.
 
-Open items:
-1. **Decay-power coverage.** The ≥ 99.58% decay-power claim cannot be reproduced from the derived file: it holds total W only, not W per head. Per-head W is to be added.
-2. **Short cooling times.** The reduced set is shown for 5 a to 10⁴ a. METHODS §4.2 asks for 1 a; that needs Zr-95, Nb-95 and Cm-242 (S0102). To be closed.
-3. **Missing nuclides.** nuclides.csv lacks Ni-59, Zr-93, Nb-93m, Nb-94, Sn-126 and Am-242m (a Task 0.3 addendum). U-235m is deliberately omitted (negligible energy).
-4. **ε for uranium tailings.** The 0.01–0.14 range is physically sound for deep covered piles, but rests on one parameter set. It is a candidate for per-residue values in residue_types.csv, with 0.2 kept as an upper bound. This needs no METHODS change, since ε is set per residue type in Phase 1.
-5. **availability.csv "None" methods.** Rows whose method is "None" mean *not applicable / zero by construction* (e.g. ISL before the 1960s, civil reprocessing pre-1950).
+The four open items of 2026-10-22 are closed or restated:
+1. **Decay-power coverage:** closed. Per-head power is now in the CSV (section 3.1) and the coverage is recomputed from it. The earlier 99.58% figure is superseded by the table in section 3.1.
+2. **Short cooling times:** closed for 1–5 a, with the 1 a result a shortfall (98.3% / 98.8%) and Y-91 as the closer; the 1–4 a rows are modelled.
+3. **Missing nuclides:** Ni-59, Zr-93, Nb-93m, Nb-94, Sn-126 and Am-242m were added by the Task 0.3 addendum (D35). U-235m is deliberately omitted there; see the convention issue in section 3.1.
+4. **ε for uranium tailings:** recorded as a per-residue proposal in section 3.4; it needs no METHODS change since ε is set per residue type in Phase 1.
+5. **availability.csv "None" methods:** rows whose method is "None" mean *not applicable / zero by construction* (e.g. ISL before the 1960s, civil reprocessing pre-1950).
