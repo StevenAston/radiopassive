@@ -31,6 +31,45 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 
+def _add_cited_real_sources(root: Path) -> None:
+    """Append real data/sources.csv rows for every source ID the copied real residue_types.csv cites.
+
+    The fixture registry only holds S0001-S0005, but the real reference tables (for example
+    residue_types.csv) cite whichever sources back their parameters. Appending (never replacing)
+    keeps the fixture rows and their row numbers intact, and only IDs actually cited are added,
+    so unresolved-reference tests (for example S0099) still see an unknown ID.
+    """
+    import csv
+    import re
+
+    cited: set[str] = set()
+    # Only residue_types.csv and residue_seepage_by_group.csv are scanned: nuclides.csv cites
+    # S9xxx IDs that tests deliberately expect to be absent from the fixture registry (V07
+    # "real id absent" case).
+    for table in [
+        root / "data" / "reference" / "residue_types.csv",
+        root / "data" / "reference" / "residue_seepage_by_group.csv",
+    ]:
+        if not table.exists():
+            continue
+        with open(table, newline="", encoding="utf-8") as fh:
+            for row in csv.DictReader(fh):
+                for col, val in row.items():
+                    if col and "source" in col and val:
+                        cited.update(re.findall(r"S\d{4}", val))
+    dest = root / "data" / "sources.csv"
+    with open(dest, newline="", encoding="utf-8") as fh:
+        have = {r["source_id"] for r in csv.DictReader(fh)}
+    with open(PROJECT_ROOT / "data" / "sources.csv", newline="", encoding="utf-8") as fh:
+        reader = csv.DictReader(fh)
+        fields = reader.fieldnames
+        extra = [r for r in reader if r["source_id"] in cited and r["source_id"] not in have]
+    if extra:
+        with open(dest, "a", newline="", encoding="utf-8") as fh:
+            w = csv.DictWriter(fh, fieldnames=fields, lineterminator="\n")
+            w.writerows(extra)
+
+
 @pytest.fixture
 def project_root() -> Path:
     """The real project root (the parent of `pipeline/`)."""
@@ -45,6 +84,7 @@ def tmp_root(tmp_path: Path) -> Path:
     shutil.copytree(PROJECT_ROOT / "data" / "reference", root / "data" / "reference")
     shutil.copytree(PROJECT_ROOT / "schema", root / "schema")
     shutil.copy(FIXTURES / "sources.csv", root / "data" / "sources.csv")
+    _add_cited_real_sources(root)
     shutil.copy(FIXTURES / "events.csv", root / "data" / "events.csv")
     (root / "data" / "activity").mkdir()
     shutil.copy(FIXTURES / "activity.csv", root / "data" / "activity" / "series.csv")

@@ -200,4 +200,31 @@ for y in range(1900,2026):
     up=math.sqrt(math.log(ahi/ac)**2+math.log(fl[2]/fl[1])**2); dn=math.sqrt(math.log(ac/alo)**2+math.log(fl[1]/fl[0])**2)
     O.add('coal_fly_ash_t',y,'XWL',ac*f*math.exp(-dn),ac*f,ac*f*math.exp(up),'t','modelled','S0800;S0230;S0803;S0804;S0849;S0850',
       'Fly-ash fraction of power-station ash: 0.30 to 1920 rising linearly to 0.80 by 1960 and constant after (assumed: stoker/grate firing dominant early, pulverised-coal with collectors later; coal survey notes stokers 15% fly). '+ashn+' Utilisation share not obtained (ACAA data inaccessible).')
+# ---- post-pass (defect fixes 2026-10-26): annual interpolation of decadal pre-1900 XWL points; 2025 carry-forward of consumption
+def _num(r): return float(r[3]),float(r[4]),float(r[5])
+INTERP_TAIL='Interpolated, not observed: the series has decadal points only before 1900, so each intervening year is filled by log-linear interpolation (geometric, constant growth rate) between the bracketing decadal points, applied separately to the central value, the low bound and the high bound. Source ids are inherited from the two bracketing points. Do not read year-to-year variation within a decade as real; the band is the interpolated decadal band and is not widened for the interpolation.'
+for ser in ('coal_production_t','coal_consumption_t','coal_production_twh','coal_consumption_twh'):
+    for c in sorted({k[2] for k in O.rows if k[0]==ser}):
+        ys=sorted(k[1] for k in O.rows if k[0]==ser and k[2]==c)
+        for a,b in zip(ys,ys[1:]):
+            if b-a<=1 or b>1900: continue      # only gaps closing on or before 1900
+            ra,rb=O.rows[(ser,a,c)],O.rows[(ser,b,c)]
+            va,vb=_num(ra),_num(rb)
+            if min(va+vb)<=0: continue
+            srcs=ra[9].split(';')+[x for x in rb[9].split(';') if x not in ra[9].split(';')]
+            for y in range(a+1,b):
+                f=(y-a)/(b-a)
+                lo,ce,hi=[math.exp(math.log(x)*(1-f)+math.log(z)*f) for x,z in zip(va,vb)]
+                O.add(ser,y,c,lo,ce,hi,ra[6],'interpolated',';'.join(srcs),'Interpolated log-linearly between %d and %d.||%s'%(a,b,INTERP_TAIL))
+def _extrap_2025(ser):
+    for c in sorted({k[2] for k in O.rows if k[0]==ser}):
+        if O.has(ser,2025,c) or not O.has(ser,2024,c): continue
+        r=O.rows[(ser,2024,c)]; lo,ce,hi=_num(r)
+        tr=[abs(math.log(float(O.rows[(ser,y,c)][4])/float(O.rows[(ser,y-1,c)][4]))) for y in range(2015,2025) if O.has(ser,y,c) and O.has(ser,y-1,c) and float(O.rows[(ser,y,c)][4])>0 and float(O.rows[(ser,y-1,c)][4])>0]
+        if not tr or lo<=0 or hi<=ce: continue
+        st=max(tr)
+        up=math.sqrt(math.log(hi/ce)**2+st**2); dn=math.sqrt(math.log(ce/lo)**2+st**2)
+        O.add(ser,2025,c,ce*math.exp(-dn),ce,ce*math.exp(up),r[6],'extrapolated',r[9],
+          'Extrapolated: 2024 central value carried forward to 2025 (persistence); 2025 not yet published. s_trend = %.4f.||Carry-forward rule (analyst-assumed): central = 2024 central. Each side of the band is widened so that |ln(high/central)| = sqrt(s_stat^2 + s_trend^2) on the high side and |ln(central/low)| = sqrt(s_stat^2 + s_trend^2) on the low side, where s_stat is the same-side log half-width of the 2024 band and s_trend is the largest absolute year-on-year log change of the series central value over 2015-2024 (combined in quadrature).'%st)
+for _s in ('coal_consumption_t','coal_consumption_twh'): _extrap_2025(_s)
 O.write()

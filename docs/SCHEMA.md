@@ -1,6 +1,6 @@
 # Radiopassive — Data Schema (v2)
 
-> **Status:** SIGNED OFF by Steve, 2026-10-20; **v2.2 additions (2026-10-25, D36, D43–D48) approved by Steve.** Task 0.2, revision v2.1 (re-review fixes) of v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
+> **Status:** SIGNED OFF by Steve, 2026-10-20; **v2.2 additions (2026-10-25, D36, D43–D48) approved by Steve.** **v2.3 additions (2026-10-26, D55–D57: per-group seepage table §4.12, pre-1950 stream files) approved by Steve 2026-10-26.** Task 0.2, revision v2.1 (re-review fixes) of v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
 
 ---
 
@@ -27,6 +27,7 @@
 | `data/reference/nuclides.csv` | Physical constants per nuclide (§4.1) | yes | Task 0.3 |
 | `data/reference/groups.csv` | Nuclide groups (§4.2) | yes | Task 0.3 |
 | `data/reference/residue_types.csv` | Per-residue engine parameters: ε for radon and thoron, seepage (§4.10) | yes | Tasks 0.2 (codes), 1.3–1.6 (values) |
+| `data/reference/residue_seepage_by_group.csv` | Per-group seepage overrides of the residue-type triple (§4.12, D56) | yes (when present) | Seepage research, 2026-10-26 |
 | `data/reference/reference_bands.csv` | Inter-evaluation uncertainty bands for nuclide data (§4.11, D27) | yes | Task 0.3 |
 | `data/reference/commodity_factors.csv` | Per-tonne commodity footprints (§4.7, METHODS §6.2) | no | Tasks 1.5, 1.9 |
 | `data/sources.csv` | Bibliography registry (§4.3) | yes | All tasks |
@@ -35,6 +36,7 @@
 | `data/activity/*.csv` | Activity spine (§4.6) | no | Task 1.9 |
 | `data/factors/*.csv` | Factor registry, one file per stream (§4.9) | no | Tasks 2.1–2.5 |
 | `data/streams/*.csv` | Master-format rows, one file per stream (§3) | no | Tasks 2.1–2.5 |
+| `data/streams_pre1950/<stream>.csv` | Pre-1950 undecayed flows, master columns (§3.2, D31, D57) | no (not validated by the master schema) | Phase 2 |
 | `build/master.csv` | Merge of the stream files and nothing else (§3) | no | Task 3.1 |
 | `schema/*.json` | Row schemas for every table above: `master`, `sources`, `events`, `countries`, `activity`, `baselines`, `commodity_factors`, `factors`, `residue_types`, `reference_bands` | yes (all ten) | Task 0.2 |
 
@@ -90,6 +92,8 @@ The decay engine generates these from parameters, so data rows for them would do
 They are kept out by **convention**, which the route list supports. Every Liberated row must name a `route` (§5.7). No route describes exhalation from residues or seepage, and there is no general "other" route. The accident routes may be used only on event `transfer_in` rows (`V14`). The validator cannot tell a mis-entered tailings-radon row filed under, say, `air_ventilation` from a genuine mine-vent release, so the convention is restated in the factor registry and checked in the Task 4.1 audit. Radon released by an operating process (mine ventilation, vented and delivered gas, stack) is entered under its route.
 
 **`opening_stock` (D31).** Residues created before 1950 enter as `opening_stock` rows: year 1950 only, any stock tier except `sealed_in_core` and the memo tiers (`memo_earth_moved`, `memo_biosphere`), the activity present on 1 January 1950 after decay, usually `basis = modelled` from pre-1950 activity series (which `data/activity/` allows back to 1800). The decay engine starts each stock from these values.
+
+**Pre-1950 stream files (v2.3, D31 Option A, D57).** `data/streams_pre1950/<stream>.csv` has the master columns, years 1800–1949 and `quantity = flow` only. The flows are undecayed. The files are **not validated by the master schema** (its year range is 1950–2025, D14); the engine decays them to the 1950 opening stock. They are written by the stream scripts alongside `data/streams/<stream>.csv`.
 
 ### 3.3 Cross-row rules
 
@@ -292,6 +296,23 @@ Each parameter set (the three ε-Rn222 values, the three ε-Rn220 values, the th
 
 **Precedence:** a row naming a nuclide or group overrides the class's `*` row. **Key:** (`quantity_class`, each entry of `applies_to`): a nuclide may appear only once per class.
 
+### 4.12 `residue_seepage_by_group.csv` — per-group seepage overrides (v2.3, D56)
+
+The residue-type triple in §4.10 applies one seepage fraction to every nuclide group in an impounded stock, but the groups differ by up to a factor of about 30 (U against Ra) and about 1500 (soluble K-40). This table holds group-specific triples.
+
+| Column | Type | Rule |
+|---|---|---|
+| `residue_type` | code | In `residue_types.csv` |
+| `group` | code | In `groups.csv` (head code, e.g. `U238+`, `Th230`, `K40`) |
+| `seepage_low/central/high` | float in [0, 1] | Annual fraction of the group's impounded stock that seeps to Liberated; low ≤ central ≤ high; all three required |
+| `basis` | enum | Required; as master (`modelled` for the first release) |
+| `source_ids` | list | Required; every ID in `sources.csv` |
+| `notes` | string | States the derivation |
+
+**Key:** (`residue_type`, `group`) is unique.
+
+**Fallback rule:** for a given residue type and group, the engine uses the row here if one exists; otherwise it uses the residue-type triple in `residue_types.csv` (§4.10). A row is useful only where the residue type has a filled seepage set, and the validator does not require one for the other residue types. Rows are added only where research supports a group-specific number; absence of a row means "same as the residue-type triple", not "zero".
+
 ---
 
 ## 5. Controlled vocabularies (`data/reference/vocab.json`)
@@ -394,7 +415,7 @@ class Issue:
 def validate(root: str | os.PathLike, master_files: Iterable[str | os.PathLike] | None = None) -> list[Issue]: ...
 ```
 
-- `root` is a project root laid out as in §2. Every call validates all the **required** files of §2, plus every **optional** file that exists: `data/events.csv`, `data/baselines.csv`, `data/reference/commodity_factors.csv`, `data/activity/*.csv`, `data/factors/*.csv`.
+- `root` is a project root laid out as in §2. Every call validates all the **required** files of §2, plus every **optional** file that exists: `data/events.csv`, `data/baselines.csv`, `data/reference/commodity_factors.csv`, `data/reference/residue_seepage_by_group.csv`, `data/activity/*.csv`, `data/factors/*.csv`.
 - `master_files`: paths (absolute, or relative to `root`) of master-format CSVs to check. If `None`, every `data/streams/*.csv` (sorted by name). `build/master.csv` is checked only when passed explicitly. An empty list checks no master files.
 - An empty list of issues means everything is valid. Issues are returned sorted by file, then row (`None` first), then rule.
 - A missing *required* file raises `FileNotFoundError`. It is not reported as an `Issue`.
@@ -465,10 +486,10 @@ One row may raise several codes. Each code is raised **only** for the condition 
 | `G03` | groups | `multiplier_scope = flow_only` but `role ≠ released_gas`, or the reverse |
 | `G04` | groups | `chain`, `role` or `multiplier_scope` not in its enum; a `parent_group` not in `groups.csv`; or a duplicate `group` |
 | `G05` | groups | A released-gas group that names a `parent_group`, where that parent is not a `chain` group containing the gas group's head as a member (released gases with no parent, e.g. `Kr88+`, are not escape groups and are not checked) |
-| `T01` | countries, activity, baselines, commodity_factors, factors, residue_types, reference_bands | Row fails the table's JSON schema (incl. coercion failure) |
+| `T01` | countries, activity, baselines, commodity_factors, factors, residue_types, residue_seepage_by_group, reference_bands | Row fails the table's JSON schema (incl. coercion failure) |
 | `T02` | same | Duplicate key (§4.5–4.11) |
-| `T03` | same | Bounds out of order (low ≤ central ≤ high; `year_from ≤ year_to`; residue parameter sets all-or-none and ordered; residue parameters filled without `basis` and `source_ids`) |
-| `T04` | same | A reference that does not resolve: `source_ids` (sources), `country`/`region` (countries), `group` (groups), `residue_type` (residue types), `driver_series` (activity series), `stage` for the stream (factors), `applies_to` (nuclides or groups) |
+| `T03` | same | Bounds out of order (low ≤ central ≤ high, including `seepage_low/central/high` in `residue_seepage_by_group`; `year_from ≤ year_to`; residue parameter sets all-or-none and ordered; residue parameters filled without `basis` and `source_ids`) |
+| `T04` | same | A reference that does not resolve: `source_ids` (sources), `country`/`region` (countries), `group` (groups), `residue_type` (residue types; also `residue_seepage_by_group`), `driver_series` (activity series), `stage` for the stream (factors), `applies_to` (nuclides or groups) |
 | `T05` | commodity_factors | Allocation completeness, as `X03` (bound-row tokens are `T01`) |
 
 **Membership vs schema.** The JSON schemas check types, fixed enums and conditional rules. They do **not** check whether a substream, stage, product, residue type, country, group, source, factor or event ID exists; those are V-, E02- and T04-codes only. If `stream` itself is invalid (`R02`), `V01`–`V03` and `V11` are skipped for that row; if `tier` is invalid, `V03` is skipped.
@@ -506,6 +527,7 @@ Applied before schema validation, in every table:
 | Countries | `valid_from > valid_to` is `T03`; countries have no `T04` |
 | Dose tokens | `F02` uses `vocab.forbidden_column_tokens`, `D01` uses `vocab.dose_tokens` (identical lists by default, kept separate so either can be tuned). Matching is whole-word on lower-cased text split on every non-alphanumeric character; `µ` and `μ` count as letters. `D01` is one issue per row, listing the offending column=value pairs |
 | `reference_bands` keys | Each named nuclide or group at most once per `quantity_class`, and the `*` default at most once per class |
+| `residue_seepage_by_group` | Optional (absent = no issue; header-only is valid). `T01`: all three `seepage_*` values, `basis` and `source_ids` required, values in [0, 1]. `T02`: duplicate (`residue_type`, `group`), on the later row. `T03`: low ≤ central ≤ high. `T04`: `residue_type` in `residue_types.csv`, `group` a head code in `groups.csv`, every `source_ids` entry in `sources.csv`. The residue type need not have a filled seepage set in `residue_types.csv`. `data/streams_pre1950/` files are never read |
 | `residue_types` with only `basis`/`source_ids` filled | Allowed (no issue): recording a source before the values is harmless |
 | Sources for reference tables | `reference_bands.csv` and `residue_types.csv` cite sources that must be in `data/sources.csv` (`T04`); `nuclides.csv` and `groups.csv` `source_ids` are not resolved in v2 |
 | Issue order | Sorted by `file` (string), then `row` (`None` first), then `rule` |
@@ -550,3 +572,4 @@ The vocabularies for these (`views`, `runs`, `conventions`, `horizons_a`, the ti
 | 2026-10-20 | v2 behaviour details from the second spec-blind test pass (B1–B11); bound-token coupling is `R02` only; `E03` skipped after `E01`; commodity-stage product rule takes precedence. |
 | 2026-10-20 | **v2** after the independent schema review: master gains `product`, `residue_type`, `factor_ids`, `route`; routine vs event transfers; events gain `to_tiers` and activity bounds; `opening_stock` (D31); new tables `residue_types.csv`, `reference_bands.csv`, factor registry; JSON schemas and rule codes (`T01`–`T05`, `D01`) for every support table; `V10`–`V13`, `E03`, `G04`, `G05`; dose tokens checked in values; URL required for inaccessible sources; field-name mapping; provisional derived-output dimensions. |
 | 2026-10-25 | **v2.2** (Steve): tier `memo_biosphere` (D47; biosphere-cycling memo for wood ash and wood natural nuclides, D43/D44; allowed at `biomass_peat`; flow only; not in tier totals); route `air_rerelease` (D48; schema conditional ties it to `biomass_peat`/`Cs137+`/flow); substream `biomass_domestic` and residue type `biomass_domestic_ash` (D45); `dispersed` at `coal_mining` and `sealed_fuel_cycle` at `accident` (D36). |
+| 2026-10-26 | **v2.3** (Steve): new table `residue_seepage_by_group.csv` (§4.12, D56), with fallback to the residue-type triple; seepage triples filled for 15 residue types (D55); sources S0950–S0971 added; pre-1950 stream file convention `data/streams_pre1950/<stream>.csv` documented (§3, D57). |

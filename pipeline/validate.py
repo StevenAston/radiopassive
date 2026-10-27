@@ -23,9 +23,9 @@ import math
 import os
 import re
 import sys
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable, Iterable
 from urllib.parse import urlparse
 
 from jsonschema import Draft7Validator
@@ -96,7 +96,7 @@ GROUP_ENUMS = {
 
 SCHEMA_NAMES = ("master", "sources", "events", "countries", "activity",
                 "baselines", "commodity_factors", "factors", "residue_types",
-                "reference_bands")
+                "reference_bands", "residue_seepage_by_group")
 
 # --------------------------------------------------------------------------
 # Data structures
@@ -456,6 +456,23 @@ def _check_residue_types(ctx: _Context, path: Path) -> None:
     for _, _, record in _check_table(ctx, spec, [path], extra):
         if record.get("residue_type"):
             ctx.residue_types.add(record["residue_type"])
+
+
+def _check_residue_seepage(ctx: _Context, path: Path) -> None:
+    """Per-group seepage overrides (SCHEMA §4.12): optional table, all three bounds required."""
+    columns = ["residue_type", "group", "seepage_low", "seepage_central", "seepage_high",
+               "basis", "source_ids", "notes"]
+    spec = _Spec("residue_seepage_by_group", columns,
+                 {"seepage_low": "float", "seepage_central": "float", "seepage_high": "float",
+                  "source_ids": "list"},
+                 key=lambda r: [(r["residue_type"], r["group"])]
+                 if r.get("residue_type") and r.get("group") else [],
+                 bounds=[("seepage_low", "seepage_central", "seepage_high")])
+
+    def extra(ctx: _Context, name: str, index: int, record: dict) -> None:
+        _t04(ctx, name, index, record, group="group", residue=True)
+
+    _check_table(ctx, spec, [path], extra)
 
 
 def _check_reference_bands(ctx: _Context, path: Path) -> None:
@@ -835,7 +852,7 @@ def _flow_only_allowed(quantity: str | None, tier: str | None) -> bool:
 def _check_master_row(ctx: _Context, mrow: _MasterRow) -> None:
     """Row-level (R*) and vocabulary (V*) checks for one master row."""
     rec, vocab = mrow.record, ctx.vocab
-    add = lambda rule, msg: ctx.add(mrow.file, mrow.row, rule, msg)  # noqa: E731
+    add = lambda rule, msg: ctx.add(mrow.file, mrow.row, rule, msg)
 
     if mrow.coerced:
         messages = _schema_messages(ctx.validators["master"], rec)
@@ -1077,6 +1094,8 @@ def validate(root: str | os.PathLike,
     _check_groups(ctx, required["groups"])
     _check_residue_types(ctx, required["residue_types"])
     _check_reference_bands(ctx, required["reference_bands"])
+    if (ref / "residue_seepage_by_group.csv").is_file():
+        _check_residue_seepage(ctx, ref / "residue_seepage_by_group.csv")
     _check_activity(ctx, sorted((data / "activity").glob("*.csv")))
     _check_factors(ctx, sorted((data / "factors").glob("*.csv")))
     if (ref / "commodity_factors.csv").is_file():

@@ -1,6 +1,6 @@
 # Task 1.9 activity data spine: notes
 
-Files: `data/activity/{electricity_generation,coal,oil_gas,uranium,nuclear,commodity_production,commodity_prices,capacity_additions,planning_parameters,biomass,peat}.csv` (172,828 rows, 215 series). Sources S0800-S0860 (all rows, old and new) in `research/activity/sources_task19.csv`. Long notes are abbreviated in the CSVs as `[Nxxx, see research/activity/note_registry.csv]`. Converters kept here (paths inside point to the scratch folder; edit before reuse): `ds140.py` (DS140 CSV sheet loader), `ds140_comm.py` (DS140 to commodity series), `build_prices.py`, `build_bio.py`, `build_peat.py`, `make_sources2.py`, `rds2_parse.py` (RDS-2 reactor table to fleet by type and year) and `redbook_u.py` (hand-transcribed Red Book uranium production table, column sums checked against printed totals).
+Files: `data/activity/{electricity_generation,coal,oil_gas,uranium,nuclear,commodity_production,commodity_prices,capacity_additions,planning_parameters,biomass,peat}.csv` (173,254 rows, 215 series). Sources S0800-S0860 (all rows, old and new) in `research/activity/sources_task19.csv`. Long notes are abbreviated in the CSVs as `[Nxxx, see research/activity/note_registry.csv]`. Converters kept here (paths inside point to the scratch folder; edit before reuse): `ds140.py` (DS140 CSV sheet loader), `ds140_comm.py` (DS140 to commodity series), `build_prices.py`, `build_bio.py`, `build_peat.py`, `make_sources2.py`, `rds2_parse.py` (RDS-2 reactor table to fleet by type and year) and `redbook_u.py` (hand-transcribed Red Book uranium production table, column sums checked against printed totals).
 
 Conventions: bounds are analyst-assumed approximate 5th-95th percentile bands, propagated in log-space quadrature (METHODS 11.1); they are not published uncertainties. `modelled` rows state their method in the note. No dose quantities are present.
 
@@ -40,12 +40,12 @@ World = XWL. "World years" blank (-) means no XWL row (country-only series).
 | capacity_additions.csv | pv_share_thin_film | 1 | 2025-2025 | 1 | 2025-2025 | 1 |
 | coal.csv | coal_ash_power_t | t | 1900-2025 | 1 | 1900-2025 | 126 |
 | coal.csv | coal_burn_power_twh | TWh | 1900-2025 | 1 | 1900-2025 | 126 |
-| coal.csv | coal_consumption_t | t | 1800-2024 | 33 | 1800-2024 | 1995 |
-| coal.csv | coal_consumption_twh | TWh | 1800-2024 | 33 | 1800-2024 | 1995 |
+| coal.csv | coal_consumption_t | t | 1800-2025 | 33 | 1800-2025 | 2118 |
+| coal.csv | coal_consumption_twh | TWh | 1800-2025 | 33 | 1800-2025 | 2118 |
 | coal.csv | coal_fly_ash_t | t | 1900-2025 | 1 | 1900-2025 | 126 |
 | coal.csv | coal_power_share | 1 | 1900-2025 | 3 | 1900-2025 | 313 |
-| coal.csv | coal_production_t | t | 1800-2025 | 39 | 1800-2025 | 4468 |
-| coal.csv | coal_production_twh | TWh | 1800-2025 | 39 | 1800-2025 | 4468 |
+| coal.csv | coal_production_t | t | 1800-2025 | 39 | 1800-2025 | 4558 |
+| coal.csv | coal_production_twh | TWh | 1800-2025 | 39 | 1800-2025 | 4558 |
 | commodity_prices.csv | price_aluminium_usd98_t | USD1998/t | - | 1 | 1900-2021 | 122 |
 | commodity_prices.csv | price_aluminium_usd_t | USD/t | - | 1 | 1900-2021 | 122 |
 | commodity_prices.csv | price_cement_usd98_t | USD1998/t | - | 1 | 1900-2021 | 122 |
@@ -336,6 +336,12 @@ World = XWL. "World years" blank (-) means no XWL row (country-only series).
 - All builders are in `research/activity/scripts/` (see `research/activity/README.md`): lib.py, common.py, build_{elec,coal,og,u,nuc,cap,comm,prices,bio,peat}.py, ds140.py, ds140_comm.py, ree_myb.py, make_sources.py, make_sources2.py, eia_extract.py, irena_fetch.py, fetch_minerals.py, rds2_parse.py, redbook_u.py, fetch_inputs.py, run_all.py, plot_sanity.py. Paths are relative to the repository root; `--raw` and `--mirror` are arguments; nothing writes into `data/activity/` without `--write`.
 - Small raw inputs (below 5 MB each, 27 MB in all) are in `research/activity/raw/`; large ones (OWID energy, FAOSTAT forestry, EIA INTL) are fetched by `fetch_inputs.py` and listed in `raw/.gitignore`. The note registry is `research/activity/note_registry.json` (append-only, 2,823 notes; readable copy `note_registry.csv`).
 - Checked: `run_all.py` run twice (once with `--write`, once without) gives byte-identical files in `research/activity/out/` and `data/activity/` for all eleven CSVs and `sources_task19.csv`. The `out/` folder holds those check copies and can be deleted.
+
+### 8.7 Coal activity defects fixed in `build_coal.py` (26-27 Oct 2026)
+- Pre-1900 decadal gap: the world (XWL) series `coal_production_t`, `coal_consumption_t`, `coal_production_twh` and `coal_consumption_twh` had values only in 1800, 1810, ..., 1890 (no other country is decadal). The 1801-1899 non-decade years are now filled annually (90 rows per series, 360 rows), basis `interpolated`: log-linear (constant growth rate) interpolation of the central, low and high values between the two bracketing decadal points, which the note names; source ids are inherited from both brackets. The band is the interpolated decadal band, not widened. Decadal and 1900+ rows are untouched.
+- Consumption 2025: both consumption series ended in 2024 (OWID and EIA have no 2025 consumption), so non-power coal had no 2025 rows. `coal_consumption_t` and `coal_consumption_twh` now carry 2024 forward to 2025 for all 33 countries with a 2024 row (66 rows), basis `extrapolated`: central = 2024 central; each band side is widened to sqrt(s_stat^2 + s_trend^2) in log space, s_stat the same-side log half-width of the 2024 band and s_trend the largest absolute year-on-year log change of the central value over 2015-2024. Production already had 2025 and is unchanged. Note that `coal_power_share` 2025 still uses the production-ratio extrapolation of 8.1 (unchanged).
+- Inputs: `owid-energy.csv` and `eia_annual.json` were re-fetched with `fetch_inputs.py` on 27 Oct 2026; before the edits the unchanged builder reproduced the committed `coal.csv` and note registry byte-identically, and every pre-existing coal row is unchanged after the edits (426 rows added in total). `note_registry.json` gained two notes (the interpolation and carry-forward rules); `note_registry.csv` was rewritten from it. Only `coal.png` was regenerated (the other plot PNGs are not byte-reproducible and were left as committed).
+- Reported, not fixed: CSK/CZE, SUN/successor and YUG/successor production series overlap (double counting if summed); the stream script handles exclusion.
 
 ### 8.6 Sanity plots
 - `research/activity/plots/<file>.png`, one per data file (11), headline series with world (or USA, or the four peat countries) central line and shaded band: regenerate with `scripts/plot_sanity.py`.
