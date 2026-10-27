@@ -220,3 +220,18 @@ These **override** §1–§11 where they differ. Decisions: D58 (this section).
 - **Household and industrial ash** ($H_g-M_g$, $N_g-H_g$, §6) keep the §7 independent difference in v1.2. This overstates their uncertainty (stated limitation, §10) and is to be revisited.
 - **Notes suffix order:** the rule text first, then `; driver basis: …` if present, then `; below_detection cause: …` last.
 - **Aggregated log entries** (§12.5) carry the output-row country convention (`XXX` for world series, otherwise the country code).
+
+### §12.16 Exact-zero cause (Steve, 2026-10-27)
+
+- A correlated difference (§12.1) whose result is exactly $(0,0,0)$ **without any clipping** (for example the fly-ash residue $F_g-S_g$ when the cap makes $S_g=F_g$ at all three bounds) is a true zero. It stays flagged (`below_detection = true`, D52 zero-central rule), but its cause is `exact_zero`, **not** `clipped_difference`.
+- The fixed cause order becomes: `zero_central_factor`, `exact_zero`, `clipped_difference`, `floor_dominance`, `inherited_flag`. A reisolated tier row of such a residue therefore reads `zero_central_factor+exact_zero`.
+- `clipped_difference` is used only when a raw low (or central) was actually below 0 and was clipped.
+- Precisely: `exact_zero` applies when the raw central and raw high differences are exactly 0 and the raw low is $\ge 0$. A positive raw low is clamped down to the central (§12.15), which is not clipping, so the result is still a true zero.
+
+### §12.17 After the D59 factor revision (2026-10-27)
+
+- **Benchmark rule (§12.10), stated explicitly:** where two independent values are given, the stream central must lie within a factor of 3 of **at least one** of them (this is what the tests implement). "Lie between the two" is an alternative pass, not a requirement.
+- **Margins after D59/D59a (2010; 2020 within 2 %):** Ra-226 in ash 0.129 TBq/GW·a (×2.4 UK, ×0.86 India); Pb-210 stack 1.52×10⁻³ (×2.6 India, **×3.5 UK, outside on that value**); Ra-226 stack 4.8×10⁻⁴ (×2.3 UK); Rn-222 from burning 0.110 (×2.2 UK, ×1.5 NL); Po-210 stack 1.80×10⁻³ (×4.2 UK, known miss; ×1.06 NL). Values rose about 1.4× with the coal U-series centre 20 → 28 Bq/kg (D59, D59a). The stream now sits systematically 2–3.5× above the UK 1998 figures; UK coal and UK particulate control are both better than the world mean, so this is expected in direction, but it is recorded as a limit.
+- **Superseded text:** §12.10's "Po-210 stream 2.4×10⁻³" is now 1.80×10⁻³. In §10 additions, the fly-ash ε low (0.005) is now traced (Kovler, S0244; D59), K-40 has a coal lower bound (31 Bq/kg; D59), and the U/Th enrichment centres below 1 are resolved (D59). The 2010+ era centre (0.31 %) is unchanged; its low is now 0.02 %.
+- **Open flags (not changed):** ash yield 15 % (Ketris & Yudovich) vs 12 % used; coal:0003 high possibly 2–3× high (S0222 check); China K-40 104 (S0006) vs 49 (Dai); Ra-226 retained sludge is 7.3× the release at the 0.88 high, so it is sensitive to that bound.
+

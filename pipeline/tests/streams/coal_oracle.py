@@ -90,7 +90,8 @@ def cdiff(a: B, b: B) -> B:
 
     Negative central -> 0, each bound clipped to >= 0, then ordered by clamping around the central
     (the spec's "ordered" is ambiguous between clamping and sorting; callers avoid cases where they differ).
-    The flag is True when the raw low was negative (a clipped low) or the central was negative.
+    The flag is True when the raw low was negative (a clipped low), the central was negative, or the
+    result is exactly (0, 0, 0) (COAL_SPEC 12.16: a true zero stays flagged, with cause exact_zero).
     """
     c_raw = a.central - b.central
     low_raw = a.low - b.low
@@ -99,7 +100,25 @@ def cdiff(a: B, b: B) -> B:
     clipped = low_raw < 0 or c_raw < 0
     low = min(max(low_raw, 0.0), c)
     high = max(max(high_raw, 0.0), c)
-    return B(low, c, high, clipped and low == 0.0)
+    exact_zero = low == 0.0 and c == 0.0 and high == 0.0
+    return B(low, c, high, (clipped and low == 0.0) or exact_zero)
+
+
+def cdiff_cause(a: B, b: B) -> str | None:
+    """Cause of the flag of a correlated difference (COAL_SPEC 12.1, 12.16).
+
+    'clipped_difference' only if a raw low (or central) was actually below 0; 'exact_zero' if the
+    result is exactly (0, 0, 0) with no clipping: raw central and raw high exactly 0 and raw low >= 0
+    (a positive raw low is clamped to the central, which is not clipping); otherwise None.
+    """
+    c_raw = a.central - b.central
+    low_raw = a.low - b.low
+    high_raw = a.high - b.high
+    if low_raw < 0 or c_raw < 0:
+        return "clipped_difference"
+    if low_raw >= 0 and c_raw == 0 and high_raw == 0:
+        return "exact_zero"
+    return None
 
 
 def raw_central_diff(a: B, b: B) -> float:

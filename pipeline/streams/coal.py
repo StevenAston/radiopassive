@@ -61,7 +61,13 @@ LOG_KINDS = (
 # COAL_SPEC 12.5: these kinds are written once per contiguous year run.
 RUN_KINDS = ("no_driver", "no_power_ash")
 # COAL_SPEC 12.3: fixed order of the flag causes in the notes suffix.
-CAUSE_ORDER = ("zero_central_factor", "clipped_difference", "floor_dominance", "inherited_flag")
+CAUSE_ORDER = (
+    "zero_central_factor",
+    "exact_zero",
+    "clipped_difference",
+    "floor_dominance",
+    "inherited_flag",
+)
 BASIS_ORDER = ("interpolated", "extrapolated")
 LOG_COLUMNS = ("kind", "year", "country", "group", "detail")
 REST_OF_WORLD_NOTE = "rest of world (world aggregate minus listed countries)"
@@ -193,7 +199,19 @@ def _qdiff_independent(a: _Q, b: _Q) -> tuple[_Q, float]:
 
 
 def _qdiff_correlated(a: _Q, b: _Q) -> _Q:
-    return _q_finish(_correlated_difference(a.b, b.b), (a, b), ("clipped_difference",))
+    # COAL_SPEC 12.16: a zero central and high with nothing clipped is a true zero; only a raw
+    # low or central below 0 is a clipped difference.
+    raw_low = a.b.low - b.b.low
+    raw_central = a.b.central - b.b.central
+    raw_high = a.b.high - b.b.high
+    # A positive raw low clamped to the central is not clipping (COAL_SPEC 12.16).
+    if raw_low < 0.0 or raw_central < 0.0:
+        extra: tuple[str, ...] = ("clipped_difference",)
+    elif raw_central == 0.0 and raw_high == 0.0:
+        extra = ("exact_zero",)
+    else:
+        extra = ()
+    return _q_finish(_correlated_difference(a.b, b.b), (a, b), extra)
 
 
 def _merge(*groups: Iterable[str]) -> list[str]:

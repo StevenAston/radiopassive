@@ -130,6 +130,27 @@ Use the era-matched, per-GW.a, independent-of-Annex-B values below. Ratios are i
 | Escaping ash fraction | 0.41% | S0205 | UK 1998 | 0.31% (2010-25) | 1.3 | yes |
 | Mine radon | none | n/a | n/a | 4.29 / 4.21 | n/a | exclude from test; document as unsupported |
 
+### 4.1 Round-2 additions (2026-10-27; from research/coal/papers_round2_stack.md Q4)
+
+Stream values in this sub-section are the PRE-D59 build (2010: Po-210 stack $2.4\times10^{-3}$, Pb-210 $1.06\times10^{-3}$, Ra-226 $3.1\times10^{-4}$ TBq per GW.a). The D59 factor revision is expected to move the 2010 Po-210 stack to about $1.3\times10^{-3}$, Ra-226 stack up about 10%, Pb-210 unchanged (my arithmetic in the md, not a build result); the orchestrator's rebuild supersedes it. Per GW.a values are my conversions in the md. "Indep." = independence from UNSCEAR 2016 Annex B (S0001).
+
+| Test | Independent value (TBq per GW.a) | Source ID, page/table | Era / place | Indep. flag | Stream (pre-D59) | Ratio | Within x3 |
+|---|---|---|---|---|---|---|---|
+| Po-210 stack | $2.3\times10^{-4}$ ($1.9$-$3.0\times10^{-4}$ at LF 0.8-0.5) | S0980 Table 4 p.281, six UK plants | UK 1998-2001 | measured; shares Environment Agency data with NRPB R327 (partly shared) | $2.4\times10^{-3}$ | 0.10 | no |
+| Pb-210 stack | $3.3\times10^{-4}$ ($2.7$-$4.3\times10^{-4}$) | S0980 Table 4 | UK 1998-2001 | as above | $1.06\times10^{-3}$ | 0.31 | no (borderline, just under 1/3) |
+| Po-210 stack | $6.0\times10^{-5}$ | S0980 Tables 1 and 4, SH-4 | China 2015, wet ESP, single unit | independent | $2.4\times10^{-3}$ | 0.025 | no |
+| Po-210 stack (model) | $0.8$-$2.6\times10^{-3}$ modern; $4.8\times10^{-3}$-$1.6\times10^{-2}$ old | S0240 Table 8 p.191 (per 1000 MWe, approx. per GW.a) | 1979-83 models | independent of Annex B 2016; same lineage as UNSCEAR 1982 (not independent of the UNSCEAR family) | $2.4\times10^{-3}$ | 0.3-1.1 modern; 2-7 old | modern: mostly (low end 0.3 borderline); old: partly |
+| Ra-226 stack | $6\times10^{-5}$ | S0245 Table 3 p.4 | modern Belgian plant | independent, measured Ra-226 | $3.1\times10^{-4}$ | 0.19 | no |
+| Ra-226 stack | $3.5\times10^{-4}$ | S0245 Table 3 (quotes Smith et al. 2001) | UK | = NRPB R327 value (not independent of S0205) | $3.1\times10^{-4}$ | 1.1 | yes |
+| Ra-226 stack | $0.6$-$5.2\times10^{-3}$; $4.5\times10^{-3}$; $1.5\times10^{-3}$ | S0245 Table 3: Papastefanou 1996, Mishra 1984, UNSCEAR 1982 | Greece, India, various | Greek and Indian independent; UNSCEAR 1982 not | era-matched 1970-89: $4.5\times10^{-3}$ | about 1 | yes |
+| Ra-226 stack | $3.7\times10^{-4}$ at 1% ash; $3.0\times10^{-3}$ at the US 1972 average of 7.7% | S0978 Table 2 plus FPC 1972 survey | US 1972-77 | independent, primary ORNL | era 1970-89: $4.5\times10^{-3}$ | 1.5 | yes |
+| Ra-226 stack | $6.4\times10^{-4}$ per 1000 MWe | S0238 p.289 | US 1960s, 2.5% escape | independent; origin of the UNSCEAR 1982 97.5% | 1950-69 stream: $1.6\times10^{-2}$ (era-matched about $8\times10^{-3}$) | 0.04 (0.08 era-matched) | no: pre-D59 1950-69 band too high; D59 lowers its low bound to 0.025 |
+| Ra-226 in ash (inventory only) | 0.087 per GW installed; 0.15 per GW.a at PLF 0.56 | S0981 Table 3 and p.3 | India 2019 | independent; ash-borne inventory, not a release | 0.090 (2020) | 0.97 per GW installed; 0.6 per GW.a | yes |
+| Escaping ash fraction | 7.7% (US 1972); 0.003-0.10% (China 2014-15); 0.02-0.04% (Belgium) | S0978; S0980 Table 5; S0245 | various | independent | era centres 0.0447 (1970-89); 0.0031 (2010+) | 1.7; 0.03-32 | partly: 0.0002 low bound added in D59 |
+| Po/Pb stack ratio | 1.1 (Kaakinen); 0.7 mean (UK); 1.0 (all models); 1.8 (UNSCEAR 1988) | S0239 Fig. 5; S0980 Table 4; S0240 Table 8 | various | mixed | 2.24 | 0.3-0.8 | borderline at the low end; D59 lowers the Po-210 enrichment centre so Po/Pb becomes about 1.2 |
+
+Reading: the round-2 UK measurements put the stream's Po-210 stack 10x above the UK value (pre-D59), as the earlier table's 5.6x did; the md attributes about 1.9x of that to the Po/Pb enrichment (corrected by D59) and about 3x to fleet mix (global fleet includes ESP-only and older plants against UK 1998). Li (S0980) flags that flue-gas methods under-count vapour-phase Po, so measured modern Po-210 values are lower bounds. Do not use S0981 as a stack benchmark ("emission" there is ash-borne inventory). Papastefanou's 99%-escape claim (S0241 section 4) is an unclosed mass balance and is excluded.
+
 Suggested wording of the claim: "Two independent estimates (UK NRPB 1998, S0205; India, S0972 and S0974) agree with the stream's world totals for Ra-226 in ash, Pb-210 and Ra-226 stack release and radon from burning to within a factor of 3; Po-210 stack release is 5.6x above the UK NRPB figure but within 1.5x of the Dutch value; mine radon has no independent estimate."
 
 Do not use as a "second independent estimate": UNSCEAR 1982/1988/1993/2000 values, anything quoted in S0001, and the TRS 419 coal composition table (Table VII is reused in UNSCEAR 2016 Table 25 per the registry notes for S0202). The RP 135 Table 7 values come from Leenhouts (1996) through UNSCEAR 2000, so flag them as "independent of Annex B 2016, not independent of the UNSCEAR family".
@@ -151,6 +172,12 @@ Do not use as a "second independent estimate": UNSCEAR 1982/1988/1993/2000 value
 | S0976 CCC/218 | compilation | independent | fleet snapshot only |
 | S0200 FS-163-97 | agency | independent | composition and radon statement only |
 | Mora 2009 (S0979) | primary, composition only | independent | no releases |
+| S0980 Li 2019 | review with measured flue-gas data (5 Chinese units) and compiled UK/US units | independent as a dataset; partly shared with NRPB (UK Environment Agency data) | Po-210 and Pb-210 stack; most 'measurements' are 1/4 detection-limit substitutions |
+| S0240 Tadmor 1986 | review; Table 8 modelled release rates | independent of Annex B 2016; same lineage as UNSCEAR 1982/1988 | per 1000 MWe, load factor not stated |
+| S0245 Zeevaert 2006 | primary (one plant, Ra-226 measured twice); Pb/Po assumed 4x Ra | independent for the measured Ra-226; Table 3 is a literature compilation | |
+| S0978 McBride 1978 | primary model (ORNL) plus FPC 1972 survey | independent | US only |
+| S0238 Eisenbud 1964 | primary | independent; origin of UNSCEAR 1982's 97.5% | single urban plant |
+| S0981 Mishra 2023 | secondary (generic literature concentrations) | independent | ash-borne inventory mislabelled as emission |
 
 ---
 

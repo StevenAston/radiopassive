@@ -13,7 +13,7 @@ Mapping to COAL_SPEC section 9
 (c) Conservation      TestConservation
 (d) Determinism       TestDeterminism (build twice, write_master, CLI)
 (e) Benchmarks        TestBenchmarks
-(f) Hand-computed     TestHandComputed2005 / TestCapCases1960
+(f) Hand-computed     TestHandComputed2005 / TestCapCasesPre1950
 (g) Fixture tests     TestMiniTree*
 (h) Pre-1950 file     TestPre1950
 plus TestRowConventions (section 3 and section 4/5/6 row shapes) and TestLog (section 8).
@@ -76,6 +76,7 @@ from coal_oracle import (
     Oracle,
     bound_min,
     cdiff,
+    cdiff_cause,
     diff,
     prod,
     scale,
@@ -587,7 +588,7 @@ class TestHandComputed2005:
         assert ret_row["residue_type"] == "coal_mine_water_sludge" and _blank(ret_row["route"])
         assert ids(ret_row["factor_ids"]) == [rel_id, ret_id], "release factor then retention factor"
         assert_bounds(ret_row, prod(released, ratio), label=f"POL {group} retained")
-        assert close(float(ret_row["value_central"]), float(rel_row["value_central"]) * 0.55 / 0.45, 1e-9)
+        assert close(float(ret_row["value_central"]), float(rel_row["value_central"]) * r.central / (1 - r.central), 1e-9)
         want = oracle.a_sources("coal_production_t", y, "POL") | oracle.sources_of(frel, fret)
         assert ids(ret_row["source_ids"]) == sorted(want)
 
@@ -731,43 +732,56 @@ class TestHandComputed2005:
 
 
 # --------------------------------------------------------------------------------------------
-# (f) cap cases, 1960 (D54)
+# (f) cap cases, 1938 (D54; re-anchored from 1960 by D59, when the 1950-69 base fractions fell below the cap)
 # --------------------------------------------------------------------------------------------
-class TestCapCases1960:
-    Y = 1960
+class TestCapCasesPre1950:
+    """Cap cases anchored on 1938. The premise tests derive the binding pattern from the oracle (factor file),
+    so a later factor revision fails them loudly instead of silently voiding the cap tests."""
+    Y = 1938
+    PARTIAL = "Ra226+"   # high bound capped, central not, under both F+B conventions
 
     def test_premise_holds_for_both_sum_conventions(self, oracle):
-        """Sanity of the hand-chosen cap case: Po-210 central and high are capped whichever way F+B is summed."""
+        """Po-210 low, central and high are capped whichever way F+B is summed; PARTIAL only at the high bound."""
         F, _ = oracle.F(self.Y, "Po210")
         for v in oracle.stack_variants(self.Y, "Po210"):
-            assert v.central > F.central and v.high > F.high
+            assert v.low > F.low and v.central > F.central and v.high > F.high, (
+                f"PREMISE BROKEN (factor file changed?): Po-210 {self.Y} uncapped stack {v} no longer exceeds F {F} at all "
+                f"bounds; re-anchor TestCapCasesPre1950.Y on a year where the cap binds")
+        Fp, _ = oracle.F(self.Y, self.PARTIAL)
+        for v in oracle.stack_variants(self.Y, self.PARTIAL):
+            assert v.high > Fp.high and v.central < Fp.central, (
+                f"PREMISE BROKEN (factor file changed?): {self.PARTIAL} {self.Y} should be capped at high only; stack {v}, F {Fp}")
 
-    def test_po210_stack_is_capped_at_fly_ash_activity(self, rows, oracle):
+    def test_po210_stack_is_capped_at_fly_ash_activity(self, pre_rows, oracle):
         y, g = self.Y, "Po210"
         F, _ = oracle.F(y, g)
-        row = rows.one(y, world=True, stage="combustion_power", group=g, tier="liberated", route="air_stack")
+        row = pre_rows.one(y, world=True, stage="combustion_power", group=g, tier="liberated", route="air_stack")
         assert close(float(row["value_central"]), F.central, 1e-9), "central must be capped to F"
         assert close(float(row["value_high"]), F.high, 1e-9), "high must be capped to F"
         assert 0 < float(row["value_low"]) <= F.low * (1 + 1e-9)
         assert not as_bool(row["below_detection"])
 
-    def test_po210_fly_residue_has_zero_central(self, rows, oracle):
+    def test_po210_fly_residue_has_zero_central(self, pre_rows, oracle):
         """With S = F at the centre the fly-ash residue F - S has central 0 (section 7: zero, not negative)."""
-        rs = rows.find(self.Y, world=True, stage="combustion_power", group="Po210", residue_type="coal_fly_ash")
+        rs = pre_rows.find(self.Y, world=True, stage="combustion_power", group="Po210", residue_type="coal_fly_ash")
+        assert rs, "no Po-210 fly-ash residue rows found"
         for r in rs:
             assert float(r["value_central"]) == 0, f"expected zero-central residue: {describe(r)}"
             if r["tier"] != "reisolated":
                 assert as_bool(r["below_detection"]) and float(r["value_low"]) == 0, describe(r)
+            # COAL_SPEC 12.16: S = F at all three bounds is a true zero, not a clipped difference
+            want = ["zero_central_factor", "exact_zero"] if r["tier"] == "reisolated" else ["exact_zero"]
+            assert causes_of(r) == want, f"{describe(r)}: notes {r['notes']!r}, expected causes {want}"
 
-    def test_pb210_high_bound_capped_centre_not(self, rows, oracle):
-        y, g = self.Y, "Pb210+"
+    def test_partial_cap_high_bound_capped_centre_not(self, pre_rows, oracle):
+        y, g = self.Y, self.PARTIAL
         F, _ = oracle.F(y, g)
         Bk, _ = oracle.Bk(y, g)
         for v in oracle.stack_variants(y, g):
             assert v.high > F.high and v.central < F.central, "premise of the partial-cap case"
         p = float(oracle.base_fraction(y)["value_central"])
         e = float(oracle.enrichment(y, g)["value_central"])
-        row = rows.one(y, world=True, stage="combustion_power", group=g, tier="liberated", route="air_stack")
+        row = pre_rows.one(y, world=True, stage="combustion_power", group=g, tier="liberated", route="air_stack")
         assert close(float(row["value_central"]), p * e * (F.central + Bk.central), 1e-9)
         assert close(float(row["value_high"]), F.high, 1e-9)
 
@@ -775,10 +789,10 @@ class TestCapCases1960:
         po = [e for e in log_entries(log, "cap_applied", year=self.Y, group="Po210")]
         text = " ".join(str(e.get("detail", "")).lower() for e in po)
         assert len(po) >= 2 and "central" in text and "high" in text, (
-            f"Po-210 1960: expected cap_applied entries for at least the central and high bounds, got {po}")
-        pb = log_entries(log, "cap_applied", year=self.Y, group="Pb210+")
+            f"Po-210 {self.Y}: expected cap_applied entries for at least the central and high bounds, got {po}")
+        pb = log_entries(log, "cap_applied", year=self.Y, group=self.PARTIAL)
         assert pb and "high" in " ".join(str(e.get("detail", "")).lower() for e in pb), (
-            f"Pb-210 1960: expected a cap_applied entry naming the high bound, got {pb}")
+            f"{self.PARTIAL} {self.Y}: expected a cap_applied entry naming the high bound, got {pb}")
         assert "central" not in " ".join(str(e.get("detail", "")).lower() for e in pb)
 
     def test_no_cap_logged_where_stack_is_far_below_fly_ash(self, log):
@@ -1117,8 +1131,9 @@ class TestMiniTreeResiduals:
 
     def test_nonpower_coal_value_in_mini_tree(self, coal_mod, tmp_path):
         root, _, rows, _ = _build_mini(coal_mod, tmp_path, mini_activity())
-        N, _ = Oracle(root).N(2005, "Ra226+")
-        assert close(N.central, (2.0e8 - 1.0e7 / 0.12) * 20000, 1e-12)
+        o = Oracle(root)
+        N, f = o.N(2005, "Ra226+")
+        assert close(N.central, (2.0e8 - 1.0e7 / 0.12) * float(f["value_central"]), 1e-12)
         total = sum(float(r["value_central"]) for r in rows.find(2005, stage="combustion_nonpower", group="Ra226+"))
         assert close(total, N.central, 1e-9)
 
@@ -1171,13 +1186,22 @@ class TestMiniTreeMissing:
 
 class TestMiniTreeCapAndShares:
     def test_cap_is_logged_and_applied(self, coal_mod, tmp_path):
-        root, _, rows, log = _build_mini(coal_mod, tmp_path, mini_activity())
+        Y = TestCapCasesPre1950.Y  # pre-1950: the cap binds at every bound for Po-210 (D59)
+        act = mini_activity() + [_act("coal_production_t", Y, "CHN", 1.0e8), _act("coal_production_t", Y, "POL", 5.0e7),
+                                 _act("coal_production_t", Y, "XWL", 2.0e8), _act("coal_consumption_t", Y, "XWL", 2.0e8),
+                                 _act("coal_ash_power_t", Y, "XWL", 1.0e7), _act("coal_fly_ash_t", Y, "XWL", 8.0e6),
+                                 _act("coal_burn_power_twh", Y, "XWL", 5.0e4)]
+        root, res, _, log = _build_mini(coal_mod, tmp_path, act)
+        pre = Rows(list(res.rows_pre1950))
         o = Oracle(root)
-        F, _ = o.F(1960, "Po210")
-        stack = rows.one(1960, world=True, stage="combustion_power", group="Po210", tier="liberated", route="air_stack")
+        F, _ = o.F(Y, "Po210")
+        for v in o.stack_variants(Y, "Po210"):
+            assert v.central > F.central and v.high > F.high, (
+                f"PREMISE BROKEN (factor file changed?): Po-210 {Y} mini-tree stack {v} not above F {F}; pick a year where the cap binds")
+        stack = pre.one(Y, world=True, stage="combustion_power", group="Po210", tier="liberated", route="air_stack")
         assert close(float(stack["value_central"]), F.central, 1e-9)
         assert close(float(stack["value_high"]), F.high, 1e-9)
-        entries = log_entries(log, "cap_applied", year=1960, group="Po210")
+        entries = log_entries(log, "cap_applied", year=Y, group="Po210")
         text = " ".join(str(e["detail"]).lower() for e in entries)
         assert len(entries) >= 2 and "central" in text and "high" in text, f"cap log: {entries}"
         assert not log_entries(log, "cap_applied", year=2005, group="Ra226+")
@@ -1239,7 +1263,7 @@ A18. 12.8 the CLI diff of the pre-1950 file is also expected to give a non-zero 
 from pipeline.lib import LibError
 from pipeline.lib.bounds import Bounds
 
-CAUSE_ORDER = ["zero_central_factor", "clipped_difference", "floor_dominance", "inherited_flag"]
+CAUSE_ORDER = ["zero_central_factor", "exact_zero", "clipped_difference", "floor_dominance", "inherited_flag"]  # 12.16
 CAUSE_RE = re.compile(r"; below_detection cause: ([a-z_]+(?:\+[a-z_]+)*)\s*$")
 BASIS_RE = re.compile(r"; driver basis: (interpolated|extrapolated)(?:\+(interpolated|extrapolated))?")
 RUN_RE = re.compile(r"^(\d{4})-(\d{4}) \((\d+) years?\)")
@@ -1431,6 +1455,102 @@ class TestV12ConventionsInMiniTree:
                      residue_type="coal_bottom_ash")
         assert float(r["value_low"]) > 0 and not as_bool(r["below_detection"])
         assert causes_of(r) is None and "below_detection cause" not in str(r["notes"])
+
+
+# --------------------------------------------------------------------------------------------
+# 12.16 exact_zero cause
+# --------------------------------------------------------------------------------------------
+def _is_zero_row(r: dict) -> bool:
+    return (float(r["value_low"]), float(r["value_central"]), float(r["value_high"])) == (0.0, 0.0, 0.0)
+
+
+class TestV12ExactZeroCause:
+    def test_cause_order_is_fixed_with_exact_zero_second(self):
+        assert CAUSE_ORDER == ["zero_central_factor", "exact_zero", "clipped_difference",
+                               "floor_dominance", "inherited_flag"]
+
+    # ---- helper level -------------------------------------------------------------------
+    def test_helper_equal_inputs_give_flagged_zero(self, fn):
+        r = fn(Bounds(8.0, 10.0, 12.0), Bounds(8.0, 10.0, 12.0))
+        assert (r.low, r.central, r.high) == (0.0, 0.0, 0.0), f"equal inputs must give (0,0,0); got {r}"
+        assert r.nd_floored is True, "an exact zero stays flagged (COAL_SPEC 12.16, D52 zero-central rule)"
+
+    # ---- real tree ----------------------------------------------------------------------
+    def test_real_tree_every_zero_fly_residue_row_is_exact_zero(self, rows, pre_rows, oracle):
+        allrows = rows.rows + pre_rows.rows
+        zero_rows = [r for r in allrows if r["stage"] == "combustion_power"
+                     and r["residue_type"] == "coal_fly_ash" and r["country"] in WORLD_CODES and _is_zero_row(r)]
+        assert zero_rows, "premise: the real tree has exactly-zero fly-ash residue rows (Po-210, Pb-210+, K-40 early years)"
+        bad = []
+        for r in zero_rows:
+            want = ["zero_central_factor", "exact_zero"] if r["tier"] == "reisolated" else ["exact_zero"]
+            if not as_bool(r["below_detection"]) or causes_of(r) != want:
+                bad.append((describe(r), r["below_detection"], causes_of(r)))
+        assert not bad, f"{len(bad)} zero fly residue rows with wrong flag/cause, e.g. {bad[:3]}"
+
+    def test_real_tree_exact_zero_set_matches_oracle(self, rows, pre_rows, oracle):
+        """The (year, group) pairs where F - S is an unclipped (0,0,0) are derived from the oracle."""
+        expected = set()
+        for y in sorted({int(r["year"]) for r in rows.rows + pre_rows.rows if r["stage"] == "combustion_power"}):
+            for g in ("Po210", "Pb210+", "K40"):
+                try:
+                    F, _ = oracle.F(y, g)
+                    S = oracle.stack(y, g)
+                except (KeyError, LookupError):
+                    continue
+                if cdiff_cause(F, S) == "exact_zero":
+                    expected.add((y, g))
+        assert expected, "oracle premise: some (year, group) has F - S = exactly zero"
+        got = {(int(r["year"]), r["group"]) for r in rows.rows + pre_rows.rows
+               if r["stage"] == "combustion_power" and r["residue_type"] == "coal_fly_ash"
+               and r["country"] in WORLD_CODES and r["tier"] == "impounded" and causes_of(r) == ["exact_zero"]}
+        assert expected <= got, f"oracle exact-zero (year, group) pairs not labelled exact_zero: {sorted(expected - got)[:8]}"
+        wrong = {k for k in got if k not in expected and k[1] in ("Po210", "Pb210+", "K40")}
+        assert not wrong, f"rows labelled exact_zero where the oracle sees no exact zero: {sorted(wrong)[:8]}"
+
+    def test_real_tree_no_zero_row_is_labelled_clipped_difference_when_unclipped(self, rows, pre_rows, oracle):
+        for r in rows.rows + pre_rows.rows:
+            if (r["stage"] == "combustion_power" and r["residue_type"] == "coal_fly_ash"
+                    and r["country"] in WORLD_CODES and _is_zero_row(r)):
+                assert "clipped_difference" not in (causes_of(r) or []), (
+                    f"{describe(r)}: unclipped exact zero wrongly labelled clipped_difference: {r['notes']!r}")
+
+    # ---- mini tree ----------------------------------------------------------------------
+    def test_mini_equal_total_and_fly_ash_gives_exact_zero_bottom_ash(self, coal_mod, tmp_path):
+        act = band(mini_activity(), "coal_ash_power_t", 2005, 7e6, 8e6, 9e6)
+        act = band(act, "coal_fly_ash_t", 2005, 7e6, 8e6, 9e6)
+        root, _, rows, _ = _build_mini(coal_mod, tmp_path, act)
+        o = Oracle(root)
+        _t, _f, bot = o.ash(2005)
+        assert (bot.low, bot.central, bot.high) == (0.0, 0.0, 0.0) and bot.nd, "oracle premise"
+        assert cdiff_cause(o.a("coal_ash_power_t", 2005, "XWL"), o.a("coal_fly_ash_t", 2005, "XWL")) == "exact_zero"
+        for tier, want in (("impounded", ["exact_zero"]), ("dispersed", ["exact_zero"]),
+                           ("reisolated", ["zero_central_factor", "exact_zero"])):
+            r = rows.one(2005, world=True, stage="combustion_power", group="Ra226+", tier=tier,
+                         residue_type="coal_bottom_ash")
+            assert _is_zero_row(r), f"{tier}: expected exact (0,0,0), got {describe(r)}"
+            assert as_bool(r["below_detection"]), f"{tier}: an exact zero must stay flagged"
+            assert causes_of(r) == want, f"{tier}: notes {r['notes']!r}"
+            assert str(r["notes"]).endswith("; below_detection cause: " + "+".join(want))
+
+    def test_mini_negative_central_difference_is_clipped_not_exact_zero(self, coal_mod, tmp_path):
+        """Total ash below fly ash everywhere: raw bounds are negative, clipped to (0,0,0): clipped_difference."""
+        act = band(mini_activity(), "coal_ash_power_t", 2005, 5e6, 6e6, 7e6)
+        act = band(act, "coal_fly_ash_t", 2005, 7e6, 8e6, 9e6)
+        root, _, rows, _ = _build_mini(coal_mod, tmp_path, act)
+        o = Oracle(root)
+        assert cdiff_cause(o.a("coal_ash_power_t", 2005, "XWL"), o.a("coal_fly_ash_t", 2005, "XWL")) == "clipped_difference"
+        r = rows.one(2005, world=True, stage="combustion_power", group="Ra226+", tier="impounded",
+                     residue_type="coal_bottom_ash")
+        assert _is_zero_row(r) and as_bool(r["below_detection"])
+        assert causes_of(r) == ["clipped_difference"], f"genuinely clipped difference: notes {r['notes']!r}"
+
+    def test_mini_exact_zero_only_on_fly_ash_residue_rows(self, mini_base):
+        """COAL_SPEC 12.16: in the baseline mini tree exact zeros arise only where the cap sets S = F."""
+        _, rows, _, _ = mini_base
+        bad = [r for r in rows.rows if "exact_zero" in (causes_of(r) or [])
+               and not (r["stage"] == "combustion_power" and r["residue_type"] == "coal_fly_ash")]
+        assert not bad, f"exact_zero outside the fly-ash residue rows: {bad[:2]}"
 
 
 # --------------------------------------------------------------------------------------------
