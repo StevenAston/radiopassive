@@ -91,12 +91,20 @@ def _driver_conversion(driver_unit: str, per_unit: str) -> float:
 
 
 def _parse_unit(unit: str) -> tuple[str, str | None]:
-    """Return (kind, per_unit): kind is 'Bq', 'Bq/a' or '1'."""
+    """Return (kind, per_unit): kind is 'Bq', 'Bq/a', 't' or '1'."""
     if not isinstance(unit, str):
         raise LibError(f"unit must be a string, got {unit!r}")
     unit = unit.strip()
     if unit == "1":
         return "1", None
+    if unit.startswith("t/"):
+        # One mass unit only (LIB_SPEC §9.3); a mass ratio is written as unit "1".
+        per = unit[len("t/") :]
+        if not per or per != per.strip() or any(c.isspace() for c in per):
+            raise LibError(f"unsupported factor unit {unit!r}")
+        if per == "t":
+            raise LibError(f"unsupported factor unit {unit!r}: write a mass ratio as '1'")
+        return "t", per
     if unit.startswith("Bq/a per "):
         return "Bq/a", unit[len("Bq/a per ") :].strip()
     if unit.startswith("Bq/"):
@@ -118,8 +126,8 @@ def result_unit(driver_unit: str, factor_unit: str) -> str:
 def apply(driver_value: Bounds, driver_unit: str, factor_row: Mapping[str, Any]) -> Bounds:
     """Multiply a driver by a factor (LIB_SPEC §3.2).
 
-    Factor units: ``Bq/<u>`` (result Bq), ``Bq/a per <u>`` (Bq/a), or ``1``
-    (result in the driver's unit). Only TWh <-> GWa is converted.
+    Factor units: ``Bq/<u>`` (result Bq), ``Bq/a per <u>`` (Bq/a),
+    ``t/<u>`` (result tonnes, LIB_SPEC §9), or ``1`` (result in the driver's unit). Only TWh <-> GWa is converted.
     """
     if not isinstance(driver_value, Bounds):
         raise LibError(f"driver value must be a Bounds, got {driver_value!r}")

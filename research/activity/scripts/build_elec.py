@@ -55,7 +55,8 @@ ig=irena('0','15')
 ratio=[eg['WORL'][y]/oth[y] for y in range(1980,1991)]
 k=sum(ratio)/len(ratio)
 print('geo/other_ren mean ratio 1980-90',k)
-world_ir={y:sum(ig[c].get(y,0) for c in ig)/1000 for y in range(2000,2026)}
+# a year with no country data at all is absent (not a 0 sum); IRENA 2025 was not yet published (fix 2026-10-27)
+world_ir={y:sum(ig[c][y] for c in ig if y in ig[c])/1000 for y in range(2000,2026) if any(y in ig[c] for c in ig)}
 for y in range(1900,2026):
     if y<1980:
         v=oth.get(y,0)*k
@@ -66,6 +67,7 @@ for y in range(1900,2026):
     elif y<2000:
         v=eg['WORL'][y]; O.add('elec_gen_geothermal',y,'XWL',v*0.95,v,v*1.05,'TWh','compiled','S0804','EIA International Energy Statistics, geothermal net generation, world; bands assumed +-5%.')
     else:
+        if y not in world_ir: continue
         v=world_ir[y]; O.add('elec_gen_geothermal',y,'XWL',v*0.97,v,v*1.03,'TWh','measured','S0810','IRENA electricity statistics 2026 H2, sum of countries; bands assumed +-3%.')
 for c in sorted(set(eg)|set(ig)):
     if c not in cc or c=='XWL': continue
@@ -86,4 +88,20 @@ for c in sorted(ip):
         v=ip[c].get(y)
         if v is None or v<=0: continue
         O.add('elec_gen_peat',y,c,v/1000*0.9,v/1000,v/1000*1.1,'TWh','measured','S0810','IRENA electricity statistics 2026 H2 peat generation; bands assumed +-10%.')
+# ---- 2025 carry-forward (fix 2026-10-27): every elec_gen_* series/country that ends in 2024 gets 2024 carried to 2025 (same rule as build_coal.py)
+import math
+def _num(r): return float(r[3]),float(r[4]),float(r[5])
+for ser in sorted({k[0] for k in O.rows}):
+    for c in sorted({k[2] for k in O.rows if k[0]==ser}):
+        if O.has(ser,2025,c) or not O.has(ser,2024,c): continue
+        r=O.rows[(ser,2024,c)]; lo,ce,hi=_num(r)
+        if lo==ce==hi==0:
+            O.add(ser,2025,c,0,0,0,r[6],'extrapolated',r[9],'Extrapolated: 2024 value (exactly zero in the source) carried forward to 2025; 2025 not yet published. Zero-width band: the value is exactly zero in the source.'); print('carry-forward',ser,c,'zero'); continue
+        tr=[abs(math.log(float(O.rows[(ser,y,c)][4])/float(O.rows[(ser,y-1,c)][4]))) for y in range(2015,2025) if O.has(ser,y,c) and O.has(ser,y-1,c) and float(O.rows[(ser,y,c)][4])>0 and float(O.rows[(ser,y-1,c)][4])>0]
+        if not tr or lo<=0 or hi<=ce: continue
+        st=max(tr)
+        up=math.sqrt(math.log(hi/ce)**2+st**2); dn=math.sqrt(math.log(ce/lo)**2+st**2)
+        O.add(ser,2025,c,ce*math.exp(-dn),ce,ce*math.exp(up),r[6],'extrapolated',r[9],
+          'Extrapolated: 2024 central value carried forward to 2025 (persistence); 2025 not yet published. s_trend = %.4f.||Carry-forward rule (analyst-assumed): central = 2024 central. Each side of the band is widened so that |ln(high/central)| = sqrt(s_stat^2 + s_trend^2) on the high side and |ln(central/low)| = sqrt(s_stat^2 + s_trend^2) on the low side, where s_stat is the same-side log half-width of the 2024 band and s_trend is the largest absolute year-on-year log change of the series central value over 2015-2024 (combined in quadrature).'%st)
+        print('carry-forward',ser,c,'s_trend=%.4f'%st)
 O.write()

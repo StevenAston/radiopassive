@@ -261,3 +261,14 @@ Added after the second independent check. These extend 8.6.
 6. **`Bounds`** rejects any `nd_floored` that is not a `bool` (including `None`, `"yes"`, `1`) with `LibError`.
 7. **`make_row` required string fields.** `stream`, `substream`, `stage`, `country`, `group`, `tier`, `unit`, `basis`, `quantity` must be `str`, and `embedded_fuel` must be `bool`; otherwise `LibError`. Explicit `None` for a required field raises `LibError`.
 8. **Documented, not enforced.** `write_master` does not check `below_detection => value_low == 0` for raw dicts (the validator rule R02 is the backstop; `make_row` does enforce it). A factor unit written `Bq/a` without "per" is read as Bq per driver unit `a`; write annual factors as `Bq/a per <driver_unit>`.
+
+## 9. v1.3 (2026-10-27, Steve approved): mass factors in `apply`
+
+Needed by Task 2.5 (geothermal scale per GW·a, wood fuel per m³) and likely by later streams.
+
+1. **New factor-unit form `t/<driver_unit>`** (tonnes per driver unit). `apply` returns the driver times the factor in **tonnes**, so `result_unit(driver_unit, "t/<u>")` is `"t"`. Example: driver 70 GWa, factor `t/GWa` 1/10/100 → result in t. Example: driver m³, factor `t/m3` → t.
+2. The same driver conversion as the Bq forms applies: only `TWh` ↔ `GWa` is converted automatically (so a `t/GWa` factor accepts a `TWh` driver and vice versa). Any other mismatch raises `LibError`.
+3. Parsing: the unit string, stripped, starting with `t/` followed by a non-empty driver unit. `t/` alone, `t` alone, `kg/<u>`, `Mt/<u>` and `t per <u>` are **unsupported** and raise `LibError` (one mass unit only, to keep units unambiguous).
+4. `master_unit("t", kind)` returns `"t"` unchanged (revised 2026-10-27 after test review: v1.2 passes every non-Bq unit through, and a special case for `t` would be inconsistent with `GWa`, `TWh` and `1`). Keeping masses out of master rows is the stream script's job, backstopped by the validator.
+5. Everything else in `apply` is unchanged: flags, `below_detection`, bounds arithmetic via `product`.
+6. Clarifications (test review): surrounding whitespace is stripped before parsing; whitespace after the slash (`t/ GWa`) is unsupported; `t/t` is unsupported (a mass ratio is written as unit `1`).

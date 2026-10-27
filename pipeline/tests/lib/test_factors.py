@@ -248,7 +248,7 @@ def test_apply_below_detection_uses_rows_own_values():
         ("Bq/GWa", "GWh"),   # only TWh<->GWa is convertible
         ("Bq/GWh", "TWh"),
         ("Bq", "t"),
-        ("t/GW", "GW"),
+        ("t/GW", "TWh"),     # v1.3: t/GW is a valid mass unit; only its driver mismatches
         ("Bq/a per t", "m3"),
     ],
 )

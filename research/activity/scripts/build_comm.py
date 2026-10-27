@@ -85,4 +85,8 @@ def seam(k,txt):
     r=O.rows[k]; r[10]=txt+' '+r[10]
 seam(('prod_tellurium',2023,'XWL'),'SEAM: +62% on 2022 (584 -> 944 t) is a USGS revision, not growth: the 2025 edition raised 2023 China output from 430 to 725 t; 2022 and earlier come from older editions and are probably understated.')
 seam(('prod_ree_oxide',2021,'XWL'),'SEAM: +19% on 2020 (243,000 -> 290,000 t) joins DS140 (to 2020) to OWID/MCS (from 2021). Minerals Yearbook 2022 gives 250,000 (2020) -> 290,000 (2021), +16%, so about 3 points of the jump is source revision and the rest real growth (Myanmar, Thailand, USA, China); consistent with MCS.')
+# ---- prod_peat world coverage break (fix 2026-10-27): values unchanged, note only
+_pk=('The world peat total falls from 170 Mt (1991) to 29 Mt (1992) because USGS DS140 stops reporting the USSR after 1991; this is a coverage break in the compilation, not a change in production. Do not read 1991 to 1992 as a decline. The series is not used as a driver by the other-energy stream.')
+for _y,_h in ((1991,'COVERAGE BREAK: last year with USSR in the DS140 world total; 1992 falls to 29 Mt from 170 Mt.'),(1992,'COVERAGE BREAK: world total falls 170 Mt to 29 Mt because the USSR is no longer reported (not a production change).')):
+    _r=O.rows[('prod_peat',_y,'XWL')]; _r[10]=_h+' '+_pk+' '+_r[10]
 O.write()
