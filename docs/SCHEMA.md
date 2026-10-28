@@ -1,6 +1,6 @@
 # Radiopassive — Data Schema (v2)
 
-> **Status:** SIGNED OFF by Steve, 2026-10-20; **v2.2 additions (2026-10-25, D36, D43–D48) approved by Steve.** **v2.3 additions (2026-10-26, D55–D57: per-group seepage table §4.12, pre-1950 stream files) approved by Steve 2026-10-26.** Task 0.2, revision v2.1 (re-review fixes) of v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
+> **Status:** SIGNED OFF by Steve, 2026-10-20; **v2.2 additions (2026-10-25, D36, D43–D48) approved by Steve.** **v2.3 additions (2026-10-26, D55–D57: per-group seepage table §4.12, pre-1950 stream files) approved by Steve 2026-10-26.** **v2.4 addition (2026-10-27, D63: `substream` column in factor files, §4.9) approved by Steve.** Task 0.2, revision v2.1 (re-review fixes) of v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
 
 ---
 
@@ -258,6 +258,7 @@ Every modelled master row cites the factor(s) it was computed from. The registry
 | `factor_id` | code | `<stream>:<4 digits>`, e.g. `coal:0012`; unique across all factor files |
 | `description` | string | What the factor is |
 | `stream`, `stage` | enum, code | Stage allowed for the stream |
+| `substream` | code | **v2.4 (D63).** Optional value (empty = not substream-specific); if given, must be in `vocab.json` → `substreams[<stream>]`. The column is required in the header of every factor file, directly after `stage`. |
 | `driver_series` | code | The activity series it multiplies, if any; must exist in `data/activity/` |
 | `group`, `tier`, `route`, `residue_type` | | Optional; as master where given |
 | `region` | code | In `countries.csv` (`XWL` allowed) |
@@ -523,7 +524,7 @@ Applied before schema validation, in every table:
 | `V15` scope | Only `flow` rows are barred; event transfers into `liberated` at routine stages are legitimate, and `opening_stock` never sits in a routine stage's Liberated tier in practice (not checked) |
 | An event row with `E01` | `E03` is skipped for that row (its inputs may be missing or invalid); `E02` still runs |
 | Flow-only groups (V09) | Every use not listed in §4.2 is `V09`, including `opening_stock`, `transfer_in` to a non-Liberated tier and `transfer_out` from a tier other than `sealed_in_core` |
-| T04 in the factor registry | Resolves `source_ids`, `region`, `group`, `residue_type`, `driver_series` and the stage for the stream (`tier` and `route` are enums, so `T01`) |
+| T04 in the factor registry | Resolves `source_ids`, `region`, `group`, `residue_type`, `driver_series` the stage for the stream and (v2.4) a non-empty `substream` for the stream (`tier` and `route` are enums, so `T01`) |
 | Countries | `valid_from > valid_to` is `T03`; countries have no `T04` |
 | Dose tokens | `F02` uses `vocab.forbidden_column_tokens`, `D01` uses `vocab.dose_tokens` (identical lists by default, kept separate so either can be tuned). Matching is whole-word on lower-cased text split on every non-alphanumeric character; `µ` and `μ` count as letters. `D01` is one issue per row, listing the offending column=value pairs |
 | `reference_bands` keys | Each named nuclide or group at most once per `quantity_class`, and the `*` default at most once per class |
@@ -572,4 +573,5 @@ The vocabularies for these (`views`, `runs`, `conventions`, `horizons_a`, the ti
 | 2026-10-20 | v2 behaviour details from the second spec-blind test pass (B1–B11); bound-token coupling is `R02` only; `E03` skipped after `E01`; commodity-stage product rule takes precedence. |
 | 2026-10-20 | **v2** after the independent schema review: master gains `product`, `residue_type`, `factor_ids`, `route`; routine vs event transfers; events gain `to_tiers` and activity bounds; `opening_stock` (D31); new tables `residue_types.csv`, `reference_bands.csv`, factor registry; JSON schemas and rule codes (`T01`–`T05`, `D01`) for every support table; `V10`–`V13`, `E03`, `G04`, `G05`; dose tokens checked in values; URL required for inaccessible sources; field-name mapping; provisional derived-output dimensions. |
 | 2026-10-25 | **v2.2** (Steve): tier `memo_biosphere` (D47; biosphere-cycling memo for wood ash and wood natural nuclides, D43/D44; allowed at `biomass_peat`; flow only; not in tier totals); route `air_rerelease` (D48; schema conditional ties it to `biomass_peat`/`Cs137+`/flow); substream `biomass_domestic` and residue type `biomass_domestic_ash` (D45); `dispersed` at `coal_mining` and `sealed_fuel_cycle` at `accident` (D36). |
+| 2026-10-27 | **v2.4** (Steve, D63): factor files gain a `substream` column after `stage` (§4.9); optional value, checked against `substreams[<stream>]`; `select` gains the `substream` match key (LIB_SPEC §10). |
 | 2026-10-26 | **v2.3** (Steve): new table `residue_seepage_by_group.csv` (§4.12, D56), with fallback to the residue-type triple; seepage triples filled for 15 residue types (D55); sources S0950–S0971 added; pre-1950 stream file convention `data/streams_pre1950/<stream>.csv` documented (§3, D57). |

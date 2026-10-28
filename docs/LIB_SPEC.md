@@ -272,3 +272,12 @@ Needed by Task 2.5 (geothermal scale per GW·a, wood fuel per m³) and likely by
 4. `master_unit("t", kind)` returns `"t"` unchanged (revised 2026-10-27 after test review: v1.2 passes every non-Bq unit through, and a special case for `t` would be inconsistent with `GWa`, `TWh` and `1`). Keeping masses out of master rows is the stream script's job, backstopped by the validator.
 5. Everything else in `apply` is unchanged: flags, `below_detection`, bounds arithmetic via `product`.
 6. Clarifications (test review): surrounding whitespace is stripped before parsing; whitespace after the slash (`t/ GWa`) is unsupported; `t/t` is unsupported (a mass ratio is written as unit `1`).
+
+## 10. v1.4 (2026-10-27, Steve approved): `substream` match key
+
+Needed by Task 2.3 (conventional / unconventional / oil_sands rows share every other key) and available to every stream.
+
+1. `select` accepts `substream` as a match key (added to the allowed set). Semantics are those of every other key: **exact equality** with the row's `substream` cell. A row with an empty `substream` matches only `substream=""` (or a call that does not pass `substream` at all). There is no wildcard.
+2. Precedence is unchanged: exact region beats `XWL`; ambiguity at the winning level raises `LibError`.
+3. `read_table` reads the factor-file `substream` column as a string (empty cell → `""`, never `None` or NaN), like `group`, `tier`, `route`, `residue_type`.
+4. Nothing else changes; a call that does not pass `substream` behaves exactly as in v1.3, whatever the rows hold.

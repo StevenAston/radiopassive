@@ -10,6 +10,7 @@
     "description",
     "stream",
     "stage",
+    "substream",
     "driver_series",
     "group",
     "tier",
@@ -47,6 +48,13 @@
     },
     "stage": {
       "type": "string",
+      "minLength": 1
+    },
+    "substream": {
+      "type": [
+        "string",
+        "null"
+      ],
       "minLength": 1
     },
     "driver_series": {

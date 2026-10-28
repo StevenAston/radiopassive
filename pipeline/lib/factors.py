@@ -19,6 +19,7 @@ MATCH_KEYS = frozenset(
     {
         "stream",
         "stage",
+        "substream",
         "group",
         "tier",
         "route",

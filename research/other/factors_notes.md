@@ -1,8 +1,10 @@
 # Other-energy factor registry: notes (Task 2.5, step 1)
 
-Written 2026-10-27. Output: `data/factors/other.csv` (70 rows, `other:0001`-`other:0070`). Rows by stage: `geothermal` 9, `biomass_peat` 61 (peat 38, wood and Cs-137 23), `hydro` 0, `construction` 0. By substream served: geothermal 9; biomass_peat only 18; biomass_domestic only 9 (other:0011, 0041-0043, 0049, 0051, 0068-0070); shared by both 34. New sources S1400-S1401 are in `research/other/sources_factors.csv` (`data/sources.csv` not edited). Generator: scratchpad script (not part of the repository; ask if you want it filed under `research/other/`). No pipeline code and no tests were written.
+Written 2026-10-27. Output: `data/factors/other.csv` (73 rows, `other:0001`-`other:0073`; 0071-0073 added by D61 on 2026-10-27). Rows by stage (as first written, 70 rows): `geothermal` 9, `biomass_peat` 61 (peat 38, wood and Cs-137 23); D61 adds two geothermal rows (0071, 0072) and one wood Cs-137 row (0073), `hydro` 0, `construction` 0. By substream served: geothermal 9; biomass_peat only 18; biomass_domestic only 9 (other:0011, 0041-0043, 0049, 0051, 0068-0070); shared by both 34. Sources S1400-S1401 are in `data/sources.csv`; the round-2 sources S1402-S1420 and corrections to S0505, S0508, S0509, S0513, S1401 were merged from `research/other/sources_round2.csv` on 2026-10-27 (D61). Generator: scratchpad script (not part of the repository; ask if you want it filed under `research/other/`). No pipeline code and no tests were written.
 
 Validator over the whole tree (`python -m pipeline.validate --root .`): **6 issues, all T04 "unresolved source" for S1400 (other:0004, other:0005) and S1401 (other:0044-0047)**, because `data/sources.csv` is not edited here. On a scratch copy of the tree with `research/other/sources_factors.csv` appended to `data/sources.csv`: `OK: no issues`. Merging the two source rows clears the six.
+
+**Revision D61/D62 (Steve, 2026-10-27): choices 1-9 of section 5 approved as recommended; round-2 geothermal proposals P1-P9 applied (section 1 table shows current values); residue epsilon/seepage for `peat_ash` and `geothermal_scale` written (section 6).** The validator statement above is the state at first writing; see the report of 2026-10-27 for the current state.
 
 ## Engine reading of the factors (my specification; the stream spec should confirm)
 
@@ -21,7 +23,7 @@ All activity values are HEAD-nuclide activity (METHODS 3.2, 4.1a, D24, D42); the
 
 | id | what | group / tier / route / residue | region | years | low / central / high | unit | basis | sources |
 |---|---|---|---|---|---|---|---|---|
-| other:0001 | geothermal: Rn-222 vented with non-condensable gas per GW a of geothermal electricity, default for all countries without own factor | Rn222+/liberated/air_vented_gas | XWL | 1900-2025 | 2e+13 / 1.5e+14 / 4e+14 | Bq/GWa | modelled | S0001;S0008;S0010;S0509;S0505 |
+| other:0001 | geothermal: Rn-222 vented with non-condensable gas per GW a of geothermal electricity, default for countries without own factor; applies to the flash/liquid-dominated rest of the world (D61 P1: central was 1.5e+14) | Rn222+/liberated/air_vented_gas | XWL | 1900-2025 | 2e+13 / **8e+13** / 4e+14 | Bq/GWa | modelled | S0001;S0008;S0010;S0509;S0505;S1402;S1413 |
 | other:0002 | geothermal: Rn-222 vented with non-condensable gas per GW a, Italy (Larderello and Tuscan vapour-dominated fields) | Rn222+/liberated/air_vented_gas | ITA | 1913-2025 | 1e+14 / 2.6e+14 / 4e+14 | Bq/GWa | compiled | S0001;S0008;S0509 |
 | other:0003 | geothermal: Rn-222 vented with non-condensable gas per GW a, United States (The Geysers value applied to US geothermal generation) | Rn222+/liberated/air_vented_gas | USA | 1960-2025 | 5e+12 / 3.85e+13 / 1.5e+14 | Bq/GWa | compiled | S0001;S0008;S0502 |
 | other:0004 | geothermal: Mass of scale and sludge generated per GW a of geothermal electricity, tonnes (documentation row: the stream script forms mass = GW a x this factor, then applies the Bq/t rows) | impounded/geothermal_scale | XWL | 1900-2025 | 1 / 250 / 6.1e+04 | t/GWa | modelled | S1400 |
@@ -88,11 +90,14 @@ All activity values are HEAD-nuclide activity (METHODS 3.2, 4.1a, D24, D42); the
 | other:0065 | biomass_peat+biomass_domestic: Fallout Cs-137 per tonne of dry fuelwood, BLR 1986-2000 | Cs137+ | BLR | 1986-2000 | 1e+03 / 1e+04 / 7.4e+05 | Bq/t | extrapolated | S0540;S0541;S0539 |
 | other:0066 | biomass_peat+biomass_domestic: Fallout Cs-137 per tonne of dry fuelwood, BLR 2001-2025 | Cs137+ | BLR | 2001-2025 | 600 / 6e+03 / 7.4e+05 | Bq/t | extrapolated | S0540;S0541;S0539 |
 | other:0067 | biomass_peat+biomass_domestic: Share of fuel Cs-137 leaving the stack from biomass or peat plants (power, heat, industrial boilers; after filters) | Cs137+/liberated/air_rerelease | XWL | 1950-2025 | 0.0005 / 0.005 / 0.05 | 1 | modelled | S0515;S0536;S0519;S0551 |
-| other:0068 | biomass_domestic: Share of fuel Cs-137 leaving as stove or chimney emission, household wood and peat | Cs137+/liberated/air_rerelease | XWL | 1950-2025 | 0.05 / 0.25 / 0.7 | 1 | modelled | S0515;S0531;S0564;S0551;S0549;S0536 |
+| other:0068 | biomass_domestic: Share of fuel Cs-137 leaving as stove or chimney emission, household wood and peat | Cs137+/liberated/air_rerelease | XWL | 1950-2025 | 0.05 / **0.19** / 0.7 | 1 | modelled | S0515;S0531;S0564;S0551;S0549;S0536;S0513 |
 | other:0069 | biomass_domestic: Share of wood Cs-137 released in charcoal kilns during carbonisation (1 minus retention in char) | Cs137+/liberated/air_rerelease | XWL | 1950-2025 | 0.02 / 0.25 / 0.35 | 1 | modelled | S0551;S0564 |
 | other:0070 | biomass_domestic: Share of charcoal Cs-137 leaving as stove emission when charcoal is burned | Cs137+/liberated/air_rerelease | XWL | 1950-2025 | 0.05 / 0.12 / 0.3 | 1 | modelled | S0564;S0560 |
+| other:0071 | geothermal: Rn-220 released per Rn-222 released with non-condensable gas (unit-1 ratio), all countries (NEW, D61 P5) | Rn220+/liberated/air_vented_gas | XWL | 1900-2025 | 0.005 / 0.05 / 0.35 | 1 | modelled | S0508;S1402;S0001 |
+| other:0072 | geothermal: Rn-222 vented with non-condensable gas per GW a, New Zealand (NEW, D61 P2) | Rn222+/liberated/air_vented_gas | NZL | 1958-2025 | 3e+13 / 8e+13 / 3e+14 | Bq/GWa | modelled | S1402;S1413;S0510;S0001 |
+| other:0073 | biomass_peat+biomass_domestic: Fallout Cs-137 per tonne of dry fuelwood, FIN 2001-2025 (NEW, D61 optional Finland row) | Cs137+ | FIN | 2001-2025 | 100 / 1.3e+04 / 9.7e+04 | Bq/t | compiled | S0513 |
 
-Descriptions begin with the substream label that the rows serve. `biomass_peat+biomass_domestic` rows are shared by both substreams; the script picks them with the selectors in the outline (section 7). All values are Bq per tonne of the stated basis (ash, dry wood, scale) unless the unit is `1`; sources for activity figures quote Bq/kg and were multiplied by 1000. Central values are published numbers where they exist, otherwise the geometric mean of the stated low and high (coal notes rule 6).
+Evidence text only (no value change, D61): other:0002 (P3), 0003 (P4), 0046 and 0047 (P9, Finland 1994 production mean 46 Bq/kg, not 16), 0067 (P8). Descriptions begin with the substream label that the rows serve. `biomass_peat+biomass_domestic` rows are shared by both substreams; the script picks them with the selectors in the outline (section 7). All values are Bq per tonne of the stated basis (ash, dry wood, scale) unless the unit is `1`; sources for activity figures quote Bq/kg and were multiplied by 1000. Central values are published numbers where they exist, otherwise the geometric mean of the stated low and high (coal notes rule 6).
 
 ## 2. Cross-checks and benchmark candidate list (done condition (e))
 
@@ -127,10 +132,10 @@ UNSCEAR's mass per GW a (5e9 kg) agrees with the spine within 1.5x. The U-238 pe
 
 | # | Quantity | Annex B / UNSCEAR value | Independent value | Years | Stream (central) | Note |
 |---|---|---|---|---|---|---|
-| B1 | Geothermal Rn-222 per GW a | 150 TBq (S0001, UNSCEAR 2016 para 158) | None for the world. For ITA only: 275 (UNSCEAR 1988 110 TBq/a at 400 MW), 270-340 (George 1980, 8 Ci/d, S0509, generation assumed), 300 (RSE 2013 model, S0509) | 2010, 2020 | 130, 135 | Annex B test passes (0.87, 0.90) but is circular; the independent test is ITA-only (ITA row 260) |
+| B1 | Geothermal Rn-222 per GW a | 150 TBq (S0001, UNSCEAR 2016 para 158) | None for the world. For ITA only: 275 (UNSCEAR 1988 110 TBq/a at 400 MW), 270-340 (George 1980, 8 Ci/d, S0509, generation assumed), 300 (RSE 2013 model, S0509) | 2010, 2020 | 130, 135 (before D61); about 83 after P1 (ratio 0.56 on 2020 weights) | Annex B test passes but is circular; the independent tests are ITA (row 260; S0509 257-286) and NZ flash (80, S1402, tag I) |
 | B2 | Peat U-238 in fuel per GW a(e) | 0.20 TBq (UNSCEAR 1988 para 213, S0008) | 0.055 (Finland peat mean 11 Bq/kg x 5e9 kg), 0.075 (Mustonen 15), 0.105 (Sweden median ash 420 / 20) via S0519 | 2000, 2010, 2020 | 0.147, 0.118, 0.139 | Passes both estimates within x3 (1.1-2.7x of the independent values) |
 | B3 | Dry peat per GW a(e) | 5e9 kg (S0008) | SSI 100 MW reference plant: 5.8 kWh/kg dry peat gives 1.51e9 kg per GW a thermal (S0519), i.e. 4.3-5.0e9 kg per GW a(e) at efficiency 0.30-0.35 (efficiency is my assumption) | 2000, 2010, 2020 | 7.3e9, 5.9e9, 7.0e9 | Stream 1.2-1.7x the independent value, 1.2-1.5x UNSCEAR; the UNSD tonnage includes CHP heat, which inflates the stream side |
-| B4 | Implied Cs-137 in wood ash (Bq/kg ash) | Excluded by UNSCEAR (para 191); no Annex B value | US 1990-92 mean 444 (range 2.9-780, S0520); Austria 2020-22 11.8-867 (S0530); Greece 2013 25-499 (S0531) | 1991, 2021 | World default 1986-2000 gives 112 (1991), 2001-2025 gives 75 (2021), at 1% ash yield and 75% retention | A factor-3 test on the US mean FAILS (4x low) by design: the world default is below NH mid-latitudes. Propose a range test (inside the measured range) instead; Steve to decide |
+| B4 | Implied Cs-137 in wood ash (Bq/kg ash) | Excluded by UNSCEAR (para 191); no Annex B value | US 1990-92 mean 444 (range 2.9-780, S0520); Austria 2020-22 11.8-867 (S0530); Greece 2013 25-499 (S0531) | 1991, 2021 | World default 1986-2000 gives 112 (1991), 2001-2025 gives 75 (2021), at 1% ash yield and 75% retention | A factor-3 test on the US mean FAILS (4x low) by design: the world default is below NH mid-latitudes. **APPROVED (D61, choice 9): B4 is a range test** (stream value inside the measured range). Further range points: Finland 2018 ash 310-1,940, Austria pellet ash 195-867, Belgian plant ash about 200 Bq/kg (S0513) |
 | B5 | Stove Cs-137 emission per kg wood | none | Thessaloniki winter 2013: 0.8-6.5 Bq/kg wood burned (S0531, air-derived) | 2013 | 0.25 Bq/kg (world default x f_v) | Greece has higher-Cs wood than the world default (beech 8-11 Bq/kg); consistent in order of magnitude only |
 | B6 | Wood K-40 in ash | none | US typical 2,960 Bq/kg ash (S0520) | any | 30 Bq/kg wood / 1% = 3,000 | Not independent: S0520 is one input to the 30 |
 
@@ -166,8 +171,8 @@ Consequences: the residue types `biomass_ash` and `biomass_domestic_ash` get no 
 
 | # | Item | Why no row (or weak row) | URL if inaccessible | Blocks the engine? |
 |---|---|---|---|---|
-| G1 | Rn-220 from geothermal gas | S0508 only says Rn-220 is present in all 23 NZ wells; no ratio. A vent-transit argument ($e^{-t/80\,\mathrm{s}}$ with a transit of minutes) says at most a few per cent of the Rn-222 flow reaches air, but it is inference. No row (a row needs a source) | S0508 https://link.springer.com/article/10.1007/BF02071237 | No; omits `Rn220+`, which METHODS 4.3 lists as a candidate |
-| G2 | Rn-222 vent rate outside Larderello and The Geysers | Only two vapour-dominated fields ever measured (George et al. 1980 not located). The world default is UNSCEAR's two-plant mean. Fluid data (S0502 Table 4) show flash fields (Wairakei 630 Bq/L) as high as The Geysers and hot-water/binary fluid ~600x lower | George 1980: not located | No; this is the stream's dominant number and the least supported |
+| G1 | Rn-220 from geothermal gas | **CLOSED by D61 (P5): other:0071** ratio row 0.005 / 0.05 / 0.35 from S0508 Table 1 (wellhead GM 0.34) and the decay-in-transit argument (transit time assumed). Original text: S0508 only said Rn-220 is present in all 23 NZ wells; no ratio. A vent-transit argument ($e^{-t/80\,\mathrm{s}}$ with a transit of minutes) says at most a few per cent of the Rn-222 flow reaches air, but it is inference. No row (a row needs a source) | S0508 https://link.springer.com/article/10.1007/BF02071237 | No; was omitted, now covered by other:0071 (stack ratio confidence low) |
+| G2 | Rn-222 vent rate outside Larderello and The Geysers (PARTLY ADDRESSED by D61: other:0001 central 80 TBq/(GW a) from an independent NZ estimate, plus other:0072; confidence low-medium; the 40x S0505 figure is a per-volume reservoir effect, not a per-GW a ratio) | Only two vapour-dominated fields ever measured (George et al. 1980 not located). The world default is UNSCEAR's two-plant mean. Fluid data (S0502 Table 4) show flash fields (Wairakei 630 Bq/L) as high as The Geysers and hot-water/binary fluid ~600x lower | George 1980: not located | No; this is the stream's dominant number and the least supported |
 | G3 | Geothermal scale mass per GW a | One hypothetical hypersaline plant (S1400); the low bound 1 t/(GW a) is my assumption | S1400 https://digital.library.unt.edu/ark:/67531/metadc786588/ | No (rows exist; centre is a geometric mean) |
 | G4 | Reinjected brine (tier `reisolated`, residue `geothermal_brine`) | No row. Salton Sea brine Ra-226 about 49-55 Bq/L (S1400 1,320 pCi/L; S0502 Table 3 55 Bq/L max) at 50 kg brine per kWh would give about 24 TBq per GW a for that one hypersaline field (my arithmetic), but all other fields lack both brine flow and Ra data, and reinjection returns the activity to its source formation | none | No |
 | G5 | Country geothermal generation before 1980 | `elec_gen_geothermal` has only XWL before 1980, so the ITA and USA rows (Larderello was most of world output in the 1950s) cannot apply; the XWL row is used instead | none | No |
@@ -190,6 +195,23 @@ Consequences: the residue types `biomass_ash` and `biomass_domestic_ash` get no 
 
 ## 5. Choices where Phase 1 was silent, for Steve (numbered)
 
+**APPROVED by Steve 2026-10-27 (D61), nine choices that move results (the others are unchanged and stay as recommended):**
+
+| # | Choice | Outcome | State in files |
+|---|---|---|---|
+| 1 | Geothermal radon structure | Approved as recommended: ITA 260 and USA 38.5 overrides with a world default | Already in file (other:0001-0003); world default centre now 8e13 (P1) |
+| 2 | Rn-220 from geothermal | Superseded by P5 | New row other:0071 |
+| 3 | Geothermal scale rows | Approved: keep | Already in file (other:0004-0009) |
+| 4 | Household Cs-137 stove share | Approved: centre 0.19 (geometric mean of bounds) | other:0068 central 0.25 -> 0.19 |
+| 5 | Wood natural nuclide set | Approved: memo extended to Ra-226 and Ra-228 (D44 extension) | Already in file (other:0055, 0056) |
+| 6 | Re-release rows | Approved: counted in the stream's Liberated tier, excluded from cross-stream sums | Documentation (section 3 table); no file change |
+| 7 | Household peat ash residue type | Approved: `peat_ash` | Already in file (other:0041, 0042) |
+| 8 | Cs-137 in wood | Approved: world default by era plus SWE/UKR/BLR rows | Already in file (other:0057-0066); optional FIN row added as other:0073 |
+| 9 | Benchmark B4 | Approved: range test | Documentation (section 2 B4) |
+
+(The table is numbered 1-9 as in Steve's approval. It maps to items 1, 2, 3, 8, 10, 7, 5, 12 and 13 of the original list below, in that order. Items 4, 6, 9, 11, 14-19 of the original list are unchanged and stay as recommended.)
+
+
 1. **Geothermal radon structure.** Recommended: ITA 260 and USA 38.5 override a world default of 150, bounds 20-400. Alternative A: uniform 150 (UNSCEAR as is; 2010 total 1,171 vs 1,015 TBq/a). Alternative B: a field-type model (vapour, flash, binary); not supported by any measurement outside two fields.
 2. **Rn-220 from geothermal.** Omit (gap G1), or add a placeholder row with a physical vent-transit bound. I omitted it because a row needs a source.
 3. **Geothermal scale rows.** Kept as five groups x one mass row, but the mass low (1 t/(GW a)) is an assumption and the mass is one hypothetical hypersaline plant. Alternative: declare the stage negligible under 10.3 (centre about 1e-6 of Rn-222; but 1.3% at the joint high), and drop the rows. D21 says processing residues count regardless, which is why I kept them.
@@ -197,12 +219,12 @@ Consequences: the residue types `biomass_ash` and `biomass_domestic_ash` get no 
 5. **Residue type for household peat ash.** `peat_ash` (mineral peat ash, its seepage already filled). The alternative `biomass_domestic_ash` was defined for household wood ash and charcoal ash, which are now memo, so it would stay empty.
 6. **Residue types `biomass_ash` and `biomass_domestic_ash`.** They receive no data rows under D43/D44. Keep them (harmless) or retire; ε and seepage for them are not needed.
 7. **Re-release rows (`air_rerelease`).** I count them in the Liberated tier of stream ⑤ and exclude them from cross-stream sums, reading D43/D48/SCHEMA 5.7 literally. Please confirm.
-8. **Household Cs-137 stack share.** Centre 0.25 (Phase 1 proposal 0.25-0.30). The geometric mean 0.19 is equally defensible. Bounds 0.05-0.70.
+8. **Household Cs-137 stack share. APPROVED D61: centre 0.19.** (Drafted as: centre 0.25 (Phase 1 proposal 0.25-0.30). The geometric mean 0.19 is equally defensible. Bounds 0.05-0.70.)
 9. **Plant Cs-137 stack share.** 5e-4 / 5e-3 / 5e-2; centre between the two methods (G9).
 10. **Wood natural nuclide set.** D44 names K-40, Pb-210, Po-210. I extended the memo to Ra-226 and Ra-228 on the same biosphere-cycling argument. Say if you want only the three.
 11. **Charcoal chain in biomass_domestic.** Kiln release and charcoal stove release use `air_rerelease`; natural nuclides are memo. Alternative: leave charcoal out until a radionuclide measurement exists.
 12. **Cs-137 in wood.** World default by four eras (anchored to US 1991 and Austria 2021) plus Sweden, Ukraine, Belarus rows. The BLR and UKR rows are extrapolations (the BLR high is the regulatory limit, 740 Bq/kg). Alternative: world default only.
-13. **Benchmark B4.** Replace the factor-3 test with a range test (choice for the verifier brief).
+13. **Benchmark B4. APPROVED D61:** replace the factor-3 test with a range test (for the verifier brief).
 14. **Peat analogues from coal.** Escaping fraction (1800-1989), group enrichment (11 rows) and household smoke fraction are borrowed from coal factors. No peat measurement exists.
 15. **Peat negligibility.** Counted peat is 0.02-0.07% of the stream at the centre in 1990-2020. I kept it modelled because D44 makes it a flow and the data exist; you may instead mark it negligible (shown, not modelled in detail).
 16. **Peat dry fraction 0.52** and **wood dry fraction 0.75** are derived from unit conversions, not measured (moisture bases are not stated by UNSD/FAO).
@@ -210,7 +232,7 @@ Consequences: the residue types `biomass_ash` and `biomass_domestic_ash` get no 
 18. **Peat before 1990** is absent (G6). Option: a USGS-based extension needs an energy-share factor with no source.
 19. **S0563 charcoal yield (0.19-0.31)** comes from the Task 1.6 verification and has not been re-read by anyone.
 
-## 6. Proposals for ε and seepage (notes only; `residue_types.csv` and `residue_seepage_by_group.csv` untouched)
+## 6. Proposals for ε and seepage (APPLIED to `residue_types.csv` for `peat_ash` and `geothermal_scale` by D62, approved by Steve 2026-10-27; `residue_seepage_by_group.csv` untouched)
 
 Meaning follows D60: Rn-222 ε is the emanation coefficient used as an upper bound of effective exhalation; Rn-220 ε is effective exhalation, $\epsilon_{220}=\mathrm{em}\times f$ with $f=(L/H)\tanh(H/L)$, L = 0.005 / 0.01 / 0.02 m, low = em_low x f(L_low, H_high), central = em_c x f(L_c, H_geomean), high = em_high x f(L_high, H_low).
 
@@ -218,7 +240,7 @@ Meaning follows D60: Rn-222 ε is the emanation coefficient used as an upper bou
 |---|---|---|---|---|---|
 | `peat_ash` | Yes (counted rows) | 0.005 / 0.03 / 0.15 | 6.7e-7 / 1.3e-5 / 5.0e-4 | already filled: 7e-7 / 6e-6 / 6e-5; K40 0.002 / 0.01 / 0.04 (per-group table) | Fly-ash analogue (coal_fly_ash): S0242, S0243, S0244. H = 4-15 m is the coal-ash range; no peat-ash landfill thickness is sourced (SSI gives a 75,000 t deposit, no depth). Low confidence |
 | `geothermal_scale` | Yes (counted rows, if choice 3 keeps them) | 0.02 / 0.05 / 0.25 | 1.7e-5 / 4.1e-4 / 8.0e-3 | 3e-9 / 3e-8 / 4e-6 | Rn-222: barite and injection-well pipe scale 0.020-0.063 (S0991), Sakoda mineral 0.03 (S0242); high 0.25 allows soil-like sludge. Replaces the Phase 1 placeholder 0.2 (0.05-0.35), which is not supported for scale. Rn-220: the coal_mine_water_sludge calculation (em 0.01 / 0.05 / 0.20, H 0.5-3 m), an assumption. Seepage: og_scale triple (barite scale, grade C). Iceland stores scale sealed on site (S0512), Italy under NORM rules (S0501), so seepage may be zero for some plants |
-| `geothermal_brine` | No (no rows, G4) | - | - | - | - |
+| `geothermal_brine` | No (no rows, G4); not changed | - | - | - | - |
 | `biomass_ash`, `biomass_domestic_ash` | No (no data rows, section 3) | - | - | biomass_ash already filled (K-40 soluble) | Memo series have no engine processing |
 
 ## 7. Proposed stream-script outline for `docs/OTHER_SPEC.md`

@@ -393,7 +393,8 @@ def _check_table(ctx: _Context, spec: _Spec, paths: list[Path],
 
 def _t04(ctx: _Context, name: str, index: int, record: dict, *,
          sources: bool = True, country: str | None = None, group: str | None = None,
-         residue: bool = False, driver: bool = False, stage: bool = False) -> None:
+         residue: bool = False, driver: bool = False, stage: bool = False,
+         substream: bool = False) -> None:
     """Shared reference-resolution checks for the support tables."""
     unresolved: list[str] = []
     if sources:
@@ -410,6 +411,9 @@ def _t04(ctx: _Context, name: str, index: int, record: dict, *,
     if stage and record.get("stream") in ctx.vocab["stages"] and record.get("stage") \
             and record["stage"] not in ctx.vocab["stages"][record["stream"]]:
         unresolved.append(f"stage {record['stage']!r} for stream {record['stream']!r}")
+    if substream and record.get("substream") and record.get("stream") in ctx.vocab["substreams"] \
+            and record["substream"] not in ctx.vocab["substreams"][record["stream"]]:
+        unresolved.append(f"substream {record['substream']!r} for stream {record['stream']!r}")
     if unresolved:
         ctx.add(name, index, "T04", "unresolved reference(s): " + ", ".join(unresolved))
 
@@ -507,8 +511,8 @@ def _check_activity(ctx: _Context, paths: list[Path]) -> None:
 
 
 def _check_factors(ctx: _Context, paths: list[Path]) -> None:
-    columns = ["factor_id", "description", "stream", "stage", "driver_series", "group",
-               "tier", "route", "residue_type", "region", "year_from", "year_to",
+    columns = ["factor_id", "description", "stream", "stage", "substream", "driver_series",
+               "group", "tier", "route", "residue_type", "region", "year_from", "year_to",
                "value_low", "value_central", "value_high", "unit", "below_detection",
                "basis", "source_ids", "notes"]
     spec = _Spec("factors", columns,
@@ -519,7 +523,8 @@ def _check_factors(ctx: _Context, paths: list[Path]) -> None:
                  bounds=_value_bounds(), year_window=("year_from", "year_to"))
     rows = _check_table(ctx, spec, paths,
                         lambda c, n, i, r: _t04(c, n, i, r, country="region", group="group",
-                                                residue=True, driver=True, stage=True))
+                                                residue=True, driver=True, stage=True,
+                                                substream=True))
     ctx.factor_ids.update(r["factor_id"] for _, _, r in rows if r.get("factor_id"))
 
 
