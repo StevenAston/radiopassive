@@ -123,7 +123,9 @@ anch={2007:20195,2012:21181,2017:24395}
 usoil=eia_geo('57','1','TBPD').get('USA',{})
 usoilE=oilE['USA']
 us_m3={y:v*1e6*BBL for y,v in anch.items()}
+USW={}; USVOL={}   # USA produced-water (lo,c,hi) and crude volume by year, reused for the world sum below
 for y,v in us_m3.items():
+    USW[y]=(v*0.9,v,v*1.1); USVOL[y]=oilvol('USA',y)
     O.add('produced_water_m3',y,'USA',v*0.9,v,v*1.1,'m3','compiled','S0311','Veil (2019, GWPC): US produced water 20,195 (2007), 21,181 (2012), 24,395 (2017) million bbl; x0.158987 m3/bbl. Bands assumed +-10% (state-reported data, mixed completeness).')
 # US WOR (water per volume oil) anchors computed on crude production
 wor={y:us_m3[y]/oilvol('USA',y) for y in anch}; print('US water/oil volume',wor)
@@ -139,16 +141,31 @@ for y in range(1950,2026):
     if y in anch: continue
     vol=oilvol('USA',y) if y>=1980 else oilE['USA'].get(y,0)/kfac(oilE,'USA',range(1980,1990),oilvol)
     if not vol: continue
-    c=vol*wor_us(y)
+    c=vol*wor_us(y); USW[y]=(c*0.5,c,c*1.5); USVOL[y]=vol
     O.add('produced_water_m3',y,'USA',c*0.5,c,c*1.5,'m3','modelled','S0311;S0804;S0806','Modelled: US crude oil volume x water/oil volume ratio. Ratio anchored to Veil (S0311) volumes in 2007, 2012, 2017 (interpolated between; held at the 2017 value after); before 2007 assumed to fall linearly to half the 2007 value in 1950 (older fields, lower water cut; analyst assumption, see 1.4 availability.csv). Bands +-50% (assumed). Gas-well water is implicitly included in the ratio.')
-# world: oil volume x global WOR (central 3, S0332/S0333 advocacy anchors "above 3 and rising"); earlier lower
+# world: 2010-2025 = world crude volume x global WOR 3.0 (S0332/S0333 advocacy anchors "above 3 and rising").
+# Before 2010 the world is built as USA + rest of world (ROW) so that world >= USA at every bound (rule: XWL = USA + ROW, ROW >= 0).
+# ROW = (world crude volume - US crude volume) x w_row(y); w_row rises linearly from 1.0 in 1950 to the 2010 value that makes the
+# sum meet 3.0 x world volume in 2010 (continuity with the unchanged 2010-2025 branch). Fix of 27 Oct 2026: the earlier version used a single world ratio rising
+# from 1.0 in 1950, which put XWL (5.8e8 m3 in 1950) below the USA series (1.5e9 m3) until about 1985.
+VW={y:(oilvol('XWL',y) if y>=1980 else oilE['XWL'].get(y,0)/kW_o) for y in range(1950,2026)}
+W2010=3.0*VW[2010]; ROW2010=W2010-USW[2010][1]; VROW2010=VW[2010]-USVOL[2010]
+assert ROW2010>0 and VROW2010>0
+WROW2010=ROW2010/VROW2010; print('ROW water/oil ratio 2010',WROW2010,'US',USW[2010][1]/USVOL[2010])
 for y in range(1950,2026):
-    vol=oilvol('XWL',y) if y>=1980 else oilE['XWL'].get(y,0)/kW_o
+    vol=VW[y]
     if not vol: continue
-    if y>=2010: w=3.0
-    else: w=1.0+2.0*(y-1950)/60
-    c=vol*w
-    O.add('produced_water_m3',y,'XWL',c*0.6,c,c*1.5,'m3','modelled','S0332;S0333;S0314;S0804;S0806','Modelled: world crude oil volume x global water/oil volume ratio. Ratio 3.0 from 2010 (central; Texas Living Waters/EDF 2025 and Khatib give "above 3 and rising", advocacy-grade anchors, S0332/S0333), assumed to rise linearly from 1.0 in 1950. IOGP member data (814 Mt discharged + 1,107 Mt re-injected, 2018, S0314) are a partial check only. Bands -40%/+50% (assumed). No peer-reviewed global time series found.')
+    if y>=2010:
+        c=vol*3.0; lo=c*0.6; hi=c*1.5
+        assert lo>=USW[y][0] and c>=USW[y][1],y
+        O.add('produced_water_m3',y,'XWL',lo,c,hi,'m3','modelled','S0332;S0333;S0314;S0804;S0806','Modelled: world crude oil volume x global water/oil volume ratio. Ratio 3.0 from 2010 (central; Texas Living Waters/EDF 2025 and Khatib give "above 3 and rising", advocacy-grade anchors, S0332/S0333). IOGP member data (814 Mt discharged + 1,107 Mt re-injected, 2018, S0314) are a partial check only. Bands -40%/+50% (assumed). No peer-reviewed global time series found.')
+    else:
+        vrow=max(vol-USVOL[y],0.0)
+        w=1.0+(WROW2010-1.0)*(y-1950)/60
+        row=vrow*w; u=USW[y]
+        c=u[1]+row; lo=u[0]+row*0.6; hi=u[2]+row*1.5
+        assert lo>=u[0] and c>=u[1] and hi>=u[2]
+        O.add('produced_water_m3',y,'XWL',lo,c,hi,'m3','modelled','S0332;S0333;S0314;S0311;S0804;S0806','Modelled before 2010 as USA + rest of world (rule: world >= USA at every bound, so rest-of-world = XWL - USA >= 0). Rest of world = (world crude volume - US crude volume) x water/oil ratio rising linearly from 1.0 in 1950 to %.2f in 2010, the value that joins the 3.0 x world volume anchor of 2010 (S0332/S0333, advocacy-grade). USA term is the USA series of this file. Bounds: USA bounds plus rest of world -40%%/+50%% (assumed, summed linearly, i.e. fully correlated). No peer-reviewed global time series found.'%WROW2010)
 # unconventional share US: single anchor
 O.add('produced_water_unconv_share',2017,'USA',0.10,0.16,0.22,'1','modelled','S0311;S0315','Unconventional (shale/tight) share of US produced water in 2017, about 16% (Task 1.4 inference from Scanlon et al. 2020 and Veil 2019, mixed sources, S0315/S0311); bounds assumed 10-22%. Other years not obtained: see notes.')
 O.write()

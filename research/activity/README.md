@@ -29,8 +29,13 @@ Builders in `scripts/` write the eleven `data/activity/*.csv` files plus `source
 | build_bio | biomass | fao/x/Forestry_E_All_Data_(Normalized).csv, un/undata.csv |
 | build_peat | peat | un/undata.csv |
 | make_sources, make_sources2 | sources_task19.csv | DS140 workbooks (mirror) for the compiler lines |
+| build_nuc2 | nuclear_cycle | `task2x_data.py` (hand-transcribed UNSCEAR 2000 Table 40, IAEA-TECDOC-1105 annexes, IPFM chart readings) |
+| build_og2 | oil_gas_drivers | `raw/task2x/` (made by `fetch_task2x.py`: EIA MER, StatCan, AER ST39/ST98, GGFR, OWID), eia_annual.json, gas-production-by-country.csv |
+| make_sources_task2x | sources_task2x.csv (S1600-S1631) | none |
 
 Helpers: `lib.py` (Out class, paths, note registry), `common.py`, `ds140.py` (DS140 CSV reader), `ds140_comm.py`, `ree_myb.py` (Minerals Yearbook rare-earth tables), `eia_extract.py` (INTL.txt to eia_annual.json), `irena_fetch.py`, `fetch_minerals.py`, `rds2_parse.py`.
+
+Task 2.x: run `python3 research/activity/scripts/fetch_task2x.py` once (add `--cache DIR` to reuse downloads), then `run_all.py` as above; see `notes.md` section 9. `build_og.py` also carries the produced-water world fix.
 
 ## Raw inputs
 
