@@ -8,7 +8,7 @@ The mirror is only needed by build_comm, build_prices and make_sources2.
 """
 import subprocess,sys,os
 HERE=os.path.dirname(os.path.abspath(__file__))
-ORDER=['build_elec','build_coal','build_og','build_u','build_nuc','build_cap','build_comm','build_prices','build_bio','build_peat','build_nuc2','build_og2','make_sources','make_sources2','make_sources_task2x']
+ORDER=['build_elec','build_coal','build_og','build_u','build_nuc','build_cap','build_comm','build_prices','build_bio','build_peat','build_nuc2','build_og2','make_sources','make_sources2','make_sources_task2x','make_sources_task2y']
 for b in ORDER:
     print('==',b,flush=True)
     r=subprocess.run([sys.executable,'-I',os.path.join(HERE,b+'.py')]+sys.argv[1:],capture_output=True,text=True)

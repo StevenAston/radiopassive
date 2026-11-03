@@ -32,6 +32,7 @@ Builders in `scripts/` write the eleven `data/activity/*.csv` files plus `source
 | build_nuc2 | nuclear_cycle | `task2x_data.py` (hand-transcribed UNSCEAR 2000 Table 40, IAEA-TECDOC-1105 annexes, IPFM chart readings) |
 | build_og2 | oil_gas_drivers | `raw/task2x/` (made by `fetch_task2x.py`: EIA MER, StatCan, AER ST39/ST98, GGFR, OWID), eia_annual.json, gas-production-by-country.csv |
 | make_sources_task2x | sources_task2x.csv (S1600-S1631) | none |
+| make_sources_task2y | sources_task2y.csv (S1700-S1704, B205 throughput sources) | none |
 
 Helpers: `lib.py` (Out class, paths, note registry), `common.py`, `ds140.py` (DS140 CSV reader), `ds140_comm.py`, `ree_myb.py` (Minerals Yearbook rare-earth tables), `eia_extract.py` (INTL.txt to eia_annual.json), `irena_fetch.py`, `fetch_minerals.py`, `rds2_parse.py`.
 

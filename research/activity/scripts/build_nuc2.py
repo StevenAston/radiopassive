@@ -7,6 +7,7 @@ import os,sys,math; sys.path.insert(0,os.path.dirname(os.path.abspath(__file__))
 from lib import *
 from common import countries
 import task2x_data as D
+import task2y_data as Y
 O=Out('nuclear_cycle'); CTY=countries()
 for c in ('BEL','CHE','DEU','ITA','JPN','NLD','NZL','SWE','FRA','GBR','USA','XWL'): assert c in CTY,c
 RANK={'compiled':0,'interpolated':1,'modelled':2,'extrapolated':3}
@@ -92,6 +93,30 @@ for y in range(1994,2019):
     if t<=0: continue
     ce=t*0.030; rr=rss([0.25,0.25])
     radd('GBR',y,ce,rr,rr,'modelled','THORP')
+# ---- Sellafield B205 (Magnox reprocessing plant), civil from calendar 1995 only (D64: military feed ended 1995)
+FYB={}    # FY label -> (tHM, lo dev frac, hi dev frac, kind)
+for y,v in Y.IPFM_FY.items(): FYB[y]=(v,0.10,0.10,'chart')
+for y,v in Y.MOP9_FY.items(): FYB[y]=(v,0.0 if y in Y.MOP9_PRINTED else 0.10,0.0 if y in Y.MOP9_PRINTED else 0.10,'printed' if y in Y.MOP9_PRINTED else 'chart')
+FYB[2013]=(Y.FY2013,0.10,0.10,'derived'); FYB[2014]=(Y.FY2014,0.03,0.03,'printed')
+FYB[2017]=(Y.FY2017,0.0,0.0,'printed'); FYB[2019]=(Y.FY2019,0.0,0.0,'printed')
+RES=Y.REMAINING_APR2012-sum(FYB[y][0] for y in (2013,2014,2017,2019))      # tU left for the undocumented periods
+GAPS=(2015,2016,2018,2020,2021,2022)
+UB=RES/(len(GAPS)+Y.STUB_2022_FRAC)
+for y in GAPS: FYB[y]=(UB,0.30,0.30,'spread')
+FYB[1996]=(FYB[1997][0],0.50,1.00,'carried'); FYB[1995]=(FYB[1997][0],0.50,1.00,'carried')
+STUB=UB*Y.STUB_2022_FRAC
+GB=Y.ETA_MAGNOX*Y.BURNUP_MAGNOX/365.25     # GW a per tHM
+def fy(y): return FYB[y]
+for y in range(1995,2023):
+    comps=[(0.25,fy(y)),(0.75,fy(y+1))] if y<2022 else [(0.25,fy(y))]
+    t=sum(w*f[0] for w,f in comps); lo=rss([w*f[0]*f[1] for w,f in comps]); hi=rss([w*f[0]*f[2] for w,f in comps])
+    if y==2022: t+=STUB; lo=rss([lo,STUB*0.30]); hi=rss([hi,STUB*0.30])
+    kinds={f[3] for w,f in comps}|({'spread'} if y==2022 else set())
+    bas='extrapolated' if 'carried' in kinds else ('interpolated' if ('spread' in kinds and not (kinds&{'chart','printed','derived'})) else 'modelled')
+    ce=t*GB; rl=rss([lo/t,0.20]); rh=rss([hi/t,0.20])
+    radd('GBR',y,ce,rl,rh,bas,'B205 Magnox')
+print('B205 tHM cal-year',{y:round(sum(x[0] for x in rep[('GBR',y)] if x[4]=='B205 Magnox')/GB) for y in (1995,1996,2000,2005,2010,2015,2020,2022)},'residual',round(RES,1),'unit',round(UB,1))
+print('B205 cumulative 1995-2022 tHM',round(sum(x[0] for k,l in rep.items() if k[0]=='GBR' for x in l if x[4]=='B205 Magnox')/GB))
 # ---- Japan
 for y,v in D.TOKAI_UNSCEAR.items(): radd('JPN',y,v,0.15,0.15,'compiled','Tokai')
 for y,v in {1998:0.0,1999:0.0,2000:0.5,2001:0.5,2002:0.5,2003:0.5,2004:0.5,2005:0.5,2006:0.25}.items():
@@ -101,15 +126,23 @@ for y,t in {2006:110.0,2007:200.0,2008:120.0}.items(): radd('JPN',y,t*gwa_per_t(
 for y in range(1971,1991): radd('DEU',y,200.0/20*gwa_per_t(25.0),0.8,1.0,'interpolated','WAK Karlsruhe')
 for y in range(1966,1975): radd('BEL',y,181.5/9*gwa_per_t(8.0,0.30),0.7,1.0,'interpolated','Eurochemic Mol')
 # ---- emit
+UB_RES=RES; UB_STUB=STUB; B205_TOT=sum(x[0] for k,l in rep.items() if k[0]=='GBR' for x in l if x[4]=='B205 Magnox')/GB
 NOTE_REP={
  'FRA':("La Hague (UP2/UP3), civil. 1971-97 UNSCEAR 2000 Table 40; 1966-70 extrapolated; 1998-2025 tHM x 0.33 x burnup/365.25.||"
         "1971-1997: UNSCEAR 2000 Annex C Table 40 'fuel reprocessed' (GW a), which includes the UNGG fuel of EDF reactors at UP2 (Orano: about 5,000 t, 1966-87). 1997 is UNSCEAR's own estimate from the normalised Kr-85 release. "
         "1966-70: no GW a published; 0.9 GW a/a assumed from the 1971 UNSCEAR value (UNGG at UP2). 1998-2006: LWR tHM from the IPFM RR4 Figure 6 bars (pixel-read); 2007-21: the Orano cumulative 41,236 tHM (end 2024) less the chart total 22,584, 2022 (925), 2023 (882, from the cumulative) and 2024 (871), spread evenly (%.0f tHM/a); "
         "2025 = 2024. GW a = tHM x 0.33 x B/365.25 with average discharge burnup B rising linearly from 33 GWd/t (1998) to 45 (2010) and 47 (2025) (analyst assumption; the implied value for 1995-97, 28-33 GWd/t, is consistent with UNSCEAR). Foreign fuel is included (France is the site country)."%mid),
- 'GBR':("Sellafield THORP only (1994-2018, civil). B205 Magnox excluded (D16).||"
+ 'GBR':("Sellafield THORP (1994-2018) and, from 1995, the B205 Magnox plant (to July 2022), civil.||"
         "THORP throughput: IPFM RR5 Figure 6 bars (financial years ending 31 March, read by eye), calendar year = 0.75 x FY(y+1) + 0.25 x FY(y); FY1995-96 = 240 tHM split 40/200 so that the first ten years total 5,045 tHM (IPFM blog 2018); "
         "FY2009-2019 spread evenly (%.0f tHM per full year) so that the lifetime total is 9,331 tHM (Sellafield Ltd/NDA, 14 Nov 2018). GW a = tHM x 0.030 (AGR about 24 GWd/t at 41%% efficiency and LWR 33-45 GWd/t at 33%%, roughly half each; analyst assumption). "
-        "Not entered: Sellafield B205 (Magnox, 1964-2022, about 54,920 tHM, mixed civil and military feed, annual civil share undocumented)."%U),
+        "B205 (Magnox reprocessing plant), counted as civil from calendar 1995 only (D64: the military feed from Calder Hall and Chapelcross ended with the 1995 government decision; before 1995 the civil share is undocumented and B205 is excluded; "
+        "from 1995 the whole throughput is treated as civil, a limit because Magnox fuel from Calder Hall and Chapelcross, where still reprocessed, was military). Throughput in tHM by financial year (ending 31 March; same calendar conversion as THORP): "
+        "FY1997-2000 IPFM RR5 Figure 4, S0130 (604, 523, 467, 503; bar tops measured, about +-10 t); FY2001-2012 NDA MOP 9 (2012) Figure 4.1, S1700 (chart readings; FY2011 = 233 and FY2012 = 607 printed); "
+        "FY2013 = 261 by difference (CORE briefing 04/14, S1701: 1,338 t over 2011/12-2013/14, less 607 and 470); FY2014 = 470 (Roche 2015, S1702); FY2017 = 466 (Sellafield Ltd Annual Review 2016/17, S1703); FY2019 = 341.5 (Annual Review 2018/19, S1704). "
+        "FY2015, FY2016, FY2018 and FY2020-22 have no annual figure found: they share equally the %.0f tU left of the 3,800 tU still to reprocess in April 2012 (MOP 9) after the documented years, %.0f tHM per full year, the last period being the stub April-17 July 2022 (3.5 months, last feed, IPFM blog 2022) at %.0f tHM; band +-30%%. "
+        "FY1995 and FY1996 have no annual figure found and carry FY1997 (604 tHM) with a band of -50%% to +100%% (basis extrapolated; IPFM RR5 says early-year throughput regularly exceeded 1,000 tHM/a and fell in the mid-1990s). "
+        "GW a = tHM x 0.27 x 5 GWd/tHM / 365.25 = 0.0037 GW a per tHM (Magnox burnup about 5 GWd/tHM, thermal efficiency 0.27 as in the spent-fuel model of build_nuc.py; both assumed; conversion band +-20%%). "
+        "Cross-check: the annual values sum to %.0f tHM over 1995-2022 (calendar years), against the 54,920 tHM lifetime total of the plant (IPFM blog 2022); the pre-1995 remainder is not reconstructed."%(U,UB_RES,UB,UB_STUB,B205_TOT)),
  'JPN':("Tokai 1977-97 UNSCEAR 2000 Table 40; Tokai 1998-2006 and Rokkasho active tests 2006-08 modelled.||"
         "Tokai: UNSCEAR Table 40 GW a to 1997; after the 1997 fire campaign years are unresolved (JAEA gives 1,052 tHM cumulative to March 2006 with no years), so 0.5 GW a/a in 2000-05 and 0.25 in 2006 are assumed with a band of 0 to 3 times the central value. "
         "Rokkasho active tests: CNIC planned 430 tHM (about 210 PWR, 220 BWR) over 2006-08, allocated 110/200/120 tHM at 37 GWd/t average burnup (low-burnup steps first); the actual quantities are not published in the sources read (TEPCO page: 156 tU of its own fuel)."),
@@ -123,17 +156,20 @@ for c in cs:
         v=rep.get((c,y),[])
         ce=sum(x[0] for x in v); lo=rss([x[1] for x in v]); hi=rss([x[2] for x in v])
         bas=max((x[3] for x in v),key=lambda b:RANK[b]) if v else 'interpolated'
-        src={'FRA':'S0004;S0131;S1601;S1600','GBR':'S0130;S1602;S1603','JPN':'S0004;S1604;S1605;S1606','DEU':'S1608','BEL':'S1607'}[c]
-        nt=NOTE_REP[c] if y==min(ys) else {'FRA':'La Hague, civil (see the first row of the series for the method).','GBR':'Sellafield THORP only (see the first row for the method).','JPN':'Tokai and Rokkasho (see the first row for the method).','DEU':'WAK Karlsruhe (see the first row).','BEL':'Eurochemic (see the first row).'}[c]
+        src={'FRA':'S0004;S0131;S1601;S1600','GBR':('S0130;S1602;S1603;S1609;S1700;S1701;S1702;S1703;S1704' if y>=1994 else 'S0130;S1602;S1603'),'JPN':'S0004;S1604;S1605;S1606','DEU':'S1608','BEL':'S1607'}[c]
+        nt=NOTE_REP[c] if y==min(ys) else {'FRA':'La Hague, civil (see the first row of the series for the method).','GBR':('Sellafield THORP and B205 Magnox (see the first row for the method).' if 1995<=y<=2018 else 'Sellafield B205 Magnox only; THORP closed in 2018 (see the first row for the method).' if y>2018 else 'Sellafield THORP only; B205 not counted before 1995 (see the first row).'),'JPN':'Tokai and Rokkasho (see the first row for the method).','DEU':'WAK Karlsruhe (see the first row).','BEL':'Eurochemic (see the first row).'}[c]
         if not v: nt='No reprocessing campaign assumed in this year of the site operating period.'
         O.add('nuc_reprocessed_gwa',y,c,ce-lo,ce,ce+hi,'GWa',bas,src,nt)
+_old='Sellafield B205 Magnox plant (1964-2022, about 54,920 tHM; military campaigns for Calder Hall/Chapelcross fuel ended after 1995)'
+assert _old in D.EXCLUDED_NOTE
+EXCL=D.EXCLUDED_NOTE.replace(_old,'Sellafield B205 Magnox plant before 1995 (1964-94, military and civil feed mixed with an undocumented split; D64 counts B205 as civil from 1995, when the military campaigns ended, and it is in the GBR rows from then)')
 NOTE_W=("Civil spent fuel reprocessed, GW a of electricity; sum of the country rows; dual-use sites excluded (D16).||"
- "Sum of the country rows, errors added in quadrature. Countries: France (La Hague), United Kingdom (THORP), Japan (Tokai, Rokkasho), Germany (WAK), Belgium (Eurochemic). "+D.EXCLUDED_NOTE+" "
+ "Sum of the country rows, errors added in quadrature. Countries: France (La Hague), United Kingdom (THORP and, from 1995, B205 Magnox), Japan (Tokai, Rokkasho), Germany (WAK), Belgium (Eurochemic). "+EXCL+" "
  "Consequence: before 1994 the series is far below the UNSCEAR 2000 world totals (Table 43: 2.3 GW a before 1970, 7.0 in 1970-74, 22.2 in 1975-79, 36.3, 62.5, 130, 160 in the later periods), which are dominated by Magnox and by the excluded sites. "
  "Cross-check 1998-2002 mean, this series %.1f GW a/a against the implied 62.6 GW a/a (UNSCEAR 2008 Table 20, all plants incl. the excluded ones).")
 chk=[sum(x[0] for k,l in rep.items() if k[1]==y for x in l) for y in range(1998,2003)]
 CHK=sum(chk)/5
-src_all='S0004;S0003;S0130;S0131;S0132;S1600;S1601;S1602;S1603;S1604;S1605;S1606;S1607;S1608;S1609;S1610;S1611'
+src_all='S0004;S0003;S0130;S0131;S0132;S1600;S1601;S1602;S1603;S1604;S1605;S1606;S1607;S1608;S1609;S1610;S1611;S1700;S1701;S1702;S1703;S1704'
 for y in range(1950,2026):
     v=[x for (c,yy),l in rep.items() if yy==y for x in l]
     ce=sum(x[0] for x in v); lo=rss([x[1] for x in v]); hi=rss([x[2] for x in v])

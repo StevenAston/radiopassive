@@ -1,0 +1,16 @@
+import os,sys; sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
+from lib import REPO,OUTDIR,ARGS
+SRC_CSV=(os.path.join(REPO,'research','activity','sources_task2y.csv') if ARGS.write else OUTDIR+'sources_task2y.csv')
+import csv
+H=['source_id','short_cite','full_citation','url','doi','year','type','rank','access','licence','notes']
+A='Accessed 2 Nov 2026. '
+R=[
+['S1700','NDA, The Magnox Operating Programme (MOP 9), 2012','Nuclear Decommissioning Authority (2012). The Magnox Operating Programme (MOP 9). Figure 4.1 Annual Reprocessing Performance since 2000; section 4.1 and Appendix.','https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/457808/The_Magnox_Operating_Programme__MOP9_.pdf','',2012,'agency',4,'open','open',A+'DOWNLOADED (pdf). Bar chart of annual reprocessing, financial years 2000/01-2011/12 (read by pixel measurement, calibrated on the two printed values 233 tU for 2010/11 and 607 tU for 2011/12); 3,800 tU of Magnox fuel still to reprocess in April 2012; average rate about 450 tU/yr.'],
+['S1701','CORE briefing 04/14: B205 extended closure','Cumbrians Opposed to a Radioactive Environment (2014). Extended closure from system blockage may signal bigger problems for Sellafield\'s B205 magnox reprocessing plant whose operations are now likely continue to 2022 or beyond. Briefing No 04/14.','http://corecumbria.co.uk/briefings/extended-closure-from-system-blockage-may-signal-bigger-problems-for-sellafields-b205-magnox-reprocessing-plant-whose-operations-are-now-likely-continue-to-2022-or-beyond-no-0414/','',2014,'grey',5,'open','unknown',A+'READ. 2011/12-2013/14: 2,159 t scheduled, 1,338 t completed; 3,125 t of Magnox fuel still to reprocess. Campaign group; figures attributed to Sellafield Ltd.'],
+['S1702','Roche (2015), Towards a Safer Cumbria 2015 update (Sellafield catch-up)','Roche, P. (2015). Towards a Safer Cumbria, 2015 update. No2NuclearPower, February 2015.','https://www.no2nuclearpower.org.uk/wp/wp-content/uploads/2015/02/Sellafield-Catch-Up-2015v2.pdf','',2015,'grey',5,'open','unknown',A+'READ. Magnox Reprocessing Plant 2013/14: 470 t reprocessed against a target of 664 t, ninth successive year below target.'],
+['S1703','Sellafield Ltd Annual Review of Performance 2016/17','Sellafield Ltd (2017). Annual Review of Performance 2016/17. GOV.UK.','https://www.gov.uk/government/publications/annual-review-of-performance-201617/annual-review-of-performance-201617','',2017,'agency',4,'open','open',A+'READ. 466 tonnes of spent fuel reprocessed in Magnox against a target of 457 tonnes.'],
+['S1704','Sellafield Ltd Annual Review of Performance 2018/19','Sellafield Ltd (2019). Delivering Annual Review of Performance 2018/2019 Performance. GOV.UK.','https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/830658/Sellafield_Ltd_Annual_Review_of_Performance_v2_201819.pdf','',2019,'agency',4,'open','open',A+'READ. Scorecard: reprocess Magnox spent fuel and Dounreay Fast Reactor material, 341.5 tonnes against a target of 450 tonnes (2018/19). The metric includes the Dounreay material.'],
+]
+with open(SRC_CSV,'w',newline='',encoding='utf-8') as f:
+    w=csv.writer(f,lineterminator='\n'); w.writerow(H); w.writerows(R)
+print('sources_task2y',len(R),R[0][0],R[-1][0])

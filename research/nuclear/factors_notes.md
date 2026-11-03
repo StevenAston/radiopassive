@@ -1,6 +1,6 @@
 # Nuclear factor registry: notes (Task 2.1, step 1)
 
-Producer draft, 27 October 2026. Companion to `data/factors/nuclear.csv` (1,666 rows, `nuclear:0001`-`nuclear:1666`) and `research/nuclear/sources_factors.csv` (S1000, S1001, S1003, S1004, S1005; S1002 was not needed because NUREG/CR-2907 is already S0121). Mirrors `research/coal/factors_notes.md`. The generator lives outside the repo (scratchpad) and is deterministic; row order is mining, ISL, conversion, reactor effluents, spent fuel and in-core, reprocessing, sea disposal, accidents.
+Producer draft, 27 October 2026. Companion to `data/factors/nuclear.csv` (1,685 rows, `nuclear:0001`-`nuclear:1685` after round 3, section 9) and `research/nuclear/sources_factors.csv` (S1000, S1001, S1003, S1004, S1005; S1002 was not needed because NUREG/CR-2907 is already S0121). Mirrors `research/coal/factors_notes.md`. The generator lives outside the repo (scratchpad) and is deterministic; row order is mining, ISL, conversion, reactor effluents, spent fuel and in-core, reprocessing, sea disposal, accidents.
 
 ## 0. Engine reading (conventions used)
 
@@ -162,3 +162,39 @@ Other cross-checks and discrepancies:
 ## 8. Inaccessible or unretrieved (most important first)
 
 1. Rogovin TMI report (S0138; 16-byte stub). 2. Red Book Table 7.3 ISL split (S0113). 3. NUREG/CR-2907 totals (per-plant only). 4. CANDU bundle mass (not stated in the CANTEACH documents). 5. Magnox/AGR core data. 6. Grand Junction tailings fill (found only energy.gov fact sheets; no number).
+
+## 9. Round 3 additions (NUCLEAR_SPEC section 12 items R1-R8, 2 November 2026)
+
+Rows `nuclear:1667`-`nuclear:1685` appended (19 rows); `nuclear:1583`-`1595` changed (year_from only). New sources S1013-S1017 are in `research/nuclear/sources_round3.csv` (to be merged into `data/sources.csv`; until then validation reports T04 for them). `substream` is empty on every new row.
+
+### 9.1 R1: sea-disposal shares from 1946
+`year_from` 1950 to 1946 on the 13 share rows `nuclear:1583`-`1595` (H3; Pu239, Pu240, Am241, Pu238; Sr90+, Cs134, Cs137+, Fe55, Co58, Co60, C14, I125). `year_to` (1993), values, notes and sources unchanged. The descriptions already said "1946-1993". The 1946-49 extension is **extrapolated** in the sense that the Atlantic composition of TECDOC-1105 Table IV is applied to the earliest US and UK dumps; the `basis` cell is not changed (it stays `compiled`; the extrapolation is stated here and in NUCLEAR_SPEC 5.3).
+
+### 9.2 R2/R3: per-event unit capacity rows (NUCLEAR_SPEC 7.2)
+| Row | Event | Region, year | Low / central / high (GW) | Sources |
+|---|---|---|---|---|
+| `nuclear:1668` | E013 Fukushima Daiichi 1-3 | JPN, 2011 | 1.959 / 1.959 / 2.028 | S1014, S1015, S1016, S0106 |
+| `nuclear:1669` | E002 TMI-2 | USA, 1979 | 0.872 / 0.880 / 0.892 | S1013, S1017, S0138 |
+
+- **Fukushima.** Net reference unit power (IAEA PRIS via WNA database): 439 + 760 + 760 = 1,959 MWe. The 2.03 GW(e) of the spec is the **gross** sum (460 + 784 + 784 = 2,028 MWe); the spec's "net 460+784+784" is a mislabel. Central is the net sum as the spec requires; high is the gross sum. Low = central (no published alternative net rating).
+- **TMI-2.** The indicative 0.906 GW(e) could **not** be verified and no source found gives it. Sources found: PRIS reference unit power net 880 MWe (gross 959); Rogovin Vol. 2: 872 MWe at 97.928 % power on 28 March 1979, "authorized net MWe (892 MWe)", and the licensee's 880 MWe statement of 26 October 1978. Central 0.880, bounds 0.872 and 0.892. The Rogovin staged copy was searched as text (Vol. 1 and the three parts of Vol. 2); nothing else gives a net rating.
+- Key and description rule (NUCLEAR_SPEC 7.2): unit `GW`, tier/group/route/residue empty, description begins with the event ID.
+
+### 9.3 R5: Chernobyl Np-239 inventory (`nuclear:1667`)
+Stage `accident`, tier `sealed_in_core`, group `Np239`, region `SUN`, 1986, unit `Bq`: low 2.7e19, central 5.81e19, high 7.55e19. Central: UNSCEAR 2000 Annex J Table 1, "values used in this Annex" column, 58,100 PBq (S0104; read directly from the PDF: the table also shows 49,600 PBq in the burnup-corrected B1/I2 set and 140 PBq in the decay-corrected first column). Low: OECD-NEA 2002 Table 1, 27,000 PBq (S0710; 3.5 % released = 945 PBq, the UNSCEAR 2000 release value; the NEA table's own "95" release is the typo already noted in events.csv). High: central x 1.3, the spread used on the other 34 E004 inventory rows; **no source gives a value above the central**, so the high bound is a judgement. Closes the Np-239 part of G12; the note on `nuclear:1596` ("Np-239 is NOT entered") is now stale (row left unedited).
+
+### 9.4 R6: Church Rock composition (`nuclear:1670`-`1685`)
+Sixteen unit-`1` rows, `u_milling`, `USA`, 1979, residue `u_tailings`, basis `modelled`, low = central = high (the event's own bounds carry the uncertainty). Seven liquor rows (tier `liberated`, route `water_spill`: U238+, U234, U235+, Th230, Ra226+, Pb210+, Po210) and nine solids rows (tier `dispersed`, route empty: the same seven plus Pa231, Ac227+). Central shares sum to 1.00000 (the sum of the printed values is 1 to better than 1e-6).
+
+- **Liquor.** CDC memo (S0109) Table 1, "typical UNC tailings liquid" concentration (pCi/L): U-238 5.4e3, U-234 5.4e3, Th-230 1.5e5, Ra-226 4.0e2, Pb-210 4.0e2, Po-210 4.0e2, Bi-210 4.0e2 (OCR is poor; Po-210 reads "4.0x50 2" and is taken as 4.0e2). U-235 is not given: 0.0461 x U-238. Activity = concentration x 3.56e8 L x 0.037 Bq/pCi; sum over the seven groups 2.137e12 Bq (Th-230 92.5 % of it).
+- **Solids.** Registry tailings factors `nuclear:0015`-`0023` (Bq per t U) x 0.998 t U (1,100 short tons of tailings at an assumed 0.1 % U; the grade is a judgement and not verified). Sum 5.08e10 Bq.
+- **Shares** = each activity / (liquor + solids) = 2.188e12 Bq. Liquor 97.7 %, solids 2.3 %. Halving or doubling the assumed grade moves the solids share between about 1.2 % and 4.5 %.
+- **Gross alpha to head activity.** events.csv E003's 46 Ci (1.702e12 Bq) is a gross-alpha figure. In acidic liquor the listed alpha emitters (U-238, U-234, U-235, Th-230, Ra-226, Po-210) are all measured as separate nuclides and ingrown short-lived progeny are not present in equilibrium, so gross alpha is approximately the sum of the alpha *heads*. The only non-alpha group is Pb210+ (0.25 % of the liquor total), which is kept so that the rows sum to the event central. The rows therefore equal the event central to better than 1e-4 by construction (share x A_e), and the head sum is within 0.5 % of the gross alpha. Limit: the engine applies group multipliers (U238+ 3, Ra226+ 6) that assume secular-equilibrium progeny, which the liquor does not have, so the engine total overstates alpha progeny slightly (U238+ and Ra226+ are 3.3 % and 0.2 % of the activity).
+- **Unverified column reading.** The 46 Ci equals 3.56e8 L x 1.29e5 pCi/L, i.e. the liquor volume times the river gross-alpha peak (1.28e5 pCi/L, S0109), and the typical liquor gives 58 Ci. So the 46 Ci looks like **liquor** gross alpha, which contradicts the events.csv statement that activity "is on the solids fraction only". The composition above follows the arithmetic (liquor dominant). Flag for the events owner.
+- Pa231 and Ac227+ have no liquor row (no data); U-235 series members other than the natural ratio are not otherwise constrained.
+
+### 9.5 R8: validity to 2025
+Checked per family (stage, driver_series, group, tier, route, residue_type, region) over `u_mining_conv`, `u_mining_isl`, `u_milling`, `reactor_operation`, `spent_fuel`, `conv_enrich_fab` and `reprocessing` (502 families including `sea_disposal`): every family has a row with `year_to` = 2025, so **no `year_to` was extended and nothing is extrapolated**. Only one internal gap: `reprocessing` I131 `air_stack` has no row 1998-2002 (known; UNSCEAR 2008 gave none).
+
+### 9.6 R4 and R7
+R4: sources S1013-S1016 (WNA reactor database pages, PRIS data) and S1017 (Rogovin Vol. 2) are new; S0104, S0710, S0109, S0709, S0724, S1000, S0106 and S0138 already exist. The Np-239 source is S0104/S0710 (existing); the Church Rock source is S0109 (existing). R7: left as is (`driver_series` cells of the reprocessing and sea-disposal rows stay empty, which the spec allows).
