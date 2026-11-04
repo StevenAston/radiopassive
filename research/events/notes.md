@@ -199,3 +199,8 @@ No event found. Hydro reservoirs hold no residue; no geothermal or peat event wi
 - Indian NGT Sasan filings: https://www.greentribunal.gov.in/sites/default/files/news_updates/Affidavit%20bY%20Sasan%20Power%20Limited%20-%20Respondent%20No.%201%20%26%202%20IN%20OA%20NO.%20148%20of%202020%20EARLIER%20OA%20NO.%2031%20of%202020%20CZ%20(HIRALAL%20BAIS%20VS%20RELIANCE%20SASAN%20POWER%20P.%20Ltd.%20%26%20ORS.).pdf (not read)
 
 All fetches except those above succeeded, but many were read through a summarising tool; page numbers were not available. Figures from those pages should be re-read on the original before the verifier's spot checks.
+
+
+## Excluded as military: Grand Junction tailings fill (D67, Steve 2026-11-04)
+
+About 0.3 of 2.2 Mt of Climax mill tailings (Grand Junction, Colorado) left the site as construction fill at more than 4,000 properties, 1950–66 (DOE LM fact sheet, S1009). Estimated Ra-226 about 1e12 Bq (3e11–6e12), low confidence (ore-grade assumption; slime/sand correction after Landa, S1010). The mill supplied AEC weapons-era procurement, and the world civil share is 0 before 1965 (METHODS §9.2), so the event is excluded from the civil record and from `events.csv` (whose `military` must be false, D9), like Chalk River NRX 1952. The former factor row nuclear:1706 was removed.

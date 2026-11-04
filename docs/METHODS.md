@@ -363,7 +363,7 @@ $$\phi_{\mathrm{civil}}(c,y)=\min\left(1,\ \frac{R_{\mathrm{civil}}(y)-U_{\mathr
 
   Each row records which rule applied (`allocation_rule`).
 - **Dual-use reprocessing sites** (e.g. Sellafield, Marcoule, and Mayak's RT-1, which reprocessed civil VVER fuel from the late 1970s): discharges are split by the civil fraction of documented throughput. Where throughput is undocumented, the site-year is excluded and flagged.
-- **Excluded military events:** Windscale 1957, Kyshtym 1957, SL-1 1961, Hanford releases, Chalk River NRX 1952 (D34: its plutonium went to the US weapons programme and military personnel ran the clean-up; recorded in research/events/notes.md), and all weapons testing (which appears as a baseline only).
+- **Excluded military events:** Windscale 1957, Kyshtym 1957, SL-1 1961, Hanford releases, Chalk River NRX 1952 (D34: its plutonium went to the US weapons programme and military personnel ran the clean-up; recorded in research/events/notes.md), Grand Junction mill tailings used as construction fill 1950–66 (D67: the Climax mill processed ore for AEC weapons procurement; about 1e12 Bq Ra-226, 3e11–6e12, low confidence; recorded in research/events/notes.md), and all weapons testing (which appears as a baseline only).
 - **Included civil events (indicative):** Chernobyl 1986, Fukushima Daiichi 2011, Three Mile Island 1979, Church Rock 1979; coal ash and slurry failures (e.g. TVA Kingston 2008, Dan River 2014, Martin County 2000); large produced-water spills (none found that meets §9.1; the negative search is recorded in research/events/notes.md, D32); tailings failures in commodity chains attributable to ④ (e.g. Mount Polley 2014, copper; Brumadinho 2019, iron ore), each attributed by the allocation rules in §10.
 
 ---
