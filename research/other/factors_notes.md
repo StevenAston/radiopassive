@@ -297,3 +297,24 @@ Meaning follows D60: Rn-222 ε is the emanation coefficient used as an upper bou
 4. USGS `prod_peat` XWL drops from 170 Mt (1991) to 29 Mt (1992): a coverage break (USSR), not a production change; the activity notes do not say so.
 5. `research/other/notes.md` states the Wairakei and Cerro Prieto reservoirs have radon "about 40 times lower" than The Geysers (S0505); S0502 Table 4 gives Wairakei fluid 630 Bq/L against The Geysers 620 Bq/L. The two are different quantities and I could not reconcile them; it matters for the non-vapour fleet (gap G2).
 6. `research/other/household_biomass_notes.md` section 5 recommends Option A (new stage); D45 chose Option B. The notes file is otherwise unchanged.
+
+## 8. D65 revisions (Steve, 2026-11-04)
+
+Source of numbers: `research/other/papers_round3.md` section 4 and `research/oil_gas/papers_round3.md` section 8 (Imperial Valley filter cake). Sources S1404, S1405, S1408 to S1412, S1415 to S1419 corrected in `data/sources.csv`. All values are Bq per stated unit; low <= central <= high holds for every changed row.
+
+| Factor | Field | Old | New | Basis |
+|---|---|---|---|---|
+| other:0001 (XWL Rn-222) | low | 2e13 | 5e12 Bq/GWa | Kruger 1977 Salton Sea 7-15 TBq/(GW a); central 8e13 and high 4e14 unchanged (option A) |
+| other:0002 (ITA Rn-222) | evidence | "three routes, two not independent" | single-source chain (D'Amore 1976, 193 wells); Stanford lab 76 TBq/(GW a) justifies low | values unchanged |
+| other:0003 (USA Rn-222) | evidence | "38.5 may be high" | withdrawn; Anspaugh and Hahn 37.7, Kruger 54 | values unchanged |
+| other:0075 (NEW, ITA Rn-220/Rn-222) | low / central / high | none (XWL row other:0071 0.005 / 0.05 / 0.35) | 0.0005 / 0.01 / 0.05 | D'Amore: no thoron detected; same keys as other:0071 except region ITA, 1913-2025 |
+| other:0004 scale mass | high | 6.1e4 | 2.6e5 t/GWa | Imperial Valley filter cake 3.5e4 t/a / (0.19 GW x 0.7); centre 250 unchanged |
+| other:0005 Ra-226 | none | high 1.34e7 | unchanged | filter cake 5.9e6 Bq/t is already inside the band; note only |
+| other:0006 Ra-228 | high | 2.4e6 | 4.1e6 Bq/t | filter cake 110 pCi/g |
+| other:0015, 0016 (U-238+, U-234) | low / central | 1.2e5 / 4e5 | 5e4 / 2.5e5 Bq/t | Finnish peat ash about 100 Bq/kg; Swedish 420 |
+| other:0021 (U-235+) | low / central | 5.5e3 / 1.84e4 | 2.3e3 / 1.15e4 Bq/t | 0.046 x U-238 |
+| other:0067 | high | 0.05 | 0.13 | Hedvall 12 +/- 2% unaccounted; central 0.005 unchanged |
+| other:0068 | evidence | CF 50 upper-bound argument | replaced: CF 50 is an unsupported default; measured pellets 228, chips 61 give ash retention 0.6-1.1 | value 0.19 unchanged |
+| other:0073 (FIN wood) | low / central / high | 100 / 13,000 / 97,000 | 125 / 16,000 / 121,000 Bq/t dry | 80% dry matter basis; source S1410 primary |
+
+Not adopted: optional Austria wood row (round-3 P11). Wood-to-ash factor 50 appears only in other:0068.

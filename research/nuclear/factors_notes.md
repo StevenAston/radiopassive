@@ -1,6 +1,6 @@
 # Nuclear factor registry: notes (Task 2.1, step 1)
 
-Producer draft, 27 October 2026. Companion to `data/factors/nuclear.csv` (1,685 rows, `nuclear:0001`-`nuclear:1685` after round 3, section 9) and `research/nuclear/sources_factors.csv` (S1000, S1001, S1003, S1004, S1005; S1002 was not needed because NUREG/CR-2907 is already S0121). Mirrors `research/coal/factors_notes.md`. The generator lives outside the repo (scratchpad) and is deterministic; row order is mining, ISL, conversion, reactor effluents, spent fuel and in-core, reprocessing, sea disposal, accidents.
+Producer draft, 27 October 2026. Companion to `data/factors/nuclear.csv` (1,727 rows, `nuclear:0001`-`nuclear:1727` after D65, section 10; 1,685 rows after round 3, section 9) and `research/nuclear/sources_factors.csv` (S1000, S1001, S1003, S1004, S1005; S1002 was not needed because NUREG/CR-2907 is already S0121). Mirrors `research/coal/factors_notes.md`. The generator lives outside the repo (scratchpad) and is deterministic; row order is mining, ISL, conversion, reactor effluents, spent fuel and in-core, reprocessing, sea disposal, accidents.
 
 ## 0. Engine reading (conventions used)
 
@@ -51,7 +51,7 @@ The script applies: non-ISL tonnage = `u_production` x (1 - ISL share) x `phi_ci
   - Particulates: Co60 .30, Cs137+ .25, Cs134 .12, Co58 .10, Mn54 .08, Sr90+ .06, Zr95+ .05, Ru106+ .04 (GCR: Cs137+ .35, Sr90+ .20, Co60 .20 ...).
   - Other liquid: Co58 .22, Co60 .20, Cs137+ .12, Fe55 .12, Cs134 .08, Mn54 .08, Ni63 .05, Sr90+ .04 (GCR pond effluent: Cs137+ .40, Sr90+ .35, Co60 .10, Cs134 .08, Fe55 .07).
   - Shares are renormalised over the groups listed. Minor groups (Sb125, Tc99, Ag110m, Xe131m, Xe133m and others) are omitted. FBR particulates and liquids are omitted.
-- Spread: 2.0 (plant-to-plant) x period variation x share spread 1.6/2.0. For PWR/BWR noble gases the 2010-25 low bound is the US 2021 median per reactor (S0121), which is 70-100 times below the UNSCEAR mean.
+- Spread: 2.0 (plant-to-plant) x period variation x share spread 1.6/2.0. For PWR/BWR noble gases the 2010-25 low bound is the US 2021 median per reactor (S0121), which is 70-100 times below the UNSCEAR mean (D65: the median used here is now the all-nuclide median, section 10.2; the old statement compared UNSCEAR with the three-nuclide median).
 
 ### 1.4 Spent fuel and in-core inventory
 - Spent-fuel arisings (stage spent_fuel, tier sealed_fuel_cycle, Bq/GWa) are per GWa of electricity, so the driver follows the fleet mix and the thm series is a cross-check only.
@@ -92,7 +92,7 @@ H3 0.344; alpha 0.0149 (placeholder split Pu239, Pu240, Am241, Pu238); non-triti
 | US 2021 medians (S0121) per reactor, H3 air BWR/PWR | 1.4 and 1.2 TBq | 1.3 and 1.5 TBq/GWa UNSCEAR |
 | Same, liquid H3 PWR | 19.9 TBq | 18 TBq/GWa |
 | Same, C-14 BWR and PWR | 0.57 and 0.34 | 0.13 and 0.083 (US is 4 times higher) |
-| Same, noble gases BWR | 0.18 TBq | 18 TBq/GWa (100 times lower) |
+| Same, noble gases BWR | 0.18 TBq (CORRECTED D65: 0.18 TBq is the three-nuclide median; the all-nuclide median is 21.0 Ci = 0.78 TBq, 4.3 times higher; PWR 1.0 Ci = 0.037 TBq vs 0.2 Ci, 4.6 times higher; fleet means are about 23 (BWR) and 15 (PWR) times below UNSCEAR, not 70-100) | 18 TBq/GWa |
 
 Other cross-checks and discrepancies:
 - UNSCEAR 2008 GCR noble gases 1998-2002 (28 TBq/GWa) are inconsistent with 2016 Magnox (1,700) and AGR (19) at the RDS-2 capacity weights; the series has a step in 2010 (G13).
@@ -107,7 +107,7 @@ Other cross-checks and discrepancies:
 | G1 | Civil reprocessing throughput series (GWa/a) | does not exist; proposed `nuc_reprocessed_gwa` (UNSCEAR 2000 Table 43 periods, implied 62.6 GWa/a for 1998-2002, none after 2002) | yes, for reprocessing |
 | G2 | Annual sea-dumped activity by country | TECDOC-1105 gives only country totals, 1946-1993; proposed `nuc_sea_dumped_tbq` | yes, for sea disposal |
 | G3 | Actinides and activation products for PHWR, LWGR, GCR, FBR; any HTGR/other | no inventory data | no, a known undercount |
-| G4 | Mine water, waste rock (memo), ISL pond residue, dispersed tailings fill (Grand Junction share) | no quantitative source found | no |
+| G4 | Mine water, ISL pond residue; (D65: US waste rock memo series and Grand Junction fill now have rows, sections 10.6-10.7) | no quantitative source found for the rest | no |
 | G5 | Conversion and enrichment beta discharges (Tc-99, Th-234) and air trends | not decomposed | no |
 | G6 | Th-230, Pa-231, Ac-227 tailings retention | judgement; USGS gives only 30-90 % Th dissolution | no |
 | G7 | Operational LLW and decommissioning waste, construction | composition unknown; decommissioning has no residue type | no |
@@ -115,7 +115,7 @@ Other cross-checks and discrepancies:
 | G9 | Civil fractions: Sellafield B205, Marcoule, Mayak RT-1, Soviet Arctic dumps | rr05 is qualitative; undocumented throughput means exclusion | yes, for these sites |
 | G10 | ISL ponds | see G4 | no |
 | G11 | Facility country for conversion, enrichment and fabrication | applied to the burner's electricity | no |
-| G12 | Np-239 Chernobyl inventory (58,100 vs 27,000 PBq), TMI Kr-85/Xe-133m, Fukushima Cs-134 ocean | ambiguous or missing | no |
+| G12 | Np-239 Chernobyl inventory (58,100 vs 27,000 PBq), Fukushima Cs-134 ocean (D65: TMI Xe-133m now a row; Kr-85 was not released) | ambiguous or missing | no |
 | G13 | GCR noble-gas inconsistency | see section 2 | no |
 | G14 | S-35 before 2010; I-131 liquid; Sb-125, Tc-99 effluents | not reported by UNSCEAR | no |
 
@@ -126,10 +126,10 @@ Other cross-checks and discrepancies:
 3. Reactor type is carried by `driver_series`; GCR is left as reported by UNSCEAR to 2002, then split Magnox/AGR from the RDS-2 capacity weights.
 4. The 2010 UNSCEAR value is carried to 2025 (extrapolated), with the US median as the low bound for PWR/BWR noble gases.
 5. Spent fuel as arisings per GWa electricity at discharge, with the thm series as a cross-check only. LWR burnup eras 18/28/39/47; LWGR 21.8.
-6. In-core inventory: Carter batch mean for long-lived groups, ENDF saturation for short-lived ones, assumed 24 MWth/t and 4 batches for BWR, assumed 19 kg U/bundle for PHWR.
+6. In-core inventory: Carter batch mean for long-lived groups, ENDF saturation for short-lived ones, assumed 24 MWth/t and 4 batches for BWR, 19.3 kg U/bundle for PHWR (D65; was an assumed 19 kg U).
 7. Reprocessing: per GWa of civil fuel reprocessed with a NEW driver. The 1998-2002 throughput is implied from Kr-85 (G1). The 2003-25 values extend the La Hague 2010 figures.
 8. Mill balance: R 0.95, retention 0.98/0.95/0.90, and the Pu-239+240 split ratio of 1.59.
-9. ISL shares by country (judgement outside the WNA statements); replace from Red Book Table 7.3 if extracted.
+9. ISL shares by country (judgement outside the WNA statements); D65 replaced them from the Red Books 2003 and 2026 (there is no Table 7.3 in the 2003 edition; section 10.4).
 10. Accident event data (inventory and releases) carried as factor rows.
 11. Sea disposal: placeholder shares; Soviet Arctic dumps excluded (naval).
 12. Conversion, enrichment and fabrication driven by `elec_gen_nuclear`, with the OSPAR aquatic scaling.
@@ -151,7 +151,7 @@ Other cross-checks and discrepancies:
 ## 6. Residue-type proposals (not applied to `residue_types.csv`)
 
 - u_tailings: ε222 low/central/high 0.002 / 0.03 / 0.14, below the 0.2 ceiling (judgement, from dry tailings emanation of about 0.2 and moisture and cover reducing exhalation). ε220 about 0 (little thorium). Seepage already present.
-- u_waste_rock, u_process_residue, isl_pond_residue: ε/seepage gaps. Tentative: waste rock reuses the generic M1 triple 7e-7 / 5e-6 / 6e-5.
+- u_waste_rock, u_process_residue, isl_pond_residue: ε/seepage gaps. Tentative: waste rock reuses the generic M1 triple 7e-7 / 5e-6 / 6e-5. (D65: u_waste_rock ε222 is now 0.1 / 0.3 / 0.5 in `residue_types.csv`, section 10.6.)
 - New type needed: `nuclear_decom_waste` (decommissioning).
 
 ## 7. Validation
@@ -161,7 +161,7 @@ Other cross-checks and discrepancies:
 
 ## 8. Inaccessible or unretrieved (most important first)
 
-1. Rogovin TMI report (S0138; 16-byte stub). 2. Red Book Table 7.3 ISL split (S0113). 3. NUREG/CR-2907 totals (per-plant only). 4. CANDU bundle mass (not stated in the CANTEACH documents). 5. Magnox/AGR core data. 6. Grand Junction tailings fill (found only energy.gov fact sheets; no number).
+(Status after D65 / round 2: items 1-4 and 6 are now retrieved or closed, section 10; only Magnox/AGR core data (item 5) remains unresolved.) 1. Rogovin TMI report (S0138; 16-byte stub). 2. Red Book Table 7.3 ISL split (S0113). 3. NUREG/CR-2907 totals (per-plant only). 4. CANDU bundle mass (not stated in the CANTEACH documents). 5. Magnox/AGR core data. 6. Grand Junction tailings fill (found only energy.gov fact sheets; no number).
 
 ## 9. Round 3 additions (NUCLEAR_SPEC section 12 items R1-R8, 2 November 2026)
 
@@ -198,3 +198,62 @@ Checked per family (stage, driver_series, group, tier, route, residue_type, regi
 
 ### 9.6 R4 and R7
 R4: sources S1013-S1016 (WNA reactor database pages, PRIS data) and S1017 (Rogovin Vol. 2) are new; S0104, S0710, S0109, S0709, S0724, S1000, S0106 and S0138 already exist. The Np-239 source is S0104/S0710 (existing); the Church Rock source is S0109 (existing). R7: left as is (`driver_series` cells of the reprocessing and sea-disposal rows stay empty, which the spec allows).
+
+## 10. D65 revisions (Steve, 2026-11-04; proposals in `research/nuclear/papers_round2.md`, `research/oil_gas/papers_round3.md` section 7)
+
+Every changed row carries a notes prefix `REVISION D65 (Steve, 2026-11-04): ...` with the old low/central/high where it is not in the table below. Sources S1006-S1012 merged into `data/sources.csv`; S0121, S0138 and S1005 replaced by their corrected round-2 rows. Rows now run `nuclear:0001`-`nuclear:1727` (42 new rows, `nuclear:1686`-`1727`). Validation: see the orchestrator report.
+
+### 10.1 CANDU bundle mass (19 kg U assumed -> 19.3 kg U, S1008)
+- Core mass $4560\times19.3\ \text{kg}=88.0$ tU; specific power $2061/88.0=23.4$ MWth/tU (was 23.8); residence $T=7250/23.4=309.8$ d $=0.848$ a (was $7250/23.8=304.6$ d $=0.834$ a), +1.6 %.
+- Applied to every PHWR row derived from bundle mass: the 13 spent-fuel arisings rows `nuclear:1046`-`1058` and the 25 in-core standing-inventory rows `nuclear:1407`-`1431` (38 rows; the PHWR effluent rows do not depend on it). Each of low, central and high is multiplied by the ratio for the group's head nuclide (decay constant $\lambda$ from `nuclides.csv`): arisings $f(T)=(1-e^{-\lambda T})/T$; in-core inventory (uniform ages 0 to $T$, also used for the saturation groups) $g(T)=1-(1-e^{-\lambda T})/(\lambda T)$; ratio $f(0.8476)/f(0.8340)$ or $g(0.8476)/g(0.8340)$. Ratios: arisings 0.984 (Nb-95) to 1.000; in-core 1.00003 to 1.0166 (Cs-135, Tc-99, Sr-90 largest; the in-core mean age rises with $T$ for long-lived groups). Cs-137 arisings 0.99984, Kr-85 0.99957. Every row moves by under 2 %.
+- Limits: the ratio treats each group as its head nuclide (chain ingrowth for Zr95+, Ru106+, Ce144+ is ignored); the fission mix, yields and eta are unchanged. Bundle mass is 37-element; the Pickering 28-element bundle (20.2 kg U) is not separated. Basis stays `modelled`; sources S1008 added.
+
+### 10.2 US effluent revisions N1-N16 (NUREG/CR-2907 v27, S0121; 2010-25 rows; US-versus-UNSCEAR population caveat applies: UNSCEAR centrals are world means, the US is one low-effluent fleet)
+| # | Row(s) | Old (low / central / high) | New |
+|---|---|---|---|
+| N1 | PWR noble total low; BWR noble total low | $8.0\times10^{9}$; $1.83\times10^{11}$ | $3.7\times10^{10}$; $7.8\times10^{11}$ (distributed over the groups by share) |
+| N2 | PWR noble central 2015-25 | $5.8\times10^{12}$ | $1.5\times10^{12}$ (new rows `1686`-`1692`; 2010-14 rows keep $5.8\times10^{12}$) |
+| N3 | BWR noble central 2015-25 | $1.8\times10^{13}$ | $8.5\times10^{12}$ (new rows `1693`-`1700`) |
+| N4 | PWR noble shares (raw, renormalised) | Xe133 .35, Xe135 .20, Kr85 .12, others Kr88+ .10, Kr87 .06, Kr85m .06, Xe138+ .05 | Xe133 .55, Xe135 .05, Kr85 .05, others unchanged (sum .92 renormalised) |
+| N5 | BWR noble shares | Xe138+ .55, Xe133 .10, Xe135 .10, Kr85 .02 (others Kr87 .08, Kr88+ .06, Ar41 .06, Kr85m .03) | Xe138+ .45, Xe133 .16, Xe135 .15, Kr85 .02 (sum 1.01 renormalised) |
+| N6 | `0209` C-14 air BWR | $6.5\times10^{10}$ / $1.3\times10^{11}$ / $2.6\times10^{11}$ | $1.3\times10^{11}$ / $3.0\times10^{11}$ / $6.0\times10^{11}$ |
+| N7 | `0074` C-14 air PWR | $4.15\times10^{10}$ / $8.3\times10^{10}$ / $1.66\times10^{11}$ | $8.3\times10^{10}$ / $1.7\times10^{11}$ / $3.4\times10^{11}$ |
+| N8 | `0064` H-3 air PWR; `0199` H-3 air BWR | central $1.5\times10^{12}$, high $3.0\times10^{12}$; central $1.3\times10^{12}$, high $2.6\times10^{12}$ | central $2.2\times10^{12}$, high $5\times10^{12}$; central $1.7\times10^{12}$, high $3.5\times10^{12}$ (lows unchanged) |
+| N9 | `0069` H-3 liquid PWR | central $1.8\times10^{13}$ | $2.3\times10^{13}$ |
+| N10 | `0079` I-131 air PWR | $4\times10^{7}$ / $8\times10^{7}$ / $1.6\times10^{8}$ | $1\times10^{5}$ / $1\times10^{7}$ / $1\times10^{8}$ |
+| N11 | `0214` I-131 air BWR | $2.1\times10^{8}$ / $4.2\times10^{8}$ / $8.4\times10^{8}$ | $5\times10^{7}$ / $2\times10^{8}$ / $8.4\times10^{8}$ |
+| N12 | `0119` Co-60 air PWR; `0259` BWR | low $4.05\times10^{6}$, central $1.08\times10^{7}$; low $2.03\times10^{8}$, central $5.4\times10^{8}$ | low $4\times10^{5}$, central $2\times10^{6}$; low $1.3\times10^{7}$, central $8\times10^{7}$ (highs unchanged) |
+| N13 | `0124`, `0264` Cs-137+ air | share .25 of particulates | share .03 (rows scaled by 0.12; other groups not renormalised) |
+| N14 | Cs-137+ and Cs-134 liquid, PWR and BWR 2010-25 | shares .12 and .08 | .03 and .01 |
+| N15 | other liquid total PWR / BWR | central $3.8\times10^{9}$ / $2.1\times10^{9}$ | central $1.5\times10^{9}$ / $9\times10^{8}$; low total $5.6\times10^{8}$ / $3.7\times10^{8}$ |
+| N16 | liquid composition | Co58 .22, Co60 .20, Fe55 .12 | PWR Co58 .25, Co60 .22, Fe55 .10; BWR Co60 .33, Fe55 .15, Co58 .03 |
+
+Implementation choices (not in the table): N2/N3 apply to 2015-25, so the 2010-25 noble-gas rows (`0084`-`0114`, `0219`-`0254`) now end in 2014 and carry the new low bound and shares with the old central total, and fifteen new 2015-25 rows hold the new central; the high total of both is the old high total, so the band is wide (high is 9.8 times the PWR and 5.2 times the BWR new central). N14-N16 rows `0159`-`0194` and `0299`-`0334` are rebuilt as total times share, with shares renormalised over the eight listed groups (convention of section 1.3); the high total is unchanged.
+
+### 10.3 TMI-2 (Rogovin, S0138): nuclear:1665, 1666, 1703-1705 and E002
+- Table II-1 split (as released): Xe-133 0.63, Kr-88 0.15, Xe-135 0.12, Xe-133m 0.09, Xe-135m 0.01. The shares are applied to the E002 bounds ($3.7\times10^{16}$ / $9.25\times10^{16}$ / $4.81\times10^{17}$ Bq), so the five release central values sum to $9.25\times10^{16}$ Bq exactly (Rogovin's own table sums to 2.505 MCi). Xe-135m is not a group of its own (a member of `I135+`) and is folded into Xe135 (decay daughter): Xe135 share 0.13.
+- `1665` Xe133 $9.25\times10^{16}$ (central) -> $5.8275\times10^{16}$; `1703` Kr88+ $1.39\times10^{16}$; `1704` Xe135 $1.20\times10^{16}$; `1705` Xe133m $8.3\times10^{15}$. Low and high are the share times the E002 low and high. The researcher's table gave a Xe-133 high of $1.9\times10^{17}$ "by 0.63 times the E002 bounds"; 0.63 times $4.81\times10^{17}$ is $3.0\times10^{17}$, which is what is entered (the stated rule over the stated number).
+- `1666` I-131 $5.2\times10^{11}$ (range $10^{11}$-$2\times10^{12}$) -> $5.4\times10^{11}$ (14.56 Ci), low $10^{11}$ kept, high $1.2\times10^{12}$ (32 Ci). Sum with I-131 is within $6\times10^{-6}$ relative of E002 (tolerance $10^{-4}$, NUCLEAR_SPEC 7.4).
+- E002: central unchanged and now retrieved; high $1.48\times10^{18}$ (40 MCi, NRC range) -> $4.81\times10^{17}$ (13 MCi, Rogovin TLD, Xe-133 equivalent); the NRC 1-40 MCi and consultants' about 10 MCi stay in the notes; "some Kr-85" removed (Rogovin: Kr-85 not released in significant quantity; about 50,000 Ci remained in containment after six months). The Table II-1 exponents come from OCR text and should be eyeballed once (printed p.344).
+
+### 10.4 ISL shares (Red Books 2003 and 2026, S1006, S1007)
+| Row | Old | New |
+|---|---|---|
+| `0029` KAZ 1978-99 | 0.25 / 0.5 / 0.8 | 0.30 / 0.40 / 0.55 (cumulative 0.315) |
+| `0030` KAZ 2000-25 | 0.9 / 0.97 / 1 | 0.95 / 0.99 / 1.0 |
+| `0032` UZB 1963-99 | 0.3 / 0.7 / 1 | 0.30 / 0.40 / 0.55 (cumulative 0.403) |
+| `0033` UZB 2000-25 | 0.9 / 0.97 / 1 | 0.97 / 1.0 / 1.0 |
+| `0036` USA 1990-99 | 0.2 / 0.4 / 0.8 | 0.5 / 0.7 / 0.9 |
+| `0037` USA 2000-25 | 0.8 / 0.95 / 1 | 0.74 / 0.93 / 1.0 |
+| `0025` XWL 1967-99 | 0.05 / 0.15 / 0.35 | 0.01 / 0.03 / 0.08 |
+| `0026` XWL (was 2000-25) | 0.05 / 0.2 / 0.45 | 2000-09: 0.02 / 0.04 / 0.08 |
+| `1701` XWL 2010-19 (new) | none | 0.05 / 0.10 / 0.18 (interpolated, not sourced) |
+| `1702` XWL 2020-25 (new) | none | 0.12 / 0.165 / 0.22 |
+Reading of XWL: NUCLEAR_SPEC 4.1 uses the XWL rows as the default for every country without its own row, so XWL is the rest of the world (the "rest of world" proposals), not the world total. The rest-of-world rows are therefore low for Australia, Russia and China, whose own ISL shares are 0.37-0.42, 0.6 and 0.9 in 2023-24; the proposed country rows for AUS, RUS, CZE, CHN and BGR were NOT added (the table gave only ranges, no values by era; medium-low confidence). Note that the 2003 Red Book country tables were identified by position (papers_round2.md, section 5 item 4).
+
+### 10.5 Grand Junction fill (`nuclear:1706`, flagged low confidence)
+`u_milling`, tier `dispersed`, residue `u_tailings`, USA, 1950-1966, Ra226+, unit Bq (total, event-like, no driver, no route because `fill` is not in the route vocabulary): $3\times10^{11}$ / $1\times10^{12}$ / $6\times10^{12}$ Bq. Grand Junction only (not scaled by 1.3 for the US). The assumed 22 Bq/g Ra-226 is the researcher's, not the fact sheet's. How the engine treats a Bq row without an event or driver at `u_milling` has not been tested (the stream script does not yet exist).
+
+### 10.6 Uranium overburden memo series and u_waste_rock (EPA 1991 chapter B.1, S1250)
+- `residue_types.csv` `u_waste_rock`: Rn-222 $\varepsilon$ empty -> 0.1 / 0.3 / 0.5 (emanation coefficient, D60); Rn-220 stays empty; source S1250 added.
+- `vocab.json` allows `memo_earth_moved` at `u_mining_conv`, so 21 rows were added (`nuclear:1707`-`1727`): 7 groups (U238+, U234, Th230, Ra226+ at 877 Bq/kg; Pb210+, Po210 at 614 Bq/kg; U235+ at 44.4 Bq/kg) times 3 eras, region USA, driver `u_production`, unit Bq per t U. Tonnage per t U = Table B.1-3 overburden per era / US `u_production` in that era (1950-68: $4.17\times10^{8}$ t over 133,527 t U = 3,123 t/t U; 1969-78: $1.528\times10^{9}$ t over 101,719 t U = 15,022; 1979-88: $2.025\times10^{9}$ t over 89,815 t U = 22,546). Ra-226 central is 877 Bq/kg times those: $2.7\times10^{9}$, $1.3\times10^{10}$ and $2.0\times10^{10}$ Bq per t U. Bounds: concentration 185 to 7,400 Bq/kg combined with a factor 1.25 on tonnage. US only; nothing after 1988 (no EPA tonnage). Open issue for the engine: the F1 rule multiplies by (1 - ISL share) and the world `phi_civil` (zero before 1965), which would shrink the memo series; a ruling is needed. `docs/NUCLEAR_SPEC.md` 4.4 and 10 still say "no rows" and are not edited here.

@@ -1,19 +1,19 @@
 # Oil and gas factor registry: notes (Task 2.3, step 1)
 
-Output: `data/factors/oil_gas.csv` (109 rows `oil_gas:0001`-`0109`: production 73, processing_transport 4, abandonment_scrap 7, oil_sands_mining 3, drilling 22; construction 0). New sources `S1200`-`S1209` are in `research/oil_gas/sources_factors.csv` (not yet merged into `data/sources.csv`, so the committed tree reports T04 unresolved-source errors until they are merged; with them merged the validator prints `OK: no issues`). Generator: scratchpad `og/build_og.py` (not in the repository). No pipeline code or tests were written.
+Output: `data/factors/oil_gas.csv` (110 rows `oil_gas:0001`-`0110`; 0110 added by D65, see section 8: production 73, processing_transport 5, abandonment_scrap 7, oil_sands_mining 3, drilling 22; construction 0). New sources `S1200`-`S1209` are in `research/oil_gas/sources_factors.csv` (merged into `data/sources.csv`; with the D65 round-2/round-3 sources merged the validator prints `OK: no issues`). Generator: scratchpad `og/build_og.py` (not in the repository). No pipeline code or tests were written.
 
 ## 0. Engine reading of the factors (my specification; the stream spec should confirm)
 
-All activity values are HEAD-nuclide activity (METHODS 3.2, 4.1a, D24); the engine applies the group multiplier. Unit-1 rows are shares or ratios that apply to a Bq quantity built from other rows. Because `select` has no substream or product column, rows are separated by `driver_series`, `region`, `residue_type` and `tier`; the key tuple (stage, driver_series, group, tier, route, residue_type, region) is unique over overlapping years (checked by the generator).
+All activity values are HEAD-nuclide activity (METHODS 3.2, 4.1a, D24); the engine applies the group multiplier. Unit-1 rows are shares or ratios that apply to a Bq quantity built from other rows. REVISED D65: `select` now has the `substream` key (D63, schema v2.4). Produced-water concentration rows 0001-0010 carry `substream` = `conventional` or `unconventional`; `driver_series` is deliberately left as before (see section 8) so lookups that do not pass `substream` still resolve. The key tuple (stage, substream, driver_series, group, tier, route, residue_type, region) is unique over overlapping years (checked at D65).
 
-- **Produced-water activity** of group $g$ in region $c$, year $y$: with $V$ = `produced_water_m3`, $u$ = unconventional fraction (rows 0011-0018, selected with `driver_series='produced_water_unconv_share'` and blank group), $C^{conv}_g$ (0001-0010 with driver `produced_water_m3`) and $C^{unc}_g$ (same rows with driver `produced_water_unconv_share`):
+- **Produced-water activity** of group $g$ in region $c$, year $y$: with $V$ = `produced_water_m3`, $u$ = unconventional fraction (rows 0011-0018, selected with `driver_series='produced_water_unconv_share'`, blank group, blank substream), $C^{conv}_g$ (0001-0010 with `substream='conventional'`) and $C^{unc}_g$ (`substream='unconventional'`; legacy discriminator driver `produced_water_unconv_share` kept):
 $$A_{g}=V\left[(1-u)\,C^{conv}_g+u\,C^{unc}_g\right]$$
   Rest of world = `XWL` minus `USA` (independent difference, as coal). The `produced_water_unconv_share` activity series (2017 only) is a cross-check, not a multiplier.
 - **Tier split of $A_g$** (all groups alike): rows 0019-0046, selected by tier with `driver_series='produced_water_m3'`; reisolated and dispersed carry `og_produced_water`, impounded (evaporation pits) `og_sludge`, liberated route `water_produced_discharge`. Central shares sum to 1 per region and era.
 - **Solids** (Ra-226+ and Ra-228+ only): $S_{g,r}=A_g\,\sigma_{g,r}$ for residue $r\in\{$`og_scale`, `og_sludge`$\}$ (0047-0050, additive to the water, not subtracted). Pb-210+ in solids $=0.05\times S_{\mathrm{Ra226+},r}$ (0051-0052; reservoir-derived Pb-210 only; supported Pb-210 is the engine's ingrowth).
 - **Removed solids** (booked at `production`): $S\,(1-\phi)$ for scale ($\phi$ = row 0078) and $S$ for sludge, split by tier with rows 0053-0070 (blank driver; liberated rows carry the source residue type only to make the key unique, and the master row has no residue).
 - **Retained scale** (booked at `abandonment_scrap` in the SAME year, creation-year windows with the ~20 year retirement lag built into the era boundaries, rows 0079-0084): $S\,\phi$ split to impounded `og_scale` and dispersed `og_scaled_scrap`. No Ra-228 survival factor is applied: decay of unmoved activity is the engine's job and a second factor would double-count it.
-- **Gas**: delivered Rn (0074) and vented Rn (0075) are Bq per m3 of `gas_production_m3`; Pb-210 deposit (0076) likewise, tier impounded `og_processing_residue`. Oil radon (0077) and flaring (0071-0073) are per tonne of `oil_production_t`.
+- **Gas**: delivered Rn (0074), NGL/LPG Rn (0110, D65; key distinguished by `residue_type='og_processing_residue'`) and vented Rn (0075) are Bq per m3 of `gas_production_m3`; Pb-210 deposit (0076) likewise, tier impounded `og_processing_residue`. Oil radon (0077) and flaring (0071-0073) are per tonne of `oil_production_t`.
 - **Oil sands** (0085-0087) per tonne of ore processed; driver does not exist yet (B1). **Drilling** (0088-0098 vertical, driver `us_wells_drilled_total`, 1949-2010; 0099-0109 horizontal, driver missing, B2): unit `Bq/1`, apply to the well count.
 - Chronic radon exhalation and seepage from impounded/dispersed holdings are engine processes. No rows for them.
 
@@ -21,16 +21,16 @@ $$A_{g}=V\left[(1-u)\,C^{conv}_g+u\,C^{unc}_g\right]$$
 
 | id | what | group / tier / route / residue | driver | region | years | low / central / high | unit | basis |
 |---|---|---|---|---|---|---|---|---|
-| oil_gas:0001 | production: Produced-water radium-226 concentration (post-precipitation), conventional, world default | Ra226+ | produced_water_m3 | XWL | 1950-2025 | 1e+03 / 5e+03 / 2e+04 | Bq/m3 | compiled |
-| oil_gas:0002 | production: Produced-water radium-226 concentration, conventional, USA | Ra226+ | produced_water_m3 | USA | 1950-2025 | 1.5e+03 / 6e+03 / 2.5e+04 | Bq/m3 | compiled |
-| oil_gas:0003 | production: Produced-water radium-226 concentration, unconventional (shale and tight), world default | Ra226+ | produced_water_unconv_share | XWL | 1950-2025 | 1e+04 / 3e+04 / 8e+04 | Bq/m3 | compiled |
-| oil_gas:0004 | production: Produced-water radium-228 concentration (post-precipitation), conventional, world default | Ra228+ | produced_water_m3 | XWL | 1950-2025 | 800 / 4e+03 / 2e+04 | Bq/m3 | compiled |
-| oil_gas:0005 | production: Produced-water radium-228 concentration, conventional, USA | Ra228+ | produced_water_m3 | USA | 1950-2025 | 3e+03 / 1e+04 / 4e+04 | Bq/m3 | compiled |
-| oil_gas:0006 | production: Produced-water radium-228 concentration, unconventional (shale and tight), world default | Ra228+ | produced_water_unconv_share | XWL | 1950-2025 | 5e+03 / 2e+04 / 6e+04 | Bq/m3 | compiled |
-| oil_gas:0007 | production: Produced-water potassium-40 concentration (post-precipitation), conventional, world default | K40 | produced_water_m3 | XWL | 1950-2025 | 3e+03 / 1e+04 / 3e+04 | Bq/m3 | compiled |
-| oil_gas:0008 | production: Produced-water potassium-40 concentration, unconventional (shale and tight), world default | K40 | produced_water_unconv_share | XWL | 1950-2025 | 1e+04 / 4e+04 / 1.1e+05 | Bq/m3 | compiled |
-| oil_gas:0009 | production: Produced-water lead-210 concentration (post-precipitation), conventional, world default | Pb210+ | produced_water_m3 | XWL | 1950-2025 | 15 / 250 / 3e+03 | Bq/m3 | modelled |
-| oil_gas:0010 | production: Produced-water lead-210 concentration, unconventional (shale and tight), world default | Pb210+ | produced_water_unconv_share | XWL | 1950-2025 | 100 / 1.5e+03 / 2e+04 | Bq/m3 | modelled |
+| oil_gas:0001 | production: Produced-water radium-226 concentration (post-precipitation), conventional, world default | Ra226+ | produced_water_m3 [substream conventional] | XWL | 1950-2025 | 1e+03 / 5e+03 / 2e+04 | Bq/m3 | compiled |
+| oil_gas:0002 | production: Produced-water radium-226 concentration, conventional, USA | Ra226+ | produced_water_m3 [substream conventional] | USA | 1950-2025 | 1.5e+03 / 6e+03 / 2.5e+04 | Bq/m3 | compiled |
+| oil_gas:0003 | production: Produced-water radium-226 concentration, unconventional (shale and tight), world default | Ra226+ | produced_water_unconv_share [substream unconventional] | XWL | 1950-2025 | 1e+03 / 1.24e+04 / 5.5e+04 | Bq/m3 | compiled |
+| oil_gas:0004 | production: Produced-water radium-228 concentration (post-precipitation), conventional, world default | Ra228+ | produced_water_m3 [substream conventional] | XWL | 1950-2025 | 800 / 4e+03 / 2e+04 | Bq/m3 | compiled |
+| oil_gas:0005 | production: Produced-water radium-228 concentration, conventional, USA | Ra228+ | produced_water_m3 [substream conventional] | USA | 1950-2025 | 3e+03 / 1e+04 / 4e+04 | Bq/m3 | compiled |
+| oil_gas:0006 | production: Produced-water radium-228 concentration, unconventional (shale and tight), world default | Ra228+ | produced_water_unconv_share [substream unconventional] | XWL | 1950-2025 | 1e+03 / 1.24e+04 / 5.5e+04 | Bq/m3 | compiled |
+| oil_gas:0007 | production: Produced-water potassium-40 concentration (post-precipitation), conventional, world default | K40 | produced_water_m3 [substream conventional] | XWL | 1950-2025 | 3e+03 / 1e+04 / 3e+04 | Bq/m3 | compiled |
+| oil_gas:0008 | production: Produced-water potassium-40 concentration, unconventional (shale and tight), world default | K40 | produced_water_unconv_share [substream unconventional] | XWL | 1950-2025 | 1e+04 / 4e+04 / 1.1e+05 | Bq/m3 | compiled |
+| oil_gas:0009 | production: Produced-water lead-210 concentration (post-precipitation), conventional, world default | Pb210+ | produced_water_m3 [substream conventional] | XWL | 1950-2025 | 15 / 250 / 3e+03 | Bq/m3 | modelled |
+| oil_gas:0010 | production: Produced-water lead-210 concentration, unconventional (shale and tight), world default | Pb210+ | produced_water_unconv_share [substream unconventional] | XWL | 1950-2025 | 100 / 1.5e+03 / 2e+04 | Bq/m3 | modelled |
 | oil_gas:0011 | production: Unconventional (shale and tight) fraction of produced water, USA, 1950-2005 |  | produced_water_unconv_share | USA | 1950-2005 | 0 / 0.005 / 0.02 | 1 | extrapolated |
 | oil_gas:0012 | production: Unconventional (shale and tight) fraction of produced water, USA, 2006-2010 |  | produced_water_unconv_share | USA | 2006-2010 | 0.01 / 0.04 / 0.08 | 1 | interpolated |
 | oil_gas:0013 | production: Unconventional (shale and tight) fraction of produced water, USA, 2011-2016 |  | produced_water_unconv_share | USA | 2011-2016 | 0.06 / 0.12 / 0.16 | 1 | interpolated |
@@ -67,10 +67,10 @@ $$A_{g}=V\left[(1-u)\,C^{conv}_g+u\,C^{unc}_g\right]$$
 | oil_gas:0044 | production: Fate of produced-water activity (all groups), XWL 1970-2025: evaporation pits and ponds (impounded) | impounded/og_sludge | produced_water_m3 | XWL | 1970-2025 | 0 / 0.03 / 0.1 | 1 | compiled |
 | oil_gas:0045 | production: Fate of produced-water activity (all groups), XWL 1970-2025: discharged to surface water or sea (liberated) | liberated/water_produced_discharge | produced_water_m3 | XWL | 1970-2025 | 0.1 / 0.25 / 0.42 | 1 | compiled |
 | oil_gas:0046 | production: Fate of produced-water activity (all groups), XWL 1970-2025: spread on roads or land (dispersed) | dispersed/og_produced_water | produced_water_m3 | XWL | 1970-2025 | 0 / 0.0005 / 0.003 | 1 | compiled |
-| oil_gas:0047 | production: Radium solids-bound fraction: radium-226 in scale formed per unit of outlet-water radium-226 | Ra226+/og_scale | - | XWL | 1950-2025 | 0.0004 / 0.004 / 0.016 | 1 | modelled |
-| oil_gas:0048 | production: Radium solids-bound fraction: radium-226 in sludge formed per unit of outlet-water radium-226 | Ra226+/og_sludge | - | XWL | 1950-2025 | 0.0006 / 0.006 / 0.024 | 1 | modelled |
-| oil_gas:0049 | production: Radium solids-bound fraction: radium-228 in scale formed per unit of outlet-water radium-228 | Ra228+/og_scale | - | XWL | 1950-2025 | 0.0004 / 0.004 / 0.016 | 1 | modelled |
-| oil_gas:0050 | production: Radium solids-bound fraction: radium-228 in sludge formed per unit of outlet-water radium-228 | Ra228+/og_sludge | - | XWL | 1950-2025 | 0.0006 / 0.006 / 0.024 | 1 | modelled |
+| oil_gas:0047 | production: Radium solids-bound fraction: radium-226 in scale formed per unit of outlet-water radium-226 | Ra226+/og_scale | - | XWL | 1950-2025 | 0.00037 / 0.008 / 0.0485 | 1 | modelled |
+| oil_gas:0048 | production: Radium solids-bound fraction: radium-226 in sludge formed per unit of outlet-water radium-226 | Ra226+/og_sludge | - | XWL | 1950-2025 | 0.00037 / 0.012 / 0.0616 | 1 | modelled |
+| oil_gas:0049 | production: Radium solids-bound fraction: radium-228 in scale formed per unit of outlet-water radium-228 | Ra228+/og_scale | - | XWL | 1950-2025 | 0.00037 / 0.008 / 0.0485 | 1 | modelled |
+| oil_gas:0050 | production: Radium solids-bound fraction: radium-228 in sludge formed per unit of outlet-water radium-228 | Ra228+/og_sludge | - | XWL | 1950-2025 | 0.00037 / 0.012 / 0.0616 | 1 | modelled |
 | oil_gas:0051 | production: Pb-210 present at formation of scale from reservoir-derived Pb-210, ratio to Ra-226 head activity in the same solids | Pb210+/og_scale | - | XWL | 1950-2025 | 0.005 / 0.05 / 0.5 | 1 | modelled |
 | oil_gas:0052 | production: Pb-210 present at formation of sludge from reservoir-derived Pb-210, ratio to Ra-226 head activity in the same solids | Pb210+/og_sludge | - | XWL | 1950-2025 | 0.005 / 0.05 / 0.5 | 1 | modelled |
 | oil_gas:0053 | production: Fate of removed scale (all groups), 1950-1984: controlled disposal or storage (impounded) | impounded/og_scale | - | XWL | 1950-1984 | 0.15 / 0.35 / 0.6 | 1 | extrapolated |
@@ -91,14 +91,14 @@ $$A_{g}=V\left[(1-u)\,C^{conv}_g+u\,C^{unc}_g\right]$$
 | oil_gas:0068 | production: Fate of removed sludge (all groups), 2000-2025: controlled disposal or storage (impounded) | impounded/og_sludge | - | XWL | 2000-2025 | 0.6 / 0.8 / 0.95 | 1 | extrapolated |
 | oil_gas:0069 | production: Fate of removed sludge (all groups), 2000-2025: dispersed (land-farming, spreading, scrap sold on) | dispersed/og_sludge | - | XWL | 2000-2025 | 0.02 / 0.1 / 0.3 | 1 | extrapolated |
 | oil_gas:0070 | production: Fate of removed sludge (all groups), 2000-2025: discharged offshore or to surface water (liberated) | liberated/water_produced_discharge/og_sludge | - | XWL | 2000-2025 | 0 / 0.1 / 0.2 | 1 | extrapolated |
-| oil_gas:0071 | production: Rn-222 released by associated-gas flaring per tonne of crude produced, world 1900-1993 | Rn222+/liberated/air_stack | oil_production_t | XWL | 1900-1993 | 6.39e+03 / 3.12e+04 / 8.48e+04 | Bq/t | extrapolated |
-| oil_gas:0072 | production: Rn-222 released by associated-gas flaring per tonne of crude produced, world 1994-2008 | Rn222+/liberated/air_stack | oil_production_t | XWL | 1994-2008 | 5.96e+03 / 2.5e+04 / 5.72e+04 | Bq/t | modelled |
-| oil_gas:0073 | production: Rn-222 released by associated-gas flaring per tonne of crude produced, world 2009-2025 | Rn222+/liberated/air_stack | oil_production_t | XWL | 2009-2025 | 5.52e+03 / 2.31e+04 / 5.23e+04 | Bq/t | modelled |
-| oil_gas:0074 | processing_transport: Rn-222 in marketed gas delivered to end users (reaches burners and kitchens), per m3 of gas produced | Rn222+/liberated/air_delivered_gas | gas_production_m3 | XWL | 1900-2025 | 47.6 / 300 / 779 | Bq/m3 | compiled |
-| oil_gas:0075 | processing_transport: Rn-222 in vented and fugitive gas released at well sites, plants and pipelines, per m3 of gas produced | Rn222+/liberated/air_vented_gas | gas_production_m3 | XWL | 1900-2025 | 1.71 / 12.5 / 42.4 | Bq/m3 | modelled |
-| oil_gas:0076 | processing_transport: Pb-210 formed from Rn-222 that decays inside gas wells, pipelines and processing plants and plates out (films, scale, sludge), per m3 of gas produced | Pb210+/impounded/og_processing_residue | gas_production_m3 | XWL | 1900-2025 | 0.0163 / 0.123 / 0.311 | Bq/m3 | modelled |
+| oil_gas:0071 | production: Rn-222 released by associated-gas flaring per tonne of crude produced, world 1900-1993 | Rn222+/liberated/air_stack | oil_production_t | XWL | 1900-1993 | 6.53e+03 / 4e+04 / 9.01e+04 | Bq/t | extrapolated |
+| oil_gas:0072 | production: Rn-222 released by associated-gas flaring per tonne of crude produced, world 1994-2008 | Rn222+/liberated/air_stack | oil_production_t | XWL | 1994-2008 | 5.97e+03 / 3.2e+04 / 5.76e+04 | Bq/t | modelled |
+| oil_gas:0073 | production: Rn-222 released by associated-gas flaring per tonne of crude produced, world 2009-2025 | Rn222+/liberated/air_stack | oil_production_t | XWL | 2009-2025 | 5.53e+03 / 2.96e+04 / 5.25e+04 | Bq/t | modelled |
+| oil_gas:0074 | processing_transport: Rn-222 in marketed gas delivered to end users (reaches burners and kitchens), per m3 of gas produced | Rn222+/liberated/air_delivered_gas | gas_production_m3 | XWL | 1900-2025 | 47.6 / 300 / 1e+03 | Bq/m3 | compiled |
+| oil_gas:0075 | processing_transport: Rn-222 in vented and fugitive gas released at well sites, plants and pipelines, per m3 of gas produced | Rn222+/liberated/air_vented_gas | gas_production_m3 | XWL | 1900-2025 | 1.82 / 16 / 46.8 | Bq/m3 | modelled |
+| oil_gas:0076 | processing_transport: Pb-210 formed from Rn-222 that decays inside gas wells, pipelines and processing plants and plates out (films, scale, sludge), per m3 of gas produced | Pb210+/impounded/og_processing_residue | gas_production_m3 | XWL | 1900-2025 | 0.0188 / 0.189 / 0.356 | Bq/m3 | modelled |
 | oil_gas:0077 | processing_transport: Rn-222 released with crude oil handled and refined (equilibrium with Ra-226 in crude), per tonne of crude produced | Rn222+/liberated/air_stack | oil_production_t | XWL | 1900-2025 | 200 / 1e+03 / 1.3e+04 | Bq/t | compiled |
-| oil_gas:0078 | abandonment_scrap: Fraction of newly formed scale that stays on tubulars and equipment until retirement | og_scale | - | XWL | 1950-2025 | 0.2 / 0.5 / 0.8 | 1 | modelled |
+| oil_gas:0078 | abandonment_scrap: Fraction of newly formed scale that stays on tubulars and equipment until retirement | og_scale | - | XWL | 1950-2025 | 0.6 / 0.9 / 0.97 | 1 | modelled |
 | oil_gas:0079 | abandonment_scrap: Fate of scale still on equipment at retirement (all groups), booked by creation year 1950-1964: controlled disposal or storage (impounded) | impounded/og_scale | - | XWL | 1950-1964 | 0.05 / 0.15 / 0.4 | 1 | extrapolated |
 | oil_gas:0080 | abandonment_scrap: Fate of scale still on equipment at retirement (all groups), booked by creation year 1950-1964: dispersed (land-farming, spreading, scrap sold on) | dispersed/og_scaled_scrap | - | XWL | 1950-1964 | 0.6 / 0.85 / 0.95 | 1 | extrapolated |
 | oil_gas:0081 | abandonment_scrap: Fate of scale still on equipment at retirement (all groups), booked by creation year 1965-1979: controlled disposal or storage (impounded) | impounded/og_scale | - | XWL | 1965-1979 | 0.2 / 0.5 / 0.8 | 1 | extrapolated |
@@ -130,6 +130,7 @@ $$A_{g}=V\left[(1-u)\,C^{conv}_g+u\,C^{unc}_g\right]$$
 | oil_gas:0107 | drilling: Horizontal well drill cuttings, radium-228 activity per well drilled (cuttings mass x activity concentration) | Ra228+/impounded/og_drill_cuttings | - | USA | 2005-2025 | 3.96e+06 / 1.39e+07 / 2.61e+07 | Bq/1 | measured |
 | oil_gas:0108 | drilling: Horizontal well drill cuttings, thorium-228 activity per well drilled (cuttings mass x activity concentration) | Th228+/impounded/og_drill_cuttings | - | USA | 2005-2025 | 3.96e+06 / 1.39e+07 / 2.61e+07 | Bq/1 | measured |
 | oil_gas:0109 | drilling: Horizontal well drill cuttings, potassium-40 activity per well drilled (cuttings mass x activity concentration) | K40/impounded/og_drill_cuttings | - | USA | 2005-2025 | 1.05e+08 / 3.4e+08 / 7.29e+08 | Bq/1 | measured |
+| oil_gas:0110 | processing_transport: Rn-222 carried in natural gas liquids and LPG (diverted from sales gas at gas plants and released at handling and end use), per m3 of gas produced | Rn222+/liberated/air_delivered_gas/og_processing_residue | gas_production_m3 | XWL | 1900-2025 | 10 / 200 / 1e+03 | Bq/m3 | modelled |
 
 ## 2. Cross-checks and benchmark candidates (done condition (e))
 
@@ -138,7 +139,7 @@ Arithmetic on the activity spine, central values, no stream build. Electricity: 
 **Candidate B1: gas radon per GWa of gas-fired electricity** (the strongest, two or more independent estimates).
 - Stream: $\sum$ delivered Rn $\times$ `gas_power_share` / GWa. 2010: 3.223e12 m3 $\times$ 300 Bq/m3 = 967 TBq; $\times$ 0.4255 = 411 TBq; / 548.5 GWa = 0.75 TBq/GWa. 2020: 1,189 TBq $\times$ 0.4453 = 529 TBq; / 728.2 GWa = 0.73 TBq/GWa.
 - UNSCEAR 2016 Annex B (S0001): 0.286 m3/kWh $\times$ 300 Bq/m3 = 0.75 TBq/GWa. NOT independent in value (the factor centre is UNSCEAR's delivered concentration) but independent in method (activity-spine gas volume and power share against UNSCEAR's per-kWh gas use).
-- Independent 1: Gesell 34% retention $\times$ Johnson 1973 US mean 1,370 Bq/m3 = 466 Bq/m3 delivered, i.e. 1.17 TBq/GWa (both read via S0001/S0318 only). Stream/benchmark = 0.64.
+- REVISION D66 (Steve, 2026-11-04): the Gesell $\times$ Johnson '34 % retention' benchmark (466 Bq/m3, 1.17 TBq/GWa) is withdrawn (round 3). Round-3 position: Johnson 1973 point-of-use 740-851 Bq/m3; consumption-weighted 410-860 Bq/m3; bottom-up about 170 Bq/m3; stream delivered-gas geometric mean 300 Bq/m3. B1 benchmark band 0.3-0.5 TBq/GWa (the UK-type and bottom-up concentrations); the stream sits at 0.73-0.75 TBq/GWa on the 300 Bq/m3 centre (ratio to the band roughly 1.5-2.5), so B1 is a loose check, not a tight one. The NGL row (oil_gas:0110) raises burner radon by about 67 %, which moves the stream further above the band and must be included when the build is compared.
 - Independent 2 (unverified): UK about 170 Bq/m3 gives 0.43 TBq/GWa (ratio 1.7) and Netherlands 74 Bq/m3 gives 0.19 TBq/GWa (ratio 3.9, outside $\times3$). These two figures come from Phase 1 notes; I could not re-confirm their source (S1208, Nowak, is a Polish case study with 30-1400 Bq/m3 site averages, not a UK figure).
 - Independent 3: Nowak 2022 Poland site means 30-1400 Bq/m3 (S1208) bracket our delivered 48-780 Bq/m3.
 
@@ -176,7 +177,7 @@ Not blockers for the factor file, but the pipeline refuses residue types that ha
 |---|---|---|---|---|
 | G1 | Radium in produced water: Middle East, Russia, China, Africa, Latin America | no measurements in Phase 1 or NPWGD; XWL centre is extrapolated from US and Norway | S0315 https://doi.org/10.1016/j.scitotenv.2020.137085 | No (wide band) |
 | G2 | NPWGD has no Ra data for TX, OK, KS, LA; Permian only via NM (S0316) | US volume-weighted value rests on ANL state volumes | S0313 https://digital.library.unt.edu/ark:/67531/metadc836481/m2/1/high_res_d/1007397.pdf | No |
-| G3 | NGL, LPG and propane radon; refinery sludge; Pb-210 fouling of fractionation units | no activity driver (no NGL series), no factor data | none | No (understates) |
+| G3 | NGL, LPG and propane radon (PARTLY CLOSED by D65 row 0110, low confidence); refinery sludge; Pb-210 fouling of fractionation units | NGL Rn now a per-m3-of-gas inference; refinery sludge and fouling still no data | none | No (understates) |
 | G4 | Reservoir-sourced Pb-210/Po-210 in gas and oil; Po-210 films | volatile Po-210 not separable; only a mass-balance Pb-210 row | none | No |
 | G5 | Oil-sands tailings and coke background (K-40, U, Th of sand and clay) | no measurements; quartz-sand placeholders would add hundreds of TBq of K-40 | none | No (choice 9) |
 | G6 | Monazite U-series in oil-sands tailings; Th content only from an abstract | S0429 abstract only | S0429 https://apo.ansto.gov.au/dspace/handle/10238/12874 | No |
@@ -195,26 +196,26 @@ Not blockers for the factor file, but the pipeline refuses residue types that ha
 ## 4. Blockers (for the orchestrator)
 
 - **B1** Activity series `oil_sands_ore_processed_t` (Mt of ore, Canada, from 1967) is missing: rows 0085-0087 have a blank driver. 2024 anchor: 1,019.4 Mt (S0326).
-- **B2** `us_wells_drilled_horizontal` (USA, 2005-2025) is missing: rows 0099-0109 have a blank driver. Also no world well count.
+- **B2 (driver now exists in `data/activity/oil_gas_drivers.csv`: `us_wells_drilled_horizontal` 1980-2025; the factor rows still have a blank driver, see section 8)** was: `us_wells_drilled_horizontal` (USA, 2005-2025) is missing: rows 0099-0109 have a blank driver. Also no world well count.
 - **B3** Flared gas volume series is missing; flaring uses crude tonnage as a proxy driver.
 - **B4** Oil, gas, NGL unit values (or an agreed alternative rule) for the D6 allocation across oil, gas and NGL for joint residues, and an NGL output series. Without them only `default` and the two bounds can follow a stated product-value rule.
 - **B5** Residue-type parameters (section 2 table) for five used residue types.
-- **B6** Source merge: `research/oil_gas/sources_factors.csv` (S1200-S1209) must be added to `data/sources.csv` before the committed tree validates.
+- **B6 (done)** Source merge: `research/oil_gas/sources_factors.csv` (S1200-S1209) must be added to `data/sources.csv` before the committed tree validates.
 - **Observation, out of scope:** in `data/activity/oil_gas.csv` the `XWL` produced-water series is below the `USA` series in early years (1950: XWL 5.8e8 m3 against USA 1.5e9 m3), so the "rest of world = XWL minus USA" difference goes negative before about 1985 and the independent-difference helper will log `negative_residual` for those years. Either XWL is not a true world total there, or the USA series is high. Needs the activity owner.
 
 ## 5. Choices for Steve
 
-1. **Keying without a substream column.** Conventional/unconventional concentration rows use `driver_series` (`produced_water_m3` against `produced_water_unconv_share`) as a discriminator, and the unit-1 shares use blank group. Alternative: add a `substream` match key to `select` and the factor schema. Recommend the schema change if more streams need it.
+1. **Keying (resolved by D63/D65: the `substream` column now separates conventional and unconventional; see section 8).** Original text: **Keying without a substream column.** Conventional/unconventional concentration rows use `driver_series` (`produced_water_m3` against `produced_water_unconv_share`) as a discriminator, and the unit-1 shares use blank group. Alternative: add a `substream` match key to `select` and the factor schema. Recommend the schema change if more streams need it.
 2. **Unconventional produced-water fraction eras** (0.5% to 2005, 4% 2006-10, 12% 2011-16, 16% 2017, 20% 2018-25) are assumptions anchored on one point (2017).
 3. **Rn-222 in-system decay.** Only Rn that leaves the system is Rn222+; Rn that decays in pipes and plants is not counted as Rn222+ and appears only as plated Pb-210 (0076). Alternative: count all wellhead Rn.
 4. **Flaring placed at stage `production`, route `air_stack`**, radon at the wellhead concentration; no vocabulary stage exists for flaring. Alternative: processing_transport.
-5. **Retained scale ($\phi$ = 0.5, 0.2-0.8) booked in the creation year at `abandonment_scrap`**, with the 20-year retirement lag built into the era windows and no decay survival factor (replaces my earlier Ra-228 survival idea, which would double-count decay). Sludge is assumed removed in operation.
+5. **Retained scale ($\phi$ = 0.9, 0.6-0.97 since D65; was 0.5, 0.2-0.8) booked in the creation year at `abandonment_scrap`**, with the 20-year retirement lag built into the era windows and no decay survival factor (replaces my earlier Ra-228 survival idea, which would double-count decay). Sludge is assumed removed in operation.
 6. **Era fate shares for removed and retained solids** (pre-1985, 1985-99, 2000+): wholly assumed.
 7. **Pre-1970 and world produced-water route shares:** assumed; US 2007/2012/2017 are data. The world discharge share 25% (high 42% = IOGP members) could be higher if national oil companies discharge more.
-8. **Solids fraction 1% of outlet water radium** (EPA 1993 about 0.9%; Norway 0.04-4%); scale/sludge split 40/60 assumed.
+8. **Solids fraction 2% (0.1-10%) of outlet water radium since D65** (was 1%; EPA 1991 draft 5.1%, EPA 1993 via OGJ 1.7%; Norway 0.04-4%); scale/sludge split 0.4/0.6 (scale share band 0.2-0.9).
 9. **Oil-sands background sand, clay and coke left out** of the registry (placeholders would add hundreds of TBq of K-40 and swamp the monazite signal); only the monazite thorium chain is carried. Alternative: add a background row with a clearly flagged assumption.
 10. **Oil-sands monazite per tonne of ore:** 7.5e-6 / 2.0e-5 / 7.1e-5 t/t spans the AER arithmetic (0.3-0.5% of whole tailings) and the reading as heavy-mineral fraction (15-30% of tailings). Th in monazite 7% (4-12%).
-11. **Wellhead radon 625 Bq/m3** world, (150-1,400); no USA or other country override although Johnson gives 1,370 for the USA. Delivered fraction 0.48 (0.15-0.8).
+11. **Wellhead radon 800 Bq/m3 since D65** (was 625), world (150-1,400); no USA or other country override. Delivered 300 Bq/m3 kept, so the implied delivered fraction is 0.375 (was 0.48; 0.15-0.8).
 12. **Drilling:** vertical cuttings 250 t/well (assumption, lowered from 295 t), horizontal 600 t (330-1,000); U-chain taken from XRF (gamma U-238 is 5x lower for horizontal wells); Pb-210 and Po-210 at Ra-226 equilibrium.
 13. **`bound_radio` product definition** (D6): proposed as the product with the larger share of the mobilised radium in the joint residue (water-borne radium: oil and NGL by volume of water produced; gas Pb-210 films: gas). Needs Steve's decision; the default allocation needs unit values (B4).
 14. **No construction rows** (commodity table covers it) and no refinery residue rows.
@@ -250,3 +251,48 @@ Interface as coal: `build(root) -> BuildResult(rows, rows_pre1950, log)`; `pytho
 6. Johnson 1973 (EPA-520/1-73-004), Gesell 1975 (Health Phys 29:681), Bell et al.: read only via UNSCEAR/Mitchell.
 7. S0429 Anvia (abstract only): https://apo.ansto.gov.au/dspace/handle/10238/12874; Alberta Chamber of Resources 1996; Chachula and Erasmus 2008 (via S0326).
 8. S1203 author list and S1208 UK/NL values unverified (section 2).
+
+## 8. D65 revisions (Steve, 2026-11-04; oil and gas part)
+
+Source of numbers: `research/oil_gas/papers_round2.md`, `papers_round3.md`. Sources merged into `data/sources.csv` (S1210-S1215, S1250-S1263; corrections to S0315, S0325, S1204, S0429, S0246, S1209; S1211 combines the round-2 row and the round-3 supplement). Type and licence fixes at merge: S1210 `industry_body` to `grey` (rank 5); S1212 `intergovernmental` to `compilation` (rank 2); S1214/S1215 rank 1 (regulator); licence `CC BY` to `open` (S0315, S1204); landing-page URLs added for inaccessible sources (schema requires a URL).
+
+| Row(s) | Old low / central / high | New low / central / high | Note |
+|---|---|---|---|
+| 0003 Ra-226 unconventional | 1e4 / 3e4 / 8e4 Bq/m3 | 1e3 / 1.24e4 / 5.5e4 | total Ra 24.8 Bq/L (Scanlon, volume-weighted) split equally with Ra-228; band spans total 2-110 Bq/L |
+| 0006 Ra-228 unconventional | 5e3 / 2e4 / 6e4 | 1e3 / 1.24e4 / 5.5e4 | as above |
+| 0001, 0002, 0004, 0005, 0007, 0009 | unchanged | unchanged | conventional (0001 is already 5 Bq/L Ra-226); `substream` = conventional added |
+| 0008, 0010 | unchanged | unchanged | `substream` = unconventional added |
+| 0047, 0049 scale (Ra-226, Ra-228) | 4e-4 / 4e-3 / 1.6e-2 | 3.7e-4 / 8e-3 / 4.85e-2 | total 0.001/0.02/0.10 x scale share 0.4 (0.2-0.9), log-quadrature |
+| 0048, 0050 sludge | 6e-4 / 6e-3 / 2.4e-2 | 3.7e-4 / 1.2e-2 / 6.16e-2 | total x sludge share 0.6 (0.1-0.8) |
+| 0078 retained scale $\phi$ | 0.2 / 0.5 / 0.8 | 0.6 / 0.9 / 0.97 | EPA 1991 draft |
+| 0074 delivered Rn-222 | 47.6 / 300 / 779 | 47.6 / 300 / 1,000 | round-2 cut withdrawn; high only |
+| wellhead Rn (parameter; in 0071-0073, 0075, 0076 and 0110) | 625 (150-1,400) | 800 (150-1,400) | production-weighted Johnson 1973; bounds kept (round 3 suggested 185-3,700) |
+| 0071 flaring, 1900-93 | 6395 / 31250 / 84772 | 6534 / 40000 / 90059 | wellhead x intensity, same log-quadrature |
+| 0072 flaring, 1994-2008 | 5963 / 25000 / 57151 | 5968 / 32000 / 57645 | |
+| 0073 flaring, 2009-25 | 5525 / 23125 / 52315 | 5528 / 29600 / 52540 | |
+| 0075 vented | 1.71 / 12.5 / 42.4 | 1.82 / 16 / 46.8 | 2% x wellhead |
+| 0076 Pb-210 plate-out | 0.0163 / 0.1226 / 0.311 | 0.0188 / 0.1886 / 0.356 | wellhead 800 and (1 - r) = 0.625 (r = 300/800 = 0.375) |
+| 0110 NEW NGL/LPG Rn-222 | none | 10 / 200 / 1,000 Bq/m3 gas | 800 x 0.5 x 0.5; LOW CONFIDENCE (flagged) |
+
+**Keying for the OIL_GAS_SPEC (select calls).**
+- Produced-water concentration, stage `production`: `select(stage="production", substream="conventional"|"unconventional", group=<Ra226+|Ra228+|K40|Pb210+>, region=<USA|XWL>, year=y)` (exact region beats `XWL`; USA override exists for the conventional Ra rows only). The legacy `driver_series` (`produced_water_m3` for conventional, `produced_water_unconv_share` for unconventional) is unchanged, so calls that include it and omit `substream` still resolve uniquely. Recommended later clean-up (not done, would break such calls): set the unconventional driver to `produced_water_m3` and require `substream`.
+- Unconventional share $u$ (0011-0018): `select(stage="production", driver_series="produced_water_unconv_share", group="", substream="", region=...)`; blank group and substream separate it from the concentration rows.
+- NGL radon 0110: `select(stage="processing_transport", group="Rn222+", route="air_delivered_gas", residue_type="og_processing_residue")` for NGL; the delivered-gas row 0074 has blank `residue_type`. The residue type is only a key device (as for the liberated fate rows); the master row carries no residue. Cleaner alternative: add route `air_delivered_ngl` to vocab.json, then drop the residue type.
+- Drilling, oil sands and all other rows: `substream` still blank (not changed in D65).
+
+**Drilling driver switch (proposal only; not built).** Rows 0088-0098 (vertical, `us_wells_drilled_total`, 1949-2010) and 0099-0109 (horizontal, blank driver, 2005-2025): `data/activity/oil_gas_drivers.csv` now has `us_wells_drilled_vertical` (USA, 1949-2025; before 1976 the EIA total is taken as vertical) and `us_wells_drilled_horizontal` (USA, 1980-2025). Cleanest switch: (1) set the driver of 0088-0098 to `us_wells_drilled_vertical` and `year_to` to 2025, and set that of 0099-0109 to `us_wells_drilled_horizontal`; (2) set `substream` to `conventional` for the vertical and `unconventional` for the horizontal cuttings rows, so the spec selects by substream and the series by driver; (3) extend `year_from` of the horizontal rows from 2005 back to 1980 (or cap at 2005 and accept that about 700-2,000 horizontal wells a year in 1995-2004 get no cuttings), a choice for Steve; (4) retire `us_wells_drilled_total` for drilling (it ends 2010 in `oil_gas.csv`, and in 2010 vertical 20,478 + horizontal 10,180 = 30,658 against a total of 36,611, so the total includes wells the split series does not count: re-check the per-well factors against which count they assumed). Until the rows are switched the spec must not use `us_wells_drilled_total` beyond 2010.
+
+## 9. D66 revisions (Steve, 2026-11-04)
+
+| Row(s) | Old low / central / high | New low / central / high | Note |
+|---|---|---|---|
+| 0003 Ra-226 unconventional | 1,000 / 12,400 / 55,000 Bq/m3 | 1,181 / 14,880 / 67,100 | total Ra 24.8 Bq/L x share 0.6 (0.45-0.75); total range 2-110 Bq/L; log-quadrature (arithmetic in the row notes); source S0300 added |
+| 0006 Ra-228 unconventional | 1,000 / 12,400 / 55,000 | 766 / 9,920 / 45,500 | share 0.4 (0.25-0.55) |
+| 0088-0098 vertical cuttings | driver `us_wells_drilled_total`, 1949-2010, substream blank | driver `us_wells_drilled_vertical`, 1949-2025, substream `conventional` | per-well values unchanged |
+| 0099-0109 horizontal cuttings | driver blank, 2005-2025, substream blank | driver `us_wells_drilled_horizontal`, 1980-2025, substream `unconventional` | per-well values unchanged |
+
+- Rowan et al. 2011 is already in `data/sources.csv` as S0300 (same report, SIR 2011-5135), so no S1270 row was added (it would duplicate S0300); the D66 quotation was appended to the S0300 notes and S0300 added to the source IDs of 0003 and 0006.
+- Per-well cuttings factors: each is cuttings mass per well (100/250/450 t vertical; 330/600/1,000 t horizontal) times a PA DEP TENORM concentration. None divides a total by a well count, so the change of count (36,611 total against 20,478 vertical + 10,180 horizontal = 30,658 in 2010) changes the number of wells the factors multiply, not the factors. The cuttings mass per well is a typical-well assumption, so the 5,953 wells in 2010 that the split series does not count (36,611 - 30,658) simply carry no cuttings now.
+- `us_wells_drilled_total` is retired for drilling: no factor row uses it. It remains in `data/activity/oil_gas.csv` (outside this task's file scope; see the report to the orchestrator).
+- Keying: drilling rows are selected by `stage="drilling"`, `substream` (`conventional` vertical, `unconventional` horizontal), group, and the driver; keys remain unique (disjoint drivers and substreams). The produced-water rows use the same substream values.
+- Early horizontals (1980-2004) take the 2-3 km-lateral cuttings mass, probably an overstatement.
