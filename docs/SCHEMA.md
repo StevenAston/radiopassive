@@ -465,7 +465,7 @@ One row may raise several codes. Each code is raised **only** for the condition 
 | `V14` | An accident route (`vocab.accident_routes`) on a row that is not an event `transfer_in` |
 | `V15` | A `flow` row in `liberated` at a routine-transfer stage (`vocab.routine_transfers`); those discharges must be routine transfers out of Sealed |
 | `X01` | Duplicate unique key (§3) |
-| `X02` | Transfers do not balance for a balance key (§3.1; relative tolerance 10⁻⁶ for each of low/central/high). Reported once per key, with `row = None`, against the first file containing that key |
+| `X02` | Transfers do not balance for a balance key (§3.1; relative tolerance 10⁻⁵ for each of low/central/high — v2.4a, D68: values are stored to six significant digits, so a sum of rounded rows can differ from its rounded total by a few 10⁻⁶). Reported once per key, with `row = None`, against the first file containing that key |
 | `X03` | Allocation completeness (§3.3 rule 3): a key has a non-default variant but not all three, **or** in a complete key the `default` row's rule lacks `alloc:value`/`alloc:mass`. Reported once per key, on the key's first row. (A bound row lacking its own token is `R02`, not `X03`) |
 | `X04` | A `nuclear` row at a civil-rule stage (§3.3 rule 4) with no `civil:` token |
 | `X05` | An illegitimate transfer (§3.1): an event transfer whose tier does not match the event (`transfer_out` ≠ `from_tier`, or `transfer_in` ∉ `to_tiers`); or a transfer with no `event_id` at a stage not in `routine_transfers`, or with tiers other than that stage's routine pair |

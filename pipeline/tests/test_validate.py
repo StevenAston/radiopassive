@@ -113,7 +113,7 @@ def write_csv(path, header, rows):
 
 
 VALID_HEADER, VALID_ROWS = read_csv(FIXTURES / "valid_rows.csv")
-HALF = dict(value_low="3.5e16", value_central="4.25e16", value_high="5.0e16")  # half of the E001 Cs137+ release
+HALF = {"value_low": "3.5e16", "value_central": "4.25e16", "value_high": "5.0e16"}  # half of the E001 Cs137+ release
 
 
 def vrow(n, **changes):
@@ -130,11 +130,11 @@ def vrow(n, **changes):
 #  7 coal coal_mining memo_earth_moved, modelled        8 oil_gas production oil, SUN 1980, liberated + route
 #  9 wind_solar commodity_supply silicon_mg, embedded   10 other geothermal reisolated
 
-OPENING = dict(stream="coal", substream="power", stage="combustion_power", tier="impounded",
-               residue_type="coal_fly_ash", quantity="opening_stock", unit="Bq", country="USA",
-               year="1950", technology="", route="", event_id="", embedded_fuel="false",
-               product="", allocation_rule="none", basis="compiled", factor_ids="",
-               source_ids="S0003")
+OPENING = {"stream": "coal", "substream": "power", "stage": "combustion_power", "tier": "impounded",
+               "residue_type": "coal_fly_ash", "quantity": "opening_stock", "unit": "Bq", "country": "USA",
+               "year": "1950", "technology": "", "route": "", "event_id": "", "embedded_fuel": "false",
+               "product": "", "allocation_rule": "none", "basis": "compiled", "factor_ids": "",
+               "source_ids": "S0003"}
 
 
 def kingston_pair(group="Ra226+", in_tier="liberated", **common):
@@ -276,54 +276,54 @@ def test_default_only_keys_are_not_flagged_by_x03(tmp_root):
     assert_clean(validate(tmp_root, [rel]))
 
 
-SEALED_DECOM = dict(stage="decommissioning", tier="sealed_fuel_cycle", residue_type="", allocation_rule="none", product="")
-COAL_CONSTRUCTION = dict(stage="construction", substream="power", tier="impounded", residue_type="coal_fly_ash",
-                         basis="compiled", factor_ids="", product="cement")
+SEALED_DECOM = {"stage": "decommissioning", "tier": "sealed_fuel_cycle", "residue_type": "", "allocation_rule": "none", "product": ""}
+COAL_CONSTRUCTION = {"stage": "construction", "substream": "power", "tier": "impounded", "residue_type": "coal_fly_ash",
+                         "basis": "compiled", "factor_ids": "", "product": "cement"}
 
 
 @pytest.mark.parametrize(
     "base, changes",
     [
-        pytest.param(8, dict(country="CSK", year=1960), id="CSK-in-window"),
-        pytest.param(8, dict(country="DDR", year=1970), id="DDR-in-window"),
-        pytest.param(8, dict(country="YUG", year=1985), id="YUG-in-window"),
-        pytest.param(8, dict(country="DEU", year=1960), id="DEU-pre-1990-no-window"),
-        pytest.param(10, dict(country="XXX"), id="XXX-remainder"),
-        pytest.param(10, dict(value_low="2e13", value_central="2e13", value_high="2e13"), id="low-eq-central-eq-high"),
-        pytest.param(10, dict(value_low="0", value_central="0", value_high="0"), id="all-zero"),
-        pytest.param(10, dict(value_low="12000000000000", value_central="30000000000000.5", value_high="6E13"), id="plain-and-exponent-notation"),
-        pytest.param(10, dict(year=1950), id="year-lower-bound"),
-        pytest.param(10, dict(year=2025), id="year-upper-bound"),
-        pytest.param(10, dict(notes='Quoted, with a comma and "quotes"'), id="notes-with-comma"),
-        pytest.param(10, dict(technology="gas_power"), id="technology-populated"),
-        pytest.param(10, dict(source_ids="S0001;S0002;S0003"), id="three-sources"),
-        pytest.param(10, dict(group="Rn222+"), id="flow-only-group-on-flow"),
-        pytest.param(10, dict(factor_ids="coal:0001;coal:0002"), id="factor-ids-on-a-non-modelled-row"),
-        pytest.param(10, dict(basis="modelled", factor_ids="coal:0002"), id="modelled-with-factor"),
-        pytest.param(8, dict(product="gas"), id="product-gas"),
-        pytest.param(8, dict(product="ngl"), id="product-ngl"),
-        pytest.param(8, dict(product="bitumen"), id="product-bitumen"),
-        pytest.param(8, dict(stage="drilling", tier="impounded", residue_type="og_sludge", route=""), id="oil-gas-product-at-drilling"),
-        pytest.param(9, dict(product="copper"), id="commodity-copper"),
-        pytest.param(9, dict(product="other_commodity"), id="commodity-other"),
+        pytest.param(8, {"country": "CSK", "year": 1960}, id="CSK-in-window"),
+        pytest.param(8, {"country": "DDR", "year": 1970}, id="DDR-in-window"),
+        pytest.param(8, {"country": "YUG", "year": 1985}, id="YUG-in-window"),
+        pytest.param(8, {"country": "DEU", "year": 1960}, id="DEU-pre-1990-no-window"),
+        pytest.param(10, {"country": "XXX"}, id="XXX-remainder"),
+        pytest.param(10, {"value_low": "2e13", "value_central": "2e13", "value_high": "2e13"}, id="low-eq-central-eq-high"),
+        pytest.param(10, {"value_low": "0", "value_central": "0", "value_high": "0"}, id="all-zero"),
+        pytest.param(10, {"value_low": "12000000000000", "value_central": "30000000000000.5", "value_high": "6E13"}, id="plain-and-exponent-notation"),
+        pytest.param(10, {"year": 1950}, id="year-lower-bound"),
+        pytest.param(10, {"year": 2025}, id="year-upper-bound"),
+        pytest.param(10, {"notes": 'Quoted, with a comma and "quotes"'}, id="notes-with-comma"),
+        pytest.param(10, {"technology": "gas_power"}, id="technology-populated"),
+        pytest.param(10, {"source_ids": "S0001;S0002;S0003"}, id="three-sources"),
+        pytest.param(10, {"group": "Rn222+"}, id="flow-only-group-on-flow"),
+        pytest.param(10, {"factor_ids": "coal:0001;coal:0002"}, id="factor-ids-on-a-non-modelled-row"),
+        pytest.param(10, {"basis": "modelled", "factor_ids": "coal:0002"}, id="modelled-with-factor"),
+        pytest.param(8, {"product": "gas"}, id="product-gas"),
+        pytest.param(8, {"product": "ngl"}, id="product-ngl"),
+        pytest.param(8, {"product": "bitumen"}, id="product-bitumen"),
+        pytest.param(8, {"stage": "drilling", "tier": "impounded", "residue_type": "og_sludge", "route": ""}, id="oil-gas-product-at-drilling"),
+        pytest.param(9, {"product": "copper"}, id="commodity-copper"),
+        pytest.param(9, {"product": "other_commodity"}, id="commodity-other"),
         pytest.param(1, SEALED_DECOM, id="decommissioning-without-product"),
         pytest.param(1, dict(SEALED_DECOM, tier="liberated", route="water_liquid_effluent"), id="decommissioning-liberated-without-product"),
         pytest.param(1, dict(SEALED_DECOM, tier="dispersed", residue_type="u_process_residue"), id="decommissioning-dispersed-without-product"),
-        pytest.param(1, dict(stage="construction", tier="impounded", residue_type="u_process_residue", product="cement", allocation_rule="none"), id="nuclear-construction-with-commodity"),
-        pytest.param(1, dict(stage="construction", tier="liberated", residue_type="", route="air_dust", product="steel", allocation_rule="none"), id="nuclear-construction-liberated-with-commodity"),
+        pytest.param(1, {"stage": "construction", "tier": "impounded", "residue_type": "u_process_residue", "product": "cement", "allocation_rule": "none"}, id="nuclear-construction-with-commodity"),
+        pytest.param(1, {"stage": "construction", "tier": "liberated", "residue_type": "", "route": "air_dust", "product": "steel", "allocation_rule": "none"}, id="nuclear-construction-liberated-with-commodity"),
         pytest.param(7, COAL_CONSTRUCTION, id="coal-construction-with-commodity"),
-        pytest.param(1, dict(stage="u_mining_isl", tier="impounded", residue_type="isl_pond_residue",
-                             allocation_rule="civil:ratio;alloc:value", country="KAZ", year=1999),
+        pytest.param(1, {"stage": "u_mining_isl", "tier": "impounded", "residue_type": "isl_pond_residue",
+                             "allocation_rule": "civil:ratio;alloc:value", "country": "KAZ", "year": 1999},
                      id="civil-component-among-several-tokens"),
-        pytest.param(1, dict(stage="u_mining_conv", tier="impounded", residue_type="u_waste_rock", year=1964,
-                             allocation_rule="civil:pre1965", value_low=0, value_central=0, value_high=0),
+        pytest.param(1, {"stage": "u_mining_conv", "tier": "impounded", "residue_type": "u_waste_rock", "year": 1964,
+                             "allocation_rule": "civil:pre1965", "value_low": 0, "value_central": 0, "value_high": 0},
                      id="civil-pre1965-in-1964-with-zero-high"),
-        pytest.param(1, dict(stage="u_mining_conv", tier="impounded", residue_type="u_waste_rock", year=1965,
-                             allocation_rule="civil:ratio"), id="civil-ratio-in-1965"),
-        pytest.param(1, dict(stage="u_mining_conv", tier="memo_earth_moved", residue_type="", country="AUS", year=1995,
-                             allocation_rule="civil:ratio"), id="civil-memo-earth-moved-flow"),
-        pytest.param(1, dict(stage="reprocessing", tier="sealed_fuel_cycle", residue_type="", country="GBR",
-                             year=1990, allocation_rule="civil:doc;civil:throughput"), id="reprocessing-two-civil-tokens"),
+        pytest.param(1, {"stage": "u_mining_conv", "tier": "impounded", "residue_type": "u_waste_rock", "year": 1965,
+                             "allocation_rule": "civil:ratio"}, id="civil-ratio-in-1965"),
+        pytest.param(1, {"stage": "u_mining_conv", "tier": "memo_earth_moved", "residue_type": "", "country": "AUS", "year": 1995,
+                             "allocation_rule": "civil:ratio"}, id="civil-memo-earth-moved-flow"),
+        pytest.param(1, {"stage": "reprocessing", "tier": "sealed_fuel_cycle", "residue_type": "", "country": "GBR",
+                             "year": 1990, "allocation_rule": "civil:doc;civil:throughput"}, id="reprocessing-two-civil-tokens"),
         pytest.param(10, OPENING, id="opening-stock-1950"),
         pytest.param(10, dict(OPENING, tier="reisolated"), id="opening-stock-reisolated"),
         pytest.param(10, dict(OPENING, tier="liberated", residue_type="", route="water_spill"), id="opening-stock-liberated"),
@@ -403,19 +403,19 @@ def test_invalid_case(tmp_root, name):
 @pytest.mark.parametrize(
     "changes",
     [
-        pytest.param(dict(below_detection="yes"), id="bool-yes"),
-        pytest.param(dict(embedded_fuel="True"), id="bool-capitalised"),
-        pytest.param(dict(below_detection="1"), id="bool-1"),
-        pytest.param(dict(year="19x5"), id="year-not-int"),
-        pytest.param(dict(year="1986.5"), id="year-not-int-decimal"),
-        pytest.param(dict(value_central="abc"), id="float-not-number"),
-        pytest.param(dict(value_central="nan"), id="float-nan"),
-        pytest.param(dict(value_high="inf"), id="float-infinity"),
-        pytest.param(dict(source_ids=""), id="source-ids-empty"),
-        pytest.param(dict(basis=""), id="required-cell-empty"),
-        pytest.param(dict(country=""), id="required-cell-empty-country"),
-        pytest.param(dict(value_low=""), id="required-float-empty"),
-        pytest.param(dict(allocation_rule=""), id="allocation-rule-empty"),
+        pytest.param({"below_detection": "yes"}, id="bool-yes"),
+        pytest.param({"embedded_fuel": "True"}, id="bool-capitalised"),
+        pytest.param({"below_detection": "1"}, id="bool-1"),
+        pytest.param({"year": "19x5"}, id="year-not-int"),
+        pytest.param({"year": "1986.5"}, id="year-not-int-decimal"),
+        pytest.param({"value_central": "abc"}, id="float-not-number"),
+        pytest.param({"value_central": "nan"}, id="float-nan"),
+        pytest.param({"value_high": "inf"}, id="float-infinity"),
+        pytest.param({"source_ids": ""}, id="source-ids-empty"),
+        pytest.param({"basis": ""}, id="required-cell-empty"),
+        pytest.param({"country": ""}, id="required-cell-empty-country"),
+        pytest.param({"value_low": ""}, id="required-float-empty"),
+        pytest.param({"allocation_rule": ""}, id="allocation-rule-empty"),
     ],
 )
 def test_r01_uncoercible_cell(tmp_root, changes):
@@ -457,37 +457,37 @@ def test_r01_row_makes_its_whole_x02_balance_key_skipped(tmp_root):
 
 
 R02_CASES = [
-    pytest.param(9, dict(value_low="1e8"), id="below-detection-with-nonzero-low"),
-    pytest.param(2, dict(tier="liberated"), id="standing-inventory-outside-sealed-in-core"),
-    pytest.param(2, dict(quantity="flow", unit="Bq/a"), id="sealed-in-core-with-flow"),
-    pytest.param(2, dict(unit="Bq/a"), id="standing-inventory-unit-bq-per-a"),
-    pytest.param(7, dict(embedded_fuel="true"), id="embedded-fuel-outside-wind-solar-or-construction"),
-    pytest.param(10, dict(year="2026"), id="year-above-2025"),
-    pytest.param(10, dict(year="1949"), id="year-below-1950"),
-    pytest.param(10, dict(stream="solar"), id="invalid-stream-skips-v01-v03-v11"),
-    pytest.param(10, dict(tier="buried"), id="invalid-tier-skips-v03"),
-    pytest.param(10, dict(basis="guess"), id="invalid-basis"),
-    pytest.param(10, dict(allocation_rule="civil:xyz"), id="invalid-allocation-token"),
-    pytest.param(10, dict(allocation_rule="value"), id="v1-style-token-without-prefix"),
-    pytest.param(10, dict(allocation_rule="none;bogus"), id="one-bad-token-in-a-list"),
-    pytest.param(10, dict(value_low="-1"), id="negative-value"),
-    pytest.param(10, dict(technology="fusion"), id="invalid-technology"),
-    pytest.param(10, dict(source_ids="S0001;S0001"), id="duplicate-source-in-list"),
-    pytest.param(10, dict(unit="Bq/s"), id="invalid-unit"),
-    pytest.param(10, dict(residue_type=""), id="residue-tier-without-residue-type"),
-    pytest.param(8, dict(residue_type="og_scale"), id="residue-type-on-liberated-row"),
-    pytest.param(7, dict(residue_type="coal_fly_ash"), id="residue-type-on-memo-row"),
-    pytest.param(8, dict(route=""), id="liberated-without-route"),
-    pytest.param(10, dict(route="air_stack"), id="route-on-non-liberated-row"),
-    pytest.param(10, dict(route="air_leak"), id="route-outside-vocabulary"),
-    pytest.param(7, dict(factor_ids=""), id="modelled-without-factor-ids"),
-    pytest.param(7, dict(quantity="opening_stock", unit="Bq", year="1950"), id="opening-stock-on-memo-tier"),
+    pytest.param(9, {"value_low": "1e8"}, id="below-detection-with-nonzero-low"),
+    pytest.param(2, {"tier": "liberated"}, id="standing-inventory-outside-sealed-in-core"),
+    pytest.param(2, {"quantity": "flow", "unit": "Bq/a"}, id="sealed-in-core-with-flow"),
+    pytest.param(2, {"unit": "Bq/a"}, id="standing-inventory-unit-bq-per-a"),
+    pytest.param(7, {"embedded_fuel": "true"}, id="embedded-fuel-outside-wind-solar-or-construction"),
+    pytest.param(10, {"year": "2026"}, id="year-above-2025"),
+    pytest.param(10, {"year": "1949"}, id="year-below-1950"),
+    pytest.param(10, {"stream": "solar"}, id="invalid-stream-skips-v01-v03-v11"),
+    pytest.param(10, {"tier": "buried"}, id="invalid-tier-skips-v03"),
+    pytest.param(10, {"basis": "guess"}, id="invalid-basis"),
+    pytest.param(10, {"allocation_rule": "civil:xyz"}, id="invalid-allocation-token"),
+    pytest.param(10, {"allocation_rule": "value"}, id="v1-style-token-without-prefix"),
+    pytest.param(10, {"allocation_rule": "none;bogus"}, id="one-bad-token-in-a-list"),
+    pytest.param(10, {"value_low": "-1"}, id="negative-value"),
+    pytest.param(10, {"technology": "fusion"}, id="invalid-technology"),
+    pytest.param(10, {"source_ids": "S0001;S0001"}, id="duplicate-source-in-list"),
+    pytest.param(10, {"unit": "Bq/s"}, id="invalid-unit"),
+    pytest.param(10, {"residue_type": ""}, id="residue-tier-without-residue-type"),
+    pytest.param(8, {"residue_type": "og_scale"}, id="residue-type-on-liberated-row"),
+    pytest.param(7, {"residue_type": "coal_fly_ash"}, id="residue-type-on-memo-row"),
+    pytest.param(8, {"route": ""}, id="liberated-without-route"),
+    pytest.param(10, {"route": "air_stack"}, id="route-on-non-liberated-row"),
+    pytest.param(10, {"route": "air_leak"}, id="route-outside-vocabulary"),
+    pytest.param(7, {"factor_ids": ""}, id="modelled-without-factor-ids"),
+    pytest.param(7, {"quantity": "opening_stock", "unit": "Bq", "year": "1950"}, id="opening-stock-on-memo-tier"),
     pytest.param(10, dict(OPENING, year="1960"), id="opening-stock-outside-1950"),
-    pytest.param(2, dict(quantity="opening_stock", unit="Bq", year="1950"), id="opening-stock-in-sealed-in-core"),
+    pytest.param(2, {"quantity": "opening_stock", "unit": "Bq", "year": "1950"}, id="opening-stock-in-sealed-in-core"),
     pytest.param(10, dict(OPENING, unit="Bq/a"), id="opening-stock-with-flow-unit"),
-    pytest.param(1, dict(allocation_rule="civil:pre1965", year=1970), id="civil-pre1965-after-1964"),
-    pytest.param(1, dict(allocation_rule="civil:pre1965", year=1960), id="civil-pre1965-with-nonzero-high"),
-    pytest.param(1, dict(allocation_rule="civil:ratio", year=1960), id="civil-ratio-before-1965"),
+    pytest.param(1, {"allocation_rule": "civil:pre1965", "year": 1970}, id="civil-pre1965-after-1964"),
+    pytest.param(1, {"allocation_rule": "civil:pre1965", "year": 1960}, id="civil-pre1965-with-nonzero-high"),
+    pytest.param(1, {"allocation_rule": "civil:ratio", "year": 1960}, id="civil-ratio-before-1965"),
 ]
 
 
@@ -518,10 +518,10 @@ def test_r02_bound_variant_needs_its_own_token(tmp_root, variant, rule):
 @pytest.mark.parametrize(
     "changes",
     [
-        pytest.param(dict(value_low="9e13"), id="low-above-central"),
-        pytest.param(dict(value_central="9e13"), id="central-above-high"),
-        pytest.param(dict(value_central="4e12"), id="central-below-low"),
-        pytest.param(dict(value_high="5e12"), id="high-below-low-and-central"),
+        pytest.param({"value_low": "9e13"}, id="low-above-central"),
+        pytest.param({"value_central": "9e13"}, id="central-above-high"),
+        pytest.param({"value_central": "4e12"}, id="central-below-low"),
+        pytest.param({"value_high": "5e12"}, id="high-below-low-and-central"),
     ],
 )
 def test_r03_ordering_of_low_central_high(tmp_root, changes):
@@ -532,51 +532,51 @@ def test_r03_ordering_of_low_central_high(tmp_root, changes):
 # --------------------------------------------------------------------------- V01-V13
 
 VOCAB_CASES = [
-    pytest.param("V01", 7, dict(substream="wind"), id="V01-substream-of-another-stream"),
-    pytest.param("V01", 10, dict(substream="not_a_substream"), id="V01-unknown-substream"),
-    pytest.param("V02", 10, dict(stage="not_a_stage"), id="V02-unknown-stage-only"),
-    pytest.param("V02", 10, dict(stage="u_milling", tier="impounded"), id="V02-nuclear-stage-on-other-stream"),
-    pytest.param("V03", 10, dict(tier="dispersed"), id="V03-dispersed-at-geothermal"),
-    pytest.param("V03", 1, dict(stage="conv_enrich_fab"), id="V03-dispersed-at-conversion"),
-    pytest.param("V03", 2, dict(stage="spent_fuel"), id="V03-sealed-in-core-at-spent-fuel"),
-    pytest.param("V04", 10, dict(group="Tc98"), id="V04-nuclide-not-a-group"),
-    pytest.param("V04", 10, dict(group="Cs137"), id="V04-head-without-plus"),
-    pytest.param("V04", 10, dict(group="Zz999"), id="V04-nonsense-group"),
-    pytest.param("V05", 10, dict(country="ZZZ"), id="V05-unknown-country"),
-    pytest.param("V05", 10, dict(country="CA"), id="V05-two-letter-country"),
-    pytest.param("V06", 8, dict(country="SUN", year=1992), id="V06-SUN-after-1991"),
-    pytest.param("V06", 8, dict(country="CSK", year=1993), id="V06-CSK-after-1992"),
-    pytest.param("V06", 8, dict(country="DDR", year=1991), id="V06-DDR-after-1990"),
-    pytest.param("V06", 8, dict(country="YUG", year=2007), id="V06-YUG-after-2006"),
-    pytest.param("V07", 10, dict(source_ids="S0001;S0099"), id="V07-one-of-two-unknown"),
-    pytest.param("V07", 10, dict(source_ids="S9002"), id="V07-real-id-absent-from-fixture-registry"),
-    pytest.param("V08", 10, dict(event_id="E099"), id="V08-unknown-event"),
-    pytest.param("V10", 10, dict(country="XWL"), id="V10-world-aggregate-in-master"),
-    pytest.param("V11", 8, dict(product=""), id="V11-oil-gas-without-product"),
-    pytest.param("V11", 8, dict(product="kerosene"), id="V11-oil-gas-unknown-product"),
-    pytest.param("V11", 8, dict(product="copper"), id="V11-oil-gas-with-commodity"),
-    pytest.param("V11", 8, dict(stage="drilling", tier="impounded", residue_type="og_sludge", route="", product=""), id="V11-oil-gas-drilling-without-product"),
-    pytest.param("V11", 9, dict(product=""), id="V11-commodity-stage-without-product"),
-    pytest.param("V11", 9, dict(product="unobtainium"), id="V11-commodity-unknown"),
-    pytest.param("V11", 9, dict(product="oil"), id="V11-commodity-stage-with-oil-product"),
-    pytest.param("V11", 10, dict(product="copper"), id="V11-product-on-geothermal"),
-    pytest.param("V11", 1, dict(product="copper"), id="V11-product-on-uranium-milling"),
+    pytest.param("V01", 7, {"substream": "wind"}, id="V01-substream-of-another-stream"),
+    pytest.param("V01", 10, {"substream": "not_a_substream"}, id="V01-unknown-substream"),
+    pytest.param("V02", 10, {"stage": "not_a_stage"}, id="V02-unknown-stage-only"),
+    pytest.param("V02", 10, {"stage": "u_milling", "tier": "impounded"}, id="V02-nuclear-stage-on-other-stream"),
+    pytest.param("V03", 10, {"tier": "dispersed"}, id="V03-dispersed-at-geothermal"),
+    pytest.param("V03", 1, {"stage": "conv_enrich_fab"}, id="V03-dispersed-at-conversion"),
+    pytest.param("V03", 2, {"stage": "spent_fuel"}, id="V03-sealed-in-core-at-spent-fuel"),
+    pytest.param("V04", 10, {"group": "Tc98"}, id="V04-nuclide-not-a-group"),
+    pytest.param("V04", 10, {"group": "Cs137"}, id="V04-head-without-plus"),
+    pytest.param("V04", 10, {"group": "Zz999"}, id="V04-nonsense-group"),
+    pytest.param("V05", 10, {"country": "ZZZ"}, id="V05-unknown-country"),
+    pytest.param("V05", 10, {"country": "CA"}, id="V05-two-letter-country"),
+    pytest.param("V06", 8, {"country": "SUN", "year": 1992}, id="V06-SUN-after-1991"),
+    pytest.param("V06", 8, {"country": "CSK", "year": 1993}, id="V06-CSK-after-1992"),
+    pytest.param("V06", 8, {"country": "DDR", "year": 1991}, id="V06-DDR-after-1990"),
+    pytest.param("V06", 8, {"country": "YUG", "year": 2007}, id="V06-YUG-after-2006"),
+    pytest.param("V07", 10, {"source_ids": "S0001;S0099"}, id="V07-one-of-two-unknown"),
+    pytest.param("V07", 10, {"source_ids": "S9002"}, id="V07-real-id-absent-from-fixture-registry"),
+    pytest.param("V08", 10, {"event_id": "E099"}, id="V08-unknown-event"),
+    pytest.param("V10", 10, {"country": "XWL"}, id="V10-world-aggregate-in-master"),
+    pytest.param("V11", 8, {"product": ""}, id="V11-oil-gas-without-product"),
+    pytest.param("V11", 8, {"product": "kerosene"}, id="V11-oil-gas-unknown-product"),
+    pytest.param("V11", 8, {"product": "copper"}, id="V11-oil-gas-with-commodity"),
+    pytest.param("V11", 8, {"stage": "drilling", "tier": "impounded", "residue_type": "og_sludge", "route": "", "product": ""}, id="V11-oil-gas-drilling-without-product"),
+    pytest.param("V11", 9, {"product": ""}, id="V11-commodity-stage-without-product"),
+    pytest.param("V11", 9, {"product": "unobtainium"}, id="V11-commodity-unknown"),
+    pytest.param("V11", 9, {"product": "oil"}, id="V11-commodity-stage-with-oil-product"),
+    pytest.param("V11", 10, {"product": "copper"}, id="V11-product-on-geothermal"),
+    pytest.param("V11", 1, {"product": "copper"}, id="V11-product-on-uranium-milling"),
     pytest.param("V11", 1, dict(SEALED_DECOM, product="steel"), id="V11-product-on-decommissioning-sealed"),
     pytest.param("V11", 1, dict(SEALED_DECOM, tier="liberated", route="air_stack", product="steel"), id="V11-product-on-decommissioning-liberated"),
     pytest.param("V11", 1, dict(SEALED_DECOM, tier="dispersed", residue_type="u_process_residue", product="cement"), id="V11-product-on-decommissioning-dispersed"),
-    pytest.param("V11", 1, dict(stage="construction", tier="impounded", residue_type="u_process_residue", product="", allocation_rule="none"), id="V11-nuclear-construction-without-product"),
-    pytest.param("V11", 1, dict(stage="construction", tier="impounded", residue_type="u_process_residue", product="oil", allocation_rule="none"), id="V11-nuclear-construction-with-oil-product"),
-    pytest.param("V11", 1, dict(stage="construction", tier="impounded", residue_type="u_process_residue", product="kerosene", allocation_rule="none"), id="V11-nuclear-construction-unknown-product"),
-    pytest.param("V14", 8, dict(route="air_accident_release"), id="V14-air-accident-route-on-a-flow"),
-    pytest.param("V14", 8, dict(route="water_accident_release"), id="V14-water-accident-route-on-a-flow"),
-    pytest.param("V15", 1, dict(stage="sea_disposal", tier="liberated", residue_type="", route="sea_disposal_package", allocation_rule="none"), id="V15-flow-liberated-at-sea-disposal"),
-    pytest.param("V15", 1, dict(stage="reprocessing", tier="liberated", residue_type="", route="air_stack", allocation_rule="civil:throughput"), id="V15-flow-liberated-at-reprocessing"),
-    pytest.param("V15", 1, dict(stage="conv_enrich_fab", tier="liberated", residue_type="", route="air_stack", allocation_rule="none"), id="V15-flow-liberated-at-conv-enrich-fab"),
+    pytest.param("V11", 1, {"stage": "construction", "tier": "impounded", "residue_type": "u_process_residue", "product": "", "allocation_rule": "none"}, id="V11-nuclear-construction-without-product"),
+    pytest.param("V11", 1, {"stage": "construction", "tier": "impounded", "residue_type": "u_process_residue", "product": "oil", "allocation_rule": "none"}, id="V11-nuclear-construction-with-oil-product"),
+    pytest.param("V11", 1, {"stage": "construction", "tier": "impounded", "residue_type": "u_process_residue", "product": "kerosene", "allocation_rule": "none"}, id="V11-nuclear-construction-unknown-product"),
+    pytest.param("V14", 8, {"route": "air_accident_release"}, id="V14-air-accident-route-on-a-flow"),
+    pytest.param("V14", 8, {"route": "water_accident_release"}, id="V14-water-accident-route-on-a-flow"),
+    pytest.param("V15", 1, {"stage": "sea_disposal", "tier": "liberated", "residue_type": "", "route": "sea_disposal_package", "allocation_rule": "none"}, id="V15-flow-liberated-at-sea-disposal"),
+    pytest.param("V15", 1, {"stage": "reprocessing", "tier": "liberated", "residue_type": "", "route": "air_stack", "allocation_rule": "civil:throughput"}, id="V15-flow-liberated-at-reprocessing"),
+    pytest.param("V15", 1, {"stage": "conv_enrich_fab", "tier": "liberated", "residue_type": "", "route": "air_stack", "allocation_rule": "none"}, id="V15-flow-liberated-at-conv-enrich-fab"),
     pytest.param("V11", 7, dict(COAL_CONSTRUCTION, product=""), id="V11-coal-construction-without-product"),
-    pytest.param("V12", 10, dict(residue_type="moon_dust"), id="V12-unknown-residue-type"),
-    pytest.param("V13", 7, dict(factor_ids="coal:9999"), id="V13-unknown-factor"),
-    pytest.param("V13", 7, dict(factor_ids="coal:0001;coal:9999"), id="V13-one-of-two-unknown"),
-    pytest.param("V13", 10, dict(factor_ids="oil_gas:0001"), id="V13-factor-on-a-non-modelled-row"),
+    pytest.param("V12", 10, {"residue_type": "moon_dust"}, id="V12-unknown-residue-type"),
+    pytest.param("V13", 7, {"factor_ids": "coal:9999"}, id="V13-unknown-factor"),
+    pytest.param("V13", 7, {"factor_ids": "coal:0001;coal:9999"}, id="V13-one-of-two-unknown"),
+    pytest.param("V13", 10, {"factor_ids": "oil_gas:0001"}, id="V13-factor-on-a-non-modelled-row"),
 ]
 
 
@@ -623,14 +623,14 @@ def test_x01_duplicate_key_ignores_values_and_notes(tmp_root):
 @pytest.mark.parametrize(
     "changes",
     [
-        pytest.param(dict(year=2006), id="year"),
-        pytest.param(dict(country="IND"), id="country"),
-        pytest.param(dict(group="Pb210+"), id="group"),
-        pytest.param(dict(tier="impounded"), id="tier"),
-        pytest.param(dict(technology="biomass"), id="technology"),
-        pytest.param(dict(technology=""), id="technology-null-vs-set"),
-        pytest.param(dict(residue_type="biomass_ash", substream="geothermal"), id="residue-type"),
-        pytest.param(dict(tier="liberated", residue_type="", route="air_stack"), id="route-and-tier"),
+        pytest.param({"year": 2006}, id="year"),
+        pytest.param({"country": "IND"}, id="country"),
+        pytest.param({"group": "Pb210+"}, id="group"),
+        pytest.param({"tier": "impounded"}, id="tier"),
+        pytest.param({"technology": "biomass"}, id="technology"),
+        pytest.param({"technology": ""}, id="technology-null-vs-set"),
+        pytest.param({"residue_type": "biomass_ash", "substream": "geothermal"}, id="residue-type"),
+        pytest.param({"tier": "liberated", "residue_type": "", "route": "air_stack"}, id="route-and-tier"),
     ],
 )
 def test_x01_not_raised_when_key_differs(tmp_root, changes):
@@ -675,11 +675,12 @@ def test_x02_unbalanced_transfer_is_reported_once_with_row_none(tmp_root):
 @pytest.mark.parametrize(
     "changes, balanced",
     [
-        pytest.param(dict(value_central="8.5000000085e16"), True, id="central-within-1e-6"),
-        pytest.param(dict(value_low="7.0000000070e16"), True, id="low-within-1e-6"),
-        pytest.param(dict(value_high="1.0001e17"), False, id="high-off-by-1e-4"),
-        pytest.param(dict(value_low="6.9e16"), False, id="low-off-by-1e-2"),
-        pytest.param(dict(value_central="8.5085e16"), False, id="central-off-by-1e-3"),
+        pytest.param({"value_central": "8.5000000085e16"}, True, id="central-within-1e-6"),
+        pytest.param({"value_low": "7.0000000070e16"}, True, id="low-within-1e-6"),
+        pytest.param({"value_central": "8.50005e16"}, True, id="central-within-1e-5-D68"),
+        pytest.param({"value_high": "1.0001e17"}, False, id="high-off-by-1e-4"),
+        pytest.param({"value_low": "6.9e16"}, False, id="low-off-by-1e-2"),
+        pytest.param({"value_central": "8.5085e16"}, False, id="central-off-by-1e-3"),
     ],
 )
 def test_x02_relative_tolerance_applies_to_low_central_and_high(tmp_root, changes, balanced):
@@ -733,7 +734,7 @@ def test_x02_routine_pair_balances_on_stage_country_year_group_variant(tmp_root)
 
 
 def test_x02_routine_pair_unbalanced(tmp_root):
-    rel = write_master(tmp_root, "routine_bad.csv", [vrow(5), vrow(6, **{"value_low": "5e13", "value_central": "1e14", "value_high": "2e14"})])
+    rel = write_master(tmp_root, "routine_bad.csv", [vrow(5), vrow(6, value_low="5e13", value_central="1e14", value_high="2e14")])
     assert_only(validate(tmp_root, [rel]), "X02", rows=[None], file=rel)
 
 
@@ -867,7 +868,7 @@ def test_x05_routine_transfer_in_the_reverse_direction(tmp_root):
 
 @pytest.mark.parametrize("stage", ["sea_disposal", "reprocessing", "conv_enrich_fab"])
 def test_routine_transfer_pair_is_valid_at_every_routine_stage(tmp_root, stage):
-    common = dict(stage=stage, allocation_rule="civil:throughput" if stage == "reprocessing" else "none")
+    common = {"stage": stage, "allocation_rule": "civil:throughput" if stage == "reprocessing" else "none"}
     rel = write_master(tmp_root, "routine_stage.csv", [vrow(5, **common), vrow(6, **common)])
     assert_clean(validate(tmp_root, [rel]))
 
@@ -902,13 +903,13 @@ def test_removed_catch_all_routes_are_rejected(tmp_root, route):
 
 
 def test_routine_reprocessing_transfers_are_valid_with_a_civil_token(tmp_root):
-    common = dict(stage="reprocessing", country="FRA", year=1990, allocation_rule="civil:throughput")
+    common = {"stage": "reprocessing", "country": "FRA", "year": 1990, "allocation_rule": "civil:throughput"}
     rel = write_master(tmp_root, "reproc.csv", [vrow(5, **common), vrow(6, **common)])
     assert_clean(validate(tmp_root, [rel]))
 
 
 def test_routine_reprocessing_transfers_need_a_civil_token(tmp_root):
-    common = dict(stage="reprocessing", country="FRA", year=1990, allocation_rule="none")
+    common = {"stage": "reprocessing", "country": "FRA", "year": 1990, "allocation_rule": "none"}
     rel = write_master(tmp_root, "reproc_bad.csv", [vrow(5, **common), vrow(6, **common)])
     assert_only(validate(tmp_root, [rel]), "X04", rows=[1, 2], file=rel)
 
@@ -1036,15 +1037,15 @@ def test_f03_for_a_support_table_that_is_not_utf8(tmp_root):
 
 
 DOSE_VALUE_CASES = [
-    pytest.param("data/activity/series.csv", 3, dict(series="dose_rate"), id="activity-series"),
-    pytest.param("data/activity/series.csv", 3, dict(unit="mSv/a"), id="activity-unit-msv"),
-    pytest.param("data/activity/series.csv", 3, dict(unit="rem"), id="activity-unit-rem"),
-    pytest.param("data/activity/series.csv", 3, dict(series="collective_sv_total"), id="activity-series-sv-word"),
-    pytest.param("data/events.csv", 1, dict(name="Chernobyl collective dose release"), id="event-name"),
-    pytest.param("data/factors/coal.csv", 2, dict(description="Dose conversion factor for fly ash"), id="factor-description"),
-    pytest.param("data/factors/coal.csv", 2, dict(unit="Sv/t"), id="factor-unit"),
-    pytest.param("data/reference/countries.csv", 1, dict(name="Aruba sievert island"), id="country-name"),
-    pytest.param("data/reference/residue_types.csv", 1, dict(description="Rem content of uranium tailings"), id="residue-description"),
+    pytest.param("data/activity/series.csv", 3, {"series": "dose_rate"}, id="activity-series"),
+    pytest.param("data/activity/series.csv", 3, {"unit": "mSv/a"}, id="activity-unit-msv"),
+    pytest.param("data/activity/series.csv", 3, {"unit": "rem"}, id="activity-unit-rem"),
+    pytest.param("data/activity/series.csv", 3, {"series": "collective_sv_total"}, id="activity-series-sv-word"),
+    pytest.param("data/events.csv", 1, {"name": "Chernobyl collective dose release"}, id="event-name"),
+    pytest.param("data/factors/coal.csv", 2, {"description": "Dose conversion factor for fly ash"}, id="factor-description"),
+    pytest.param("data/factors/coal.csv", 2, {"unit": "Sv/t"}, id="factor-unit"),
+    pytest.param("data/reference/countries.csv", 1, {"name": "Aruba sievert island"}, id="country-name"),
+    pytest.param("data/reference/residue_types.csv", 1, {"description": "Rem content of uranium tailings"}, id="residue-description"),
 ]
 
 
@@ -1301,16 +1302,16 @@ def test_s01_paywalled_source_with_url_is_valid(tmp_root):
 @pytest.mark.parametrize(
     "changes",
     [
-        pytest.param(dict(source_id="S12"), id="bad-id-pattern"),
-        pytest.param(dict(year="2101"), id="year-above-2100"),
-        pytest.param(dict(year="1700"), id="year-below-1800"),
-        pytest.param(dict(year="abcd"), id="year-not-an-integer"),
-        pytest.param(dict(type="blog"), id="type-not-in-enum"),
-        pytest.param(dict(access="secret"), id="access-not-in-enum"),
-        pytest.param(dict(licence="free"), id="licence-not-in-enum"),
-        pytest.param(dict(url="ftp://example.org/file"), id="url-not-http"),
-        pytest.param(dict(doi="not-a-doi"), id="doi-malformed"),
-        pytest.param(dict(short_cite=""), id="short-cite-missing"),
+        pytest.param({"source_id": "S12"}, id="bad-id-pattern"),
+        pytest.param({"year": "2101"}, id="year-above-2100"),
+        pytest.param({"year": "1700"}, id="year-below-1800"),
+        pytest.param({"year": "abcd"}, id="year-not-an-integer"),
+        pytest.param({"type": "blog"}, id="type-not-in-enum"),
+        pytest.param({"access": "secret"}, id="access-not-in-enum"),
+        pytest.param({"licence": "free"}, id="licence-not-in-enum"),
+        pytest.param({"url": "ftp://example.org/file"}, id="url-not-http"),
+        pytest.param({"doi": "not-a-doi"}, id="doi-malformed"),
+        pytest.param({"short_cite": ""}, id="short-cite-missing"),
     ],
 )
 def test_s01_schema_failures(tmp_root, changes):
@@ -1325,20 +1326,20 @@ def test_s01_duplicate_source_id_is_reported_on_the_later_row(tmp_root):
 
 
 EVENT_E01_CASES = [
-    pytest.param(2, dict(military="true"), id="military-event"),
-    pytest.param(1, dict(activity_low_bq="6.0e18"), id="activity-low-above-central"),
-    pytest.param(1, dict(activity_high_bq="5.0e18"), id="activity-high-below-central"),
-    pytest.param(1, dict(to_tiers="liberated;sealed_in_core"), id="from-tier-among-to-tiers"),
-    pytest.param(1, dict(date_start="1986-02-30"), id="date-not-on-the-calendar"),
-    pytest.param(2, dict(date_start="2009-02-29"), id="29-february-in-a-common-year"),
-    pytest.param(1, dict(date_start="1986-13-01"), id="month-13"),
-    pytest.param(1, dict(date_end="1986-04-01"), id="date-end-before-date-start"),
-    pytest.param(1, dict(date_start="26/04/1986"), id="date-not-iso"),
-    pytest.param(2, dict(is_accident="true"), id="is_accident-disagrees-with-event_type"),
-    pytest.param(1, dict(is_accident="false"), id="accident-not-flagged"),
-    pytest.param(2, dict(event_id="E2"), id="bad-event-id-pattern"),
-    pytest.param(1, dict(lat="95"), id="latitude-out-of-range"),
-    pytest.param(1, dict(name="x"), id="name-too-short"),
+    pytest.param(2, {"military": "true"}, id="military-event"),
+    pytest.param(1, {"activity_low_bq": "6.0e18"}, id="activity-low-above-central"),
+    pytest.param(1, {"activity_high_bq": "5.0e18"}, id="activity-high-below-central"),
+    pytest.param(1, {"to_tiers": "liberated;sealed_in_core"}, id="from-tier-among-to-tiers"),
+    pytest.param(1, {"date_start": "1986-02-30"}, id="date-not-on-the-calendar"),
+    pytest.param(2, {"date_start": "2009-02-29"}, id="29-february-in-a-common-year"),
+    pytest.param(1, {"date_start": "1986-13-01"}, id="month-13"),
+    pytest.param(1, {"date_end": "1986-04-01"}, id="date-end-before-date-start"),
+    pytest.param(1, {"date_start": "26/04/1986"}, id="date-not-iso"),
+    pytest.param(2, {"is_accident": "true"}, id="is_accident-disagrees-with-event_type"),
+    pytest.param(1, {"is_accident": "false"}, id="accident-not-flagged"),
+    pytest.param(2, {"event_id": "E2"}, id="bad-event-id-pattern"),
+    pytest.param(1, {"lat": "95"}, id="latitude-out-of-range"),
+    pytest.param(1, {"name": "x"}, id="name-too-short"),
 ]
 
 
@@ -1351,11 +1352,11 @@ def test_e01_event_failures_are_reported_alone(tmp_root, index, changes):
 @pytest.mark.parametrize(
     "index, changes",
     [
-        pytest.param(1, dict(to_tiers="buried"), id="to-tier-not-in-enum"),
-        pytest.param(1, dict(to_tiers=""), id="to-tiers-empty"),
-        pytest.param(1, dict(inclusion="importance"), id="inclusion-not-in-enum"),
-        pytest.param(1, dict(activity_central_bq=""), id="activity-inclusion-without-activity"),
-        pytest.param(2, dict(mass_t=""), id="mass-inclusion-without-mass"),
+        pytest.param(1, {"to_tiers": "buried"}, id="to-tier-not-in-enum"),
+        pytest.param(1, {"to_tiers": ""}, id="to-tiers-empty"),
+        pytest.param(1, {"inclusion": "importance"}, id="inclusion-not-in-enum"),
+        pytest.param(1, {"activity_central_bq": ""}, id="activity-inclusion-without-activity"),
+        pytest.param(2, {"mass_t": ""}, id="mass-inclusion-without-mass"),
     ],
 )
 def test_e01_schema_failures_with_possible_e03_overlap(tmp_root, index, changes):
@@ -1382,12 +1383,12 @@ def test_e01_duplicate_event_id_is_reported_on_the_later_row(tmp_root):
 @pytest.mark.parametrize(
     "index, changes",
     [
-        pytest.param(1, dict(activity_low_bq="1e10", activity_central_bq="5e11", activity_high_bq="8e11"), id="activity-below-1TBq"),
-        pytest.param(1, dict(to_tiers="sealed_damaged_core"), id="activity-event-without-liberated-or-dispersed-destination"),
-        pytest.param(1, dict(to_tiers="sealed_fuel_cycle;impounded"), id="activity-event-ending-in-sealed-or-impounded-tiers"),
-        pytest.param(2, dict(mass_t="5.0e4"), id="mass-below-1e5-t"),
-        pytest.param(2, dict(from_tier="reisolated"), id="mass-event-not-from-an-impoundment"),
-        pytest.param(2, dict(from_tier="dispersed"), id="mass-event-from-dispersed"),
+        pytest.param(1, {"activity_low_bq": "1e10", "activity_central_bq": "5e11", "activity_high_bq": "8e11"}, id="activity-below-1TBq"),
+        pytest.param(1, {"to_tiers": "sealed_damaged_core"}, id="activity-event-without-liberated-or-dispersed-destination"),
+        pytest.param(1, {"to_tiers": "sealed_fuel_cycle;impounded"}, id="activity-event-ending-in-sealed-or-impounded-tiers"),
+        pytest.param(2, {"mass_t": "5.0e4"}, id="mass-below-1e5-t"),
+        pytest.param(2, {"from_tier": "reisolated"}, id="mass-event-not-from-an-impoundment"),
+        pytest.param(2, {"from_tier": "dispersed"}, id="mass-event-from-dispersed"),
     ],
 )
 def test_e03_inclusion_criterion_not_met(tmp_root, index, changes):
@@ -1398,11 +1399,11 @@ def test_e03_inclusion_criterion_not_met(tmp_root, index, changes):
 @pytest.mark.parametrize(
     "index, changes",
     [
-        pytest.param(1, dict(activity_low_bq="1e12", activity_central_bq="1e12", activity_high_bq="1e12"), id="activity-exactly-1TBq"),
-        pytest.param(1, dict(to_tiers="dispersed;sealed_damaged_core"), id="activity-event-ending-in-dispersed"),
-        pytest.param(1, dict(to_tiers="sealed_damaged_core;liberated"), id="liberated-in-any-position"),
-        pytest.param(2, dict(mass_t="1.0e5"), id="mass-exactly-1e5-t"),
-        pytest.param(2, dict(to_tiers="dispersed"), id="mass-event-to-dispersed"),
+        pytest.param(1, {"activity_low_bq": "1e12", "activity_central_bq": "1e12", "activity_high_bq": "1e12"}, id="activity-exactly-1TBq"),
+        pytest.param(1, {"to_tiers": "dispersed;sealed_damaged_core"}, id="activity-event-ending-in-dispersed"),
+        pytest.param(1, {"to_tiers": "sealed_damaged_core;liberated"}, id="liberated-in-any-position"),
+        pytest.param(2, {"mass_t": "1.0e5"}, id="mass-exactly-1e5-t"),
+        pytest.param(2, {"to_tiers": "dispersed"}, id="mass-event-to-dispersed"),
     ],
 )
 def test_e03_boundaries_that_meet_the_criterion(tmp_root, index, changes):
@@ -1413,9 +1414,9 @@ def test_e03_boundaries_that_meet_the_criterion(tmp_root, index, changes):
 @pytest.mark.parametrize(
     "changes",
     [
-        pytest.param(dict(stage="u_milling"), id="stage-not-allowed-for-stream"),
-        pytest.param(dict(country="ZZZ"), id="unknown-country"),
-        pytest.param(dict(source_ids="S0005;S0099"), id="unknown-source"),
+        pytest.param({"stage": "u_milling"}, id="stage-not-allowed-for-stream"),
+        pytest.param({"country": "ZZZ"}, id="unknown-country"),
+        pytest.param({"source_ids": "S0005;S0099"}, id="unknown-source"),
     ],
 )
 def test_e02_event_vocabulary_membership(tmp_root, changes):
@@ -1426,12 +1427,12 @@ def test_e02_event_vocabulary_membership(tmp_root, changes):
 # --------------------------------------------------------------------------- support tables: T01-T05
 
 def _fill_residue(**over):
-    params = dict(
-        epsilon_rn222_low="0.1", epsilon_rn222_central="0.2", epsilon_rn222_high="0.3",
-        epsilon_rn220_low="0.05", epsilon_rn220_central="0.1", epsilon_rn220_high="0.2",
-        seepage_per_a_low="0.001", seepage_per_a_central="0.002", seepage_per_a_high="0.01",
-        basis="compiled", source_ids="S0003",
-    )
+    params = {
+        "epsilon_rn222_low": "0.1", "epsilon_rn222_central": "0.2", "epsilon_rn222_high": "0.3",
+        "epsilon_rn220_low": "0.05", "epsilon_rn220_central": "0.1", "epsilon_rn220_high": "0.2",
+        "seepage_per_a_low": "0.001", "seepage_per_a_central": "0.002", "seepage_per_a_high": "0.01",
+        "basis": "compiled", "source_ids": "S0003",
+    }
     params.update(over)
     return params
 
@@ -1452,40 +1453,40 @@ def test_data_activity_may_be_absent_when_no_factor_needs_a_driver(tmp_root):
 
 
 T01_CASES = [
-    pytest.param("data/reference/countries.csv", 1, dict(code="AB"), id="countries-code-two-letters"),
-    pytest.param("data/reference/countries.csv", 1, dict(code="abw"), id="countries-code-lower-case"),
-    pytest.param("data/reference/countries.csv", 1, dict(kind="colony"), id="countries-kind-not-in-enum"),
-    pytest.param("data/reference/countries.csv", 1, dict(valid_from="1800"), id="countries-window-before-1900"),
-    pytest.param("data/reference/countries.csv", 1, dict(valid_to="soon"), id="countries-window-not-an-integer"),
-    pytest.param("data/reference/countries.csv", 1, dict(name="X"), id="countries-name-too-short"),
-    pytest.param("data/activity/series.csv", 3, dict(year="1799"), id="activity-year-below-1800"),
-    pytest.param("data/activity/series.csv", 3, dict(year="2026"), id="activity-year-above-2025"),
-    pytest.param("data/activity/series.csv", 3, dict(value_low="-1"), id="activity-negative-value"),
-    pytest.param("data/activity/series.csv", 3, dict(series="Coal-Production"), id="activity-series-not-snake-case"),
-    pytest.param("data/activity/series.csv", 3, dict(basis="guess"), id="activity-basis-not-in-enum"),
-    pytest.param("data/activity/series.csv", 3, dict(unit=""), id="activity-unit-missing"),
-    pytest.param("data/activity/series.csv", 3, dict(source_ids=""), id="activity-source-ids-missing"),
-    pytest.param("data/activity/series.csv", 3, dict(below_detection="true"), id="activity-below-detection-with-nonzero-low"),
-    pytest.param("data/activity/series.csv", 3, dict(below_detection="maybe"), id="activity-bool-not-coercible"),
-    pytest.param("data/activity/series.csv", 3, dict(value_central="abc"), id="activity-float-not-coercible"),
-    pytest.param("data/factors/coal.csv", 1, dict(factor_id="coal-1"), id="factors-id-pattern"),
-    pytest.param("data/factors/coal.csv", 2, dict(tier="buried"), id="factors-tier-not-in-enum"),
-    pytest.param("data/factors/coal.csv", 2, dict(unit=""), id="factors-unit-missing"),
-    pytest.param("data/factors/coal.csv", 2, dict(route="air_leak"), id="factors-route-not-in-enum"),
-    pytest.param("data/factors/coal.csv", 2, dict(year_from="1700"), id="factors-year-from-below-1800"),
+    pytest.param("data/reference/countries.csv", 1, {"code": "AB"}, id="countries-code-two-letters"),
+    pytest.param("data/reference/countries.csv", 1, {"code": "abw"}, id="countries-code-lower-case"),
+    pytest.param("data/reference/countries.csv", 1, {"kind": "colony"}, id="countries-kind-not-in-enum"),
+    pytest.param("data/reference/countries.csv", 1, {"valid_from": "1800"}, id="countries-window-before-1900"),
+    pytest.param("data/reference/countries.csv", 1, {"valid_to": "soon"}, id="countries-window-not-an-integer"),
+    pytest.param("data/reference/countries.csv", 1, {"name": "X"}, id="countries-name-too-short"),
+    pytest.param("data/activity/series.csv", 3, {"year": "1799"}, id="activity-year-below-1800"),
+    pytest.param("data/activity/series.csv", 3, {"year": "2026"}, id="activity-year-above-2025"),
+    pytest.param("data/activity/series.csv", 3, {"value_low": "-1"}, id="activity-negative-value"),
+    pytest.param("data/activity/series.csv", 3, {"series": "Coal-Production"}, id="activity-series-not-snake-case"),
+    pytest.param("data/activity/series.csv", 3, {"basis": "guess"}, id="activity-basis-not-in-enum"),
+    pytest.param("data/activity/series.csv", 3, {"unit": ""}, id="activity-unit-missing"),
+    pytest.param("data/activity/series.csv", 3, {"source_ids": ""}, id="activity-source-ids-missing"),
+    pytest.param("data/activity/series.csv", 3, {"below_detection": "true"}, id="activity-below-detection-with-nonzero-low"),
+    pytest.param("data/activity/series.csv", 3, {"below_detection": "maybe"}, id="activity-bool-not-coercible"),
+    pytest.param("data/activity/series.csv", 3, {"value_central": "abc"}, id="activity-float-not-coercible"),
+    pytest.param("data/factors/coal.csv", 1, {"factor_id": "coal-1"}, id="factors-id-pattern"),
+    pytest.param("data/factors/coal.csv", 2, {"tier": "buried"}, id="factors-tier-not-in-enum"),
+    pytest.param("data/factors/coal.csv", 2, {"unit": ""}, id="factors-unit-missing"),
+    pytest.param("data/factors/coal.csv", 2, {"route": "air_leak"}, id="factors-route-not-in-enum"),
+    pytest.param("data/factors/coal.csv", 2, {"year_from": "1700"}, id="factors-year-from-below-1800"),
     pytest.param("data/reference/residue_types.csv", 1, dict(_fill_residue(epsilon_rn222_high="1.5")), id="residue-epsilon-above-1"),
     pytest.param("data/reference/residue_types.csv", 1, dict(_fill_residue(seepage_per_a_low="-0.1")), id="residue-seepage-negative"),
-    pytest.param("data/reference/residue_types.csv", 1, dict(streams="nuclear;mars"), id="residue-stream-not-in-enum"),
-    pytest.param("data/reference/residue_types.csv", 1, dict(streams=""), id="residue-streams-missing"),
-    pytest.param("data/reference/residue_types.csv", 1, dict(residue_type="Bad-Name"), id="residue-type-not-snake-case"),
+    pytest.param("data/reference/residue_types.csv", 1, {"streams": "nuclear;mars"}, id="residue-stream-not-in-enum"),
+    pytest.param("data/reference/residue_types.csv", 1, {"streams": ""}, id="residue-streams-missing"),
+    pytest.param("data/reference/residue_types.csv", 1, {"residue_type": "Bad-Name"}, id="residue-type-not-snake-case"),
     pytest.param("data/reference/residue_types.csv", 1, dict(_fill_residue(basis="guess")), id="residue-basis-not-in-enum"),
-    pytest.param("data/reference/reference_bands.csv", 1, dict(rel_low="0.1"), id="bands-rel-low-positive"),
-    pytest.param("data/reference/reference_bands.csv", 1, dict(rel_low="-1.5"), id="bands-rel-low-below-minus-1"),
-    pytest.param("data/reference/reference_bands.csv", 1, dict(rel_high="-0.1"), id="bands-rel-high-negative"),
-    pytest.param("data/reference/reference_bands.csv", 1, dict(band_id="RB1"), id="bands-id-pattern"),
-    pytest.param("data/reference/reference_bands.csv", 1, dict(quantity_class="e_gamma"), id="bands-class-not-in-enum"),
-    pytest.param("data/reference/reference_bands.csv", 1, dict(rel_low="n/a"), id="bands-float-not-coercible"),
-    pytest.param("data/reference/reference_bands.csv", 1, dict(source_ids=""), id="bands-source-ids-missing"),
+    pytest.param("data/reference/reference_bands.csv", 1, {"rel_low": "0.1"}, id="bands-rel-low-positive"),
+    pytest.param("data/reference/reference_bands.csv", 1, {"rel_low": "-1.5"}, id="bands-rel-low-below-minus-1"),
+    pytest.param("data/reference/reference_bands.csv", 1, {"rel_high": "-0.1"}, id="bands-rel-high-negative"),
+    pytest.param("data/reference/reference_bands.csv", 1, {"band_id": "RB1"}, id="bands-id-pattern"),
+    pytest.param("data/reference/reference_bands.csv", 1, {"quantity_class": "e_gamma"}, id="bands-class-not-in-enum"),
+    pytest.param("data/reference/reference_bands.csv", 1, {"rel_low": "n/a"}, id="bands-float-not-coercible"),
+    pytest.param("data/reference/reference_bands.csv", 1, {"source_ids": ""}, id="bands-source-ids-missing"),
 ]
 
 
@@ -1496,14 +1497,14 @@ def test_t01_row_fails_the_table_schema(tmp_root, rel, index, changes):
 
 
 BASELINE_T01 = [
-    pytest.param(1, dict(unit="W"), id="stock-with-watts"),
-    pytest.param(3, dict(unit="Bq"), id="power-with-becquerel"),
-    pytest.param(2, dict(quantity="flow"), id="flow-with-stock-unit"),
-    pytest.param(1, dict(baseline_id="B1"), id="id-pattern"),
-    pytest.param(1, dict(quantity="flux"), id="quantity-not-in-enum"),
-    pytest.param(1, dict(derivation=""), id="derivation-missing"),
-    pytest.param(2, dict(year="1700"), id="year-below-1800"),
-    pytest.param(1, dict(value_central="-5"), id="negative-value"),
+    pytest.param(1, {"unit": "W"}, id="stock-with-watts"),
+    pytest.param(3, {"unit": "Bq"}, id="power-with-becquerel"),
+    pytest.param(2, {"quantity": "flow"}, id="flow-with-stock-unit"),
+    pytest.param(1, {"baseline_id": "B1"}, id="id-pattern"),
+    pytest.param(1, {"quantity": "flux"}, id="quantity-not-in-enum"),
+    pytest.param(1, {"derivation": ""}, id="derivation-missing"),
+    pytest.param(2, {"year": "1700"}, id="year-below-1800"),
+    pytest.param(1, {"value_central": "-5"}, id="negative-value"),
 ]
 
 
@@ -1515,17 +1516,17 @@ def test_t01_baselines(tmp_root, install_baselines, index, changes):
 
 
 COMMODITY_T01 = [
-    pytest.param(1, dict(unit="Bq/kg"), id="unit-not-bq-per-t"),
-    pytest.param(4, dict(tier="sealed_in_core"), id="tier-not-in-enum"),
-    pytest.param(4, dict(route=""), id="liberated-without-route"),
-    pytest.param(5, dict(route="air_dust"), id="route-on-non-liberated-tier"),
-    pytest.param(5, dict(residue_type=""), id="residue-tier-without-residue-type"),
-    pytest.param(4, dict(residue_type="ree_tailings"), id="residue-type-on-liberated-tier"),
-    pytest.param(4, dict(commodity="unobtainium"), id="commodity-not-in-enum"),
-    pytest.param(4, dict(component="own_fuel"), id="component-not-in-enum"),
-    pytest.param(4, dict(year_from="1700"), id="year-from-below-1800"),
-    pytest.param(4, dict(allocation_rule="value"), id="rule-token-without-prefix"),
-    pytest.param(4, dict(below_detection="true"), id="below-detection-with-nonzero-low"),
+    pytest.param(1, {"unit": "Bq/kg"}, id="unit-not-bq-per-t"),
+    pytest.param(4, {"tier": "sealed_in_core"}, id="tier-not-in-enum"),
+    pytest.param(4, {"route": ""}, id="liberated-without-route"),
+    pytest.param(5, {"route": "air_dust"}, id="route-on-non-liberated-tier"),
+    pytest.param(5, {"residue_type": ""}, id="residue-tier-without-residue-type"),
+    pytest.param(4, {"residue_type": "ree_tailings"}, id="residue-type-on-liberated-tier"),
+    pytest.param(4, {"commodity": "unobtainium"}, id="commodity-not-in-enum"),
+    pytest.param(4, {"component": "own_fuel"}, id="component-not-in-enum"),
+    pytest.param(4, {"year_from": "1700"}, id="year-from-below-1800"),
+    pytest.param(4, {"allocation_rule": "value"}, id="rule-token-without-prefix"),
+    pytest.param(4, {"below_detection": "true"}, id="below-detection-with-nonzero-low"),
 ]
 
 
@@ -1605,13 +1606,13 @@ def test_t02_same_nuclide_in_different_classes_is_valid(tmp_root):
 
 
 T03_CASES = [
-    pytest.param("data/activity/series.csv", 3, dict(value_low="9e8"), id="activity-low-above-central"),
-    pytest.param("data/activity/series.csv", 3, dict(value_high="1e8"), id="activity-high-below-central"),
-    pytest.param("data/factors/coal.csv", 2, dict(year_from="2030", year_to="2020"), id="factors-year-from-after-year-to"),
-    pytest.param("data/factors/coal.csv", 2, dict(value_low="9e2"), id="factors-low-above-central"),
+    pytest.param("data/activity/series.csv", 3, {"value_low": "9e8"}, id="activity-low-above-central"),
+    pytest.param("data/activity/series.csv", 3, {"value_high": "1e8"}, id="activity-high-below-central"),
+    pytest.param("data/factors/coal.csv", 2, {"year_from": "2030", "year_to": "2020"}, id="factors-year-from-after-year-to"),
+    pytest.param("data/factors/coal.csv", 2, {"value_low": "9e2"}, id="factors-low-above-central"),
     pytest.param("data/reference/residue_types.csv", 1, dict(_fill_residue(epsilon_rn222_low="0.5")), id="residue-epsilon-rn222-unordered"),
     pytest.param("data/reference/residue_types.csv", 1, dict(_fill_residue(seepage_per_a_high="0.0001")), id="residue-seepage-unordered"),
-    pytest.param("data/reference/residue_types.csv", 1, dict(epsilon_rn222_central="0.2"), id="residue-partial-set-single-value"),
+    pytest.param("data/reference/residue_types.csv", 1, {"epsilon_rn222_central": "0.2"}, id="residue-partial-set-single-value"),
     pytest.param("data/reference/residue_types.csv", 1, dict(_fill_residue(seepage_per_a_low="", seepage_per_a_central="", seepage_per_a_high="0.01")), id="residue-partial-set-two-empty"),
     pytest.param("data/reference/residue_types.csv", 1, dict(_fill_residue(epsilon_rn220_central="")), id="residue-partial-set-one-empty"),
     pytest.param("data/reference/residue_types.csv", 1, dict(_fill_residue(basis="")), id="residue-filled-without-basis"),
@@ -1634,9 +1635,9 @@ def test_t03_baselines(tmp_root, install_baselines):
 @pytest.mark.parametrize(
     "index, changes",
     [
-        pytest.param(4, dict(year_from="2030", year_to="2020"), id="year-from-after-year-to"),
-        pytest.param(4, dict(value_central="1e8"), id="central-above-high"),
-        pytest.param(4, dict(value_low="9e6"), id="low-above-central"),
+        pytest.param(4, {"year_from": "2030", "year_to": "2020"}, id="year-from-after-year-to"),
+        pytest.param(4, {"value_central": "1e8"}, id="central-above-high"),
+        pytest.param(4, {"value_low": "9e6"}, id="low-above-central"),
     ],
 )
 def test_t03_commodity_factors(tmp_root, install_commodity_factors, index, changes):
@@ -1650,17 +1651,17 @@ def test_t03_year_from_equal_to_year_to_is_valid(tmp_root):
 
 
 T04_CASES = [
-    pytest.param("data/activity/series.csv", 3, dict(country="ZZZ"), id="activity-country"),
-    pytest.param("data/activity/series.csv", 3, dict(source_ids="S0099"), id="activity-source"),
-    pytest.param("data/activity/series.csv", 3, dict(source_ids="S0003;S0099"), id="activity-one-source-of-two"),
-    pytest.param("data/factors/coal.csv", 1, dict(driver_series="nope_series"), id="factors-driver-series"),
-    pytest.param("data/factors/coal.csv", 1, dict(stage="u_milling"), id="factors-stage-not-for-stream"),
-    pytest.param("data/factors/coal.csv", 1, dict(region="ZZZ"), id="factors-region"),
-    pytest.param("data/factors/coal.csv", 1, dict(source_ids="S0099"), id="factors-source"),
+    pytest.param("data/activity/series.csv", 3, {"country": "ZZZ"}, id="activity-country"),
+    pytest.param("data/activity/series.csv", 3, {"source_ids": "S0099"}, id="activity-source"),
+    pytest.param("data/activity/series.csv", 3, {"source_ids": "S0003;S0099"}, id="activity-one-source-of-two"),
+    pytest.param("data/factors/coal.csv", 1, {"driver_series": "nope_series"}, id="factors-driver-series"),
+    pytest.param("data/factors/coal.csv", 1, {"stage": "u_milling"}, id="factors-stage-not-for-stream"),
+    pytest.param("data/factors/coal.csv", 1, {"region": "ZZZ"}, id="factors-region"),
+    pytest.param("data/factors/coal.csv", 1, {"source_ids": "S0099"}, id="factors-source"),
     pytest.param("data/reference/residue_types.csv", 1, dict(_fill_residue(source_ids="S0099")), id="residue-source"),
-    pytest.param("data/reference/reference_bands.csv", 1, dict(source_ids="S0099"), id="bands-source"),
-    pytest.param("data/reference/reference_bands.csv", 2, dict(applies_to="Zz-999"), id="bands-unknown-nuclide"),
-    pytest.param("data/reference/reference_bands.csv", 2, dict(applies_to="At-218;NoSuchGroup"), id="bands-one-unknown-entry"),
+    pytest.param("data/reference/reference_bands.csv", 1, {"source_ids": "S0099"}, id="bands-source"),
+    pytest.param("data/reference/reference_bands.csv", 2, {"applies_to": "Zz-999"}, id="bands-unknown-nuclide"),
+    pytest.param("data/reference/reference_bands.csv", 2, {"applies_to": "At-218;NoSuchGroup"}, id="bands-one-unknown-entry"),
 ]
 
 
@@ -1678,9 +1679,9 @@ def test_t04_applies_to_may_name_groups_and_the_default_marker(tmp_root):
 
 def test_t04_factor_driver_series_is_looked_up_in_all_activity_files(tmp_root):
     header, _ = read_csv(tmp_root / "data" / "activity" / "series.csv")
-    write_csv(tmp_root / "data" / "activity" / "zz_more.csv", header, [dict(
-        series="nope_series", year="2000", country="USA", value_low="1", value_central="2", value_high="3",
-        unit="t", below_detection="false", basis="compiled", source_ids="S0003", notes="")])
+    write_csv(tmp_root / "data" / "activity" / "zz_more.csv", header, [{
+        "series": "nope_series", "year": "2000", "country": "USA", "value_low": "1", "value_central": "2", "value_high": "3",
+        "unit": "t", "below_detection": "false", "basis": "compiled", "source_ids": "S0003", "notes": ""}])
     corrupt(tmp_root, "data/factors/coal.csv", 1, driver_series="nope_series")
     assert_clean(validate(tmp_root, []))
 
@@ -1700,10 +1701,10 @@ def test_t04_baselines(tmp_root, install_baselines):
 @pytest.mark.parametrize(
     "changes",
     [
-        pytest.param(dict(group="Tc98"), id="unknown-group"),
-        pytest.param(dict(residue_type="moon_dust"), id="unknown-residue-type"),
-        pytest.param(dict(region="ZZZ"), id="unknown-region"),
-        pytest.param(dict(source_ids="S0099"), id="unknown-source"),
+        pytest.param({"group": "Tc98"}, id="unknown-group"),
+        pytest.param({"residue_type": "moon_dust"}, id="unknown-residue-type"),
+        pytest.param({"region": "ZZZ"}, id="unknown-region"),
+        pytest.param({"source_ids": "S0099"}, id="unknown-source"),
     ],
 )
 def test_t04_commodity_factors(tmp_root, install_commodity_factors, changes):
@@ -1886,7 +1887,7 @@ def run_cli(args, cwd, extra_env=None):
         env.update(extra_env)
     return subprocess.run(
         [sys.executable, "-m", "pipeline.validate", *[str(a) for a in args]],
-        cwd=str(cwd), env=env, capture_output=True, text=True, timeout=180,
+        cwd=str(cwd), env=env, capture_output=True, text=True, timeout=180, check=False,
     )
 
 

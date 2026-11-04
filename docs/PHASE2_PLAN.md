@@ -80,7 +80,7 @@ These are stated on the rows, not hidden:
 |---|---|
 | 1 `pipeline/lib/` v1.2 | Done; signed off (D52), commit 9efe386 |
 | 2 Coal pilot (2.2) | **Signed off by Steve, 2026-10-27.** COAL_SPEC v1.2 (§11–§12.17), 79 factors, D52–D60, commits 4d7f958 and 21b2e5e. Also delivered: seepage fractions for 15 residue types and the per-group seepage table (schema v2.3, D55–D57). Benchmarks pass the ×3 rule against UNSCEAR 2016 Annex B and independent estimates; the stream sits 2–3.5× above the UK 1998 figures (COAL_SPEC §12.17). |
-| 3 Nuclear (2.1), oil and gas (2.3), other (2.5) | Started 2026-10-27: factor registries and research notes first (one agent each), then spec, spec-blind tests, code, lint, verification, sign-off — the coal pattern. |
+| 3 Nuclear (2.1), oil and gas (2.3), other (2.5) | **Nuclear built and independently verified 2026-11-04 (PASS; 69,048 rows; NUCLEAR_SPEC v1.2; D64–D69), awaiting Steve's sign-off.** Oil and gas and other: registries and literature rounds done (D61–D66); specs next. Started 2026-10-27: factor registries and research notes first (one agent each), then spec, spec-blind tests, code, lint, verification, sign-off — the coal pattern. |
 | 4 Wind and solar (2.4) | Not started |
 | 2.6 Tier 2 memo | Not started |
 

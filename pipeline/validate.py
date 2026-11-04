@@ -85,7 +85,7 @@ MASTER_TYPES = {
     "source_ids": "list", "factor_ids": "list",
 }
 
-REL_TOL_BALANCE = 1e-6
+REL_TOL_BALANCE = 1e-5  # SCHEMA v2.4a (D68): six-significant-digit storage
 REL_TOL_REFERENCE = 1e-6
 BRANCHING_TOL = 1e-4
 GROUP_ENUMS = {
