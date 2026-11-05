@@ -158,7 +158,7 @@ Arithmetic on the activity spine, central values, no stream build. Electricity: 
 - Drilling, US vertical per well: Ra-226 2.6e7 Bq (range 6e6-7.8e7). Horizontal Ra-226 1.2e8 Bq per well. Cuttings Ra-226 is about 1.4 TBq/a against about 20 TBq/a in produced water at 2010.
 - Basin check on the US unconventional blend: Ra-226 30 Bq/L against NPWGD v3 means 54-84 (Appalachia, Bakken) and Scanlon medians 10-73.
 
-**Epsilon and seepage proposals (WRITTEN by D62 for og_produced_water, og_drill_cuttings, og_scaled_scrap and oil_sands_tailings, and by D70 for the rest: og_scale and og_sludge Rn-222 only, og_processing_residue 0/0/0 for both radons; Rn-220 for og_scale and og_sludge is NOT written and remains a proposal). D60 convention: Rn-222 epsilon = emanation coefficient (upper bound of effective exhalation); Rn-220 epsilon = emanation $\times$ slab factor $f=(L/H)\tanh(H/L)$, $L$ = 0.005 / 0.01 / 0.02 m. Bounds: low = em_low $\times f(L_{low},H_{high})$, central = em_c $\times f(L_c,H_{gm})$, high = em_high $\times f(L_{high},H_{low})$.**
+**Epsilon and seepage proposals (WRITTEN by D62 for og_produced_water, og_drill_cuttings, og_scaled_scrap and oil_sands_tailings, and by D70 for the rest: og_scale and og_sludge Rn-222 only, og_processing_residue 0/0/0 for both radons; Rn-220 for og_scale and og_sludge WRITTEN by D71, 2026-11-05, see section 11). D60 convention: Rn-222 epsilon = emanation coefficient (upper bound of effective exhalation); Rn-220 epsilon = emanation $\times$ slab factor $f=(L/H)\tanh(H/L)$, $L$ = 0.005 / 0.01 / 0.02 m. Bounds: low = em_low $\times f(L_{low},H_{high})$, central = em_c $\times f(L_c,H_{gm})$, high = em_high $\times f(L_{high},H_{low})$.**
 
 | residue type | eps Rn-222 low / central / high | basis | eps Rn-220 low / central / high | seepage per a low / central / high |
 |---|---|---|---|---|
@@ -171,7 +171,7 @@ Arithmetic on the activity spine, central values, no stream build. Electricity: 
 | `oil_sands_tailings` | 0.002 | monazite emanation from `research/wind_solar/notes.md` (source ID not recorded there; verify) | 0.0002 $\times f$ | 1e-6 / 1.1e-5 / 1.25e-4 (the `ree_tailings` Th triple) |
 | `oil_sands_coke` | no data | - | no data | no data |
 
-Not blockers for the factor file, but the pipeline refuses residue types that have data rows and empty parameters; with D62 and D70 every oil and gas residue type that has data rows is now filled (`og_scale` and `og_sludge` Rn-222 by D70, the Rn-220 triples of those two being the only open proposal). `oil_sands_coke` has no rows.
+Not blockers for the factor file, but the pipeline refuses residue types that have data rows and empty parameters; with D62 and D70 every oil and gas residue type that has data rows is now filled (`og_scale` and `og_sludge` Rn-222 by D70 and their Rn-220 triples by D71). `oil_sands_coke` has no rows.
 
 ## 3. Gap register
 
@@ -316,6 +316,15 @@ Schema v2.4b: `vocab.json` `substreams.oil_gas` gains `all`.
 | `og_sludge` epsilon Rn-222 | empty | 0.05 / 0.15 / 0.25 | soil/sludge analogy (S0242, added to source_ids) |
 | `og_processing_residue` epsilon Rn-222 and Rn-220 | empty | 0 / 0 / 0 | Pb-210 and Po-210 films, no parent |
 
-Not applied: Rn-220 epsilon for `og_scale` (1.8e-5 / 3.6e-4 / 3.9e-3) and `og_sludge` (2.5e-5 / 6.1e-4 / 5e-3): D70 names only the Rn-222 triples.
+Not applied by D70: Rn-220 epsilon for `og_scale` (1.8e-5 / 3.6e-4 / 3.9e-3) and `og_sludge` (2.5e-5 / 6.1e-4 / 5e-3): D70 names only the Rn-222 triples. Applied later by D71 (section 11).
 
 Other D70 decisions (spec text, no registry change): `bound_radio` = gas (R3), default by value, `bound_main` = largest value; drilling US only, 1949 omitted; rest-of-world produced water a correlated difference; gas-radon benchmark within a factor 3 of at least one of 1.38, 0.42, 0.50 TBq/GWa; solids merged into the liberated and impounded-sludge rows.
+
+## 11. D71 revisions (Steve, 2026-11-05; oil and gas part)
+
+| Row(s) | Old | New | Note |
+|---|---|---|---|
+| `og_scale` epsilon Rn-220 | empty | 1.8e-5 / 3.6e-4 / 3.9e-3 | the section 2 proposal: emanation 0.011 / 0.044 / 0.098 times the D60 slab factor (L 0.005 / 0.01 / 0.02 m, H 3 / 1.2 / 0.5 m, a thickness assumption); same triple as `og_scaled_scrap`; source S0321 already on the row |
+| `og_sludge` epsilon Rn-220 | empty | 2.5e-5 / 6.1e-4 / 5e-3 | the section 2 proposal: soil and sludge analogy (assumption) with the same slab factors (equivalent to emanation about 0.015 / 0.075 / 0.125, back-computed); source S0242 already on the row |
+
+With D71 every epsilon and seepage parameter that a used tier needs is filled for every oil and gas residue type with data rows. `python -m pipeline.validate --root .` reports no issues. The other D71 items (C1–C9) are spec clarifications with no registry change: `docs/OIL_GAS_SPEC.md` v1.1, section 13.

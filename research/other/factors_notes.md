@@ -187,7 +187,7 @@ Consequences: the residue types `biomass_ash` and `biomass_domestic_ash` get no 
 | G14 | Time shape of Cs-137 in wood | The Phase 1 transfer-factor model (deposition x Tag) needs national deposition grids that are not in `data/`. Replaced by four era rows | none | No |
 | G15 | Belarus, Russia, global-South firewood and ash | No surveys. BLR rows use the hygienic limit as high and Ukraine as analogue | S0540, S0541 per sources.csv | No |
 | G16 | Other biomass fuels (crop residues, dung, bagasse, MSW) | Out of FAOSTAT 1864; no driver | none | No |
-| G17 | Wood before 1961 | `wood_fuel_t` starts 1961. No 1950-1960 driver; pre-1950 not built (Phase 1 household notes, open issue 8) | none | No |
+| G17 | Wood before 1961 | `wood_fuel_t` starts 1961. No 1950-1960 driver; pre-1950 not built (Phase 1 household notes, open issue 8). REVISION D71 (text only): pre-1950 wood (and peat) rows cannot be built by the stream even with a driver, because every Cs-137 factor (other:0044, 0057, 0067-0070) and the household share other:0050 start in 1950 and the pre-1950 file has no memo tier (OTHER_SPEC §9(h), §13.17) | none | No |
 | G18 | Hydro numeric negligibility | Operation: zero by process; construction waits on `commodity_factors.csv`, which does not exist yet. No rows | S0522 https://doi.org/10.1073/pnas.1312753111 (lead, not read) | No |
 | G19 | Construction (geothermal, biomass, hydro) | `data/reference/commodity_factors.csv` absent | none | No; zero rows, as coal |
 | G20 | Primary of the Leonardi Table 4 fluid radon values | Table 4 cites its ref [38], not identified here | S0502 full text https://link.springer.com/content/pdf/10.1140/epjp/s13360-024-04917-6.pdf | No |
@@ -318,3 +318,12 @@ Source of numbers: `research/other/papers_round3.md` section 4 and `research/oil
 | other:0073 (FIN wood) | low / central / high | 100 / 13,000 / 97,000 | 125 / 16,000 / 121,000 Bq/t dry | 80% dry matter basis; source S1410 primary |
 
 Not adopted: optional Austria wood row (round-3 P11). Wood-to-ash factor 50 appears only in other:0068.
+
+## 9a. D71 notes (Steve, 2026-11-05; text only, no factor value changed)
+
+D71 settled the spec-blind test review of `docs/OTHER_SPEC.md` (now v1.1, §13.9-§13.19). Points that touch this file:
+
+- **Wood and charcoal rest-of-world residual** (world `XWL` minus the listed countries, centre, from `data/activity/biomass.csv`, recomputed 2026-11-05). Wood fuel: 3.2-5.2 % in 1961-1992, about 1.0 % (0.98-1.07 %) in 1993-2011, between -3.1e-6 and +3.0e-6 in 2012-2023 (inside the 1e-5 tolerance: no rest-of-world unit), 0.32 % in 2024 and 2025. Charcoal: 7.0-10.5 %, 1.7-2.2 %, within 1.1e-6, and 0.027 % over the same periods. The spec's earlier "1-10 % before 2010" is replaced by these figures.
+- **Pre-1950.** Every Cs-137 factor (other:0044-0047, 0057-0066, 0067-0070, 0073) and other:0050 start in 1950, so wood and peat have no pre-1950 rows even if a driver existed (G17 updated); only geothermal (factors from 1900) reaches the pre-1950 file.
+- **factor_ids of the wood chain.** The partition factors other:0048, 0051, 0049 / 0050 are listed on every wood-derived row that uses them, in that fixed order, ahead of the memo, concentration and share factors (spec §13.13). The peat Cs-137 terms list the dry-fraction factor, other:0013, the era concentration other:0044-0047 and then other:0067 (plant-type) or other:0068 (household).
+- **Partial caps.** A household-wood cap that binds at the low and central but not the high leaves plant wood as (0, 0, h); such rows are written, flagged `clipped_difference` (spec §13.15). The same holds for the clipped "other peat use" residual (supply below plants plus household: ARM 2012, DEU 1993, ROU 1998, UKR 1997).
