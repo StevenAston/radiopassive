@@ -32,4 +32,6 @@ for (s,c,y),(val,cf,st) in sorted(d.items()):
 for (c,y),(val,cf,n,_) in sorted(pw.items()):
     b=0.25
     O.add('peat_power_heat_t',y,c,val*(1-b),val,val*(1+b),'t','compiled',SU,'Peat transformed in electricity and CHP plants (UNSD transactions 08811+08812+08821+08822: main-activity and autoproducer electricity and CHP), summed over the %d transactions reported; includes the heat share of CHP, so not electricity generation alone. Bands assumed +-25%%.'%n)
+# D70 (4 Nov 2026): 2024 -> 2025, coal rule.
+carry_2025(O,['peat_production_t','peat_supply_t','peat_household_t','peat_production_twh','peat_supply_twh','peat_power_heat_t'])
 O.write()

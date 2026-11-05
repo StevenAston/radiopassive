@@ -1,6 +1,6 @@
 # Radiopassive — Data Schema (v2)
 
-> **Status:** SIGNED OFF by Steve, 2026-10-20; **v2.2 additions (2026-10-25, D36, D43–D48) approved by Steve.** **v2.3 additions (2026-10-26, D55–D57: per-group seepage table §4.12, pre-1950 stream files) approved by Steve 2026-10-26.** **v2.4 addition (2026-10-27, D63: `substream` column in factor files, §4.9) approved by Steve.** Task 0.2, revision v2.1 (re-review fixes) of v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
+> **Status:** SIGNED OFF by Steve, 2026-10-20; **v2.2 additions (2026-10-25, D36, D43–D48) approved by Steve.** **v2.3 additions (2026-10-26, D55–D57: per-group seepage table §4.12, pre-1950 stream files) approved by Steve 2026-10-26.** **v2.4 addition (2026-10-27, D63: `substream` column in factor files, §4.9) approved by Steve.** **v2.4b addition (2026-11-04, D70: oil_gas substream `all`, §5.1) approved by Steve.** Task 0.2, revision v2.1 (re-review fixes) of v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
 
 ---
 
@@ -324,7 +324,7 @@ The residue-type triple in §4.10 applies one seepage fraction to every nuclide 
 |---|---|
 | `nuclear` | `pwr`, `bwr`, `phwr`, `gcr`, `lwgr`, `fbr`, `other_reactor`, `fuel_cycle` (for stages not tied to a reactor type) |
 | `coal` | `power`, `non_power`, `all` (stages not split by end use, e.g. mining) |
-| `oil_gas` | `conventional`, `unconventional`, `oil_sands` (D26) |
+| `oil_gas` | `conventional`, `unconventional`, `oil_sands` (D26), `all` (**v2.4b, D70**: rows that cannot be split by production sub-stream: gas, NGL, vented and oil radon, Pb-210 plate-out, flaring) |
 | `wind_solar` | `wind`, `solar` |
 | `other` | `geothermal`, `biomass_peat`, `hydro`, `biomass_domestic` (household heating, D45; uses stage `biomass_peat`) |
 
@@ -574,4 +574,5 @@ The vocabularies for these (`views`, `runs`, `conventions`, `horizons_a`, the ti
 | 2026-10-20 | **v2** after the independent schema review: master gains `product`, `residue_type`, `factor_ids`, `route`; routine vs event transfers; events gain `to_tiers` and activity bounds; `opening_stock` (D31); new tables `residue_types.csv`, `reference_bands.csv`, factor registry; JSON schemas and rule codes (`T01`–`T05`, `D01`) for every support table; `V10`–`V13`, `E03`, `G04`, `G05`; dose tokens checked in values; URL required for inaccessible sources; field-name mapping; provisional derived-output dimensions. |
 | 2026-10-25 | **v2.2** (Steve): tier `memo_biosphere` (D47; biosphere-cycling memo for wood ash and wood natural nuclides, D43/D44; allowed at `biomass_peat`; flow only; not in tier totals); route `air_rerelease` (D48; schema conditional ties it to `biomass_peat`/`Cs137+`/flow); substream `biomass_domestic` and residue type `biomass_domestic_ash` (D45); `dispersed` at `coal_mining` and `sealed_fuel_cycle` at `accident` (D36). |
 | 2026-10-27 | **v2.4** (Steve, D63): factor files gain a `substream` column after `stage` (§4.9); optional value, checked against `substreams[<stream>]`; `select` gains the `substream` match key (LIB_SPEC §10). |
+| 2026-11-04 | **v2.4b** (Steve, D70): `vocab.json` → `substreams.oil_gas` gains `all` (§5.1), for oil and gas rows that cannot be split into `conventional` and `unconventional` (gas, NGL, vented and oil radon, Pb-210 plate-out, flaring), as `coal` already has `all`. Vocabulary change only: no column, rule code or schema change. |
 | 2026-10-26 | **v2.3** (Steve): new table `residue_seepage_by_group.csv` (§4.12, D56), with fallback to the residue-type triple; seepage triples filled for 15 residue types (D55); sources S0950–S0971 added; pre-1950 stream file convention `data/streams_pre1950/<stream>.csv` documented (§3, D57). |

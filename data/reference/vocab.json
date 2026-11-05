@@ -25,7 +25,8 @@
   "oil_gas": [
    "conventional",
    "unconventional",
-   "oil_sands"
+   "oil_sands",
+   "all"
   ],
   "wind_solar": [
    "wind",

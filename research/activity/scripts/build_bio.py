@@ -89,4 +89,6 @@ for (com,y),(v,e,n) in sorted(W.items()):
     else:
         O.add('household_charcoal_t',y,'XWL',v*0.85,v,v*1.2,'t','compiled',SU,'Sum of %d countries reporting household charcoal to UNSD; incomplete coverage (China absent), not a strict bound. Bands assumed -15%%/+20%%.'%n)
         O.add('household_charcoal_energy_twh',y,'XWL',e*0.85,e,e*1.2,'TWh','compiled',SU,'Sum of %d reporting countries, UNSD tonnes x conversion factor; incomplete coverage (China absent). Bands assumed -15%%/+20%%.'%n)
+# D70 (4 Nov 2026): 2024 -> 2025, coal rule. Household series end in 2023 (UNSD) and are not carried.
+carry_2025(O,['wood_fuel_m3','wood_fuel_t','wood_fuel_energy_twh','charcoal_production_t'],print_=False)
 O.write()

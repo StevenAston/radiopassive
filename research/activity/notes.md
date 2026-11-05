@@ -402,3 +402,12 @@ Builders `build_nuc2.py` (-> `data/activity/nuclear_cycle.csv`, 460 rows; 464 af
 - Conversion: 0.27 x 5 GWd/tHM / 365.25 = 0.0037 GWa per tHM (Magnox burnup about 5 GWd/tHM; efficiency 0.27 as the spent-fuel model in `build_nuc.py`, which uses burnup 5.5-6; both assumed, conversion band +-20%, combined in quadrature with the throughput band).
 - Result: calendar-year B205 throughput 604 (1995), 604 (1996), 399 (2000), 445 (2005), 287 (2010), 359 (2015-16 and 2020), 195 (2022) tHM; 13,729 tHM over 1995-2022 against the lifetime 54,920 tHM (S1609), so about 41,000 tHM before 1995 (RR5 says about 47,000 tHM by about 2006, consistent). GBR 1995 7.0 (5.1-9.5) GWa, 1996 13.0, 2019 1.3, 2022 0.72 GWa; XWL 1998-2002 mean 60.7 GWa/a (was 58.6).
 - Sources: S1700-S1704 in `sources_task2y.csv` (`make_sources_task2y.py`, merged into `data/sources.csv` (2026-11-02); the validator reports no issues, without them only T04 for these five IDs). The 2018/19 Sellafield metric includes Dounreay Fast Reactor material, so FY2019 may slightly overstate Magnox fuel; the 2017/18 review gives 188 teU of decanning, which is a different metric and is not used.
+
+## 11. Other-energy stream inputs (OTHER_SPEC; D70; 4 Nov 2026)
+
+### 11.1 2024 to 2025 carry-forward for wood, charcoal and peat (`build_bio.py`, `build_peat.py`, helper `carry_2025` in `common.py`)
+- Series: `wood_fuel_m3`, `wood_fuel_t`, `wood_fuel_energy_twh`, `charcoal_production_t` (every country with a 2024 row, plus XWL; 800 rows in `biomass.csv`) and `peat_production_t`, `peat_production_twh`, `peat_supply_t`, `peat_supply_twh`, `peat_household_t`, `peat_power_heat_t` (47 rows in `peat.csv`). Basis `extrapolated`.
+- Rule: exactly that of `build_coal.py`, `build_elec.py`, `build_u.py` and `build_nuc.py` (section 10.1); the long note is the same registry entry (N2825). Exact-zero 2024 values (for example charcoal in FIN and IRL) are carried as exact zeros with the existing zero-width note (N2826).
+- Not carried: the UNSD household series (`household_fuelwood_*`, `household_charcoal_*`) end in 2023 and have no 2024 row to carry.
+- Examples (central; 2025): XWL wood fuel 1.949e9 m3, 1.413e9 t, 5,089 TWh; XWL charcoal 5.94e7 t; CHN wood fuel 1.457e8 m3, charcoal 2.42e6 t; IND wood fuel 2.97e8 m3; FIN peat production 1.009e6 t.
+- Existing rows are byte-identical (checked row by row; order kept); only 2025 rows were added. `note_registry.json` gained no notes (the carry-forward notes already existed), so `note_registry.csv` is unchanged. Plot PNGs were not regenerated.
