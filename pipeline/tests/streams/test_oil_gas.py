@@ -1,6 +1,6 @@
-"""Spec-blind tests for the oil and gas stream script (Task 2.3, docs/OIL_GAS_SPEC.md v1.0 section 9 (a)-(j)).
+"""Spec-blind tests for the oil and gas stream script (Task 2.3, docs/OIL_GAS_SPEC.md v1.1 section 9 (a)-(j)).
 
-Written from docs/OIL_GAS_SPEC.md (v1.0, sections 1-12), docs/NUCLEAR_SPEC.md (13), docs/COAL_SPEC.md
+Written from docs/OIL_GAS_SPEC.md (v1.1, sections 1-12), docs/NUCLEAR_SPEC.md (13), docs/COAL_SPEC.md
 (11-12), docs/LIB_SPEC.md (v1.4), docs/SCHEMA.md (v2.4b), docs/DECISIONS.md, data/factors/oil_gas.csv,
 data/activity/oil_gas*.csv and data/reference/*. pipeline/streams/oil_gas.py was not read (it does not
 exist yet). All expected values come from the independent arithmetic in oil_gas_oracle.py (pandas plus the
@@ -63,6 +63,7 @@ import subprocess
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
+from typing import ClassVar
 
 import pandas as pd
 import pytest
@@ -73,7 +74,6 @@ from oil_gas_oracle import (
     REST_WATER,
     TOL,
     WORLD_FLARE,
-    B,
     Oracle,
     cdiff,
     diff,
@@ -890,7 +890,7 @@ def _family_of(r: dict):
 
 
 class TestRestOfWorld:
-    SERIES = {"GD": ("gas_production_m3", "oil_gas:0074"), "GN": ("gas_production_m3", "oil_gas:0110"),
+    SERIES: ClassVar[dict] = {"GD": ("gas_production_m3", "oil_gas:0074"), "GN": ("gas_production_m3", "oil_gas:0110"),
               "GV": ("gas_production_m3", "oil_gas:0075"), "GP": ("gas_production_m3", "oil_gas:0076"),
               "OR": ("oil_production_t", "oil_gas:0077"), "FL": ("gas_flared_m3", "oil_gas:0111")}
 
@@ -1125,14 +1125,14 @@ class TestMainRadio:
     def test_usa_2003_main_gas_radio_oil_follows_the_data_rule(self, rows, oracle):
         al = oracle.alloc("USA", 2003)
         premise((al["main"], al["radio"]) == ("gas", "oil"), "USA 2003 has gas ahead of oil by value (D71 C1)")
-        kw = dict(stage="production", substream="conventional", country="USA", group="K40", tier="reisolated")
-        nz = lambda v: [p for p in PRODUCTS if float(rows.one(2003, product=p, allocation_variant=v, **kw)["value_central"]) > 0]   # noqa: E731
+        kw = {"stage": "production", "substream": "conventional", "country": "USA", "group": "K40", "tier": "reisolated"}
+        nz = lambda v: [p for p in PRODUCTS if float(rows.one(2003, product=p, allocation_variant=v, **kw)["value_central"]) > 0]
         assert nz("bound_main") == ["gas"] and nz("bound_radio") == ["oil"], (nz("bound_main"), nz("bound_radio"))
 
     def test_bound_main_all_to_oil_bound_radio_all_to_gas_and_they_differ(self, rows):
         for geo in ("USA", "XXX"):
             for y in (1950, 1990, 2010, 2020, 2025):
-                kw = dict(stage="production", substream="conventional", country=geo, group="Ra226+", tier="reisolated")
+                kw = {"stage": "production", "substream": "conventional", "country": geo, "group": "Ra226+", "tier": "reisolated"}
                 val = {(p, v): float(rows.one(y, product=p, allocation_variant=v, **kw)["value_central"])
                        for p in PRODUCTS for v in ("default", "bound_main", "bound_radio")}
                 tot = sum(val[(p, "default")] for p in PRODUCTS)
@@ -1473,7 +1473,7 @@ class TestHandComputed:
                  "ngl": self._ct(oracle, "unit_value_ngl_usd_per_m3", y, "XWL")}
         val = {p: q[p] * v[p] for p in PRODUCTS}
         tot = sum(val.values())
-        kw = dict(stage="production", substream="conventional", country=geo, group="K40", tier="reisolated")
+        kw = {"stage": "production", "substream": "conventional", "country": geo, "group": "K40", "tier": "reisolated"}
         rs = {(p, vv): rows.one(y, product=p, allocation_variant=vv, **kw) for p in PRODUCTS for vv in ("default", "bound_main", "bound_radio")}
         unall = sum(float(rs[(p, "default")]["value_central"]) for p in PRODUCTS)
         for p in PRODUCTS:
@@ -1489,10 +1489,10 @@ class TestHandComputed:
     def test_gas_family_usa_2010(self, rows, oracle):
         y = 2010
         P = self._ct(oracle, "gas_production_m3", y, "USA")
-        for fam, fid, kw in (("GD", "oil_gas:0074", dict(route="air_delivered_gas", product="gas", group="Rn222+")),
-                             ("GN", "oil_gas:0110", dict(route="air_delivered_gas", product="ngl", group="Rn222+")),
-                             ("GV", "oil_gas:0075", dict(route="air_vented_gas", product="gas", group="Rn222+")),
-                             ("GP", "oil_gas:0076", dict(product="gas", group="Pb210+", tier="impounded", residue_type="og_processing_residue"))):
+        for fam, fid, kw in (("GD", "oil_gas:0074", {"route": "air_delivered_gas", "product": "gas", "group": "Rn222+"}),
+                             ("GN", "oil_gas:0110", {"route": "air_delivered_gas", "product": "ngl", "group": "Rn222+"}),
+                             ("GV", "oil_gas:0075", {"route": "air_vented_gas", "product": "gas", "group": "Rn222+"}),
+                             ("GP", "oil_gas:0076", {"product": "gas", "group": "Pb210+", "tier": "impounded", "residue_type": "og_processing_residue"})):
             r = rows.one(y, stage="processing_transport", country="USA", substream="all", **kw)
             assert math.isclose(float(r["value_central"]), P * fc(oracle, fid)[1], rel_tol=1e-12), fam
             assert ids(r["factor_ids"]) == [fid] and r["allocation_variant"] == "default" and ids(r["allocation_rule"]) == ["none"]
@@ -1599,7 +1599,7 @@ GROUPS4 = ("Ra226+", "Ra228+", "K40", "Pb210+")
 
 
 def _calls(oracle: Oracle):
-    base = dict(stage="production", substream="", group="", tier="", route="", residue_type="")
+    base = {"stage": "production", "substream": "", "group": "", "tier": "", "route": "", "residue_type": ""}
     out = []
 
     def add(name, kw, regions, y0, y1, strict=False):
@@ -1620,25 +1620,25 @@ def _calls(oracle: Oracle):
         add(f"Pi {r}", {**base, "group": "Pb210+", "residue_type": r}, ("XWL",), 1950, 2025)
         for t, route in (("impounded", ""), ("dispersed", ""), ("liberated", "water_produced_discharge")):
             add(f"R {r} {t}", {**base, "tier": t, "route": route, "residue_type": r, "driver_series": ""}, ("XWL",), 1950, 2025)
-    ab = dict(stage="abandonment_scrap", substream="", group="", tier="", route="", residue_type="")
+    ab = {"stage": "abandonment_scrap", "substream": "", "group": "", "tier": "", "route": "", "residue_type": ""}
     add("Phi", {**ab, "residue_type": "og_scale", "driver_series": ""}, ("XWL",), 1950, 2025)
     add("A imp", {**ab, "tier": "impounded", "residue_type": "og_scale"}, ("XWL",), 1950, 2025)
     add("A disp", {**ab, "tier": "dispersed", "residue_type": "og_scaled_scrap"}, ("XWL",), 1950, 2025)
-    pt = dict(stage="processing_transport", substream="all", group="Rn222+", tier="liberated", route="air_delivered_gas", residue_type="")
+    pt = {"stage": "processing_transport", "substream": "all", "group": "Rn222+", "tier": "liberated", "route": "air_delivered_gas", "residue_type": ""}
     add("GD", pt, ("USA", "XWL"), 1900, 2025)
     add("GN", {**pt, "residue_type": "og_processing_residue"}, ("USA", "XWL"), 1900, 2025)
     add("GV", {**pt, "route": "air_vented_gas"}, ("USA", "XWL"), 1900, 2025)
     add("GP", {**pt, "group": "Pb210+", "tier": "impounded", "route": "", "residue_type": "og_processing_residue"}, ("USA", "XWL"), 1900, 2025)
     add("OR", {**pt, "route": "air_stack"}, ("USA", "XWL"), 1900, 2025)
-    add("FL", dict(stage="production", substream="all", group="Rn222+", tier="liberated", route="air_stack", residue_type="",
-                   driver_series="gas_flared_m3"), ("XWL",), 1950, 2025)
+    add("FL", {"stage": "production", "substream": "all", "group": "Rn222+", "tier": "liberated", "route": "air_stack", "residue_type": "",
+                   "driver_series": "gas_flared_m3"}, ("XWL",), 1950, 2025)
     for g in ("Th232", "Ra228+", "Th228+"):
-        add(f"OS {g}", dict(stage="oil_sands_mining", substream="", group=g, tier="impounded", route="", residue_type="oil_sands_tailings"),
+        add(f"OS {g}", {"stage": "oil_sands_mining", "substream": "", "group": g, "tier": "impounded", "route": "", "residue_type": "oil_sands_tailings"},
             ("CAN",), 1967, 2025, True)
-    dg = lambda sub: oracle.groups_of(stage="drilling", substream=sub)    # noqa: E731
+    dg = lambda sub: oracle.groups_of(stage="drilling", substream=sub)
     for sub, y0 in (("conventional", 1949), ("unconventional", 1980)):
         for g in dg(sub):
-            add(f"D {sub} {g}", dict(stage="drilling", substream=sub, group=g, tier="impounded", route="", residue_type="og_drill_cuttings"),
+            add(f"D {sub} {g}", {"stage": "drilling", "substream": sub, "group": g, "tier": "impounded", "route": "", "residue_type": "og_drill_cuttings"},
                 ("USA",), y0, 2025, True)
     return out
 
@@ -1653,7 +1653,7 @@ class TestPremises:
         premise(list(oracle.fid) == want, "the registry holds exactly the ids oil_gas:0001-0111")
 
     def test_substream_cells(self, oracle):
-        rng = lambda a, b: {f"oil_gas:{i:04d}" for i in range(a, b + 1)}    # noqa: E731
+        rng = lambda a, b: {f"oil_gas:{i:04d}" for i in range(a, b + 1)}
         conv = {f"oil_gas:{i:04d}" for i in (1, 2, 4, 5, 7, 9)} | rng(88, 98)
         unc = {f"oil_gas:{i:04d}" for i in (3, 6, 8, 10)} | rng(99, 109)
         allx = rng(74, 77) | {"oil_gas:0110", "oil_gas:0111"}
@@ -1687,7 +1687,7 @@ class TestPremises:
         premise(set(oracle.groups_of(stage="production", substream="unconventional")) == set(GROUPS4), "four water groups (unconventional)")
 
     def test_fate_shares_sum_to_one(self, oracle):
-        base = dict(stage="production", substream="", group="", route="", residue_type="")
+        base = {"stage": "production", "substream": "", "group": "", "route": "", "residue_type": ""}
         bad = []
         for region in ("USA", "XWL"):
             for y in range(1950, 2026):
@@ -1866,7 +1866,7 @@ class TestCli:
         assert main.read_bytes() == m2.read_bytes(), "CLI master output differs from build() + write_master"
         assert pre.read_bytes() == p2.read_bytes(), "CLI pre-1950 output differs"
         counts = Counter(e["kind"] for e in res.log)
-        printed = {m.group(1): int(m.group(2)) for m in re.finditer(r"^log (\w+): (\d+)\s*$", w.stdout + w.stderr, re.M)}
+        printed = {m.group(1): int(m.group(2)) for m in re.finditer(r"^log (\w+): (\d+)\s*$", w.stdout + w.stderr, re.MULTILINE)}
         for kind, n in counts.items():
             assert printed.get(kind) == n, f"CLI must print 'log {kind}: {n}' (1, A8); printed {printed}"
         assert self._run(root).returncode == 0, "identical files must give exit 0"
@@ -2062,7 +2062,7 @@ class TestMiniBase:
         assert not log_entries(lg, "negative_residual")
 
     def test_1949_vertical_drilling_logs_no_unit_value(self, mini_base):
-        _, res, rws, lg = mini_base
+        _, res, _rws, lg = mini_base
         es = log_entries(lg, "no_unit_value")
         assert len(es) == 1 and es[0]["year"] == 1949 and str(es[0]["detail"]).startswith("1949-1949 (1 year"), es
         assert not [r for r in list(res.rows) + list(res.rows_pre1950) if int(r["year"]) == 1949 and r["stage"] == "drilling"]
@@ -2093,7 +2093,7 @@ class TestMiniBase:
         set_rows(act, lambda r: r["series"] == "gas_production_m3" and r["country"] == "RUS" and r["year"] == 2014, basis="interpolated")
         set_rows(act, lambda r: r["series"] == "gas_production_m3" and r["country"] == "XWL" and r["year"] == 2013, basis="extrapolated")
         root, res, rws, _ = build_mini(og_mod, tmp_path, act)
-        exp, flat = mini_problems(root, res)
+        _exp, flat = mini_problems(root, res)
         assert not flat, show(flat)
         usa25 = rws.one(2025, stage="production", substream="conventional", country="USA", group="K40", tier="reisolated",
                         product="oil", allocation_variant="default")
@@ -2144,7 +2144,7 @@ class TestMiniResiduals:
         _, flat = mini_problems(root, res)
         assert not flat, show(flat)
 
-    @pytest.mark.parametrize("rel,written_", [(5e-6, False), (-5e-6, False), (1e-3, True)])
+    @pytest.mark.parametrize("rel,written_", [(5e-6, False), (-5e-6, False), (9e-6, False), (5e-5, True), (1e-3, True)])
     def test_flaring_residual_tolerance(self, og_mod, tmp_path, rel, written_):
         act = mini_act()
         set_rows(act, lambda r: r["series"] == "gas_flared_m3" and r["country"] == "XWL" and r["year"] == 2012,
@@ -2208,7 +2208,7 @@ class TestMiniMissingAndAbsent:
     def test_absent_horizontal_series_removes_only_unconventional_drilling(self, og_mod, tmp_path, mini_base):
         act = mini_act()
         drop_rows(act, lambda r: r["series"] == "us_wells_drilled_horizontal")
-        _, _res, rws, lg = build_mini(og_mod, tmp_path, act, name="absent_hz")
+        _, _res, rws, _lg = build_mini(og_mod, tmp_path, act, name="absent_hz")
         assert not rws.find(stage="drilling", substream="unconventional") and rws.find(stage="drilling", substream="conventional")
         assert len(mini_base[2].rows) > len(rws.rows)
 
@@ -2252,7 +2252,7 @@ class TestMiniErrors:
             build_mini(og_mod, tmp_path, factor_edit=dup)
 
     def test_registry_window_gap_logs_no_factor(self, og_mod, tmp_path):
-        root, res, rws, lg = build_mini(og_mod, tmp_path, factor_edit=edit_factor("oil_gas:0074", year_to=2012))
+        _root, _res, rws, lg = build_mini(og_mod, tmp_path, factor_edit=edit_factor("oil_gas:0074", year_to=2012))
         assert rws.find(2012, country="RUS", route="air_delivered_gas", product="gas")
         assert not rws.find(2013, country="RUS", route="air_delivered_gas", product="gas")
         assert rws.find(2013, country="RUS", route="air_delivered_gas", product="ngl"), "other families are unaffected"
@@ -2262,6 +2262,13 @@ class TestMiniErrors:
     def test_share_with_high_above_one_raises(self, og_mod, tmp_path):
         with pytest.raises(lib_error()):
             build_mini(og_mod, tmp_path, factor_edit=edit_factor("oil_gas:0012", value_high=1.5))
+
+    @pytest.mark.parametrize("fid", ["oil_gas:0033", "oil_gas:0043", "oil_gas:0047", "oil_gas:0061", "oil_gas:0083",
+                                     "oil_gas:0017", "oil_gas:0078"])
+    def test_any_share_with_high_1_5_raises(self, og_mod, tmp_path, fid):
+        """3.4: a share with high above 1 raises, whichever family uses it (not only where a complement is taken)."""
+        with pytest.raises(lib_error()):
+            build_mini(og_mod, tmp_path, factor_edit=edit_factor(fid, value_high=1.5), name="hi15")
 
     def test_unit_one_factor_with_another_unit_raises(self, og_mod, tmp_path):
         with pytest.raises(lib_error()):
@@ -2296,8 +2303,8 @@ class TestMiniMainRadio:
         for geo in ("USA", "XXX"):
             al = Oracle(root).alloc(geo, 2010)
             premise((al["main"], al["radio"]) == ("oil", "ngl"), f"{geo}: the fixture must rank oil > ngl > gas, got {al['main']}/{al['radio']}")
-            kw = dict(stage="production", substream="conventional", country=geo, group="K40", tier="reisolated")
-            nz = lambda v: [p for p in PRODUCTS if float(rws.one(2010, product=p, allocation_variant=v, **kw)["value_central"]) > 0]   # noqa: E731
+            kw = {"stage": "production", "substream": "conventional", "country": geo, "group": "K40", "tier": "reisolated"}
+            nz = lambda v, kw=kw: [p for p in PRODUCTS if float(rws.one(2010, product=p, allocation_variant=v, **kw)["value_central"]) > 0]
             assert nz("bound_main") == ["oil"] and nz("bound_radio") == ["ngl"], (geo, nz("bound_main"), nz("bound_radio"))
         _, flat = mini_problems(root, res)
         assert not flat, show(flat)
@@ -2309,9 +2316,70 @@ class TestMiniMainRadio:
         for geo in ("USA", "XXX"):
             al = Oracle(root).alloc(geo, 2010)
             premise((al["main"], al["radio"]) == ("gas", "oil"), f"{geo}: the fixture must rank gas > oil, got {al['main']}/{al['radio']}")
-            kw = dict(stage="production", substream="conventional", country=geo, group="K40", tier="reisolated")
-            nz = lambda v: [p for p in PRODUCTS if float(rws.one(2010, product=p, allocation_variant=v, **kw)["value_central"]) > 0]   # noqa: E731
+            kw = {"stage": "production", "substream": "conventional", "country": geo, "group": "K40", "tier": "reisolated"}
+            nz = lambda v, kw=kw: [p for p in PRODUCTS if float(rws.one(2010, product=p, allocation_variant=v, **kw)["value_central"]) > 0]
             assert nz("bound_main") == ["gas"] and nz("bound_radio") == ["oil"]
             assert len([r for r in rws.find(2010, **kw)]) == 9
+        _, flat = mini_problems(root, res)
+        assert not flat, show(flat)
+
+
+def _set_central(act, series, country, central, band=0.1):
+    set_rows(act, lambda r: r["series"] == series and r["country"] == country,
+             value_low=central * (1 - band), value_central=central, value_high=central * (1 + band))
+
+
+class TestMiniTiesAndCauses:
+    """Tie-break order of main and radio (4.4, 4.5) and cause order (3.3)."""
+
+    CASES: ClassVar[dict] = {
+        # (oil q, oil v, gas q, gas v, ngl q, ngl v) -> value oil / gas / ngl
+        "all_equal": ((1e8, 2.0), (2e8, 1.0), (4e7, 5.0), "oil", "gas"),          # 2e8 / 2e8 / 2e8
+        "oil_gas_tie_ngl_low": ((1e8, 2.0), (2e8, 1.0), (4e7, 1.0), "oil", "gas"),  # 2e8 / 2e8 / 4e7
+        "gas_top_oil_ngl_tie": ((1e8, 2.0), (2e8, 2.0), (4e7, 5.0), "gas", "oil"),  # 2e8 / 4e8 / 2e8
+    }
+
+    @pytest.mark.parametrize("case", list(CASES))
+    def test_exact_value_ties_follow_the_order_oil_gas_ngl(self, og_mod, tmp_path, case):
+        (qo, vo), (qg, vg), (qn, vn), main, radio = self.CASES[case]
+        act = mini_act()
+        _set_central(act, "oil_production_m3", "USA", qo)
+        _set_central(act, "gas_production_m3", "USA", qg)
+        _set_central(act, "ngl_production_m3", "USA", qn)
+        _set_central(act, "unit_value_oil_usd_per_m3", "USA", vo)
+        _set_central(act, "unit_value_gas_usd_per_m3", "USA", vg)
+        _set_central(act, "unit_value_ngl_usd_per_m3", "XWL", vn)
+        root, res, rws, _ = build_mini(og_mod, tmp_path, act, name=f"tie_{case}")
+        val = {"oil": qo * vo, "gas": qg * vg, "ngl": qn * vn}
+        premise(sorted(val.values())[-2] == max(val.values()) or case == "gas_top_oil_ngl_tie",
+                f"the {case} fixture must contain an exact tie for the top value: {val}")
+        premise(val["oil"] == val["ngl"] if case == "gas_top_oil_ngl_tie" else val["oil"] == val["gas"], f"exact tie in {case}")
+        al = Oracle(root).alloc("USA", 2010)
+        assert (al["main"], al["radio"]) == (main, radio), f"oracle reading of the spec tie order: {al['main']}/{al['radio']}"
+        kw = {"stage": "production", "substream": "conventional", "country": "USA", "group": "K40", "tier": "reisolated"}
+        nz = lambda v: [p for p in PRODUCTS if float(rws.one(2010, product=p, allocation_variant=v, **kw)["value_central"]) > 0]
+        assert nz("bound_main") == [main], f"{case}: main on a tie must be {main} (4.4, ties oil, gas, ngl); got {nz('bound_main')}"
+        assert nz("bound_radio") == [radio], f"{case}: radio on a tie must be {radio} (4.5); got {nz('bound_radio')}"
+        _, flat = mini_problems(root, res)
+        assert not flat, show(flat)
+
+    def test_causes_are_written_in_the_fixed_order(self, og_mod, tmp_path):
+        """XWL water low below the USA low gives a clipped rest-of-world volume; in 1951 the XWL unconventional share has
+        central 0 as well, so zero_central_factor and clipped_difference both apply (order: zero_central_factor first)."""
+        act = mini_act()
+        set_rows(act, lambda r: r["series"] == "produced_water_m3" and r["country"] == "XWL", value_low=1e8)
+        root, res, rws, _ = build_mini(og_mod, tmp_path, act, name="causes")
+        r = rws.one(1951, stage="production", substream="unconventional", country="XXX", group="Ra226+", tier="reisolated",
+                    product="oil", allocation_variant="default")
+        assert as_bool(r["below_detection"])
+        assert notes_parts(r["notes"])["cause"] == ["zero_central_factor", "clipped_difference"], r["notes"]
+        c = rws.one(2010, stage="production", substream="conventional", country="XXX", group="Ra226+", tier="reisolated",
+                    product="oil", allocation_variant="default")
+        assert as_bool(c["below_detection"]) and "clipped_difference" in notes_parts(c["notes"])["cause"], c["notes"]
+        order = ["zero_central_factor", "exact_zero", "clipped_difference", "floor_dominance", "inherited_flag"]
+        for x in res.rows:
+            cs = notes_parts(x["notes"])["cause"]
+            if cs:
+                assert cs == [k for k in order if k in cs], f"cause order: {cs}"
         _, flat = mini_problems(root, res)
         assert not flat, show(flat)

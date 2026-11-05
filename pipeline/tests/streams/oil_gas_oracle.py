@@ -26,6 +26,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import ClassVar
 
 import pandas as pd
 
@@ -207,7 +208,7 @@ def rkey(year, substream, stage, country, group, tier, route, residue, product, 
 
 
 class Act:
-    __slots__ = ("b", "basis", "src", "unit", "series", "year", "country")
+    __slots__ = ("b", "basis", "country", "series", "src", "unit", "year")
 
     def __init__(self, r):
         self.series, self.year, self.country = r["series"], int(r["year"]), r["country"]
@@ -326,27 +327,27 @@ class Oracle:
         d[er.key] = er
 
     # ---- single-driver gas and oil radon (6.1 - 6.3) -------------------------------------------
-    SINGLES = {
-        "GD": dict(series="gas_production_m3", unit="m3", product="gas", substream="all", stage="processing_transport",
-                   group="Rn222+", tier="liberated", route="air_delivered_gas", residue="",
-                   sel=dict(stage="processing_transport", substream="all", group="Rn222+", tier="liberated",
-                            route="air_delivered_gas", residue_type="")),
-        "GN": dict(series="gas_production_m3", unit="m3", product="ngl", substream="all", stage="processing_transport",
-                   group="Rn222+", tier="liberated", route="air_delivered_gas", residue="",
-                   sel=dict(stage="processing_transport", substream="all", group="Rn222+", tier="liberated",
-                            route="air_delivered_gas", residue_type="og_processing_residue")),
-        "GV": dict(series="gas_production_m3", unit="m3", product="gas", substream="all", stage="processing_transport",
-                   group="Rn222+", tier="liberated", route="air_vented_gas", residue="",
-                   sel=dict(stage="processing_transport", substream="all", group="Rn222+", tier="liberated",
-                            route="air_vented_gas", residue_type="")),
-        "GP": dict(series="gas_production_m3", unit="m3", product="gas", substream="all", stage="processing_transport",
-                   group="Pb210+", tier="impounded", route="", residue="og_processing_residue",
-                   sel=dict(stage="processing_transport", substream="all", group="Pb210+", tier="impounded",
-                            route="", residue_type="og_processing_residue")),
-        "OR": dict(series="oil_production_t", unit="t", product="oil", substream="all", stage="processing_transport",
-                   group="Rn222+", tier="liberated", route="air_stack", residue="",
-                   sel=dict(stage="processing_transport", substream="all", group="Rn222+", tier="liberated",
-                            route="air_stack", residue_type="")),
+    SINGLES: ClassVar[dict] = {
+        "GD": {"series": "gas_production_m3", "unit": "m3", "product": "gas", "substream": "all", "stage": "processing_transport",
+                   "group": "Rn222+", "tier": "liberated", "route": "air_delivered_gas", "residue": "",
+                   "sel": {"stage": "processing_transport", "substream": "all", "group": "Rn222+", "tier": "liberated",
+                            "route": "air_delivered_gas", "residue_type": ""}},
+        "GN": {"series": "gas_production_m3", "unit": "m3", "product": "ngl", "substream": "all", "stage": "processing_transport",
+                   "group": "Rn222+", "tier": "liberated", "route": "air_delivered_gas", "residue": "",
+                   "sel": {"stage": "processing_transport", "substream": "all", "group": "Rn222+", "tier": "liberated",
+                            "route": "air_delivered_gas", "residue_type": "og_processing_residue"}},
+        "GV": {"series": "gas_production_m3", "unit": "m3", "product": "gas", "substream": "all", "stage": "processing_transport",
+                   "group": "Rn222+", "tier": "liberated", "route": "air_vented_gas", "residue": "",
+                   "sel": {"stage": "processing_transport", "substream": "all", "group": "Rn222+", "tier": "liberated",
+                            "route": "air_vented_gas", "residue_type": ""}},
+        "GP": {"series": "gas_production_m3", "unit": "m3", "product": "gas", "substream": "all", "stage": "processing_transport",
+                   "group": "Pb210+", "tier": "impounded", "route": "", "residue": "og_processing_residue",
+                   "sel": {"stage": "processing_transport", "substream": "all", "group": "Pb210+", "tier": "impounded",
+                            "route": "", "residue_type": "og_processing_residue"}},
+        "OR": {"series": "oil_production_t", "unit": "t", "product": "oil", "substream": "all", "stage": "processing_transport",
+                   "group": "Rn222+", "tier": "liberated", "route": "air_stack", "residue": "",
+                   "sel": {"stage": "processing_transport", "substream": "all", "group": "Rn222+", "tier": "liberated",
+                            "route": "air_stack", "residue_type": ""}},
     }
 
     def residual(self, series, y, label):
@@ -402,10 +403,10 @@ class Oracle:
     # ---- flaring (6.4) ---------------------------------------------------------------------------
     def _flaring(self, rows):
         series = "gas_flared_m3"
-        sel = dict(stage="production", substream="all", group="Rn222+", tier="liberated", route="air_stack",
-                   residue_type="", driver_series="gas_flared_m3")
-        base = dict(substream="all", stage="production", group="Rn222+", tier="liberated", route="air_stack",
-                    residue="", product="oil", series=series, unit="m3")
+        sel = {"stage": "production", "substream": "all", "group": "Rn222+", "tier": "liberated", "route": "air_stack",
+                   "residue_type": "", "driver_series": "gas_flared_m3"}
+        base = {"substream": "all", "stage": "production", "group": "Rn222+", "tier": "liberated", "route": "air_stack",
+                    "residue": "", "product": "oil", "series": series, "unit": "m3"}
         for y in self.years(series):
             if not (1950 <= y <= 2025):
                 continue
@@ -517,7 +518,7 @@ class Oracle:
         src = set()
         for x in used:
             src |= set(x.src)
-        return dict(shares=shares, main=main, radio=radio, val=val, q=q, v=v, basis=basis, src=src)
+        return {"shares": shares, "main": main, "radio": radio, "val": val, "q": q, "v": v, "basis": basis, "src": src}
 
     # ---- joint families (5, 7.1, 7.2) -----------------------------------------------------------
     def _emit(self, rows, y, geo, sub, stage, group, tier, route, residue, R: B, code, fids, fid_req, fid_opt,
@@ -534,8 +535,7 @@ class Oracle:
                                set(al["src"]), set(drv_basis), ab, tok, p, variant, list(frags), tag)
 
     def _joint(self, rows):
-        cs = dict(stage="production", substream="conventional")
-        cu = dict(stage="production", substream="unconventional")
+        cs = {"stage": "production", "substream": "conventional"}
         wgroups = self.groups_of(**cs)
         pw = "produced_water_m3"
         for y in range(1950, 2026):
@@ -563,7 +563,7 @@ class Oracle:
         self._drilling(rows)
 
     def _sel(self, y, region, **kw):
-        base = dict(stage="production", substream="", group="", tier="", route="", residue_type="")
+        base = {"stage": "production", "substream": "", "group": "", "tier": "", "route": "", "residue_type": ""}
         base.update(kw)
         return self.try_select(y, region, **base)
 
@@ -649,7 +649,7 @@ class Oracle:
                 self.parts[(geo, y, sub, "A", g)] = A[g]
                 self.parts[(geo, y, sub, "W", g, tier)] = Wb
             # merge and emit production rows
-            order_key = lambda k: k   # noqa: E731
+            order_key = lambda k: k
             for (tier, route, residue, g), lst in sorted(contrib.items(), key=lambda kv: order_key(kv[0])):
                 R = sum_correlated([x[0] for x in lst])
                 self.parts[(geo, y, sub, "R", g, tier, route, residue)] = R

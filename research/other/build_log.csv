@@ -1,0 +1,673 @@
+kind,year,country,group,detail
+negative_residual,1993,DEU,,peat supply is below plants plus household by 5000 t; treated as 0
+negative_residual,1997,UKR,,peat supply is below plants plus household by 1000 t; treated as 0
+negative_residual,1998,ROU,,peat supply is below plants plus household by 3000 t; treated as 0
+negative_residual,2012,ARM,,peat supply is below plants plus household by 30 t; treated as 0
+no_driver,1800,XXX,,1800-1915 (116 years): elec_gen_geothermal has no value
+no_driver,1800,XXX,,1800-1960 (161 years): wood_fuel_t has no value
+no_driver,1800,XXX,,1800-1989 (190 years): peat_supply_t has no value
+household_fallback,1961,ABW,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,ABW,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,AFG,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,AFG,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,AGO,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,AGO,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,ALB,,1961-2001 (41 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,ALB,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,ARE,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,ARG,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2007,ARG,,2007-2010 (4 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,ARG,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,ARM,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,AUS,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2009,AUS,,2009-2025 (17 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,AUT,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,AUT,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1998,AZE,,1998-2006 (9 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,AZE,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,BDI,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BDI,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BEL,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,BEN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BEN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,BFA,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BFA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,BGD,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BGD,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,BGR,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BGR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,BHR,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BHR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,BHS,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BHS,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BIH,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BLR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,BLZ,,1961-2000 (40 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BLZ,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,BOL,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BOL,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,BRA,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BRA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,BRB,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,BRN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BRN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,BTN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BTN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,BWA,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,BWA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,CAF,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,CAF,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,CAN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,CAN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,CHE,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,CHL,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,CHL,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,CHN,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,CIV,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,CIV,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,CMR,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,CMR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,COD,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,COD,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,COG,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,COG,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,COL,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,COL,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,COM,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,COM,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,CPV,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,CPV,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,CRI,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,CRI,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,CSK,,1961-1992 (32 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,CUB,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,CUB,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2011,CXR,,2011-2025 (15 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,CYP,,1961-2005 (45 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,CYP,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,CZE,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,DEU,,1961-1990 (30 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,DEU,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1966,DJI,,1966-1989 (24 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,DJI,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,DMA,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,DMA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,DNK,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,DNK,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,DOM,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,DOM,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,DZA,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,DZA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,ECU,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,ECU,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,EGY,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,EGY,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1993,ERI,,1993-1993 (1 year): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,ERI,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,ESP,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,ESP,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,EST,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1993,ETH,,1993-1993 (1 year): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,ETH,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,FIN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,FIN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,FJI,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,FJI,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,FLK,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,FRA,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1991,FSM,,1991-1991 (1 year): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,FSM,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,GAB,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,GAB,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,GBR,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2008,GBR,,2008-2019 (12 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,GBR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,GEO,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,GHA,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,GHA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,GIN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,GIN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,GLP,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2011,GLP,,2011-2025 (15 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,GMB,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,GMB,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,GNB,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,GNB,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,GNQ,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,GNQ,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,GRC,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,GRC,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,GTM,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,GTM,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,GUF,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2011,GUF,,2011-2025 (15 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,GUY,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,GUY,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,HND,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,HND,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,HRV,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,HTI,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,HTI,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,HUN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,HUN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,IDN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,IDN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,IND,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,IND,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,IRL,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,IRL,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,IRN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,IRN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,IRQ,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2011,ISL,,2011-2025 (15 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,ISR,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,ISR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,ITA,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,JAM,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,JAM,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,JOR,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,JOR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,JPN,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1992,KAZ,,1992-1997 (6 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1999,KAZ,,1999-2008 (10 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,KAZ,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,KEN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,KEN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1997,KGZ,,1997-2012 (16 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,KGZ,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,KHM,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,KHM,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,KIR,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,KIR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,KOR,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,KOR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,KWT,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,KWT,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,LAO,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,LAO,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,LBN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,LBN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,LBR,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,LBR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,LBY,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,LBY,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,LCA,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,LCA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1995,LIE,,1995-2025 (31 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,LKA,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,LKA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,LSO,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,LSO,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,LTU,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,LUX,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,LVA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,MAR,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MAR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MDA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,MDG,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MDG,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,MDV,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MDV,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,MEX,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MEX,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MKD,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,MLI,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MLI,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,MMR,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MMR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MNE,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,MNG,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MNG,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,MOZ,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MOZ,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,MRT,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MRT,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,MTQ,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,MUS,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MUS,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,MWI,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MWI,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,MYS,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,MYS,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2011,MYT,,2011-2025 (15 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,NAM,,1961-1990 (30 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,NAM,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,NCL,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,NCL,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,NER,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,NER,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,NFK,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,NGA,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,NGA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,NIC,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,NIU,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,NIU,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,NLD,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,NLD,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,NOR,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,NPL,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,NPL,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,NZL,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,NZL,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,OMN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,OMN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,PAK,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,PAK,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,PAN,,1961-2003 (43 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,PAN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,PER,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,PER,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,PHL,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,PHL,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,PNG,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,PNG,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,POL,,1961-1992 (32 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,POL,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,PRK,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,PRT,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,PRT,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,PRY,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,PRY,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,PYF,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,PYF,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,QAT,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,QAT,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,REU,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2011,REU,,2011-2025 (15 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,ROU,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,ROU,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,RUS,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,RWA,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,RWA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,SAU,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1997,SAU,,1997-2001 (5 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SAU,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SDN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,SEN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SEN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,SGP,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,SLB,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SLB,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,SLE,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SLE,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,SLV,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SLV,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,SOM,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SOM,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SPM,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SRB,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SSD,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,STP,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,STP,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,SUN,,1961-1991 (31 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,SUR,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SUR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SVK,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SVN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,SWE,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SWE,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1981,SWZ,,1981-1989 (9 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SWZ,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,SYC,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,SYR,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2008,SYR,,2008-2025 (18 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,TCA,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,TCA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,TCD,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,TCD,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,TGO,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,TGO,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,THA,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,THA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,TJK,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,TKM,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1993,TLS,,1993-2001 (9 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,TLS,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,TON,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,TON,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,TTO,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,TTO,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,TUN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,TUN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,TUR,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,TUR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,TZA,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,TZA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,UGA,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,UGA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,UKR,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,URY,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,URY,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,USA,,1961-1992 (32 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,USA,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1998,UZB,,1998-2025 (28 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,VCT,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,VCT,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,VEN,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,VEN,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,VGB,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,VGB,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,VNM,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2018,VNM,,2018-2025 (8 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1966,VUT,,1966-1989 (24 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,VUT,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,WSM,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,WSM,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,XXX,,1961-2011 (51 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,XXX,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,YEM,,1961-2025 (65 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,YUG,,1961-1991 (31 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,ZAF,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,ZAF,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,ZMB,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,ZMB,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,1961,ZWE,,1961-1989 (29 years): no household_fuelwood_m3 row; household share other:0050 used
+household_fallback,2024,ZWE,,2024-2025 (2 years): no household_fuelwood_m3 row; household share other:0050 used
+charcoal_wood_capped,2003,ALB,,2003-2010 (8 years): capped low+central+high
+charcoal_wood_capped,1970,ARE,,1970-1997 (28 years): capped low+central+high
+charcoal_wood_capped,2000,ARE,,2000-2025 (26 years): capped low+central+high
+charcoal_wood_capped,1966,ARG,,1966-1971 (6 years): capped low+central+high
+charcoal_wood_capped,1974,ARG,,1974-1974 (1 year): capped low+central+high
+charcoal_wood_capped,1978,ARG,,1978-1978 (1 year): capped low+central+high
+charcoal_wood_capped,2019,ARG,,2019-2019 (1 year): capped high
+charcoal_wood_capped,1961,BHR,,1961-1966 (6 years): capped low+central+high
+charcoal_wood_capped,1994,BHR,,1994-1994 (1 year): capped low+central+high
+charcoal_wood_capped,2000,BHR,,2000-2025 (26 years): capped low+central+high
+charcoal_wood_capped,2011,COL,,2011-2011 (1 year): capped high
+charcoal_wood_capped,1961,COM,,1961-2025 (65 years): capped low+central+high
+charcoal_wood_capped,1988,CPV,,1988-2000 (13 years): capped high
+charcoal_wood_capped,2023,CUB,,2023-2025 (3 years): capped high
+charcoal_wood_capped,1964,CYP,,1964-1964 (1 year): capped high
+charcoal_wood_capped,1974,CYP,,1974-1974 (1 year): capped low+central+high
+charcoal_wood_capped,1991,CYP,,1991-1991 (1 year): capped high
+charcoal_wood_capped,1998,CYP,,1998-2025 (28 years): capped low+central+high
+charcoal_wood_capped,1980,DJI,,1980-2025 (46 years): capped low+central+high
+charcoal_wood_capped,1980,DOM,,1980-2004 (25 years): capped low+high
+charcoal_wood_capped,1961,ECU,,1961-1972 (12 years): capped low+central+high
+charcoal_wood_capped,2002,ERI,,2002-2025 (24 years): capped low+central+high
+charcoal_wood_capped,1973,FJI,,1973-1976 (4 years): capped low+central+high
+charcoal_wood_capped,1988,FLK,,1988-1993 (6 years): capped low+central+high
+charcoal_wood_capped,2000,FLK,,2000-2014 (15 years): capped low+central+high
+charcoal_wood_capped,2016,FLK,,2016-2025 (10 years): capped low+central+high
+charcoal_wood_capped,1991,FSM,,1991-2025 (35 years): capped low+central+high
+charcoal_wood_capped,1975,GBR,,1975-1983 (9 years): capped low+central+high
+charcoal_wood_capped,1997,GLP,,1997-2025 (29 years): capped low+central+high
+charcoal_wood_capped,1968,IRN,,1968-1973 (6 years): capped low+central+high
+charcoal_wood_capped,1979,IRN,,1979-1982 (4 years): capped low+central+high
+charcoal_wood_capped,1986,IRN,,1986-1989 (4 years): capped low+central+high
+charcoal_wood_capped,2000,IRN,,2000-2001 (2 years): capped low+central+high
+charcoal_wood_capped,1976,IRQ,,1976-1976 (1 year): capped low+central+high
+charcoal_wood_capped,1979,IRQ,,1979-2025 (47 years): capped low+central+high
+charcoal_wood_capped,1961,JAM,,1961-1961 (1 year): capped low+central+high
+charcoal_wood_capped,1964,JAM,,1964-1964 (1 year): capped low+central+high
+charcoal_wood_capped,1966,JAM,,1966-1967 (2 years): capped low+central+high
+charcoal_wood_capped,1997,JOR,,1997-2025 (29 years): capped high
+charcoal_wood_capped,1973,JPN,,1973-1995 (23 years): capped low+central+high
+charcoal_wood_capped,1998,JPN,,1998-2013 (16 years): capped low+central+high
+charcoal_wood_capped,2017,KIR,,2017-2025 (9 years): capped high
+charcoal_wood_capped,1961,KWT,,1961-1963 (3 years): capped high
+charcoal_wood_capped,2000,KWT,,2000-2025 (26 years): capped low+central+high
+charcoal_wood_capped,1988,LBN,,1988-1997 (10 years): capped high
+charcoal_wood_capped,1999,LBN,,1999-2021 (23 years): capped low+central+high
+charcoal_wood_capped,1998,MDA,,1998-1998 (1 year): capped low+central+high
+charcoal_wood_capped,1961,MTQ,,1961-1977 (17 years): capped low+central+high
+charcoal_wood_capped,1982,MTQ,,1982-2020 (39 years): capped low+central+high
+charcoal_wood_capped,2019,NAM,,2019-2025 (7 years): capped low+central+high
+charcoal_wood_capped,2009,NFK,,2009-2025 (17 years): capped low+central+high
+charcoal_wood_capped,2025,NIU,,2025-2025 (1 year): capped high
+charcoal_wood_capped,1973,NLD,,1973-1979 (7 years): capped low+central+high
+charcoal_wood_capped,1987,OMN,,1987-1992 (6 years): capped high
+charcoal_wood_capped,1994,OMN,,1994-1994 (1 year): capped high
+charcoal_wood_capped,1996,OMN,,1996-1998 (3 years): capped high
+charcoal_wood_capped,2000,OMN,,2000-2025 (26 years): capped low+central+high
+charcoal_wood_capped,1961,QAT,,1961-1969 (9 years): capped low+central+high
+charcoal_wood_capped,1971,QAT,,1971-1981 (11 years): capped low+central+high
+charcoal_wood_capped,1994,QAT,,1994-1994 (1 year): capped high
+charcoal_wood_capped,2000,QAT,,2000-2025 (26 years): capped low+central+high
+charcoal_wood_capped,1961,REU,,1961-1961 (1 year): capped low+central+high
+charcoal_wood_capped,1963,REU,,1963-2025 (63 years): capped low+central+high
+charcoal_wood_capped,1961,SAU,,1961-1968 (8 years): capped low+central+high
+charcoal_wood_capped,1970,SAU,,1970-1970 (1 year): capped high
+charcoal_wood_capped,1974,SAU,,1974-1975 (2 years): capped low+central+high
+charcoal_wood_capped,1980,SAU,,1980-1980 (1 year): capped high
+charcoal_wood_capped,1985,SAU,,1985-1985 (1 year): capped high
+charcoal_wood_capped,1996,SAU,,1996-1998 (3 years): capped high
+charcoal_wood_capped,2000,SAU,,2000-2025 (26 years): capped low+central+high
+charcoal_wood_capped,1967,SGP,,1967-1970 (4 years): capped low+central+high
+charcoal_wood_capped,1977,SGP,,1977-1978 (2 years): capped low+central+high
+charcoal_wood_capped,1981,SGP,,1981-1984 (4 years): capped low+central+high
+charcoal_wood_capped,1988,SGP,,1988-2025 (38 years): capped low+central+high
+charcoal_wood_capped,1967,SUR,,1967-1975 (9 years): capped low+central+high
+charcoal_wood_capped,1981,SUR,,1981-2002 (22 years): capped low+central+high
+charcoal_wood_capped,2002,SVK,,2002-2009 (8 years): capped low+central+high
+charcoal_wood_capped,1961,SYR,,1961-1978 (18 years): capped low+central+high
+charcoal_wood_capped,1980,SYR,,1980-1980 (1 year): capped low+central+high
+charcoal_wood_capped,1983,SYR,,1983-1983 (1 year): capped low+central+high
+charcoal_wood_capped,1998,SYR,,1998-2004 (7 years): capped low+central+high
+charcoal_wood_capped,1992,TCA,,1992-1992 (1 year): capped low+central+high
+charcoal_wood_capped,2006,TCA,,2006-2025 (20 years): capped high
+charcoal_wood_capped,1997,TON,,1997-1999 (3 years): capped low+central+high
+charcoal_wood_capped,2017,TON,,2017-2025 (9 years): capped high
+charcoal_wood_capped,1968,TTO,,1968-1968 (1 year): capped high
+charcoal_wood_capped,2008,YEM,,2008-2016 (9 years): capped high
+charcoal_wood_capped,1976,ZMB,,1976-1976 (1 year): capped high
+charcoal_wood_capped,1978,ZMB,,1978-1978 (1 year): capped high
+charcoal_wood_capped,1981,ZMB,,1981-1999 (19 years): capped low+central+high
+household_wood_capped,1990,ABW,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,AFG,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,AGO,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,2002,ALB,,2002-2016 (15 years): capped low+central+high
+household_wood_capped,2018,ALB,,2018-2019 (2 years): capped low+central+high
+household_wood_capped,1990,ARG,,1990-1991 (2 years): capped low+central+high
+household_wood_capped,1993,ARG,,1993-1996 (4 years): capped low+central+high
+household_wood_capped,1999,ARG,,1999-2001 (3 years): capped low+central+high
+household_wood_capped,2019,ARG,,2019-2019 (1 year): capped low+central+high
+household_wood_capped,1997,ARM,,1997-2007 (11 years): capped low+central+high
+household_wood_capped,1990,AUS,,1990-1991 (2 years): capped low+central+high
+household_wood_capped,2006,AUS,,2006-2008 (3 years): capped low+central+high
+household_wood_capped,1990,AUT,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,2007,AZE,,2007-2012 (6 years): capped low+central+high
+household_wood_capped,1999,BDI,,1999-2000 (2 years): capped central+high
+household_wood_capped,2012,BDI,,2012-2023 (12 years): capped low+central+high
+household_wood_capped,2000,BEL,,2000-2004 (5 years): capped low+central+high
+household_wood_capped,2006,BEL,,2006-2006 (1 year): capped low+central+high
+household_wood_capped,2010,BEL,,2010-2023 (14 years): capped low+central+high
+household_wood_capped,2004,BEN,,2004-2009 (6 years): capped low+central+high
+household_wood_capped,2012,BEN,,2012-2012 (1 year): capped high
+household_wood_capped,2018,BEN,,2018-2020 (3 years): capped low
+household_wood_capped,2022,BEN,,2022-2023 (2 years): capped low+high
+household_wood_capped,2001,BFA,,2001-2021 (21 years): capped low+central+high
+household_wood_capped,1990,BGD,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1995,BGR,,1995-2018 (24 years): capped low+central+high
+household_wood_capped,2020,BGR,,2020-2020 (1 year): capped central+high
+household_wood_capped,1991,BHR,,1991-1991 (1 year): capped low+central+high
+household_wood_capped,1993,BHR,,1993-1997 (5 years): capped low+central+high
+household_wood_capped,1999,BHR,,1999-2023 (25 years): capped low+central+high
+household_wood_capped,1997,BIH,,1997-1999 (3 years): capped low+high
+household_wood_capped,2014,BIH,,2014-2023 (10 years): capped low+central+high
+household_wood_capped,1992,BLR,,1992-2011 (20 years): capped low+central+high
+household_wood_capped,1990,BOL,,1990-1997 (8 years): capped low+central+high
+household_wood_capped,1990,BRN,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,BWA,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,CAF,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,CAN,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,CHL,,1990-2013 (24 years): capped low+central+high
+household_wood_capped,1990,CIV,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,CMR,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,2007,COD,,2007-2011 (5 years): capped low
+household_wood_capped,2014,COD,,2014-2023 (10 years): capped low+central+high
+household_wood_capped,2003,COG,,2003-2003 (1 year): capped low
+household_wood_capped,2006,COG,,2006-2023 (18 years): capped low+central+high
+household_wood_capped,1990,COL,,1990-2004 (15 years): capped low+central+high
+household_wood_capped,2006,COL,,2006-2023 (18 years): capped low+central+high
+household_wood_capped,1990,COM,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,CPV,,1990-2002 (13 years): capped low+central+high
+household_wood_capped,2006,CYP,,2006-2023 (18 years): capped low+central+high
+household_wood_capped,1993,CZE,,1993-2023 (31 years): capped low+central+high
+household_wood_capped,1991,DEU,,1991-2023 (33 years): capped low+central+high
+household_wood_capped,1990,DJI,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,DMA,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,DNK,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,DOM,,1990-2006 (17 years): capped low+central+high
+household_wood_capped,2008,DOM,,2008-2023 (16 years): capped low+central+high
+household_wood_capped,1990,ECU,,1990-1991 (2 years): capped low+central+high
+household_wood_capped,1994,ERI,,1994-1997 (4 years): capped low+central+high
+household_wood_capped,2002,ERI,,2002-2023 (22 years): capped low+central+high
+household_wood_capped,1990,ESP,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1994,EST,,1994-2000 (7 years): capped low+central+high
+household_wood_capped,2007,EST,,2007-2008 (2 years): capped low+central+high
+household_wood_capped,2007,ETH,,2007-2023 (17 years): capped low+central+high
+household_wood_capped,1990,FIN,,1990-2010 (21 years): capped low+central+high
+household_wood_capped,1990,FJI,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1992,FSM,,1992-2023 (32 years): capped low+central+high
+household_wood_capped,1990,GAB,,1990-2019 (30 years): capped low+central+high
+household_wood_capped,1990,GBR,,1990-2002 (13 years): capped low+central+high
+household_wood_capped,2004,GBR,,2004-2004 (1 year): capped low+central+high
+household_wood_capped,2006,GBR,,2006-2007 (2 years): capped low+central+high
+household_wood_capped,1998,GEO,,1998-2023 (26 years): capped low+central+high
+household_wood_capped,1990,GHA,,1990-1994 (5 years): capped low+central+high
+household_wood_capped,1992,GIN,,1992-1994 (3 years): capped central+high
+household_wood_capped,1997,GIN,,1997-1998 (2 years): capped central+high
+household_wood_capped,2011,GIN,,2011-2023 (13 years): capped low+central+high
+household_wood_capped,1990,GLP,,1990-2010 (21 years): capped low+central+high
+household_wood_capped,1990,GMB,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,GNQ,,1990-2023 (34 years): capped central+high
+household_wood_capped,1990,GRC,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,GTM,,1990-1990 (1 year): capped high
+household_wood_capped,1993,GTM,,1993-2023 (31 years): capped low+central+high
+household_wood_capped,1990,GUF,,1990-2010 (21 years): capped low+central+high
+household_wood_capped,1990,GUY,,1990-1990 (1 year): capped low+central
+household_wood_capped,2014,HND,,2014-2014 (1 year): capped central+high
+household_wood_capped,1992,HRV,,1992-2023 (32 years): capped low+central+high
+household_wood_capped,1990,HTI,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1999,HUN,,1999-2002 (4 years): capped low+central+high
+household_wood_capped,2005,HUN,,2005-2023 (19 years): capped low+central+high
+household_wood_capped,1990,IND,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,IRL,,1990-2008 (19 years): capped low+central+high
+household_wood_capped,1990,IRN,,1990-1999 (10 years): capped low+central+high
+household_wood_capped,2002,IRN,,2002-2023 (22 years): capped low+central+high
+household_wood_capped,1990,ISR,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,JAM,,1990-2001 (12 years): capped low+central+high
+household_wood_capped,1990,JOR,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,2009,KAZ,,2009-2009 (1 year): capped low
+household_wood_capped,2011,KAZ,,2011-2011 (1 year): capped low+central
+household_wood_capped,2013,KAZ,,2013-2013 (1 year): capped low+central
+household_wood_capped,1990,KEN,,1990-2004 (15 years): capped low+central+high
+household_wood_capped,2015,KEN,,2015-2023 (9 years): capped low+central+high
+household_wood_capped,1990,KIR,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,2013,KOR,,2013-2013 (1 year): capped high
+household_wood_capped,2015,KOR,,2015-2023 (9 years): capped low+central+high
+household_wood_capped,1992,KWT,,1992-2023 (32 years): capped low+central+high
+household_wood_capped,1990,LBN,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,LBR,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,LBY,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,LCA,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,LKA,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,LSO,,1990-2016 (27 years): capped low+central+high
+household_wood_capped,1995,LTU,,1995-2022 (28 years): capped low+central+high
+household_wood_capped,2000,LUX,,2000-2010 (11 years): capped low+central+high
+household_wood_capped,2012,LUX,,2012-2023 (12 years): capped low+central+high
+household_wood_capped,1992,LVA,,1992-1996 (5 years): capped low+central+high
+household_wood_capped,1998,LVA,,1998-2019 (22 years): capped low+central+high
+household_wood_capped,1990,MAR,,1990-2010 (21 years): capped central+high
+household_wood_capped,1998,MDA,,1998-1998 (1 year): capped low+central+high
+household_wood_capped,2010,MDA,,2010-2023 (14 years): capped low+central+high
+household_wood_capped,1990,MDG,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,MDV,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1993,MKD,,1993-2023 (31 years): capped low+central+high
+household_wood_capped,1990,MLI,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,2006,MNE,,2006-2015 (10 years): capped low+central+high
+household_wood_capped,2018,MNE,,2018-2023 (6 years): capped low+central+high
+household_wood_capped,1991,MNG,,1991-1999 (9 years): capped low+central+high
+household_wood_capped,2009,MNG,,2009-2023 (15 years): capped low+central+high
+household_wood_capped,1990,MOZ,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,MRT,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,MUS,,1990-1996 (7 years): capped low+central+high
+household_wood_capped,1998,MUS,,1998-2023 (26 years): capped low+central+high
+household_wood_capped,1990,MWI,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1991,MYS,,1991-2023 (33 years): capped low+central+high
+household_wood_capped,1990,MYT,,1990-2010 (21 years): capped high
+household_wood_capped,1991,NAM,,1991-2023 (33 years): capped low+central+high
+household_wood_capped,1990,NCL,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,NER,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,2016,NGA,,2016-2023 (8 years): capped low+central+high
+household_wood_capped,1990,NIU,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,NLD,,1990-2018 (29 years): capped low+central+high
+household_wood_capped,1990,NPL,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,NZL,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,OMN,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,PAK,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,2004,PAN,,2004-2007 (4 years): capped low+central+high
+household_wood_capped,1990,PER,,1990-2016 (27 years): capped low+central+high
+household_wood_capped,2020,PER,,2020-2022 (3 years): capped low+central+high
+household_wood_capped,1990,PHL,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,PNG,,1990-2023 (34 years): capped central+high
+household_wood_capped,1993,POL,,1993-2023 (31 years): capped low+central+high
+household_wood_capped,1990,PRT,,1990-2022 (33 years): capped low+central+high
+household_wood_capped,1994,PRY,,1994-2003 (10 years): capped low+central+high
+household_wood_capped,2006,PRY,,2006-2010 (5 years): capped low+central+high
+household_wood_capped,2013,PRY,,2013-2014 (2 years): capped low+high
+household_wood_capped,1990,PYF,,1990-2002 (13 years): capped central+high
+household_wood_capped,2007,PYF,,2007-2023 (17 years): capped low+central+high
+household_wood_capped,1990,QAT,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,REU,,1990-2010 (21 years): capped low+central+high
+household_wood_capped,1990,ROU,,1990-1991 (2 years): capped low+central+high
+household_wood_capped,1993,ROU,,1993-2023 (31 years): capped low+central+high
+household_wood_capped,1995,RWA,,1995-2004 (10 years): capped low+central+high
+household_wood_capped,2008,RWA,,2008-2023 (16 years): capped low+central+high
+household_wood_capped,2002,SAU,,2002-2023 (22 years): capped low+central+high
+household_wood_capped,2010,SEN,,2010-2022 (13 years): capped low+central+high
+household_wood_capped,1997,SLB,,1997-2023 (27 years): capped central+high
+household_wood_capped,1990,SLE,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,SOM,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,2005,SPM,,2005-2023 (19 years): capped central+high
+household_wood_capped,2006,SRB,,2006-2009 (4 years): capped low+central+high
+household_wood_capped,2020,SRB,,2020-2023 (4 years): capped low+central+high
+household_wood_capped,2012,SSD,,2012-2018 (7 years): capped low+central+high
+household_wood_capped,2022,SSD,,2022-2022 (1 year): capped low+central+high
+household_wood_capped,1990,STP,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,SUR,,1990-2002 (13 years): capped low+central+high
+household_wood_capped,2004,SUR,,2004-2023 (20 years): capped low+central+high
+household_wood_capped,2002,SVK,,2002-2023 (22 years): capped low+central+high
+household_wood_capped,1992,SVN,,1992-2023 (32 years): capped low+central+high
+household_wood_capped,2011,SWE,,2011-2012 (2 years): capped high
+household_wood_capped,1990,SWZ,,1990-2009 (20 years): capped low+central+high
+household_wood_capped,2013,SWZ,,2013-2015 (3 years): capped low+central+high
+household_wood_capped,2020,SWZ,,2020-2023 (4 years): capped low+central+high
+household_wood_capped,1990,SYC,,1990-2023 (34 years): capped high
+household_wood_capped,1990,SYR,,1990-1990 (1 year): capped low+central+high
+household_wood_capped,1993,SYR,,1993-2007 (15 years): capped low+central+high
+household_wood_capped,1990,TCA,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,TCD,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,2004,TGO,,2004-2023 (20 years): capped low+central+high
+household_wood_capped,1990,THA,,1990-2017 (28 years): capped low+central+high
+household_wood_capped,2004,TJK,,2004-2023 (20 years): capped low+central+high
+household_wood_capped,1998,TKM,,1998-2011 (14 years): capped low+central+high
+household_wood_capped,2002,TLS,,2002-2023 (22 years): capped central+high
+household_wood_capped,1990,TON,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,TTO,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,TUN,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,TUR,,1990-2017 (28 years): capped low+central+high
+household_wood_capped,1990,TZA,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,2009,UGA,,2009-2010 (2 years): capped low
+household_wood_capped,2012,UGA,,2012-2020 (9 years): capped low+central+high
+household_wood_capped,1995,UKR,,1995-2003 (9 years): capped central+high
+household_wood_capped,2018,UKR,,2018-2023 (6 years): capped low+central+high
+household_wood_capped,2000,URY,,2000-2013 (14 years): capped low+central+high
+household_wood_capped,2017,URY,,2017-2018 (2 years): capped high
+household_wood_capped,2021,URY,,2021-2023 (3 years): capped central+high
+household_wood_capped,1995,USA,,1995-2000 (6 years): capped low+central+high
+household_wood_capped,2003,USA,,2003-2015 (13 years): capped low+central+high
+household_wood_capped,2023,USA,,2023-2023 (1 year): capped central+high
+household_wood_capped,1990,VCT,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,VGB,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,VNM,,1990-2015 (26 years): capped low+central+high
+household_wood_capped,1990,VUT,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,WSM,,1990-2023 (34 years): capped low+central+high
+household_wood_capped,1990,ZAF,,1990-2009 (20 years): capped low+central+high
+household_wood_capped,1990,ZMB,,1990-1999 (10 years): capped low+central+high
+household_wood_capped,2016,ZMB,,2016-2023 (8 years): capped low+central+high
+household_wood_capped,1990,ZWE,,1990-2023 (34 years): capped low+central+high
+no_family,,,,stage hydro: no registry rows
+no_family,,,,stage construction: no registry rows; construction waits for commodity_factors.csv
+lib_warning,,,,2568 pipeline.lib warnings captured: 2104 x floor dominance applied; 464 x zero central value in product

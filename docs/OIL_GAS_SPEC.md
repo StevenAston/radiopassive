@@ -160,7 +160,7 @@ The script walks 1900–1949 through the same code path (the earliest activity y
 
 - **Written:** gas radon, NGL radon, vented gas radon, Pb-210 plate-out (§6.2) and oil radon (§6.3), 1900–1949, because `gas_production_m3` and `oil_production_t` start in 1900 and the factors are valid from 1900. These are single-driver families (product `gas`, `ngl` or `oil`, variant `default`, rule `none`).
 - **Not written, logged as aggregated `no_driver` runs:** produced water and everything derived from it (the driver starts in 1950; so there is no pre-1950 scale or sludge, and the D31 opening stock omits oil and gas scale before 1950, gap G13 of the factor notes); flaring (the volume series starts in 1950, §6.4); oil sands (1967).
-- **Not written, logged as `no_unit_value`:** vertical drilling cuttings for 1949 (`us_wells_drilled_vertical` has 1949, the factors are valid from 1949, but the D6 allocation needs unit values and `unit_value_*` starts in 1950; the script never assumes a price, LIB_SPEC §2.1). One entry per series, `detail` `1949-1949 (1 years)`.
+- **Not written, logged as `no_unit_value`:** vertical drilling cuttings for 1949 (`us_wells_drilled_vertical` has 1949, the factors are valid from 1949, but the D6 allocation needs unit values and `unit_value_*` starts in 1950; the script never assumes a price, LIB_SPEC §2.1). One entry per series, `detail` `1949-1949 (1 year): <label>` (run grammar as coal and nuclear: `(1 year)` / `(n years)`, then `: ` and the series label; tests do not pin the label, §8).
 
 The pre-1950 rows have `quantity = flow`, no `memo_*` tier and are produced by the same code as the post-1950 rows. Each passes `schema/master.json` with the `year` bounds relaxed (§9(h)).
 

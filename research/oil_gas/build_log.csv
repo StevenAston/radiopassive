@@ -1,0 +1,9 @@
+kind,year,country,group,detail
+no_driver,1900,XXX,,1900-1949 (50 years): gas_flared_m3 has no value
+no_driver,1900,CAN,,1900-1966 (67 years): oil_sands_ore_processed_t has no value
+no_driver,1900,USA,,1900-1949 (50 years): produced_water_m3 has no value
+no_driver,1900,XXX,,1900-1949 (50 years): produced_water_m3 has no value
+no_driver,1900,USA,,1900-1979 (80 years): us_wells_drilled_horizontal has no value
+no_driver,1900,USA,,1900-1948 (49 years): us_wells_drilled_vertical has no value
+no_unit_value,1949,USA,,1949-1949 (1 year): us_wells_drilled_vertical: no unit value to allocate by value
+lib_warning,,,,9732 pipeline.lib warnings captured: 6356 x floor dominance applied; 3376 x zero central value in product
