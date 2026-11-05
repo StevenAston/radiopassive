@@ -1,0 +1,1068 @@
+year,ccp_type,use_category,used_short_tons,used_t,source_file,page,extraction_method,notes
+1994,bottom_ash,mining_applications,28769,26099,ACAA-CCP-Svy-1994.pdf,1,table,Key categories only; scan read visually.
+1994,bottom_ash,structural_fill,478996,434538,ACAA-CCP-Svy-1994.pdf,1,table,Key categories only; scan read visually; external market + internal producer applications summed.
+1994,bottom_ash,waste_stabilisation,23331,21166,ACAA-CCP-Svy-1994.pdf,1,table,Key categories only; scan read visually.
+1994,fly_ash,mining_applications,80023,72596,ACAA-CCP-Svy-1994.pdf,1,table,Key categories only; scan read visually.
+1994,fly_ash,structural_fill,1211071,1098665,ACAA-CCP-Svy-1994.pdf,1,table,Key categories only; scan read visually; external market + internal producer applications summed.
+1994,fly_ash,waste_stabilisation,231028,209585,ACAA-CCP-Svy-1994.pdf,1,table,Key categories only; scan read visually.
+1995,bottom_ash,mining_applications,30418,27595,ACAA-CCP-Svy-1995.pdf,1,table,Key categories only; scan read visually.
+1995,bottom_ash,structural_fill,450940,409086,ACAA-CCP-Svy-1995.pdf,1,table,Key categories only; scan read visually.
+1995,bottom_ash,waste_stabilisation,148451,134672,ACAA-CCP-Svy-1995.pdf,1,table,Key categories only; scan read visually.
+1995,fly_ash,mining_applications,478610,434188,ACAA-CCP-Svy-1995.pdf,1,table,Key categories only; scan read visually.
+1995,fly_ash,structural_fill,1232581,1118179,ACAA-CCP-Svy-1995.pdf,1,table,Key categories only; scan read visually.
+1995,fly_ash,waste_stabilisation,832232,754988,ACAA-CCP-Svy-1995.pdf,1,table,Key categories only; scan read visually.
+1999,boiler_slag,blasting_grit_roofing,2132354,1934439,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,boiler_slag,concrete_grout,11133,10100,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,boiler_slag,mineral_filler_asphalt,12424,11271,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,boiler_slag,mining_applications,10000,9072,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,boiler_slag,miscellaneous,76239,69163,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,boiler_slag,road_base,5513,5001,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,boiler_slag,snow_ice_control,50877,46155,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,boiler_slag,soil_modification,12941,11740,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,boiler_slag,structural_fill,51983,47158,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,bottom_ash,agriculture,42665,38705,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,bottom_ash,blasting_grit_roofing,156777,142226,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,bottom_ash,blended_cement_clinker,157027,142452,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,bottom_ash,concrete_grout,701342,636247,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,bottom_ash,flowable_fill,13031,11822,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,bottom_ash,mineral_filler_asphalt,62567,56760,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,bottom_ash,mining_applications,154481,140143,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,bottom_ash,miscellaneous,450495,408682,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,bottom_ash,road_base,1102254,999948,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,bottom_ash,snow_ice_control,1108184,1005328,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,bottom_ash,soil_modification,17444,15825,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,bottom_ash,structural_fill,1385413,1256826,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,bottom_ash,waste_stabilisation,68996,62592,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fgd_material_all,agriculture,80463,72995,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fgd_material_all,concrete_grout,289849,262947,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fgd_material_all,gypsum_panel,3053268,2769878,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fgd_material_all,mining_applications,231463,209980,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fgd_material_all,miscellaneous,184651,167513,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fgd_material_all,road_base,17398,15783,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fgd_material_all,soil_modification,2095,1901,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fgd_material_all,structural_fill,577615,524004,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fgd_material_all,waste_stabilisation,15603,14155,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fly_ash,agriculture,13924,12632,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fly_ash,blended_cement_clinker,1268000,1150310,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fly_ash,concrete_grout,10084584,9148581,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fly_ash,flowable_fill,847425,768771,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fly_ash,mineral_filler_asphalt,158934,144182,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fly_ash,mining_applications,1527272,1385518,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fly_ash,miscellaneous,461467,418636,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fly_ash,road_base,1216861,1103918,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fly_ash,snow_ice_control,3201,2904,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fly_ash,soil_modification,78154,70900,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fly_ash,structural_fill,3204501,2907074,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+1999,fly_ash,waste_stabilisation,1929150,1750095,ACAA-CCP-Svy-1999.pdf,1,table,Scan read visually; FGD material not split.
+2000,boiler_slag,blasting_grit_roofing,2098577,1903797,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,boiler_slag,concrete_grout,276,250,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,boiler_slag,flowable_fill,18000,16329,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,boiler_slag,mineral_filler_asphalt,12424,11271,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,boiler_slag,miscellaneous,98389,89257,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,boiler_slag,road_base,13,12,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,boiler_slag,snow_ice_control,58206,52804,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,boiler_slag,structural_fill,35683,32371,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,bottom_ash,agriculture,4748,4307,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,bottom_ash,blasting_grit_roofing,146983,133341,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,bottom_ash,blended_cement_clinker,173813,157681,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,bottom_ash,concrete_grout,419832,380865,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,bottom_ash,flowable_fill,10958,9941,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,bottom_ash,mineral_filler_asphalt,102063,92590,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,bottom_ash,mining_applications,366584,332559,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,bottom_ash,miscellaneous,629567,571134,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,bottom_ash,road_base,836568,758922,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,bottom_ash,snow_ice_control,831708,754513,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,bottom_ash,soil_modification,27907,25317,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,bottom_ash,structural_fill,1351390,1225960,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,bottom_ash,waste_stabilisation,35787,32465,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fgd_material_all,agriculture,75922,68875,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fgd_material_all,concrete_grout,350928,318357,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fgd_material_all,flowable_fill,33452,30347,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fgd_material_all,gypsum_panel,3328651,3019701,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fgd_material_all,mineral_filler_asphalt,984,893,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fgd_material_all,mining_applications,182829,165860,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fgd_material_all,miscellaneous,190394,172723,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fgd_material_all,road_base,93519,84839,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fgd_material_all,structural_fill,547017,496245,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fgd_material_all,waste_stabilisation,21031,19079,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fly_ash,agriculture,13979,12682,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fly_ash,blended_cement_clinker,1133911,1028667,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fly_ash,concrete_grout,10586168,9603610,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fly_ash,flowable_fill,696675,632013,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fly_ash,mineral_filler_asphalt,119011,107965,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fly_ash,mining_applications,1151536,1044656,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fly_ash,miscellaneous,455576,413292,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fly_ash,road_base,1207750,1095652,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fly_ash,snow_ice_control,3076,2791,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fly_ash,soil_modification,111896,101510,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fly_ash,structural_fill,2611054,2368708,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2000,fly_ash,waste_stabilisation,1986277,1801920,2000_CCP_Production_and_Use_Survey.pdf,1,table,Scan read visually; FGD material not split.
+2001,boiler_slag,blasting_grit_roofing,1489939,1351650,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Blasting Grit/Roofing Granules; FGD material not split.
+2001,boiler_slag,mineral_filler_asphalt,12424,11271,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Mineral Filler; FGD material not split.
+2001,boiler_slag,miscellaneous,282808,256559,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Miscellaneous/Other; FGD material not split.
+2001,boiler_slag,snow_ice_control,18284,16587,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Snow and Ice Control; FGD material not split.
+2001,boiler_slag,structural_fill,15018,13624,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Structural Fills; FGD material not split.
+2001,bottom_ash,agriculture,22109,20057,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Agriculture; FGD material not split.
+2001,bottom_ash,blasting_grit_roofing,40089,36368,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Blasting Grit/Roofing Granules; FGD material not split.
+2001,bottom_ash,blended_cement_clinker,162489,147408,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Raw Feed for Cement Clinker; FGD material not split.
+2001,bottom_ash,concrete_grout,779522,707170,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Cement/Concrete/Grout; FGD material not split.
+2001,bottom_ash,flowable_fill,7439,6749,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Flowable Fill; FGD material not split.
+2001,bottom_ash,mineral_filler_asphalt,8183,7423,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Mineral Filler; FGD material not split.
+2001,bottom_ash,mining_applications,118446,107452,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Mining Applications; FGD material not split.
+2001,bottom_ash,miscellaneous,1768083,1603978,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Miscellaneous/Other; FGD material not split.
+2001,bottom_ash,road_base,609861,553257,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Road Base/Subbase; FGD material not split.
+2001,bottom_ash,snow_ice_control,853423,774212,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Snow and Ice Control; FGD material not split.
+2001,bottom_ash,soil_modification,113562,103022,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Soil Modification; FGD material not split.
+2001,bottom_ash,structural_fill,1160262,1052572,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Structural Fills; FGD material not split.
+2001,bottom_ash,waste_stabilisation,68930,62532,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Waste Stabilization/Solidification; FGD material not split.
+2001,fgd_material_all,agriculture,114584,103949,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Agriculture; FGD material not split.
+2001,fgd_material_all,blended_cement_clinker,30805,27946,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Raw Feed for Cement Clinker; FGD material not split.
+2001,fgd_material_all,concrete_grout,488511,443170,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Cement/Concrete/Grout; FGD material not split.
+2001,fgd_material_all,gypsum_panel,6224872,5647109,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Wallboard; FGD material not split.
+2001,fgd_material_all,mineral_filler_asphalt,1302,1181,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Mineral Filler; FGD material not split.
+2001,fgd_material_all,mining_applications,140230,127215,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Mining Applications; FGD material not split.
+2001,fgd_material_all,miscellaneous,306869,278387,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Miscellaneous/Other; FGD material not split.
+2001,fgd_material_all,road_base,39103,35474,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Road Base/Subbase; FGD material not split.
+2001,fgd_material_all,structural_fill,189961,172330,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Structural Fills; FGD material not split.
+2001,fgd_material_all,waste_stabilisation,47258,42872,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Waste Stabilization/Solidification; FGD material not split.
+2001,fly_ash,agriculture,20506,18603,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Agriculture; FGD material not split.
+2001,fly_ash,blended_cement_clinker,1033384,937470,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Raw Feed for Cement Clinker; FGD material not split.
+2001,fly_ash,concrete_grout,12360242,11213023,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Cement/Concrete/Grout; FGD material not split.
+2001,fly_ash,flowable_fill,803703,729107,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Flowable Fill; FGD material not split.
+2001,fly_ash,mineral_filler_asphalt,106539,96651,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Mineral Filler; FGD material not split.
+2001,fly_ash,mining_applications,819588,743518,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Mining Applications; FGD material not split.
+2001,fly_ash,miscellaneous,448271,406665,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Miscellaneous/Other; FGD material not split.
+2001,fly_ash,road_base,1026821,931516,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Road Base/Subbase; FGD material not split.
+2001,fly_ash,soil_modification,736986,668582,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Soil Modification; FGD material not split.
+2001,fly_ash,structural_fill,3209508,2911617,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Structural Fills; FGD material not split.
+2001,fly_ash,waste_stabilisation,1439407,1305808,2001_rev_svy_11-02.pdf,1,table,Total CCPs block (Category I + II); ACAA label: Waste Stabilization/Solidification; FGD material not split.
+2002,boiler_slag,aggregate,3200,2903,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Aggregate
+2002,boiler_slag,blasting_grit_roofing,1440706,1306986,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Blasting Grit/Roofing Granules
+2002,boiler_slag,concrete_grout,9000,8165,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Concrete/Concrete Products /Grout
+2002,boiler_slag,mineral_filler_asphalt,38496,34923,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Mineral Filler in Asphalt
+2002,boiler_slag,miscellaneous,33371,30274,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Miscellaneous/Other
+2002,boiler_slag,road_base,4484,4068,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Road Base/Sub-base/Pavement
+2002,boiler_slag,snow_ice_control,8612,7813,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Snow and Ice Control
+2002,boiler_slag,structural_fill,12103,10980,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Structural Fills/Embankments
+2002,bottom_ash,aggregate,678109,615170,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Aggregate
+2002,bottom_ash,agriculture,6873,6235,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Agriculture
+2002,bottom_ash,blasting_grit_roofing,137455,124697,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Blasting Grit/Roofing Granules
+2002,bottom_ash,blended_cement_clinker,585480,531139,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Cement/ Raw Feed for Clinker
+2002,bottom_ash,concrete_grout,406255,368548,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Concrete/Concrete Products /Grout
+2002,bottom_ash,mineral_filler_asphalt,96218,87288,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Mineral Filler in Asphalt
+2002,bottom_ash,mining_applications,802582,728090,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Mining Applications
+2002,bottom_ash,miscellaneous,572727,519569,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Miscellaneous/Other
+2002,bottom_ash,road_base,1472291,1335640,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Road Base/Sub-base/Pavement
+2002,bottom_ash,snow_ice_control,767455,696223,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Snow and Ice Control
+2002,bottom_ash,soil_modification,98509,89366,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Soil Modification/Stabilization
+2002,bottom_ash,structural_fill,2046545,1856594,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Structural Fills/Embankments
+2002,bottom_ash,waste_stabilisation,19091,17319,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Waste Stabilization/Solidification
+2002,fbc_ash,mining_applications,760000,689460,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Mining Applications
+2002,fbc_ash,waste_stabilisation,193410,175459,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Waste Stabilization/Solidification
+2002,fgd_dry,aggregate,1448,1314,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Aggregate
+2002,fgd_dry,blended_cement_clinker,3000,2722,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Cement/ Raw Feed for Clinker
+2002,fgd_dry,concrete_grout,35436,32147,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Concrete/Concrete Products /Grout
+2002,fgd_dry,flowable_fill,1014,920,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Flowable Fill
+2002,fgd_dry,mineral_filler_asphalt,2852,2587,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Mineral Filler in Asphalt
+2002,fgd_dry,mining_applications,258043,234093,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Mining Applications
+2002,fgd_dry,road_base,2558,2321,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Road Base/Sub-base/Pavement
+2002,fgd_dry,waste_stabilisation,67053,60829,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Waste Stabilization/Solidification
+2002,fgd_gypsum,aggregate,6216,5639,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Aggregate
+2002,fgd_gypsum,agriculture,77700,70488,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Agriculture
+2002,fgd_gypsum,blended_cement_clinker,303807,275609,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Cement/ Raw Feed for Clinker
+2002,fgd_gypsum,concrete_grout,60606,54981,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Concrete/Concrete Products /Grout
+2002,fgd_gypsum,gypsum_panel,7247856,6575144,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Wallboard
+2002,fgd_gypsum,miscellaneous,73815,66964,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Miscellaneous/Other
+2002,fgd_wet,mining_applications,131600,119386,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Mining Applications
+2002,fgd_wet,miscellaneous,784,711,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Miscellaneous/Other
+2002,fgd_wet,road_base,616,559,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Road Base/Sub-base/Pavement
+2002,fgd_wet,structural_fill,427000,387368,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Structural Fills/Embankments
+2002,fly_ash,blasting_grit_roofing,61964,56213,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Blasting Grit/Roofing Granules
+2002,fly_ash,blended_cement_clinker,1917690,1739699,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Cement/ Raw Feed for Clinker
+2002,fly_ash,concrete_grout,12579136,11411600,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Concrete/Concrete Products /Grout
+2002,fly_ash,flowable_fill,455018,412785,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Flowable Fill
+2002,fly_ash,mineral_filler_asphalt,103173,93597,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Mineral Filler in Asphalt
+2002,fly_ash,mining_applications,1888855,1713540,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Mining Applications
+2002,fly_ash,miscellaneous,559718,507768,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Miscellaneous/Other
+2002,fly_ash,road_base,767182,695976,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Road Base/Sub-base/Pavement
+2002,fly_ash,snow_ice_control,2645,2400,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Snow and Ice Control
+2002,fly_ash,soil_modification,904745,820771,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Soil Modification/Stabilization
+2002,fly_ash,structural_fill,4200982,3811067,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Structural Fills/Embankments
+2002,fly_ash,waste_stabilisation,3187773,2891899,acaa_2002_ccp_svy(11-25-03).pdf,2,table,ACAA label: Waste Stabilization/Solidification
+2003,boiler_slag,aggregate,31600,28667,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Aggregate
+2003,boiler_slag,blasting_grit_roofing,1455140,1320081,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2003,boiler_slag,blended_cement_clinker,15766,14303,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2003,boiler_slag,concrete_grout,15907,14431,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2003,boiler_slag,mineral_filler_asphalt,31402,28487,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2003,boiler_slag,mining_applications,59800,54250,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Mining Applications
+2003,boiler_slag,miscellaneous,2815,2554,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Miscellaneous/Other
+2003,boiler_slag,road_base,29800,27034,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Road Base/Sub-base/Pavement
+2003,boiler_slag,snow_ice_control,102700,93168,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Snow and Ice Control
+2003,boiler_slag,structural_fill,11074,10046,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Structural Fills/Embankments
+2003,bottom_ash,aggregate,512769,465176,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Aggregate
+2003,bottom_ash,agriculture,3534,3206,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Agriculture
+2003,bottom_ash,blasting_grit_roofing,42604,38650,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2003,bottom_ash,blended_cement_clinker,493765,447936,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2003,bottom_ash,concrete_grout,298181,270505,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2003,bottom_ash,flowable_fill,20327,18440,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Flowable Fill
+2003,bottom_ash,mining_applications,1184927,1074948,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Mining Applications
+2003,bottom_ash,miscellaneous,1327797,1204557,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Miscellaneous/Other
+2003,bottom_ash,road_base,1138101,1032468,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Road Base/Sub-base/Pavement
+2003,bottom_ash,snow_ice_control,683556,620112,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Snow and Ice Control
+2003,bottom_ash,soil_modification,67998,61687,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Soil Modification/Stabilization
+2003,bottom_ash,structural_fill,2443206,2216439,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Structural Fills/Embankments
+2003,bottom_ash,waste_stabilisation,30508,27676,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2003,fbc_ash,mining_applications,11049,10023,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Mining Applications
+2003,fbc_ash,miscellaneous,14649,13289,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Miscellaneous/Other
+2003,fbc_ash,soil_modification,188708,171193,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Soil Modification/Stabilization
+2003,fbc_ash,waste_stabilisation,49217,44649,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2003,fgd_dry,aggregate,6299,5714,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Aggregate
+2003,fgd_dry,agriculture,2295,2082,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Agriculture
+2003,fgd_dry,blended_cement_clinker,2469,2240,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2003,fgd_dry,concrete_grout,34284,31102,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2003,fgd_dry,flowable_fill,9184,8332,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Flowable Fill
+2003,fgd_dry,mining_applications,130723,118590,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Mining Applications
+2003,fgd_dry,soil_modification,114,103,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Soil Modification/Stabilization
+2003,fgd_dry,structural_fill,12141,11014,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Structural Fills/Embankments
+2003,fgd_gypsum,agriculture,32518,29500,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Agriculture
+2003,fgd_gypsum,blended_cement_clinker,420043,381057,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2003,fgd_gypsum,concrete_grout,65593,59505,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2003,fgd_gypsum,gypsum_panel,7780906,7058719,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Wallboard
+2003,fgd_wet,mining_applications,259608,235512,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Mining Applications
+2003,fgd_wet,soil_modification,704,639,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Soil Modification/Stabilization
+2003,fgd_wet,structural_fill,224100,203300,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Structural Fills/Embankments
+2003,fly_ash,aggregate,137171,124439,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Aggregate
+2003,fly_ash,agriculture,12140,11013,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Agriculture
+2003,fly_ash,blended_cement_clinker,3024930,2744170,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2003,fly_ash,concrete_grout,12265169,11126774,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2003,fly_ash,flowable_fill,136618,123938,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Flowable Fill
+2003,fly_ash,mineral_filler_asphalt,52608,47725,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2003,fly_ash,mining_applications,683925,620446,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Mining Applications
+2003,fly_ash,miscellaneous,396150,359381,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Miscellaneous/Other
+2003,fly_ash,road_base,493487,447684,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Road Base/Sub-base/Pavement
+2003,fly_ash,snow_ice_control,1928,1749,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Snow and Ice Control
+2003,fly_ash,soil_modification,515552,467701,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Soil Modification/Stabilization
+2003,fly_ash,structural_fill,5496948,4986747,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Structural Fills/Embankments
+2003,fly_ash,waste_stabilisation,3919898,3556072,2003_CCP_Survey(10-1-04).pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2004,boiler_slag,aggregate,38000,34473,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Aggregate
+2004,boiler_slag,blasting_grit_roofing,1747238,1585068,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2004,boiler_slag,blended_cement_clinker,33505,30395,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2004,boiler_slag,mineral_filler_asphalt,39942,36235,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2004,boiler_slag,miscellaneous,8036,7290,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Miscellaneous/Other
+2004,boiler_slag,road_base,7070,6414,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Road Base/Sub-base/Pavement
+2004,boiler_slag,snow_ice_control,87711,79570,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Snow and Ice Control
+2004,boiler_slag,structural_fill,7268,6593,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Structural Fills/Embankments
+2004,boiler_slag,waste_stabilisation,4615,4187,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2004,bottom_ash,aggregate,409362,371367,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Aggregate
+2004,bottom_ash,agriculture,19272,17483,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Agriculture
+2004,bottom_ash,blasting_grit_roofing,70312,63786,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2004,bottom_ash,blended_cement_clinker,615192,558093,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2004,bottom_ash,concrete_grout,789071,715833,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2004,bottom_ash,mining_applications,39682,35999,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Mining Applications
+2004,bottom_ash,miscellaneous,943978,856362,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Miscellaneous/Other
+2004,bottom_ash,road_base,1092006,990651,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Road Base/Sub-base/Pavement
+2004,bottom_ash,snow_ice_control,830329,753262,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Snow and Ice Control
+2004,bottom_ash,soil_modification,21117,19157,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Soil Modification/Stabilization
+2004,bottom_ash,structural_fill,3064773,2780315,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Structural Fills/Embankments
+2004,bottom_ash,waste_stabilisation,257375,233487,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2004,fbc_ash,mining_applications,134648,122151,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Mining Applications
+2004,fbc_ash,miscellaneous,15610,14161,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Miscellaneous/Other
+2004,fbc_ash,soil_modification,190426,172752,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Soil Modification/Stabilization
+2004,fbc_ash,structural_fill,61985,56232,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Structural Fills/Embankments
+2004,fbc_ash,waste_stabilisation,70722,64158,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2004,fgd_dry,aggregate,3499,3174,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Aggregate
+2004,fgd_dry,agriculture,2775,2517,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Agriculture
+2004,fgd_dry,concrete_grout,37343,33877,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2004,fgd_dry,flowable_fill,11274,10228,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Flowable Fill
+2004,fgd_dry,mining_applications,122589,111211,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Mining Applications
+2004,fgd_gypsum,agriculture,131058,118894,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Agriculture
+2004,fgd_gypsum,blended_cement_clinker,449063,407383,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2004,fgd_gypsum,concrete_grout,291439,264389,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2004,fgd_gypsum,gypsum_panel,8148078,7391812,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Wallboard
+2004,fgd_gypsum,miscellaneous,25317,22967,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Miscellaneous/Other
+2004,fgd_other,miscellaneous,3291,2986,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Miscellaneous/Other
+2004,fgd_wet,agriculture,10593,9610,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Agriculture
+2004,fgd_wet,blended_cement_clinker,39378,35723,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2004,fgd_wet,mining_applications,282033,255856,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Mining Applications
+2004,fgd_wet,miscellaneous,596884,541484,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Miscellaneous/Other
+2004,fgd_wet,structural_fill,266651,241902,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Structural Fills/Embankments
+2004,fgd_wet,waste_stabilisation,338,307,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2004,fly_ash,aggregate,7995,7253,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Aggregate
+2004,fly_ash,agriculture,52314,47458,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Agriculture
+2004,fly_ash,blended_cement_clinker,2345754,2128032,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2004,fly_ash,concrete_grout,14121868,12811143,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2004,fly_ash,flowable_fill,179735,163053,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Flowable Fill
+2004,fly_ash,mineral_filler_asphalt,90033,81677,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2004,fly_ash,mining_applications,1113361,1010024,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Mining Applications
+2004,fly_ash,miscellaneous,2036899,1847844,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Miscellaneous/Other
+2004,fly_ash,road_base,488214,442900,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Road Base/Sub-base/Pavement
+2004,fly_ash,snow_ice_control,5563,5047,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Snow and Ice Control
+2004,fly_ash,soil_modification,500630,454164,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Soil Modification/Stabilization
+2004,fly_ash,structural_fill,4685091,4250243,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Structural Fills/Embankments
+2004,fly_ash,waste_stabilisation,2441513,2214903,2004_CCP_Survey(9-9-05).pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2005,boiler_slag,blasting_grit_roofing,1544298,1400964,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2005,boiler_slag,blended_cement_clinker,42566,38615,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2005,boiler_slag,mineral_filler_asphalt,56709,51446,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2005,boiler_slag,mining_applications,31540,28613,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Mining Applications
+2005,boiler_slag,miscellaneous,24851,22544,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Miscellaneous/Other
+2005,boiler_slag,road_base,300,272,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,"ACAA label: Road Base/Sub-base/Pavement 205,032 , 1,056,660 , , 0 0 300 0 d"
+2005,boiler_slag,snow_ice_control,15401,13972,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Snow and Ice Control
+2005,boiler_slag,structural_fill,175144,158888,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Structural Fills/Embankments
+2005,bottom_ash,aggregate,692501,628226,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Aggregate
+2005,bottom_ash,agriculture,7670,6958,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Agriculture
+2005,bottom_ash,blasting_grit_roofing,89109,80838,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2005,bottom_ash,blended_cement_clinker,939667,852452,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2005,bottom_ash,concrete_grout,1020659,925926,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2005,bottom_ash,mineral_filler_asphalt,21583,19580,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2005,bottom_ash,mining_applications,46604,42278,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Mining Applications
+2005,bottom_ash,miscellaneous,567155,514514,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Miscellaneous/Other
+2005,bottom_ash,road_base,1056660,958586,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,"ACAA label: Road Base/Sub-base/Pavement 205,032 , 1,056,660 , , 0 0 300 0 d"
+2005,bottom_ash,snow_ice_control,531549,482213,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Snow and Ice Control
+2005,bottom_ash,soil_modification,205322,186265,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2005,bottom_ash,structural_fill,2321140,2105703,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Structural Fills/Embankments
+2005,bottom_ash,waste_stabilisation,42353,38422,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,"ACAA label: Waste Stabilization/Solidification 2,657,046 42,353 0 0 0 0 oN"
+2005,fbc_ash,flowable_fill,161685,146678,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Flowable Fill
+2005,fbc_ash,mining_applications,70802,64230,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Mining Applications
+2005,fbc_ash,miscellaneous,14430,13091,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Miscellaneous/Other
+2005,fbc_ash,road_base,200000,181437,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,"ACAA label: Road Base/Sub-base/Pavement 205,032 , 1,056,660 , , 0 0 300 0 d"
+2005,fbc_ash,soil_modification,216787,196666,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2005,fbc_ash,structural_fill,140300,127278,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Structural Fills/Embankments
+2005,fbc_ash,waste_stabilisation,140555,127509,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,"ACAA label: Waste Stabilization/Solidification 2,657,046 42,353 0 0 0 0 oN"
+2005,fgd_dry,agriculture,19259,17471,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Agriculture
+2005,fgd_dry,concrete_grout,13965,12669,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2005,fgd_dry,flowable_fill,9673,8775,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Flowable Fill
+2005,fgd_dry,mining_applications,112100,101695,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Mining Applications
+2005,fgd_dry,soil_modification,1535,1393,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2005,fgd_dry,structural_fill,2666,2419,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Structural Fills/Embankments
+2005,fgd_gypsum,agriculture,361644,328078,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Agriculture
+2005,fgd_gypsum,blended_cement_clinker,397743,360826,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2005,fgd_gypsum,concrete_grout,328752,298239,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2005,fgd_gypsum,gypsum_panel,8178079,7419028,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Wallboard
+2005,fgd_gypsum,miscellaneous,2147,1948,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Miscellaneous/Other
+2005,fgd_wet,agriculture,3312,3005,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Agriculture
+2005,fgd_wet,blended_cement_clinker,782,709,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2005,fgd_wet,mining_applications,245471,222688,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Mining Applications
+2005,fgd_wet,miscellaneous,439619,398816,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Miscellaneous/Other
+2005,fly_ash,aggregate,180275,163543,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Aggregate
+2005,fly_ash,agriculture,23856,21642,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Agriculture
+2005,fly_ash,blended_cement_clinker,2834476,2571393,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Cement/ Raw Feed for Clinker
+2005,fly_ash,concrete_grout,14989958,13598661,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2005,fly_ash,flowable_fill,88549,80330,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Flowable Fill
+2005,fly_ash,mineral_filler_asphalt,62546,56741,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2005,fly_ash,mining_applications,626428,568286,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Mining Applications
+2005,fly_ash,miscellaneous,1022952,928006,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Miscellaneous/Other
+2005,fly_ash,road_base,205032,186002,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,"ACAA label: Road Base/Sub-base/Pavement 205,032 , 1,056,660 , , 0 0 300 0 d"
+2005,fly_ash,snow_ice_control,591,536,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Snow and Ice Control
+2005,fly_ash,soil_modification,715996,649541,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2005,fly_ash,structural_fill,5710749,5180704,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,ACAA label: Structural Fills/Embankments
+2005,fly_ash,waste_stabilisation,2657046,2410432,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,"ACAA label: Waste Stabilization/Solidification 2,657,046 42,353 0 0 0 0 oN"
+2006,boiler_slag,aggregate,416,377,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Aggregate
+2006,boiler_slag,blasting_grit_roofing,1445933,1311728,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Blasting Grit/Roofing Granules
+2006,boiler_slag,blended_cement_clinker,17773,16123,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Cement/ Raw Feed for Clinker
+2006,boiler_slag,mineral_filler_asphalt,45000,40823,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Mineral Filler in Asphalt
+2006,boiler_slag,miscellaneous,13988,12690,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Miscellaneous/Other
+2006,boiler_slag,road_base,60,54,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Road Base/Sub-base/Pavement
+2006,boiler_slag,snow_ice_control,41549,37693,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Snow and Ice Control
+2006,boiler_slag,structural_fill,126280,114559,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Structural Fills/Embankments
+2006,bottom_ash,aggregate,647274,587197,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Aggregate
+2006,bottom_ash,agriculture,1527,1385,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Agriculture
+2006,bottom_ash,blasting_grit_roofing,81242,73702,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Blasting Grit/Roofing Granules
+2006,bottom_ash,blended_cement_clinker,925888,839951,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Cement/ Raw Feed for Clinker
+2006,bottom_ash,concrete_grout,597387,541940,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Concrete/Concrete Products /Grout
+2006,bottom_ash,mineral_filler_asphalt,19250,17463,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Mineral Filler in Asphalt
+2006,bottom_ash,mining_applications,79636,72245,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Mining Applications
+2006,bottom_ash,miscellaneous,676463,613677,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Miscellaneous/Other
+2006,bottom_ash,road_base,815520,739827,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Road Base/Sub-base/Pavement
+2006,bottom_ash,snow_ice_control,331107,300375,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Snow and Ice Control
+2006,bottom_ash,soil_modification,189587,171990,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Soil Modification/Stabilization
+2006,bottom_ash,structural_fill,3908561,3545787,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Structural Fills/Embankments
+2006,bottom_ash,waste_stabilisation,105052,95302,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Waste Stabilization/Solidification
+2006,fbc_ash,concrete_grout,4571,4147,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Concrete/Concrete Products /Grout
+2006,fbc_ash,road_base,453602,411501,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Road Base/Sub-base/Pavement
+2006,fbc_ash,soil_modification,179003,162389,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Soil Modification/Stabilization
+2006,fbc_ash,structural_fill,360115,326691,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Structural Fills/Embankments
+2006,fbc_ash,waste_stabilisation,81000,73482,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Waste Stabilization/Solidification
+2006,fgd_dry,agriculture,846,767,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Agriculture
+2006,fgd_dry,concrete_grout,9660,8763,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Concrete/Concrete Products /Grout
+2006,fgd_dry,flowable_fill,9843,8929,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Flowable Fill
+2006,fgd_dry,mining_applications,115696,104958,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Mining Applications
+2006,fgd_dry,miscellaneous,46,42,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Miscellaneous/Other
+2006,fgd_dry,road_base,249,226,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Road Base/Sub-base/Pavement
+2006,fgd_dry,soil_modification,299,271,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Soil Modification/Stabilization
+2006,fgd_gypsum,agriculture,168190,152579,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Agriculture
+2006,fgd_gypsum,blended_cement_clinker,264568,240012,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Cement/ Raw Feed for Clinker
+2006,fgd_gypsum,concrete_grout,1541930,1398815,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Concrete/Concrete Products /Grout
+2006,fgd_gypsum,gypsum_panel,7579187,6875723,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Wallboard
+2006,fgd_gypsum,miscellaneous,7614,6907,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Miscellaneous/Other
+2006,fgd_other,soil_modification,1503,1363,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Soil Modification/Stabilization
+2006,fgd_other,waste_stabilisation,27838,25254,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Waste Stabilization/Solidification
+2006,fgd_wet,blasting_grit_roofing,232765,211161,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Blasting Grit/Roofing Granules
+2006,fgd_wet,mining_applications,201011,182354,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Mining Applications
+2006,fgd_wet,miscellaneous,338751,307310,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Miscellaneous/Other
+2006,fgd_wet,structural_fill,131821,119586,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Structural Fills/Embankments
+2006,fly_ash,aggregate,271098,245936,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Aggregate
+2006,fly_ash,agriculture,81212,73674,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Agriculture
+2006,fly_ash,blended_cement_clinker,4150228,3765024,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Cement/ Raw Feed for Clinker
+2006,fly_ash,concrete_grout,15041335,13645270,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Concrete/Concrete Products /Grout
+2006,fly_ash,flowable_fill,109357,99207,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Flowable Fill
+2006,fly_ash,mineral_filler_asphalt,26720,24240,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Mineral Filler in Asphalt
+2006,fly_ash,mining_applications,942048,854612,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Mining Applications
+2006,fly_ash,miscellaneous,1016091,921782,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Miscellaneous/Other
+2006,fly_ash,road_base,379020,343841,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Road Base/Sub-base/Pavement
+2006,fly_ash,soil_modification,648551,588356,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Soil Modification/Stabilization
+2006,fly_ash,structural_fill,7175784,6509762,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Structural Fills/Embankments
+2006,fly_ash,waste_stabilisation,2582125,2342464,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,ACAA label: Waste Stabilization/Solidification
+2007,boiler_slag,aggregate,450,408,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Aggregate
+2007,boiler_slag,blasting_grit_roofing,1377658,1249790,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2007,boiler_slag,blended_cement_clinker,6888,6249,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2007,boiler_slag,mineral_filler_asphalt,63729,57814,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2007,boiler_slag,miscellaneous,11932,10825,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Miscellaneous/Other
+2007,boiler_slag,road_base,20,18,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Road Base/Sub-base
+2007,boiler_slag,snow_ice_control,44367,40249,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Snow and Ice Control
+2007,boiler_slag,soil_modification,169,153,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Soil Modification/Stabilization
+2007,boiler_slag,structural_fill,158767,144031,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Structural Fills/Embankments
+2007,bottom_ash,aggregate,806645,731776,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Aggregate
+2007,bottom_ash,agriculture,2546,2310,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Agriculture
+2007,bottom_ash,blasting_grit_roofing,71903,65229,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2007,bottom_ash,blended_cement_clinker,608533,552052,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2007,bottom_ash,concrete_grout,665756,603964,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2007,bottom_ash,mineral_filler_asphalt,21771,19750,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2007,bottom_ash,mining_applications,165183,149851,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Mining Applications
+2007,bottom_ash,miscellaneous,530574,481329,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Miscellaneous/Other
+2007,bottom_ash,road_base,802067,727623,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Road Base/Sub-base
+2007,bottom_ash,snow_ice_control,736979,668576,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Snow and Ice Control
+2007,bottom_ash,soil_modification,314362,285184,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Soil Modification/Stabilization
+2007,bottom_ash,structural_fill,2570163,2331613,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Structural Fills/Embankments
+2007,bottom_ash,waste_stabilisation,7056,6401,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2007,fbc_ash,concrete_grout,5518,5006,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2007,fbc_ash,mining_applications,4819695,4372354,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Mining Applications
+2007,fbc_ash,soil_modification,199441,180930,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Soil Modification/Stabilization
+2007,fbc_ash,structural_fill,46282,41986,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Structural Fills/Embankments
+2007,fbc_ash,waste_stabilisation,72500,65771,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2007,fgd_dry,agriculture,3352,3041,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Agriculture
+2007,fgd_dry,concrete_grout,21266,19292,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2007,fgd_dry,flowable_fill,12427,11274,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Flowable Fill
+2007,fgd_dry,mining_applications,111195,100874,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Mining Applications
+2007,fgd_dry,soil_modification,154,140,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Soil Modification/Stabilization
+2007,fgd_dry,structural_fill,555,503,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Structural Fills/Embankments
+2007,fgd_dry,waste_stabilisation,1416,1285,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2007,fgd_gypsum,aggregate,70947,64362,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Aggregate
+2007,fgd_gypsum,agriculture,115304,104602,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Agriculture
+2007,fgd_gypsum,blended_cement_clinker,656885,595916,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2007,fgd_gypsum,concrete_grout,118406,107416,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2007,fgd_gypsum,gypsum_panel,8254849,7488673,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Gypsum Panel Products**
+2007,fgd_gypsum,miscellaneous,11880,10777,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Miscellaneous/Other
+2007,fgd_other,blended_cement_clinker,81801,74209,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2007,fgd_other,flowable_fill,2735,2481,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Flowable Fill
+2007,fgd_other,soil_modification,429,389,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Soil Modification/Stabilization
+2007,fgd_other,waste_stabilisation,28333,25703,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2007,fgd_wet,agriculture,9236,8379,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Agriculture
+2007,fgd_wet,mining_applications,299793,271968,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Mining Applications
+2007,fgd_wet,miscellaneous,393063,356581,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Miscellaneous/Other
+2007,fgd_wet,structural_fill,97610,88550,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Structural Fills/Embankments
+2007,fgd_wet,waste_stabilisation,10378,9415,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2007,fly_ash,aggregate,135331,122770,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Aggregate
+2007,fly_ash,agriculture,49662,45053,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Agriculture
+2007,fly_ash,blended_cement_clinker,3635881,3298416,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2007,fly_ash,concrete_grout,13704744,12432735,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2007,fly_ash,flowable_fill,112244,101826,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Flowable Fill
+2007,fly_ash,mineral_filler_asphalt,17223,15624,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2007,fly_ash,mining_applications,1306044,1184823,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Mining Applications
+2007,fly_ash,miscellaneous,1025724,930521,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Miscellaneous/Other
+2007,fly_ash,road_base,377422,342391,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Road Base/Sub-base
+2007,fly_ash,soil_modification,856673,777161,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Soil Modification/Stabilization
+2007,fly_ash,structural_fill,7724741,7007767,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Structural Fills/Embankments
+2007,fly_ash,waste_stabilisation,2680348,2431571,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2008,boiler_slag,aggregate,19422,17619,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Aggregate
+2008,boiler_slag,blasting_grit_roofing,1486316,1348363,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2008,boiler_slag,mining_applications,3021,2741,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Mining Applications
+2008,boiler_slag,miscellaneous,1418,1286,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Miscellaneous/Other
+2008,boiler_slag,snow_ice_control,1352,1227,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Snow and Ice Control
+2008,boiler_slag,structural_fill,178363,161808,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Structural Fills/Embankments
+2008,bottom_ash,aggregate,727048,659567,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Aggregate
+2008,bottom_ash,agriculture,3771,3421,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Agriculture
+2008,bottom_ash,blasting_grit_roofing,66670,60482,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2008,bottom_ash,blended_cement_clinker,610194,553559,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2008,bottom_ash,concrete_grout,720948,654033,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2008,bottom_ash,mineral_filler_asphalt,257806,233878,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2008,bottom_ash,mining_applications,63648,57740,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Mining Applications
+2008,bottom_ash,miscellaneous,646643,586625,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Miscellaneous/Other
+2008,bottom_ash,road_base,767013,695822,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Road Base/Sub-base
+2008,bottom_ash,snow_ice_control,699561,634631,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Snow and Ice Control
+2008,bottom_ash,soil_modification,431664,391599,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2008,bottom_ash,structural_fill,2996388,2718277,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Structural Fills/Embankments
+2008,bottom_ash,waste_stabilisation,84901,77021,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2008,fbc_ash,concrete_grout,4341,3938,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2008,fbc_ash,mining_applications,8643947,7841657,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Mining Applications
+2008,fbc_ash,road_base,7444,6753,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Road Base/Sub-base
+2008,fbc_ash,soil_modification,132379,120092,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2008,fbc_ash,structural_fill,76579,69471,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Structural Fills/Embankments
+2008,fgd_dry,agriculture,2877,2610,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Agriculture
+2008,fgd_dry,concrete_grout,22577,20482,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2008,fgd_dry,flowable_fill,18338,16636,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Flowable Fill
+2008,fgd_dry,mining_applications,109641,99465,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Mining Applications
+2008,fgd_dry,soil_modification,60115,54535,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2008,fgd_dry,structural_fill,130566,118447,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Structural Fills/Embankments
+2008,fgd_dry,waste_stabilisation,1221,1108,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2008,fgd_gypsum,agriculture,278875,252991,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Agriculture
+2008,fgd_gypsum,blended_cement_clinker,413740,375339,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2008,fgd_gypsum,concrete_grout,675505,612808,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2008,fgd_gypsum,gypsum_panel,8533732,7741671,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Gypsum Panel Products
+2008,fgd_gypsum,miscellaneous,6900,6260,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Miscellaneous/Other
+2008,fgd_gypsum,waste_stabilisation,744592,675482,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2008,fgd_other,structural_fill,106526,96639,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Structural Fills/Embankments
+2008,fgd_other,waste_stabilisation,30240,27433,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2008,fgd_wet,mining_applications,685104,621516,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Mining Applications
+2008,fly_ash,aggregate,154992,140606,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Aggregate
+2008,fly_ash,agriculture,35340,32060,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Agriculture
+2008,fly_ash,blasting_grit_roofing,84881,77003,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2008,fly_ash,blended_cement_clinker,3174264,2879644,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2008,fly_ash,concrete_grout,12592245,11423493,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2008,fly_ash,flowable_fill,74794,67852,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Flowable Fill
+2008,fly_ash,mineral_filler_asphalt,7781,7059,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2008,fly_ash,mining_applications,960911,871724,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Mining Applications
+2008,fly_ash,miscellaneous,465271,422087,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Miscellaneous/Other
+2008,fly_ash,road_base,1027568,932194,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Road Base/Sub-base
+2008,fly_ash,soil_modification,627810,569540,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2008,fly_ash,structural_fill,8012825,7269113,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Structural Fills/Embankments
+2008,fly_ash,waste_stabilisation,2923592,2652238,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2009,boiler_slag,aggregate,34700,31479,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Aggregate
+2009,boiler_slag,blasting_grit_roofing,1617755,1467603,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2009,boiler_slag,mining_applications,43511,39473,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Mining Applications
+2009,boiler_slag,miscellaneous,27089,24575,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Miscellaneous/Other
+2009,boiler_slag,snow_ice_control,45275,41073,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Snow and Ice Control
+2009,boiler_slag,soil_modification,1200,1089,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2009,boiler_slag,structural_fill,64727,58719,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Structural Fills/Embankments
+2009,bottom_ash,aggregate,452066,410107,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Aggregate
+2009,bottom_ash,agriculture,3696,3353,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Agriculture
+2009,bottom_ash,blasting_grit_roofing,78156,70902,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2009,bottom_ash,blended_cement_clinker,720828,653924,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2009,bottom_ash,concrete_grout,555996,504391,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2009,bottom_ash,flowable_fill,113395,102870,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Flowable Fill
+2009,bottom_ash,mining_applications,498180,451941,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Mining Applications
+2009,bottom_ash,miscellaneous,467192,423829,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Miscellaneous/Other
+2009,bottom_ash,road_base,765181,694161,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Road Base/Sub-base
+2009,bottom_ash,snow_ice_control,207250,188014,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Snow and Ice Control
+2009,bottom_ash,soil_modification,188504,171008,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2009,bottom_ash,structural_fill,2944354,2671073,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Structural Fills/Embankments
+2009,bottom_ash,waste_stabilisation,5867,5322,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2009,fbc_ash,flowable_fill,20000,18144,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Flowable Fill
+2009,fbc_ash,mining_applications,11425386,10364936,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Mining Applications
+2009,fbc_ash,road_base,4443,4031,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Road Base/Sub-base
+2009,fbc_ash,soil_modification,94045,85316,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2009,fbc_ash,structural_fill,145000,131542,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Structural Fills/Embankments
+2009,fbc_ash,waste_stabilisation,59500,53977,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2009,fgd_dry,concrete_grout,18555,16833,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2009,fgd_dry,flowable_fill,16212,14707,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Flowable Fill
+2009,fgd_dry,gypsum_panel,2351,2133,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Gypsum Panel Products
+2009,fgd_dry,mining_applications,124320,112781,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Mining Applications
+2009,fgd_dry,miscellaneous,21817,19792,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Miscellaneous/Other
+2009,fgd_dry,soil_modification,3332,3023,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2009,fgd_dry,structural_fill,192997,175084,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Structural Fills/Embankments
+2009,fgd_dry,waste_stabilisation,35937,32601,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2009,fgd_gypsum,agriculture,282386,256176,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Agriculture
+2009,fgd_gypsum,blended_cement_clinker,420994,381919,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2009,fgd_gypsum,concrete_grout,239376,217158,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2009,fgd_gypsum,gypsum_panel,7286404,6610115,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Gypsum Panel Products
+2009,fgd_gypsum,mining_applications,195526,177378,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Mining Applications
+2009,fgd_gypsum,miscellaneous,3970,3602,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Miscellaneous/Other
+2009,fgd_gypsum,structural_fill,413790,375384,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Structural Fills/Embankments
+2009,fgd_gypsum,waste_stabilisation,108869,98764,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2009,fgd_other,flowable_fill,192,174,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Flowable Fill
+2009,fgd_other,road_base,160,145,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Road Base/Sub-base
+2009,fgd_other,structural_fill,53982,48972,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Structural Fills/Embankments
+2009,fgd_other,waste_stabilisation,13337,12099,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2009,fgd_wet,mining_applications,462321,419411,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Mining Applications
+2009,fgd_wet,snow_ice_control,50302,45633,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Snow and Ice Control
+2009,fgd_wet,structural_fill,394920,358265,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Structural Fills/Embankments
+2009,fly_ash,aggregate,87317,79213,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Aggregate
+2009,fly_ash,agriculture,102908,93357,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Agriculture
+2009,fly_ash,blasting_grit_roofing,47710,43282,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2009,fly_ash,blended_cement_clinker,2435904,2209815,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2009,fly_ash,concrete_grout,9796483,8887220,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2009,fly_ash,flowable_fill,264611,240051,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Flowable Fill
+2009,fly_ash,mining_applications,2148171,1948788,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Mining Applications
+2009,fly_ash,miscellaneous,803104,728564,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Miscellaneous/Other
+2009,fly_ash,road_base,198507,180083,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Road Base/Sub-base
+2009,fly_ash,soil_modification,670035,607846,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2009,fly_ash,structural_fill,4646626,4215348,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Structural Fills/Embankments
+2009,fly_ash,waste_stabilisation,3515289,3189017,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2010,boiler_slag,aggregate,27155,24635,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Aggregate
+2010,boiler_slag,blasting_grit_roofing,1257571,1140849,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2010,boiler_slag,blended_cement_clinker,3000,2722,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2010,boiler_slag,miscellaneous,8301,7531,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Miscellaneous/Other
+2010,boiler_slag,road_base,3128,2838,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Road Base/Sub-base
+2010,boiler_slag,snow_ice_control,41194,37371,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Snow and Ice Control
+2010,boiler_slag,structural_fill,78647,71347,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Structural Fills/Embankments
+2010,bottom_ash,aggregate,555031,503516,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Aggregate
+2010,bottom_ash,agriculture,4674,4240,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Agriculture
+2010,bottom_ash,blasting_grit_roofing,19914,18066,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2010,bottom_ash,blended_cement_clinker,949183,861084,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2010,bottom_ash,concrete_grout,615332,558220,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2010,bottom_ash,flowable_fill,52414,47549,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Flowable Fill
+2010,bottom_ash,mining_applications,528881,479793,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Mining Applications
+2010,bottom_ash,miscellaneous,223579,202827,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Miscellaneous/Other
+2010,bottom_ash,road_base,715357,648961,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Road Base/Sub-base
+2010,bottom_ash,snow_ice_control,549520,498516,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Snow and Ice Control
+2010,bottom_ash,soil_modification,162065,147023,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2010,bottom_ash,structural_fill,3124549,2834543,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Structural Fills/Embankments
+2010,bottom_ash,waste_stabilisation,41233,37406,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2010,fbc_ash,mining_applications,8660408,7856590,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Mining Applications
+2010,fbc_ash,waste_stabilisation,71600,64954,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2010,fgd_dry,concrete_grout,16847,15283,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2010,fgd_dry,flowable_fill,13998,12699,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Flowable Fill
+2010,fgd_dry,mining_applications,112373,101943,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Mining Applications
+2010,fgd_dry,miscellaneous,24403,22138,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Miscellaneous/Other
+2010,fgd_dry,soil_modification,19189,17408,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2010,fgd_dry,structural_fill,358019,324789,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Structural Fills/Embankments
+2010,fgd_dry,waste_stabilisation,39283,35637,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2010,fgd_gypsum,agriculture,481827,437106,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Agriculture
+2010,fgd_gypsum,blended_cement_clinker,1135211,1029846,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2010,fgd_gypsum,concrete_grout,21045,19092,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2010,fgd_gypsum,gypsum_panel,7661527,6950420,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Gypsum Panel Products
+2010,fgd_gypsum,mining_applications,835536,757986,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Mining Applications
+2010,fgd_gypsum,miscellaneous,123562,112094,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Miscellaneous/Other
+2010,fgd_gypsum,structural_fill,454430,412252,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Structural Fills/Embankments
+2010,fgd_wet,mining_applications,186624,169302,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Mining Applications
+2010,fgd_wet,miscellaneous,10000,9072,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Miscellaneous/Other
+2010,fgd_wet,road_base,3018,2738,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Road Base/Sub-base
+2010,fgd_wet,structural_fill,424581,385173,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Structural Fills/Embankments
+2010,fly_ash,aggregate,6726,6102,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Aggregate
+2010,fly_ash,agriculture,22220,20158,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Agriculture
+2010,fly_ash,blasting_grit_roofing,86484,78457,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2010,fly_ash,blended_cement_clinker,2045797,1855916,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2010,fly_ash,concrete_grout,11016097,9993635,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2010,fly_ash,flowable_fill,135321,122761,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Flowable Fill
+2010,fly_ash,gypsum_panel,109,99,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Gypsum Panel Products
+2010,fly_ash,mining_applications,2399837,2177096,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Mining Applications
+2010,fly_ash,miscellaneous,1047305,950099,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Miscellaneous/Other
+2010,fly_ash,road_base,242952,220402,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Road Base/Sub-base
+2010,fly_ash,soil_modification,785552,712641,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2010,fly_ash,structural_fill,4675992,4241989,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Structural Fills/Embankments
+2010,fly_ash,waste_stabilisation,3258825,2956356,2010_CCP_Survey_FINAL_102011.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2011,boiler_slag,aggregate,6417,5821,Final2011CCPSurvey.pdf,1,table,ACAA label: Aggregate
+2011,boiler_slag,blasting_grit_roofing,1339378,1215063,Final2011CCPSurvey.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2011,boiler_slag,road_base,1300,1179,Final2011CCPSurvey.pdf,1,table,ACAA label: Road Base/Sub-base
+2011,boiler_slag,snow_ice_control,25269,22924,Final2011CCPSurvey.pdf,1,table,ACAA label: Snow and Ice Control
+2011,boiler_slag,structural_fill,2352,2134,Final2011CCPSurvey.pdf,1,table,ACAA label: Structural Fills/Embankments
+2011,bottom_ash,aggregate,613669,556711,Final2011CCPSurvey.pdf,1,table,ACAA label: Aggregate
+2011,bottom_ash,agriculture,51,46,Final2011CCPSurvey.pdf,1,table,ACAA label: Agriculture
+2011,bottom_ash,blasting_grit_roofing,19623,17802,Final2011CCPSurvey.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2011,bottom_ash,blended_cement_clinker,1145008,1038734,Final2011CCPSurvey.pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2011,bottom_ash,concrete_grout,325618,295396,Final2011CCPSurvey.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2011,bottom_ash,flowable_fill,52606,47723,Final2011CCPSurvey.pdf,1,table,ACAA label: Flowable Fill
+2011,bottom_ash,mining_applications,248819,225725,Final2011CCPSurvey.pdf,1,table,ACAA label: Mining Applications
+2011,bottom_ash,miscellaneous,140401,127370,Final2011CCPSurvey.pdf,1,table,ACAA label: Miscellaneous/Other
+2011,bottom_ash,road_base,480787,436163,Final2011CCPSurvey.pdf,1,table,ACAA label: Road Base/Sub-base
+2011,bottom_ash,snow_ice_control,439175,398413,Final2011CCPSurvey.pdf,1,table,ACAA label: Snow and Ice Control
+2011,bottom_ash,soil_modification,204070,185129,Final2011CCPSurvey.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2011,bottom_ash,structural_fill,2412580,2188656,Final2011CCPSurvey.pdf,1,table,ACAA label: Structural Fills/Embankments
+2011,fbc_ash,flowable_fill,4068,3690,Final2011CCPSurvey.pdf,1,table,ACAA label: Flowable Fill
+2011,fbc_ash,mining_applications,11388585,10331551,Final2011CCPSurvey.pdf,1,table,ACAA label: Mining Applications
+2011,fbc_ash,road_base,554289,502843,Final2011CCPSurvey.pdf,1,table,ACAA label: Road Base/Sub-base
+2011,fbc_ash,soil_modification,122223,110879,Final2011CCPSurvey.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2011,fbc_ash,structural_fill,103733,94105,Final2011CCPSurvey.pdf,1,table,ACAA label: Structural Fills/Embankments
+2011,fbc_ash,waste_stabilisation,233661,211974,Final2011CCPSurvey.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2011,fgd_dry,aggregate,4601,4174,Final2011CCPSurvey.pdf,1,table,ACAA label: Aggregate
+2011,fgd_dry,concrete_grout,4446,4033,Final2011CCPSurvey.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2011,fgd_dry,flowable_fill,16208,14704,Final2011CCPSurvey.pdf,1,table,ACAA label: Flowable Fill
+2011,fgd_dry,gypsum_panel,6562,5953,Final2011CCPSurvey.pdf,1,table,ACAA label: Gypsum Panel Products
+2011,fgd_dry,mining_applications,149099,135260,Final2011CCPSurvey.pdf,1,table,ACAA label: Mining Applications
+2011,fgd_dry,miscellaneous,24250,21999,Final2011CCPSurvey.pdf,1,table,ACAA label: Miscellaneous/Other
+2011,fgd_dry,road_base,2310,2096,Final2011CCPSurvey.pdf,1,table,ACAA label: Road Base/Sub-base
+2011,fgd_dry,soil_modification,218669,198373,Final2011CCPSurvey.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2011,fgd_dry,structural_fill,56848,51572,Final2011CCPSurvey.pdf,1,table,ACAA label: Structural Fills/Embankments
+2011,fgd_dry,waste_stabilisation,88388,80184,Final2011CCPSurvey.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2011,fgd_gypsum,agriculture,594086,538946,Final2011CCPSurvey.pdf,1,table,ACAA label: Agriculture
+2011,fgd_gypsum,blended_cement_clinker,1032935,937063,Final2011CCPSurvey.pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2011,fgd_gypsum,concrete_grout,197221,178916,Final2011CCPSurvey.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2011,fgd_gypsum,gypsum_panel,7104359,6444966,Final2011CCPSurvey.pdf,1,table,ACAA label: Gypsum Panel Products
+2011,fgd_gypsum,mining_applications,1049011,951647,Final2011CCPSurvey.pdf,1,table,ACAA label: Mining Applications
+2011,fgd_gypsum,miscellaneous,40952,37151,Final2011CCPSurvey.pdf,1,table,ACAA label: Miscellaneous/Other
+2011,fgd_gypsum,structural_fill,1161720,1053895,Final2011CCPSurvey.pdf,1,table,ACAA label: Structural Fills/Embankments
+2011,fgd_gypsum,waste_stabilisation,627486,569246,Final2011CCPSurvey.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2011,fgd_other,waste_stabilisation,2475,2245,Final2011CCPSurvey.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2011,fgd_wet,blended_cement_clinker,699,634,Final2011CCPSurvey.pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2011,fgd_wet,mining_applications,467280,423909,Final2011CCPSurvey.pdf,1,table,ACAA label: Mining Applications
+2011,fgd_wet,structural_fill,883581,801571,Final2011CCPSurvey.pdf,1,table,ACAA label: Structural Fills/Embankments
+2011,fly_ash,aggregate,4720,4282,Final2011CCPSurvey.pdf,1,table,ACAA label: Aggregate
+2011,fly_ash,agriculture,13627,12362,Final2011CCPSurvey.pdf,1,table,ACAA label: Agriculture
+2011,fly_ash,blasting_grit_roofing,31456,28536,Final2011CCPSurvey.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2011,fly_ash,blended_cement_clinker,2030367,1841918,Final2011CCPSurvey.pdf,1,table,ACAA label: Blended Cement/ Raw Feed for Clinker
+2011,fly_ash,concrete_grout,11755433,10664349,Final2011CCPSurvey.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2011,fly_ash,flowable_fill,137406,124653,Final2011CCPSurvey.pdf,1,table,ACAA label: Flowable Fill
+2011,fly_ash,mining_applications,2594295,2353505,Final2011CCPSurvey.pdf,1,table,ACAA label: Mining Applications
+2011,fly_ash,miscellaneous,663010,601473,Final2011CCPSurvey.pdf,1,table,ACAA label: Miscellaneous/Other
+2011,fly_ash,road_base,114989,104316,Final2011CCPSurvey.pdf,1,table,ACAA label: Road Base/Sub-base
+2011,fly_ash,soil_modification,567476,514806,Final2011CCPSurvey.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2011,fly_ash,structural_fill,3262707,2959878,Final2011CCPSurvey.pdf,1,table,ACAA label: Structural Fills/Embankments
+2011,fly_ash,waste_stabilisation,1799964,1632900,Final2011CCPSurvey.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2012,boiler_slag,aggregate,12035,10918,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Aggregate
+2012,boiler_slag,blasting_grit_roofing,1156246,1048929,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2012,boiler_slag,road_base,1300,1179,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Road Base/Sub-base
+2012,boiler_slag,snow_ice_control,57975,52594,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Snow and Ice Control
+2012,boiler_slag,structural_fill,210000,190509,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Structural Fills/Embankments
+2012,bottom_ash,aggregate,381657,346233,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Aggregate
+2012,bottom_ash,agriculture,1698,1540,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Agriculture
+2012,bottom_ash,blasting_grit_roofing,15930,14451,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2012,bottom_ash,blended_cement_clinker,1287343,1167858,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2012,bottom_ash,concrete_grout,732260,664295,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2012,bottom_ash,flowable_fill,9435,8559,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Flowable Fill
+2012,bottom_ash,mining_applications,437986,397334,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Mining Applications
+2012,bottom_ash,miscellaneous,182400,165470,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Miscellaneous/Other
+2012,bottom_ash,oil_gas_field_services,18215,16524,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Oil Field Services
+2012,bottom_ash,road_base,352469,319754,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Road Base/Sub-base
+2012,bottom_ash,snow_ice_control,198153,179761,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Snow and Ice Control
+2012,bottom_ash,soil_modification,140092,127089,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2012,bottom_ash,structural_fill,1716196,1556907,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Structural Fills/Embankments
+2012,bottom_ash,waste_stabilisation,333,302,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2012,fbc_ash,mining_applications,8762464,7949174,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Mining Applications
+2012,fbc_ash,soil_modification,64562,58570,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2012,fbc_ash,waste_stabilisation,87748,79604,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2012,fgd_dry,concrete_grout,5372,4873,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2012,fgd_dry,flowable_fill,28,25,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Flowable Fill
+2012,fgd_dry,mining_applications,118868,107835,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Mining Applications
+2012,fgd_dry,oil_gas_field_services,15352,13927,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Oil Field Services
+2012,fgd_dry,soil_modification,821,745,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2012,fgd_dry,structural_fill,65065,59026,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Structural Fills/Embankments
+2012,fgd_dry,waste_stabilisation,227,206,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2012,fgd_gypsum,agriculture,655600,594750,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Agriculture
+2012,fgd_gypsum,blended_cement_clinker,1755891,1592918,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2012,fgd_gypsum,concrete_grout,63607,57703,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2012,fgd_gypsum,gypsum_panel,7641625,6932366,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Gypsum Panel Products
+2012,fgd_gypsum,mining_applications,1181799,1072110,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Mining Applications
+2012,fgd_gypsum,miscellaneous,18769,17027,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Miscellaneous/Other
+2012,fgd_gypsum,road_base,31,28,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Road Base/Sub-base
+2012,fgd_gypsum,soil_modification,1425,1293,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2012,fgd_gypsum,structural_fill,6738,6113,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Structural Fills/Embankments
+2012,fgd_gypsum,waste_stabilisation,777479,705317,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2012,fgd_wet,mining_applications,224940,204062,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Mining Applications
+2012,fgd_wet,structural_fill,321676,291820,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Structural Fills/Embankments
+2012,fly_ash,agriculture,26312,23870,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Agriculture
+2012,fly_ash,blasting_grit_roofing,11678,10594,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2012,fly_ash,blended_cement_clinker,2281211,2069480,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2012,fly_ash,concrete_grout,11779021,10685748,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2012,fly_ash,flowable_fill,141081,127987,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Flowable Fill
+2012,fly_ash,mining_applications,2086074,1892454,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Mining Applications
+2012,fly_ash,miscellaneous,543035,492633,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Miscellaneous/Other
+2012,fly_ash,oil_gas_field_services,568772,515981,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Oil Field Services
+2012,fly_ash,road_base,193711,175732,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Road Base/Sub-base
+2012,fly_ash,soil_modification,303354,275198,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2012,fly_ash,structural_fill,3083441,2797251,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Structural Fills/Embankments
+2012,fly_ash,waste_stabilisation,2187514,1984479,revisedFINAL2012CCPSurveyReport.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2013,boiler_slag,aggregate,10681,9690,2013ReportFINAL.pdf,1,table,ACAA label: Aggregate
+2013,boiler_slag,blasting_grit_roofing,884861,802732,2013ReportFINAL.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2013,boiler_slag,snow_ice_control,11797,10702,2013ReportFINAL.pdf,1,table,ACAA label: Snow and Ice Control
+2013,boiler_slag,soil_modification,1000,907,2013ReportFINAL.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2013,boiler_slag,waste_stabilisation,727,660,2013ReportFINAL.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2013,bottom_ash,aggregate,293932,266651,2013ReportFINAL.pdf,1,table,ACAA label: Aggregate
+2013,bottom_ash,agriculture,217,197,2013ReportFINAL.pdf,1,table,ACAA label: Agriculture
+2013,bottom_ash,blasting_grit_roofing,17672,16032,2013ReportFINAL.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2013,bottom_ash,blended_cement_clinker,1324131,1201231,2013ReportFINAL.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2013,bottom_ash,concrete_grout,494074,448216,2013ReportFINAL.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2013,bottom_ash,flowable_fill,2301,2087,2013ReportFINAL.pdf,1,table,ACAA label: Flowable Fill
+2013,bottom_ash,mining_applications,250113,226899,2013ReportFINAL.pdf,1,table,ACAA label: Mining Applications
+2013,bottom_ash,miscellaneous,105662,95855,2013ReportFINAL.pdf,1,table,ACAA label: Miscellaneous/Other
+2013,bottom_ash,oil_gas_field_services,73883,67026,2013ReportFINAL.pdf,1,table,ACAA label: Oil Field Services
+2013,bottom_ash,road_base,228517,207307,2013ReportFINAL.pdf,1,table,ACAA label: Road Base/Sub-base
+2013,bottom_ash,snow_ice_control,421087,382004,2013ReportFINAL.pdf,1,table,ACAA label: Snow and Ice Control
+2013,bottom_ash,soil_modification,457070,414647,2013ReportFINAL.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2013,bottom_ash,structural_fill,1912283,1734794,2013ReportFINAL.pdf,1,table,ACAA label: Structural Fills/Embankments
+2013,bottom_ash,waste_stabilisation,59751,54205,2013ReportFINAL.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2013,fbc_ash,aggregate,210363,190838,2013ReportFINAL.pdf,1,table,ACAA label: Aggregate
+2013,fbc_ash,mining_applications,8403003,7623076,2013ReportFINAL.pdf,1,table,ACAA label: Mining Applications
+2013,fbc_ash,soil_modification,92556,83965,2013ReportFINAL.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2013,fbc_ash,waste_stabilisation,88318,80121,2013ReportFINAL.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2013,fgd_dry,aggregate,5136,4659,2013ReportFINAL.pdf,1,table,ACAA label: Aggregate
+2013,fgd_dry,concrete_grout,5710,5180,2013ReportFINAL.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2013,fgd_dry,mining_applications,139244,126320,2013ReportFINAL.pdf,1,table,ACAA label: Mining Applications
+2013,fgd_dry,oil_gas_field_services,25954,23545,2013ReportFINAL.pdf,1,table,ACAA label: Oil Field Services
+2013,fgd_dry,road_base,2026,1838,2013ReportFINAL.pdf,1,table,ACAA label: Road Base/Sub-base
+2013,fgd_dry,soil_modification,102,93,2013ReportFINAL.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2013,fgd_dry,waste_stabilisation,3948,3582,2013ReportFINAL.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2013,fgd_gypsum,agriculture,582244,528203,2013ReportFINAL.pdf,1,table,ACAA label: Agriculture
+2013,fgd_gypsum,blended_cement_clinker,1080832,980514,2013ReportFINAL.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2013,fgd_gypsum,concrete_grout,263742,239263,2013ReportFINAL.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2013,fgd_gypsum,gypsum_panel,7446839,6755659,2013ReportFINAL.pdf,1,table,ACAA label: Gypsum Panel Products
+2013,fgd_gypsum,mining_applications,1562373,1417361,2013ReportFINAL.pdf,1,table,ACAA label: Mining Applications
+2013,fgd_gypsum,miscellaneous,14963,13574,2013ReportFINAL.pdf,1,table,ACAA label: Miscellaneous/Other
+2013,fgd_gypsum,soil_modification,3827,3472,2013ReportFINAL.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2013,fgd_gypsum,structural_fill,966334,876643,2013ReportFINAL.pdf,1,table,ACAA label: Structural Fills/Embankments
+2013,fgd_wet,blended_cement_clinker,83817,76038,2013ReportFINAL.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2013,fgd_wet,mining_applications,478239,433851,2013ReportFINAL.pdf,1,table,ACAA label: Mining Applications
+2013,fgd_wet,structural_fill,268816,243866,2013ReportFINAL.pdf,1,table,ACAA label: Structural Fills/Embankments
+2013,fly_ash,aggregate,3976,3607,2013ReportFINAL.pdf,1,table,ACAA label: Aggregate
+2013,fly_ash,agriculture,15644,14192,2013ReportFINAL.pdf,1,table,ACAA label: Agriculture
+2013,fly_ash,blasting_grit_roofing,4150,3765,2013ReportFINAL.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2013,fly_ash,blended_cement_clinker,2286144,2073955,2013ReportFINAL.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2013,fly_ash,concrete_grout,12356726,11209833,2013ReportFINAL.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2013,fly_ash,flowable_fill,41841,37958,2013ReportFINAL.pdf,1,table,ACAA label: Flowable Fill
+2013,fly_ash,mining_applications,1843292,1672206,2013ReportFINAL.pdf,1,table,ACAA label: Mining Applications
+2013,fly_ash,miscellaneous,1011986,918058,2013ReportFINAL.pdf,1,table,ACAA label: Miscellaneous/Other
+2013,fly_ash,oil_gas_field_services,313373,284287,2013ReportFINAL.pdf,1,table,ACAA label: Oil Field Services
+2013,fly_ash,road_base,136318,123666,2013ReportFINAL.pdf,1,table,ACAA label: Road Base/Sub-base
+2013,fly_ash,soil_modification,268462,243545,2013ReportFINAL.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2013,fly_ash,structural_fill,3005136,2726214,2013ReportFINAL.pdf,1,table,ACAA label: Structural Fills/Embankments
+2013,fly_ash,waste_stabilisation,2034182,1845379,2013ReportFINAL.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2014,boiler_slag,blasting_grit_roofing,1530853,1388766,2014ReportFinal.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2014,boiler_slag,mineral_filler_asphalt,9758,8852,2014ReportFinal.pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2014,boiler_slag,road_base,12992,11786,2014ReportFinal.pdf,1,table,ACAA label: Road Base/Sub-base
+2014,boiler_slag,snow_ice_control,101359,91951,2014ReportFinal.pdf,1,table,ACAA label: Snow and Ice Control
+2014,boiler_slag,structural_fill,51659,46864,2014ReportFinal.pdf,1,table,ACAA label: Structural Fills/Embankments
+2014,bottom_ash,aggregate,181107,164298,2014ReportFinal.pdf,1,table,ACAA label: Aggregate
+2014,bottom_ash,agriculture,10,9,2014ReportFinal.pdf,1,table,ACAA label: Agriculture
+2014,bottom_ash,blasting_grit_roofing,127114,115316,2014ReportFinal.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2014,bottom_ash,blended_cement_clinker,1197398,1086261,2014ReportFinal.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2014,bottom_ash,concrete_grout,609558,552982,2014ReportFinal.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2014,bottom_ash,flowable_fill,2672,2424,2014ReportFinal.pdf,1,table,ACAA label: Flowable Fill
+2014,bottom_ash,mining_applications,41330,37494,2014ReportFinal.pdf,1,table,ACAA label: Mining Applications
+2014,bottom_ash,miscellaneous,206039,186915,2014ReportFinal.pdf,1,table,ACAA label: Miscellaneous/Other
+2014,bottom_ash,oil_gas_field_services,4708,4271,2014ReportFinal.pdf,1,table,ACAA label: Oil/Gas Field Services
+2014,bottom_ash,road_base,306936,278448,2014ReportFinal.pdf,1,table,ACAA label: Road Base/Sub-base
+2014,bottom_ash,snow_ice_control,736397,668048,2014ReportFinal.pdf,1,table,ACAA label: Snow and Ice Control
+2014,bottom_ash,soil_modification,720791,653891,2014ReportFinal.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2014,bottom_ash,structural_fill,1928492,1749499,2014ReportFinal.pdf,1,table,ACAA label: Structural Fills/Embankments
+2014,bottom_ash,waste_stabilisation,475,431,2014ReportFinal.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2014,fbc_ash,mining_applications,13151161,11930533,2014ReportFinal.pdf,1,table,ACAA label: Mining Applications
+2014,fbc_ash,waste_stabilisation,134605,122112,2014ReportFinal.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2014,fgd_dry,mining_applications,229766,208440,2014ReportFinal.pdf,1,table,ACAA label: Mining Applications
+2014,fgd_dry,oil_gas_field_services,46233,41942,2014ReportFinal.pdf,1,table,ACAA label: Oil/Gas Field Services
+2014,fgd_gypsum,agriculture,1332708,1209012,2014ReportFinal.pdf,1,table,ACAA label: Agriculture
+2014,fgd_gypsum,blended_cement_clinker,1308208,1186786,2014ReportFinal.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2014,fgd_gypsum,concrete_grout,423613,384295,2014ReportFinal.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2014,fgd_gypsum,gypsum_panel,11221836,10180278,2014ReportFinal.pdf,1,table,ACAA label: Gypsum Panel Products
+2014,fgd_gypsum,mineral_filler_asphalt,5197,4715,2014ReportFinal.pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2014,fgd_gypsum,mining_applications,813419,737921,2014ReportFinal.pdf,1,table,ACAA label: Mining Applications
+2014,fgd_gypsum,miscellaneous,43384,39357,2014ReportFinal.pdf,1,table,ACAA label: Miscellaneous/Other
+2014,fgd_gypsum,structural_fill,1586234,1439007,2014ReportFinal.pdf,1,table,ACAA label: Structural Fills/Embankments
+2014,fgd_gypsum,waste_stabilisation,16390,14869,2014ReportFinal.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2014,fgd_wet,blended_cement_clinker,120509,109324,2014ReportFinal.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2014,fgd_wet,mining_applications,578244,524574,2014ReportFinal.pdf,1,table,ACAA label: Mining Applications
+2014,fgd_wet,miscellaneous,153498,139251,2014ReportFinal.pdf,1,table,ACAA label: Miscellaneous/Other
+2014,fgd_wet,structural_fill,311183,282300,2014ReportFinal.pdf,1,table,ACAA label: Structural Fills/Embankments
+2014,fly_ash,agriculture,62,56,2014ReportFinal.pdf,1,table,ACAA label: Agriculture
+2014,fly_ash,blended_cement_clinker,3391272,3076510,2014ReportFinal.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2014,fly_ash,concrete_grout,13126930,11908551,2014ReportFinal.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2014,fly_ash,flowable_fill,84734,76869,2014ReportFinal.pdf,1,table,ACAA label: Flowable Fill
+2014,fly_ash,mineral_filler_asphalt,68707,62330,2014ReportFinal.pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2014,fly_ash,mining_applications,1392935,1263649,2014ReportFinal.pdf,1,table,ACAA label: Mining Applications
+2014,fly_ash,miscellaneous,978165,887376,2014ReportFinal.pdf,1,table,ACAA label: Miscellaneous/Other
+2014,fly_ash,oil_gas_field_services,512100,464569,2014ReportFinal.pdf,1,table,ACAA label: Oil/Gas Field Services
+2014,fly_ash,road_base,365868,331910,2014ReportFinal.pdf,1,table,ACAA label: Road Base/Sub-base
+2014,fly_ash,soil_modification,176112,159766,2014ReportFinal.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2014,fly_ash,structural_fill,2805515,2545120,2014ReportFinal.pdf,1,table,ACAA label: Structural Fills/Embankments
+2014,fly_ash,waste_stabilisation,279323,253398,2014ReportFinal.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2015,boiler_slag,blasting_grit_roofing,1400455,1270471,2015-Survey_Results_Table.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2015,boiler_slag,concrete_grout,33290,30200,2015-Survey_Results_Table.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2015,boiler_slag,mineral_filler_asphalt,14176,12860,2015-Survey_Results_Table.pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2015,boiler_slag,miscellaneous,35265,31992,2015-Survey_Results_Table.pdf,1,table,ACAA label: Miscellaneous/Other
+2015,boiler_slag,road_base,21,19,2015-Survey_Results_Table.pdf,1,table,ACAA label: Road Base/Sub-base
+2015,boiler_slag,snow_ice_control,77935,70701,2015-Survey_Results_Table.pdf,1,table,ACAA label: Snow and Ice Control
+2015,boiler_slag,structural_fill,305770,277390,2015-Survey_Results_Table.pdf,1,table,ACAA label: Structural Fills/Embankments
+2015,bottom_ash,aggregate,173472,157371,2015-Survey_Results_Table.pdf,1,table,ACAA label: Aggregate
+2015,bottom_ash,agriculture,1788,1622,2015-Survey_Results_Table.pdf,1,table,ACAA label: Agriculture
+2015,bottom_ash,blasting_grit_roofing,184712,167568,2015-Survey_Results_Table.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2015,bottom_ash,blended_cement_clinker,1130802,1025846,2015-Survey_Results_Table.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2015,bottom_ash,concrete_grout,570092,517179,2015-Survey_Results_Table.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2015,bottom_ash,flowable_fill,9106,8261,2015-Survey_Results_Table.pdf,1,table,ACAA label: Flowable Fill
+2015,bottom_ash,gypsum_panel,28378,25744,2015-Survey_Results_Table.pdf,1,table,ACAA label: Gypsum Panel Products (formerly
+2015,bottom_ash,mining_applications,73416,66602,2015-Survey_Results_Table.pdf,1,table,ACAA label: Mining Applications
+2015,bottom_ash,miscellaneous,179940,163239,2015-Survey_Results_Table.pdf,1,table,ACAA label: Miscellaneous/Other
+2015,bottom_ash,road_base,311779,282841,2015-Survey_Results_Table.pdf,1,table,ACAA label: Road Base/Sub-base
+2015,bottom_ash,snow_ice_control,527695,478717,2015-Survey_Results_Table.pdf,1,table,ACAA label: Snow and Ice Control
+2015,bottom_ash,soil_modification,66253,60104,2015-Survey_Results_Table.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2015,bottom_ash,structural_fill,1561531,1416597,2015-Survey_Results_Table.pdf,1,table,ACAA label: Structural Fills/Embankments
+2015,bottom_ash,waste_stabilisation,242,220,2015-Survey_Results_Table.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2015,fbc_ash,mining_applications,11593760,10517682,2015-Survey_Results_Table.pdf,1,table,ACAA label: Mining Applications
+2015,fbc_ash,waste_stabilisation,130083,118009,2015-Survey_Results_Table.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2015,fgd_dry,mining_applications,215974,195928,2015-Survey_Results_Table.pdf,1,table,ACAA label: Mining Applications
+2015,fgd_dry,oil_gas_field_services,36875,33452,2015-Survey_Results_Table.pdf,1,table,ACAA label: Oil/Gas Field Services
+2015,fgd_gypsum,agriculture,1392693,1263430,2015-Survey_Results_Table.pdf,1,table,ACAA label: Agriculture
+2015,fgd_gypsum,blasting_grit_roofing,173,157,2015-Survey_Results_Table.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2015,fgd_gypsum,blended_cement_clinker,1649934,1496795,2015-Survey_Results_Table.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2015,fgd_gypsum,concrete_grout,409134,371160,2015-Survey_Results_Table.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2015,fgd_gypsum,gypsum_panel,11322016,10271160,2015-Survey_Results_Table.pdf,1,table,ACAA label: Gypsum Panel Products (formerly
+2015,fgd_gypsum,mining_applications,807280,732352,2015-Survey_Results_Table.pdf,1,table,ACAA label: Mining Applications
+2015,fgd_gypsum,miscellaneous,247030,224102,2015-Survey_Results_Table.pdf,1,table,ACAA label: Miscellaneous/Other
+2015,fgd_gypsum,soil_modification,8053,7306,2015-Survey_Results_Table.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2015,fgd_gypsum,structural_fill,1221865,1108457,2015-Survey_Results_Table.pdf,1,table,ACAA label: Structural Fills/Embankments
+2015,fgd_other,mineral_filler_asphalt,11479,10414,2015-Survey_Results_Table.pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2015,fgd_other,waste_stabilisation,9218,8362,2015-Survey_Results_Table.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2015,fgd_wet,agriculture,174713,158497,2015-Survey_Results_Table.pdf,1,table,ACAA label: Agriculture
+2015,fgd_wet,gypsum_panel,973785,883403,2015-Survey_Results_Table.pdf,1,table,ACAA label: Gypsum Panel Products (formerly
+2015,fgd_wet,structural_fill,100940,91571,2015-Survey_Results_Table.pdf,1,table,ACAA label: Structural Fills/Embankments
+2015,fly_ash,agriculture,2409,2185,2015-Survey_Results_Table.pdf,1,table,ACAA label: Agriculture
+2015,fly_ash,blended_cement_clinker,3629151,3292310,2015-Survey_Results_Table.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2015,fly_ash,concrete_grout,15737238,14276582,2015-Survey_Results_Table.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2015,fly_ash,flowable_fill,107263,97307,2015-Survey_Results_Table.pdf,1,table,ACAA label: Flowable Fill
+2015,fly_ash,mineral_filler_asphalt,52784,47885,2015-Survey_Results_Table.pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2015,fly_ash,mining_applications,1128682,1023923,2015-Survey_Results_Table.pdf,1,table,ACAA label: Mining Applications
+2015,fly_ash,miscellaneous,413152,374805,2015-Survey_Results_Table.pdf,1,table,ACAA label: Miscellaneous/Other
+2015,fly_ash,oil_gas_field_services,181907,165023,2015-Survey_Results_Table.pdf,1,table,ACAA label: Oil/Gas Field Services
+2015,fly_ash,road_base,178281,161734,2015-Survey_Results_Table.pdf,1,table,ACAA label: Road Base/Sub-base
+2015,fly_ash,soil_modification,216483,196390,2015-Survey_Results_Table.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2015,fly_ash,structural_fill,1277356,1158798,2015-Survey_Results_Table.pdf,1,table,ACAA label: Structural Fills/Embankments
+2015,fly_ash,waste_stabilisation,1138078,1032447,2015-Survey_Results_Table.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2016,bottom_ash,ccr_pond_closure,3142,2850,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,bottom_ash,mining_applications,211670,192024,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,bottom_ash,structural_fill,745213,676046,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,bottom_ash,waste_stabilisation,318516,288953,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fbc_ash,mining_applications,12729673,11548165,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fbc_ash,waste_stabilisation,139765,126793,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fgd_dry,mining_applications,131738,119511,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fgd_dry,oil_gas_field_services,7904,7170,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fgd_dry,waste_stabilisation,109244,99104,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fgd_gypsum,ccr_pond_closure,177013,160583,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fgd_gypsum,mining_applications,794133,720425,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fgd_gypsum,structural_fill,1490267,1351947,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fgd_gypsum,waste_stabilisation,3632056,3294946,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fgd_wet,structural_fill,896141,812965,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fly_ash,ccr_pond_closure,254521,230898,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fly_ash,mining_applications,1043002,946195,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fly_ash,oil_gas_field_services,190247,172589,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fly_ash,structural_fill,1696296,1538854,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2016,fly_ash,waste_stabilisation,767895,696623,2016-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,bottom_ash,ccr_pond_closure,730600,662789,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,bottom_ash,mining_applications,232110,210567,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,bottom_ash,structural_fill,871875,790952,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,bottom_ash,waste_stabilisation,48964,44419,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,fbc_ash,mining_applications,14037913,12734980,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,fbc_ash,waste_stabilisation,96564,87601,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,fgd_dry,mining_applications,202092,183335,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,fgd_dry,oil_gas_field_services,11188,10150,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,fgd_dry,waste_stabilisation,114646,104005,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,fgd_gypsum,ccr_pond_closure,2270326,2059605,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,fgd_gypsum,mining_applications,927949,841821,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,fgd_gypsum,waste_stabilisation,3026,2745,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,fgd_wet,mining_applications,3905009,3542565,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,fly_ash,ccr_pond_closure,1468203,1331931,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,fly_ash,mining_applications,901181,817538,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,fly_ash,oil_gas_field_services,78716,71410,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,fly_ash,structural_fill,465653,422433,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2017,fly_ash,waste_stabilisation,1065993,967053,2017-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,boiler_slag,ccr_pond_closure,304592,276321,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,boiler_slag,structural_fill,67104,60876,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,bottom_ash,ccr_pond_closure,357558,324371,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,bottom_ash,oil_gas_field_services,436,396,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,bottom_ash,structural_fill,532676,483236,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,bottom_ash,waste_stabilisation,57689,52335,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,fbc_ash,mining_applications,5831652,5290386,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,fbc_ash,waste_stabilisation,47374,42977,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,fgd_dry,oil_gas_field_services,8128,7374,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,fgd_dry,waste_stabilisation,11858,10757,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,fgd_gypsum,ccr_pond_closure,713573,647343,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,fgd_gypsum,structural_fill,617122,559844,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,fgd_gypsum,waste_stabilisation,16503,14971,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,fgd_wet,ccr_pond_closure,276826,251132,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,fly_ash,ccr_pond_closure,720411,653546,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,fly_ash,mining_applications,17282,15678,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,fly_ash,oil_gas_field_services,152053,137940,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,fly_ash,structural_fill,501668,455106,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2019,fly_ash,waste_stabilisation,604222,548141,2019-Survey-Results.pdf,1,table,Key categories only; scan read visually.
+2020,bottom_ash,ccr_pond_closure,1026079,930843,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2020,bottom_ash,structural_fill,510165,462814,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2020,bottom_ash,waste_stabilisation,43634,39584,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2020,fbc_ash,mining_applications,6730060,6105408,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2020,fbc_ash,waste_stabilisation,73216,66420,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2020,fgd_dry,oil_gas_field_services,6816,6183,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2020,fgd_dry,waste_stabilisation,13415,12170,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2020,fgd_gypsum,ccr_pond_closure,537176,487318,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2020,fgd_gypsum,waste_stabilisation,118854,107823,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2020,fgd_wet,ccr_pond_closure,292553,265400,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2020,fly_ash,ccr_pond_closure,1558156,1413535,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2020,fly_ash,mining_applications,53930,48924,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2020,fly_ash,oil_gas_field_services,64163,58208,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2020,fly_ash,structural_fill,306379,277942,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2020,fly_ash,waste_stabilisation,1117551,1013825,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2021,boiler_slag,blasting_grit_roofing,481245,436578,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2021,boiler_slag,blended_cement_clinker,103884,94242,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2021,boiler_slag,snow_ice_control,3655,3316,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Snow and Ice Control
+2021,boiler_slag,structural_fill,145869,132330,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Structural Fills/Embankments
+2021,bottom_ash,aggregate,43,39,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Aggregate
+2021,bottom_ash,agriculture,3516,3190,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Agriculture
+2021,bottom_ash,blasting_grit_roofing,52452,47584,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2021,bottom_ash,blended_cement_clinker,773999,702160,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2021,bottom_ash,ccr_pond_closure,150696,136709,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: CCR Pond Closure Activities
+2021,bottom_ash,concrete_grout,617000,559733,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2021,bottom_ash,miscellaneous,90226,81852,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Miscellaneous/Other
+2021,bottom_ash,road_base,95608,86734,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Road Base/Sub-base
+2021,bottom_ash,snow_ice_control,56311,51084,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Snow and Ice Control
+2021,bottom_ash,structural_fill,1698855,1541175,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Structural Fills/Embankments
+2021,bottom_ash,waste_stabilisation,53243,48301,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2021,fbc_ash,mining_applications,8310124,7538818,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Mining Applications
+2021,fgd_dry,agriculture,76839,69707,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Agriculture
+2021,fgd_dry,concrete_grout,38183,34639,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2021,fgd_dry,mining_applications,31465,28545,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Mining Applications
+2021,fgd_dry,miscellaneous,50339,45667,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Miscellaneous/Other
+2021,fgd_dry,oil_gas_field_services,15696,14239,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Oil/Gas Field Services
+2021,fgd_dry,waste_stabilisation,13587,12326,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2021,fgd_gypsum,aggregate,453114,411058,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Aggregate
+2021,fgd_gypsum,agriculture,742546,673626,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Agriculture
+2021,fgd_gypsum,blended_cement_clinker,1430135,1297397,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2021,fgd_gypsum,ccr_pond_closure,449700,407961,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: CCR Pond Closure Activities
+2021,fgd_gypsum,concrete_grout,32395,29388,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2021,fgd_gypsum,gypsum_panel,11740314,10650634,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Gypsum Panel Products (formerly
+2021,fgd_gypsum,miscellaneous,41520,37666,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Miscellaneous/Other
+2021,fgd_gypsum,waste_stabilisation,977,886,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2021,fly_ash,aggregate,1843,1672,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Aggregate
+2021,fly_ash,blended_cement_clinker,3291107,2985642,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2021,fly_ash,ccr_pond_closure,2351905,2133612,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: CCR Pond Closure Activities
+2021,fly_ash,concrete_grout,11936154,10828297,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2021,fly_ash,flowable_fill,48687,44168,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Flowable Fill
+2021,fly_ash,mineral_filler_asphalt,7544,6844,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2021,fly_ash,mining_applications,87636,79502,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Mining Applications
+2021,fly_ash,miscellaneous,196378,178151,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Miscellaneous/Other
+2021,fly_ash,oil_gas_field_services,55677,50509,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Oil/Gas Field Services
+2021,fly_ash,road_base,74702,67769,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Road Base/Sub-base
+2021,fly_ash,soil_modification,103207,93628,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2021,fly_ash,structural_fill,198746,180299,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Structural Fills/Embankments
+2021,fly_ash,waste_stabilisation,433456,393225,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2022,bottom_ash,ccr_pond_closure,401725,364439,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2022,bottom_ash,structural_fill,829295,752324,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2022,fbc_ash,mining_applications,11813474,10717003,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2022,fgd_dry,oil_gas_field_services,32682,29649,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2022,fgd_dry,waste_stabilisation,10220,9271,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2022,fgd_gypsum,ccr_pond_closure,140430,127396,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2022,fgd_wet,waste_stabilisation,4677,4243,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2022,fly_ash,ccr_pond_closure,1221559,1108180,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2022,fly_ash,oil_gas_field_services,2499,2267,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2022,fly_ash,structural_fill,207979,188675,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2022,fly_ash,waste_stabilisation,852295,773189,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2023,boiler_slag,blasting_grit_roofing,259113,235063,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2023,boiler_slag,blended_cement_clinker,123110,111684,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2023,boiler_slag,snow_ice_control,2587,2347,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Snow and Ice Control
+2023,bottom_ash,blasting_grit_roofing,30949,28076,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Blasting Grit/Roofing Granules
+2023,bottom_ash,blended_cement_clinker,1324489,1201556,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2023,bottom_ash,ccr_pond_closure,1522071,1380800,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: CCR Pond Closure Activities
+2023,bottom_ash,concrete_grout,403598,366138,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2023,bottom_ash,road_base,108921,98811,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Road Base/Sub-base
+2023,bottom_ash,snow_ice_control,36789,33374,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Snow and Ice Control
+2023,bottom_ash,structural_fill,44950,40778,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Structural Fills/Embankments
+2023,fbc_ash,mineral_filler_asphalt,2846,2582,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2023,fbc_ash,mining_applications,9269804,8409425,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Mining Applications
+2023,fgd_dry,oil_gas_field_services,44416,40294,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Oil/Gas Field Services
+2023,fgd_gypsum,aggregate,62,56,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Aggregate
+2023,fgd_gypsum,agriculture,733938,665817,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Agriculture
+2023,fgd_gypsum,blended_cement_clinker,2034977,1846100,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2023,fgd_gypsum,concrete_grout,1216081,1103210,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2023,fgd_gypsum,gypsum_panel,13061563,11849251,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Gypsum Panel Products (formerly
+2023,fgd_gypsum,miscellaneous,87216,79121,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Miscellaneous/Other
+2023,fgd_gypsum,soil_modification,11067,10040,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2023,fgd_wet,waste_stabilisation,6360,5770,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2023,fly_ash,blended_cement_clinker,3304658,2997935,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Blended Cement/ Feed for Clinker
+2023,fly_ash,concrete_grout,11868495,10766918,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Concrete/Concrete Products /Grout
+2023,fly_ash,flowable_fill,343,311,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Flowable Fill
+2023,fly_ash,mineral_filler_asphalt,1137,1031,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Mineral Filler in Asphalt
+2023,fly_ash,miscellaneous,39862,36162,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Miscellaneous/Other
+2023,fly_ash,oil_gas_field_services,115067,104387,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Oil/Gas Field Services
+2023,fly_ash,road_base,26578,24111,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Road Base/Sub-base
+2023,fly_ash,soil_modification,275732,250140,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Soil Modification/Stabilization
+2023,fly_ash,waste_stabilisation,363046,329350,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,ACAA label: Waste Stabilization/Solidification
+2024,bottom_ash,ccr_pond_closure,7364,6681,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2024,bottom_ash,mining_applications,11592,10516,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2024,bottom_ash,structural_fill,175649,159346,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2024,fbc_ash,mining_applications,5443670,4938414,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2024,fgd_other,oil_gas_field_services,7255,6582,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2024,fly_ash,oil_gas_field_services,9345,8478,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2024,fly_ash,structural_fill,97871,88787,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.
+2024,fly_ash,waste_stabilisation,14517,13170,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,Key categories only; scan read visually.

@@ -1,0 +1,361 @@
+year,ccp_type,produced_short_tons,used_short_tons,use_fraction,produced_t,used_t,source_file,page,extraction_method,status,notes
+1966,bottom_ash,8100000,1700000,0.2099,7348196,1542214,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1966,fa_ba_bs_subtotal,25200000,3100000,0.1230,22861055,2812273,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1966,fly_ash,17100000,1400000,0.0819,15512859,1270059,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,First survey year; boiler slag not collected (shown as -0- in later sheets).
+1967,bottom_ash,9100000,2300000,0.2527,8255381,2086525,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1967,fa_ba_bs_subtotal,27500000,3700000,0.1345,24947580,3356584,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1967,fly_ash,18400000,1400000,0.0761,16692199,1270059,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,Boiler slag not collected.
+1968,boiler_slag,2600000,1500000,0.5769,2358680,1360777,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1968,bottom_ash,7300000,1800000,0.2466,6622449,1632933,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1968,fa_ba_bs_subtotal,29700000,5200000,0.1751,26943387,4717361,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1968,fly_ash,19800000,1900000,0.0960,17962258,1723651,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1969,boiler_slag,2900000,1000000,0.3448,2630836,907185,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1969,bottom_ash,7600000,2000000,0.2632,6894604,1814369,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1969,fa_ba_bs_subtotal,31600000,4900000,0.1551,28667038,4445205,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1969,fly_ash,21100000,1900000,0.0900,19141598,1723651,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1970,boiler_slag,2800000,1100000,0.3929,2540117,997903,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1970,bottom_ash,9900000,1800000,0.1818,8981129,1632933,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1970,fa_ba_bs_subtotal,39200000,5100000,0.1301,35561642,4626642,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1970,fly_ash,26500000,2200000,0.0830,24040396,1995806,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1971,boiler_slag,5000000,3700000,0.7400,4535924,3356584,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1971,bottom_ash,10100000,1600000,0.1584,9162566,1451496,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1971,fa_ba_bs_subtotal,42900000,8600000,0.2005,38918225,7801789,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1971,fly_ash,27800000,3300000,0.1187,25219736,2993710,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1972,boiler_slag,3800000,1300000,0.3421,3447302,1179340,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1972,bottom_ash,10700000,2600000,0.2430,9706877,2358680,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1972,fa_ba_bs_subtotal,46300000,7500000,0.1620,42002653,6803886,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1972,fly_ash,31800000,3600000,0.1132,28848475,3265865,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1973,boiler_slag,4000000,1800000,0.4500,3628739,1632933,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1973,bottom_ash,10700000,2300000,0.2150,9706877,2086525,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1973,fa_ba_bs_subtotal,49300000,8000000,0.1623,44724208,7257478,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1973,fly_ash,34600000,3900000,0.1127,31388592,3538020,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1974,boiler_slag,4800000,2400000,0.5000,4354487,2177243,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1974,bottom_ash,14300000,2900000,0.2028,12972742,2630836,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1974,fa_ba_bs_subtotal,59500000,8700000,0.1462,53977492,7892507,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1974,fly_ash,40400000,3400000,0.0842,36650263,3084428,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1975,boiler_slag,4600000,1800000,0.3913,4173050,1632933,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1975,bottom_ash,13100000,3500000,0.2672,11884120,3175147,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1975,fa_ba_bs_subtotal,60000000,9800000,0.1633,54431084,8890410,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1975,fly_ash,42300000,4500000,0.1064,38373915,4082331,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1976,boiler_slag,4800000,2200000,0.4583,4354487,1995806,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1976,bottom_ash,14300000,4500000,0.3147,12972742,4082331,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1976,fa_ba_bs_subtotal,61900000,12400000,0.2003,56154735,11249091,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1976,fly_ash,42800000,5700000,0.1332,38827507,5170953,ACAA-CCP-Svy-1966-1976.pdf,1,table,adopted,
+1977,boiler_slag,5200000,3100000,0.5962,4717361,2812273,ACAA-CCP-Svy-1977.pdf,1,table,adopted,
+1977,bottom_ash,14100000,4600000,0.3262,12791305,4173050,ACAA-CCP-Svy-1977.pdf,1,table,adopted,
+1977,fa_ba_bs_subtotal,67800000,14000000,0.2065,61507125,12700586,ACAA-CCP-Svy-1977.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1977,fly_ash,48500000,6300000,0.1299,43998460,5715264,ACAA-CCP-Svy-1977.pdf,1,table,adopted,Published to 0.1 Mt; boiler slag reported as separated from bottom ash only if separated.
+1978,boiler_slag,5100000,3000000,0.5882,4626642,2721554,ACAA-CCP-Svy-1978.pdf,1,table,adopted,
+1978,bottom_ash,14700000,5000000,0.3401,13335616,4535924,ACAA-CCP-Svy-1978.pdf,1,table,adopted,
+1978,fa_ba_bs_subtotal,68100000,16400000,0.2408,61779281,14877830,ACAA-CCP-Svy-1978.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1978,fly_ash,48300000,8400000,0.1739,43817023,7620352,ACAA-CCP-Svy-1978.pdf,1,table,adopted,Published to 0.1 Mt.
+1979,boiler_slag,5200000,2400000,0.4615,4717361,2177243,ACAA-CCP-Svy-1979.pdf,1,table,adopted,
+1979,bottom_ash,12500000,3300000,0.2640,11339809,2993710,ACAA-CCP-Svy-1979.pdf,1,table,adopted,
+1979,fa_ba_bs_subtotal,75200000,15700000,0.2088,68220292,14242800,ACAA-CCP-Svy-1979.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1979,fly_ash,57500000,10000000,0.1739,52163123,9071847,ACAA-CCP-Svy-1979.pdf,1,table,adopted,Published to 0.1 Mt.
+1980,boiler_slag,3640000,1750000,0.4808,3302152,1587573,ACAA-CCP-Svy-1980.pdf,1,table,adopted,
+1980,bottom_ash,14450000,4260000,0.2948,13108819,3864607,ACAA-CCP-Svy-1980.pdf,1,table,adopted,
+1980,fa_ba_bs_subtotal,66400000,12430000,0.1872,60237067,11276306,ACAA-CCP-Svy-1980.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1980,fly_ash,48310000,6420000,0.1329,43826095,5824126,ACAA-CCP-Svy-1980.pdf,1,table,adopted,
+1981,boiler_slag,5180000,2930000,0.5656,4699217,2658051,ACAA-CCP-Svy-1981.pdf,1,table,adopted,
+1981,bottom_ash,12870000,4070000,0.3162,11675468,3692242,ACAA-CCP-Svy-1981.pdf,1,table,adopted,
+1981,fa_ba_bs_subtotal,68310000,16410000,0.2402,61969790,14886902,ACAA-CCP-Svy-1981.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1981,fly_ash,50260000,9410000,0.1872,45595105,8536608,ACAA-CCP-Svy-1981.pdf,1,table,adopted,
+1982,boiler_slag,4370000,1970000,0.4508,3964397,1787154,ACAA-CCP-Svy-1982.pdf,1,table,adopted,
+1982,bottom_ash,13130000,3630000,0.2765,11911336,3293081,ACAA-CCP-Svy-1982.pdf,1,table,adopted,
+1982,fa_ba_bs_subtotal,65410000,13550000,0.2072,59338954,12292353,ACAA-CCP-Svy-1982.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1982,fly_ash,47910000,7950000,0.1659,43463221,7212119,ACAA-CCP-Svy-1982.pdf,1,table,adopted,
+1983,boiler_slag,3940000,2530000,0.6421,3574308,2295177,ACAA-CCP-Svy-1984.pdf,1,table,adopted,
+1983,boiler_slag,3940000,2530000,0.6421,3574308,2295177,ACAA-CCP-Svy-1983.pdf,1,table,superseded,Own-year sheet (total ash 70.29 Mt); superseded by the revised production in the 1984+ sheets.
+1983,bottom_ash,12730000,2760000,0.2168,11548462,2503830,ACAA-CCP-Svy-1984.pdf,1,table,adopted,
+1983,bottom_ash,14000000,2760000,0.1971,12700586,2503830,ACAA-CCP-Svy-1983.pdf,1,table,superseded,Own-year sheet (total ash 70.29 Mt); superseded by the revised production in the 1984+ sheets.
+1983,fa_ba_bs_subtotal,63820000,12810000,0.2007,57896530,11621037,ACAA-CCP-Svy-1984.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1983,fly_ash,47150000,7520000,0.1595,42773760,6822029,ACAA-CCP-Svy-1984.pdf,1,table,adopted,REVISED: values from the 1984-1986 sheets (comparative table); 1983 own sheet gave 52.35/14.0/3.94 Mt (total 70.29).
+1983,fly_ash,52350000,7520000,0.1436,47491121,6822029,ACAA-CCP-Svy-1983.pdf,1,table,superseded,Own-year sheet (total ash 70.29 Mt); superseded by the revised production in the 1984+ sheets.
+1984,boiler_slag,4210000,2650000,0.6295,3819248,2404040,ACAA-CCP-Svy-1984.pdf,1,table,adopted,
+1984,bottom_ash,13620000,2960000,0.2173,12355856,2685267,ACAA-CCP-Svy-1984.pdf,1,table,adopted,
+1984,fa_ba_bs_subtotal,69150000,16040000,0.2320,62731825,14551243,ACAA-CCP-Svy-1984.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1984,fly_ash,51320000,10430000,0.2032,46556721,9461937,ACAA-CCP-Svy-1984.pdf,1,table,adopted,
+1985,boiler_slag,3650000,2380000,0.6521,3311224,2159100,ACAA-CCP-Svy-1985.pdf,1,table,adopted,
+1985,bottom_ash,13150000,4100000,0.3118,11929479,3719457,ACAA-CCP-Svy-1985.pdf,1,table,adopted,
+1985,fa_ba_bs_subtotal,65110000,17870000,0.2745,59066798,16211391,ACAA-CCP-Svy-1985.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1985,fly_ash,48310000,11390000,0.2358,43826095,10332834,ACAA-CCP-Svy-1985.pdf,1,table,adopted,
+1986,boiler_slag,4130000,2145000,0.5194,3746673,1945911,ACAA-CCP-Svy-1986.pdf,1,table,adopted,
+1986,bottom_ash,13411000,3585000,0.2673,12166255,3252257,ACAA-CCP-Svy-1986.pdf,1,table,adopted,
+1986,fa_ba_bs_subtotal,66800000,14506000,0.2172,60599941,13159622,ACAA-CCP-Svy-1986.pdf,1,table,adopted,"Sum of fly, bottom and boiler slag as published in million short tons (the sheet total may differ by rounding)."
+1986,fly_ash,49259000,8776000,0.1782,44687013,7961453,ACAA-CCP-Svy-1986.pdf,1,table,adopted,Published to 0.001 Mt.
+1987,boiler_slag,4115899,2436178,0.5919,3733881,2210064,ACAA-CCP-Svy-1987.pdf,1,table,adopted,
+1987,bottom_ash,14715570,4769054,0.3241,13349741,4326413,ACAA-CCP-Svy-1987.pdf,1,table,adopted,
+1987,fa_ba_bs_subtotal,68944647,18254808,0.2648,62545532,16560483,ACAA-CCP-Svy-1987.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+1987,fgd_material_all,14204638,1021032,0.0719,12886231,926265,ACAA-CCP-Svy-1987.pdf,1,table,adopted,
+1987,fly_ash,50113178,11049576,0.2205,45461910,10024007,ACAA-CCP-Svy-1987.pdf,1,table,adopted,FGD column headed sludge.
+1987,total_ccp,83149285,19275840,0.2318,75431762,17486748,ACAA-CCP-Svy-1987.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+1988,boiler_slag,5025540,2833348,0.5638,4559093,2570370,ACAA-CCP-Svy-1988.pdf,1,table,adopted,
+1988,bottom_ash,14272459,5433161,0.3807,12947757,4928881,ACAA-CCP-Svy-1988.pdf,1,table,adopted,
+1988,fa_ba_bs_subtotal,70203160,19630753,0.2796,63687235,17808720,ACAA-CCP-Svy-1988.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+1988,fgd_material_all,13526701,930210,0.0688,12271217,843872,ACAA-CCP-Svy-1988.pdf,1,table,adopted,
+1988,fly_ash,50905161,11364244,0.2232,46180385,10309469,ACAA-CCP-Svy-1988.pdf,1,table,adopted,
+1988,total_ccp,83729861,20560963,0.2456,75958452,18652592,ACAA-CCP-Svy-1988.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+1989,boiler_slag,4267563,2518306,0.5901,3871468,2284569,ACAA-CCP-Svy-1989.pdf,1,table,adopted,
+1989,bottom_ash,14205221,4848288,0.3413,12886760,4398293,ACAA-CCP-Svy-1989.pdf,1,table,adopted,
+1989,fa_ba_bs_subtotal,71856375,17519993,0.2438,65187007,15893870,ACAA-CCP-Svy-1989.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+1989,fgd_material_all,15603436,112635,0.0072,14155199,102181,ACAA-CCP-Svy-1989.pdf,1,table,adopted,
+1989,fly_ash,53383591,10153399,0.1902,48428779,9211009,ACAA-CCP-Svy-1989.pdf,1,table,adopted,FGD column headed sludge.
+1989,total_ccp,87459812,17632627,0.2016,79342207,15996050,ACAA-CCP-Svy-1989.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+1990,boiler_slag,5234316,3252220,0.6213,4748492,2950364,ACAA-CCP-Svy-1990.pdf,1,table,adopted,
+1990,bottom_ash,13705653,5360104,0.3911,12433559,4862605,ACAA-CCP-Svy-1990.pdf,1,table,adopted,
+1990,fa_ba_bs_subtotal,67871691,21032487,0.3099,61572162,19080351,ACAA-CCP-Svy-1990.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+1990,fgd_material_all,18932688,215852,0.0114,17175446,195818,ACAA-CCP-Svy-1990.pdf,1,table,adopted,
+1990,fly_ash,48931722,12420163,0.2538,44390112,11267382,ACAA-CCP-Svy-1990.pdf,1,table,adopted,
+1990,total_ccp,86804378,21248339,0.2448,78747607,19276169,ACAA-CCP-Svy-1990.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+1991,boiler_slag,6050000,3600000,0.5950,5488468,3265865,ACAA-CCP-Svy-1991.pdf,1,table,adopted,
+1991,bottom_ash,13300000,5000000,0.3759,12065557,4535924,ACAA-CCP-Svy-1991.pdf,1,table,adopted,
+1991,fa_ba_bs_subtotal,70650000,21800000,0.3086,64092602,19776627,ACAA-CCP-Svy-1991.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+1991,fgd_material_all,18100000,350000,0.0193,16420044,317515,ACAA-CCP-Svy-1991.pdf,1,table,adopted,
+1991,fly_ash,51300000,13200000,0.2573,46538577,11974839,ACAA-CCP-Svy-1991.pdf,1,table,adopted,"Sheet rounds tons to the nearest 50,000 (percentages use exact tonnage, not shown)."
+1991,total_ccp,88800000,22150000,0.2494,80558005,20094142,ACAA-CCP-Svy-1991.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+1992,boiler_slag,4112796,3089714,0.7512,3731066,2802941,ACAA-CCP-Svy-1992.pdf,1,table,adopted,
+1992,bottom_ash,13917623,3870241,0.2781,12625855,3511024,ACAA-CCP-Svy-1992.pdf,1,table,adopted,
+1992,fa_ba_bs_subtotal,66092317,20031069,0.3031,59957941,18171880,ACAA-CCP-Svy-1992.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+1992,fgd_material_all,15883538,289774,0.0182,14409303,262879,ACAA-CCP-Svy-1992.pdf,1,table,adopted,
+1992,fly_ash,48061898,13071114,0.2720,43601020,11857915,ACAA-CCP-Svy-1992.pdf,1,table,adopted,1966-2013 fly ash table gives 13.10 Mt used (sheet 13.07).
+1992,total_ccp,81975855,20320843,0.2479,74367245,18434759,ACAA-CCP-Svy-1992.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+1993,boiler_slag,6228523,3424017,0.5497,5650421,3106216,ACAA-CCP-Svy-1993.pdf,1,table,adopted,
+1993,bottom_ash,14215711,4231249,0.2976,12896276,3838525,ACAA-CCP-Svy-1993.pdf,1,table,adopted,
+1993,fa_ba_bs_subtotal,68200726,18163090,0.2663,61870658,16477278,ACAA-CCP-Svy-1993.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+1993,fgd_material_all,20340130,1163076,0.0572,18452256,1055125,ACAA-CCP-Svy-1993.pdf,1,table,adopted,
+1993,fly_ash,47756492,10507824,0.2200,43323961,9532538,ACAA-CCP-Svy-1993.pdf,1,table,adopted,Heading CCB (byproduct); includes internal producer applications.
+1993,total_ccp,88540856,19326166,0.2183,80322913,17532403,ACAA-CCP-Svy-1993.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+1994,boiler_slag,3785852,3117838,0.8235,3434467,2828455,ACAA-CCP-Svy-1994.pdf,1,table,adopted,
+1994,bottom_ash,14827165,5082966,0.3428,13450978,4611189,ACAA-CCP-Svy-1994.pdf,1,table,adopted,
+1994,fa_ba_bs_subtotal,73448587,21131494,0.2877,66631437,19170169,ACAA-CCP-Svy-1994.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+1994,fgd_material_all,15545068,944182,0.0607,14102248,856548,ACAA-CCP-Svy-1994.pdf,1,table,adopted,
+1994,fly_ash,54835570,12930690,0.2358,49745992,11730525,ACAA-CCP-Svy-1994.pdf,1,table,adopted,
+1994,total_ccp,88993655,22075675,0.2481,80733686,20026715,ACAA-CCP-Svy-1994.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+1995,boiler_slag,2806557,2689309,0.9582,2546066,2439700,ACAA-CCP-Svy-1995.pdf,1,table,adopted,
+1995,bottom_ash,15224269,5068493,0.3329,13811225,4598060,ACAA-CCP-Svy-1995.pdf,1,table,adopted,
+1995,fa_ba_bs_subtotal,72197595,21320615,0.2953,65496556,19341737,ACAA-CCP-Svy-1995.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+1995,fgd_material_all,19974829,1476662,0.0739,18120860,1339605,ACAA-CCP-Svy-1995.pdf,1,table,adopted,
+1995,fly_ash,54166769,13562813,0.2504,49139266,12303977,ACAA-CCP-Svy-1995.pdf,1,table,adopted,
+1995,total_ccp,92172424,22797277,0.2473,83617417,20681342,ACAA-CCP-Svy-1995.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+1996,boiler_slag,2568349,2396070,0.9329,2329967,2173678,ACAA-CCP-Svy-1996.pdf,1,table,adopted,
+1996,bottom_ash,16060762,4868253,0.3031,14570078,4416405,ACAA-CCP-Svy-1996.pdf,1,table,adopted,
+1996,fa_ba_bs_subtotal,77984120,23498811,0.3013,70746004,21317763,ACAA-CCP-Svy-1996.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+1996,fgd_material_all,23854328,1656132,0.0694,21640282,1502418,ACAA-CCP-Svy-1996.pdf,1,table,adopted,
+1996,fly_ash,59355009,16234488,0.2735,53845958,14727680,ACAA-CCP-Svy-1996.pdf,1,table,adopted,OCR; closes on sum and on printed utilisation percentages.
+1996,total_ccp,101838447,25154943,0.2470,92386285,22820180,ACAA-CCP-Svy-1996.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+1997,boiler_slag,2741614,2578851,0.9406,2487150,2339494,ACAA-CCP-Svy-1997.pdf,1,table,adopted,
+1997,bottom_ash,16904663,5096905,0.3015,15335652,4623834,ACAA-CCP-Svy-1997.pdf,1,table,adopted,
+1997,fa_ba_bs_subtotal,79911068,26993118,0.3378,72494101,24487745,ACAA-CCP-Svy-1997.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+1997,fgd_material_all,25163394,2183363,0.0868,22827847,1980714,ACAA-CCP-Svy-1997.pdf,1,table,adopted,
+1997,fly_ash,60264791,19317362,0.3205,54671299,17524416,ACAA-CCP-Svy-1997.pdf,1,table,adopted,OCR; closes on sum and on printed utilisation percentages.
+1997,total_ccp,105074462,29176481,0.2777,95321948,26468458,ACAA-CCP-Svy-1997.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+1998,boiler_slag,2980627,2387737,0.8011,2703979,2166119,ACAA-CCP-Svy-1998.pdf,1,table,adopted,
+1998,bottom_ash,16760091,5239184,0.3126,15204499,4752908,ACAA-CCP-Svy-1998.pdf,1,table,adopted,
+1998,fa_ba_bs_subtotal,82736590,28732389,0.3473,75057372,26065585,ACAA-CCP-Svy-1998.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+1998,fgd_material_all,25002877,2494262,0.0998,22682228,2262756,ACAA-CCP-Svy-1998.pdf,1,table,adopted,
+1998,fly_ash,62995872,21105468,0.3350,57148894,19146559,ACAA-CCP-Svy-1998.pdf,1,table,adopted,OCR; closes on sum and on printed utilisation percentages.
+1998,total_ccp,107739467,31226651,0.2898,97739600,28328341,ACAA-CCP-Svy-1998.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+1999,boiler_slag,2890843,2363464,0.8176,2622529,2144098,ACAA-CCP-Svy-1999.pdf,1,table,adopted,
+1999,bottom_ash,16875991,5420676,0.3212,15309642,4917555,ACAA-CCP-Svy-1999.pdf,1,table,adopted,
+1999,fa_ba_bs_subtotal,82466781,28577613,0.3465,74812605,25925174,ACAA-CCP-Svy-1999.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+1999,fgd_material_all,24608099,4452405,0.1809,22324092,4039154,ACAA-CCP-Svy-1999.pdf,1,table,adopted,
+1999,fly_ash,62699947,20793473,0.3316,56880435,18863521,ACAA-CCP-Svy-1999.pdf,1,table,adopted,Visual read.
+1999,total_ccp,107074879,33030018,0.3085,97136696,29964328,ACAA-CCP-Svy-1999.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+2000,boiler_slag,2684889,2321568,0.8647,2435690,2106091,2000_CCP_Production_and_Use_Survey.pdf,1,table,adopted,
+2000,bottom_ash,16915826,4937908,0.2919,15345779,4479595,2000_CCP_Production_and_Use_Survey.pdf,1,table,adopted,
+2000,fa_ba_bs_subtotal,82544447,27336385,0.3312,74883063,24799151,2000_CCP_Production_and_Use_Survey.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+2000,fgd_material_all,25652994,4824727,0.1881,23272005,4376919,2000_CCP_Production_and_Use_Survey.pdf,1,table,adopted,
+2000,fly_ash,62943732,20076909,0.3190,57101593,18213465,2000_CCP_Production_and_Use_Survey.pdf,1,table,adopted,Visual read.
+2000,total_ccp,108197440,32161112,0.2972,98155066,29176070,2000_CCP_Production_and_Use_Survey.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+2001,boiler_slag,2536195,1818473,0.7170,2300797,1649691,2001_rev_svy_11-02.pdf,1,table,adopted,
+2001,bottom_ash,18788004,5712398,0.3040,17044191,5182200,2001_rev_svy_11-02.pdf,1,table,adopted,
+2001,fa_ba_bs_subtotal,89447750,29535826,0.3302,81145634,26794451,2001_rev_svy_11-02.pdf,1,table,adopted,Sum of the three ash types (equals the sheet subtotal where printed).
+2001,fgd_material_all,28482792,7583495,0.2662,25839154,6879631,2001_rev_svy_11-02.pdf,1,table,adopted,
+2001,fly_ash,68123551,22004955,0.3230,61800646,19962559,2001_rev_svy_11-02.pdf,1,table,adopted,File is a revised release (11-02); text layer.
+2001,total_ccp,117930542,37119321,0.3148,106984788,33674082,2001_rev_svy_11-02.pdf,1,table,adopted,Sheet total of all byproducts/CCPs incl. FGD material.
+2002,boiler_slag,1919579,1549972,0.8075,1741413,1406111,acaa_2002_ccp_svy(11-25-03).pdf,2,table,adopted,
+2002,bottom_ash,19800000,7689589,0.3884,17962258,6975878,acaa_2002_ccp_svy(11-25-03).pdf,2,table,adopted,
+2002,fa_ba_bs_subtotal,98219579,35868442,0.3652,89103303,32539303,acaa_2002_ccp_svy(11-25-03).pdf,2,table,adopted,Sum of the three ash types.
+2002,fbc_ash,1248599,953410,0.7636,1132710,864919,acaa_2002_ccp_svy(11-25-03).pdf,2,table,adopted,
+2002,fgd_gypsum,11400000,7770000,0.6816,10341906,7048825,acaa_2002_ccp_svy(11-25-03).pdf,2,table,adopted,
+2002,fly_ash,76500000,26628881,0.3481,69399633,24157314,acaa_2002_ccp_svy(11-25-03).pdf,2,table,adopted,
+2002,other_fgd,17835394,931404,0.0522,16179997,844955,acaa_2002_ccp_svy(11-25-03).pdf,2,table,adopted,Wet + dry + other FGD (produced/used): wet 16900000/560000; dry 935394/371404; other 0/0
+2002,total_ccp,128703572,45523256,0.3537,116757917,41298003,acaa_2002_ccp_svy(11-25-03).pdf,2,table,adopted,Sheet total.
+2003,boiler_slag,1836235,1756004,0.9563,1665804,1593020,2003_CCP_Survey(10-1-04).pdf,1,table,adopted,
+2003,bottom_ash,18100000,8247273,0.4557,16420044,7481800,2003_CCP_Survey(10-1-04).pdf,1,table,adopted,
+2003,fa_ba_bs_subtotal,90086235,37139801,0.4123,81724858,33692661,2003_CCP_Survey(10-1-04).pdf,1,table,adopted,Sum of the three ash types.
+2003,fbc_ash,796718,263623,0.3309,722770,239155,2003_CCP_Survey(10-1-04).pdf,1,table,adopted,
+2003,fgd_gypsum,11900000,8299060,0.6974,10795498,7528781,2003_CCP_Survey(10-1-04).pdf,1,table,adopted,
+2003,fly_ash,70150000,27136524,0.3868,63639010,24617840,2003_CCP_Survey(10-1-04).pdf,1,table,adopted,
+2003,other_fgd,18961618,681921,0.0360,17201690,618628,2003_CCP_Survey(10-1-04).pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 17350000/484412; dry 1444273/197509; other 167345/0
+2003,total_ccp,121744571,46384405,0.3810,110444817,42079224,2003_CCP_Survey(10-1-04).pdf,1,table,adopted,Sheet total.
+2004,boiler_slag,2202296,1973385,0.8961,1997889,1790225,2004_CCP_Survey(9-9-05).pdf,1,table,adopted,
+2004,bottom_ash,17200000,8152469,0.4740,15603578,7395795,2004_CCP_Survey(9-9-05).pdf,1,table,adopted,
+2004,fa_ba_bs_subtotal,90202296,38194824,0.4234,81830146,34649761,2004_CCP_Survey(9-9-05).pdf,1,table,adopted,Sum of the three ash types.
+2004,fbc_ash,867397,473391,0.5458,786889,429453,2004_CCP_Survey(9-9-05).pdf,1,table,adopted,
+2004,fgd_gypsum,11950000,9044955,0.7569,10840858,8205445,2004_CCP_Survey(9-9-05).pdf,1,table,adopted,
+2004,fly_ash,70800000,28068970,0.3965,64228680,25463741,2004_CCP_Survey(9-9-05).pdf,1,table,adopted,
+2004,other_fgd,19445426,1376648,0.0708,17640594,1248874,2004_CCP_Survey(9-9-05).pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 17500000/1195877; dry 1829830/177480; other 115596/3291
+2004,total_ccp,122465119,49089818,0.4008,111098487,44533534,2004_CCP_Survey(9-9-05).pdf,1,table,adopted,Sheet total.
+2005,boiler_slag,1957392,1890809,0.9660,1775716,1715313,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,adopted,
+2005,bottom_ash,17600000,7541972,0.4285,15966451,6841962,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,adopted,
+2005,fa_ba_bs_subtotal,90657392,38551235,0.4252,82243003,34973092,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,adopted,Sum of the three ash types.
+2005,fbc_ash,1366438,944559,0.6913,1239612,856890,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,adopted,
+2005,fgd_gypsum,11975000,9268365,0.7740,10863537,8408119,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,adopted,
+2005,fly_ash,71100000,29118454,0.4095,64500835,26415817,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,adopted,
+2005,other_fgd,19127263,848382,0.0444,17351961,769639,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 17700000/689184; dry 1427263/159198; other 0/0
+2005,total_ccp,123126093,49612541,0.4029,111698113,45007740,2005 CCP Survey (09-19-06)Corrected-11-09-07.pdf,1,table,adopted,Sheet total.
+2006,boiler_slag,2026066,1690999,0.8346,1838016,1534048,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,adopted,
+2006,bottom_ash,18600000,8378494,0.4505,16873636,7600842,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,adopted,
+2006,fa_ba_bs_subtotal,93026066,42493062,0.4568,84391827,38549057,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,adopted,Sum of the three ash types.
+2006,fbc_ash,1580912,1078291,0.6821,1434179,978209,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,adopted,
+2006,fgd_gypsum,12100000,9561489,0.7902,10976935,8674037,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,adopted,
+2006,fly_ash,72400000,32423569,0.4478,65680175,29414167,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,adopted,
+2006,other_fgd,18088146,1070328,0.0592,16409290,970985,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,adopted,Wet + dry + other FGD (produced/used): wet 16300000/904348; dry 1488951/136639; other 299195/29341
+2006,total_ccp,124795124,54203170,0.4343,113212232,49172289,2006_CCP_Survey_(Final-8-24-07).pdf,2,table,adopted,Sheet total.
+2007,boiler_slag,2072695,1663980,0.8028,1880317,1509537,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,adopted,
+2007,bottom_ash,18100000,7303538,0.4035,16420044,6625658,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,adopted,
+2007,fa_ba_bs_subtotal,91872695,40593555,0.4418,83345507,36825854,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,adopted,Sum of the three ash types.
+2007,fbc_ash,6092756,5143436,0.8442,5527255,4666047,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,adopted,"2007: FBC combined with ARIPPA data (6,092,756 t produced); survey-respondent-only FBC was 1,273,061 produced / 323,741 used (see superseded alt row)."
+2007,fbc_ash,1273061,323741,0.2543,1154902,293693,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,superseded,Survey-respondent-only FBC (not combined with ARIPPA).
+2007,fgd_gypsum,12300000,9228271,0.7503,11158372,8371747,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,adopted,
+2007,fly_ash,71700000,31626037,0.4411,65045146,28690658,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,adopted,
+2007,other_fgd,20862242,1073743,0.0515,18925908,974083,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 16600000/810080; dry 1812511/150365; other 2449731/113298
+2007,total_ccp,131127693,56039005,0.4274,118957042,50837730,2007_ACAA_CCP_Survey_Report_Form(09-15-08).pdf,1,table,adopted,"Total incl. ARIPPA FBC; 2008 sheet states 2007 utilisation should read 44.81%, not 42.74%, after under-reporting was detected (not re-tabulated)."
+2008,boiler_slag,2028455,1689892,0.8331,1840183,1533044,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,adopted,
+2008,bottom_ash,18431297,8076255,0.4382,16720591,7326655,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,adopted,
+2008,fa_ba_bs_subtotal,92913982,39908421,0.4295,84290147,36204311,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,adopted,Sum of the three ash types.
+2008,fbc_ash,9487057,8864690,0.9344,8606513,8041911,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,adopted,
+2008,fgd_gypsum,17754939,10653344,0.6000,16107010,9664551,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,adopted,
+2008,fly_ash,72454230,30142274,0.4160,65729372,27344611,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,adopted,
+2008,other_fgd,15917129,1167205,0.0733,14439777,1058871,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 12980588/685104; dry 1399258/345335; other 1537283/136766
+2008,total_ccp,136073107,60593660,0.4453,123443446,54969644,2008_ACAA_CCP_Survey_Report_FINAL_100509.pdf,1,table,adopted,Sheet total.
+2009,boiler_slag,2176054,1834257,0.8429,1974083,1664010,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,adopted,
+2009,bottom_ash,16600000,7000665,0.4217,15059267,6350896,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,adopted,
+2009,fa_ba_bs_subtotal,81776054,33551587,0.4103,74185988,30437488,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,adopted,Sum of the three ash types.
+2009,fbc_ash,12524796,11748374,0.9380,11362304,10657946,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,adopted,
+2009,fgd_gypsum,18000000,8951315,0.4973,16329325,8120496,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,adopted,
+2009,fly_ash,63000000,24716665,0.3923,57152639,22422581,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,adopted,
+2009,other_fgd,13181736,1390735,0.1055,11958270,1261654,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 11700000/907543; dry 1405448/415521; other 76288/67671
+2009,total_ccp,125482586,55642011,0.4434,113835887,50477583,2009_Production_and_Use_Survey_Revised_100511.pdf,1,table,adopted,Sheet total.
+2010,boiler_slag,2332944,1418996,0.6082,2116411,1287292,2010_CCP_Survey_FINAL_102011.pdf,1,table,adopted,
+2010,bottom_ash,17800000,7541732,0.4237,16147888,6841744,2010_CCP_Survey_FINAL_102011.pdf,1,table,adopted,
+2010,fa_ba_bs_subtotal,87832944,34683945,0.3949,79680706,31464746,2010_CCP_Survey_FINAL_102011.pdf,1,table,adopted,Sum of the three ash types.
+2010,fbc_ash,10267914,8732008,0.8504,9314895,7921544,2010_CCP_Survey_FINAL_102011.pdf,1,table,adopted,
+2010,fgd_gypsum,22000000,10713138,0.4870,19958064,9718795,2010_CCP_Survey_FINAL_102011.pdf,1,table,adopted,
+2010,fly_ash,67700000,25723217,0.3800,61416407,23335710,2010_CCP_Survey_FINAL_102011.pdf,1,table,adopted,
+2010,other_fgd,10080506,1208335,0.1199,9144881,1096183,2010_CCP_Survey_FINAL_102011.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 8670814/624223; dry 1405952/584112; other 3740/0
+2010,total_ccp,130181364,55337426,0.4251,118098547,50201268,2010_CCP_Survey_FINAL_102011.pdf,1,table,adopted,Sheet total.
+2011,boiler_slag,2002764,1374716,0.6864,1816877,1247121,Final2011CCPSurvey.pdf,1,table,adopted,
+2011,bottom_ash,16500000,6082407,0.3686,14968548,5517867,Final2011CCPSurvey.pdf,1,table,adopted,
+2011,fa_ba_bs_subtotal,78402764,30432573,0.3882,71125791,27607966,Final2011CCPSurvey.pdf,1,table,adopted,Sum of the three ash types.
+2011,fbc_ash,13246123,12406559,0.9366,12016681,11255041,Final2011CCPSurvey.pdf,1,table,adopted,
+2011,fgd_gypsum,25000000,11807770,0.4723,22679618,10711829,Final2011CCPSurvey.pdf,1,table,adopted,
+2011,fly_ash,59900000,22975450,0.3836,54340366,20842978,Final2011CCPSurvey.pdf,1,table,adopted,
+2011,other_fgd,13428388,1925416,0.1434,12182029,1746708,Final2011CCPSurvey.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 11104710/1351560; dry 2180474/571381; other 143204/2475
+2011,total_ccp,130077275,56572318,0.4349,118004119,51321544,Final2011CCPSurvey.pdf,1,table,adopted,Sheet total.
+2012,boiler_slag,1720945,1437556,0.8353,1561215,1304129,revisedFINAL2012CCPSurveyReport.pdf,1,table,adopted,
+2012,bottom_ash,14100000,5474167,0.3882,12791305,4966081,revisedFINAL2012CCPSurveyReport.pdf,1,table,adopted,
+2012,fa_ba_bs_subtotal,67920945,30116927,0.4434,61616845,27321617,revisedFINAL2012CCPSurveyReport.pdf,1,table,adopted,Sum of the three ash types.
+2012,fbc_ash,9843922,8914774,0.9056,8930256,8087347,revisedFINAL2012CCPSurveyReport.pdf,1,table,adopted,
+2012,fgd_gypsum,24200000,12102964,0.5001,21953871,10979624,revisedFINAL2012CCPSurveyReport.pdf,1,table,adopted,
+2012,fly_ash,52100000,23205204,0.4454,47264325,21051407,revisedFINAL2012CCPSurveyReport.pdf,1,table,adopted,
+2012,other_fgd,7785517,752349,0.0966,7062902,682520,revisedFINAL2012CCPSurveyReport.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 6803636/546616; dry 655119/205733; other 326762/0
+2012,total_ccp,109750384,51887014,0.4728,99563874,47071107,revisedFINAL2012CCPSurveyReport.pdf,1,table,adopted,Sheet total.
+2013,boiler_slag,1355939,909066,0.6704,1230087,824691,2013ReportFINAL.pdf,1,table,adopted,
+2013,bottom_ash,14450000,5640693,0.3904,13108819,5117151,2013ReportFINAL.pdf,1,table,adopted,
+2013,fa_ba_bs_subtotal,69205939,29870989,0.4316,62782572,27098505,2013ReportFINAL.pdf,1,table,adopted,Sum of the three ash types.
+2013,fbc_ash,10326745,8794240,0.8516,9368265,7978000,2013ReportFINAL.pdf,1,table,adopted,
+2013,fgd_gypsum,24400000,11921154,0.4886,22135308,10814689,2013ReportFINAL.pdf,1,table,adopted,
+2013,fly_ash,53400000,23321230,0.4367,48443665,21156664,2013ReportFINAL.pdf,1,table,adopted,
+2013,other_fgd,10759926,1012992,0.0941,9761241,918971,2013ReportFINAL.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 8514789/830872; dry 687706/182120; other 1557431/0
+2013,total_ccp,114692610,51599375,0.4499,104047386,46810166,2013ReportFINAL.pdf,1,table,adopted,Sheet total.
+2014,boiler_slag,2694056,1706621,0.6335,2444006,1548221,2014ReportFinal.pdf,1,table,adopted,
+2014,bottom_ash,12478705,6063028,0.4859,11320491,5500286,2014ReportFinal.pdf,1,table,adopted,
+2014,fa_ba_bs_subtotal,65594999,30951372,0.4719,59506782,28078612,2014ReportFinal.pdf,1,table,adopted,Sum of the three ash types.
+2014,fbc_ash,15768766,13285766,0.8425,14305184,12052644,2014ReportFinal.pdf,1,table,adopted,
+2014,fgd_gypsum,34123820,16750990,0.4909,30956609,15196243,2014ReportFinal.pdf,1,table,adopted,
+2014,fly_ash,50422238,23181723,0.4598,45742285,21030105,2014ReportFinal.pdf,1,table,adopted,
+2014,other_fgd,14196557,1439433,0.1014,12878900,1305832,2014ReportFinal.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 12596231/1163434; dry 1255775/275999; other 344551/0
+2014,total_ccp,129684142,62427561,0.4814,117647475,56633331,2014ReportFinal.pdf,1,table,adopted,Sheet total.
+2015,boiler_slag,2228205,1866912,0.8379,2021394,1693634,2015-Survey_Results_Table.pdf,1,table,adopted,
+2015,bottom_ash,12010425,4819205,0.4013,10895674,4371909,2015-Survey_Results_Table.pdf,1,table,adopted,
+2015,fa_ba_bs_subtotal,58604217,30748903,0.5247,53164851,27894936,2015-Survey_Results_Table.pdf,1,table,adopted,Sum of the three ash types.
+2015,fbc_ash,13191460,11723843,0.8887,11967091,10635691,2015-Survey_Results_Table.pdf,1,table,adopted,
+2015,fgd_gypsum,32661536,17058178,0.5223,29630047,15474919,2015-Survey_Results_Table.pdf,1,table,adopted,
+2015,fly_ash,44365587,24062786,0.5424,40247784,21829392,2015-Survey_Results_Table.pdf,1,table,adopted,
+2015,other_fgd,12832221,1522984,0.1187,11641195,1381628,2015-Survey_Results_Table.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 11313960/1249438; dry 1311947/252849; other 206314/20697
+2015,total_ccp,117289432,61053908,0.5205,106403183,55387174,2015-Survey_Results_Table.pdf,1,table,adopted,Sheet total.
+2016,boiler_slag,2188298,1310959,0.5991,1985191,1189282,2016-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2016,bottom_ash,10135360,3775480,0.3725,9194644,3425058,2016-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2016,fa_ba_bs_subtotal,50140985,27720936,0.5529,45487136,25148010,2016-Survey-Results.pdf,1,table,adopted,Sum of the three ash types.
+2016,fbc_ash,14267412,12869437,0.9020,12943178,11674957,2016-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2016,fgd_gypsum,32006516,18372663,0.5740,29035823,16667400,2016-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2016,fly_ash,37817327,22634497,0.5985,34307302,20533670,2016-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2016,other_fgd,11012954,1206748,0.1096,9990784,1094743,2016-Survey-Results.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 9556694/896141; dry 1448752/310607; other 7508/0
+2016,total_ccp,107427866,60169785,0.5601,97456921,54585111,2016-Survey-Results.pdf,1,table,adopted,Sheet total.
+2017,boiler_slag,2574673,1570375,0.6099,2335704,1424620,2017-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2017,bottom_ash,9655931,4839420,0.5012,8759713,4390248,2017-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2017,fa_ba_bs_subtotal,50420394,30505385,0.6050,45740612,27674020,2017-Survey-Results.pdf,1,table,adopted,Sum of the three ash types.
+2017,fbc_ash,14469553,14134477,0.9768,13126558,12822582,2017-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2017,fgd_gypsum,32707136,22839385,0.6983,29671415,20719542,2017-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2017,fly_ash,38189790,24095590,0.6309,34645195,21859152,2017-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2017,other_fgd,13772455,4289464,0.3115,12494161,3891336,2017-Survey-Results.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 11311344/3905009; dry 2454818/382048; other 6293/2407
+2017,total_ccp,111369538,71768712,0.6444,101032745,65107480,2017-Survey-Results.pdf,1,table,adopted,Sheet total.
+2018,boiler_slag,1534945,1036919,0.6755,1392479,940677,2018-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2018,bottom_ash,9197362,4350321,0.4730,8343706,3946545,2018-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2018,fa_ba_bs_subtotal,46910734,25468570,0.5429,42556702,23104698,2018-Survey-Results.pdf,1,table,adopted,Sum of the three ash types.
+2018,fbc_ash,15571824,15045225,0.9662,14126521,13648799,2018-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2018,fgd_gypsum,32783995,18337477,0.5593,29741140,16635479,2018-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2018,fly_ash,36178427,20081330,0.5551,32820517,18217476,2018-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2018,other_fgd,7008327,589568,0.0841,6357847,534847,2018-Survey-Results.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 4732900/91036; dry 2154301/498532; other 121126/0
+2018,total_ccp,102274881,59440839,0.5812,92782211,53923822,2018-Survey-Results.pdf,1,table,adopted,Sheet total.
+2019,boiler_slag,965138,697001,0.7222,875558,632309,2019-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2019,bottom_ash,9150680,2923586,0.3195,8301357,2652233,2019-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2019,fa_ba_bs_subtotal,39435057,21388822,0.5424,35774882,19403613,2019-Survey-Results.pdf,1,table,adopted,Sum of the three ash types.
+2019,fbc_ash,6293721,5882468,0.9347,5709568,5336485,2019-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2019,fgd_gypsum,22975581,13285876,0.5783,20843096,12052744,2019-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2019,fly_ash,29319239,17768235,0.6060,26597966,16119072,2019-Survey-Results.pdf,1,table,adopted,Scan read visually.
+2019,other_fgd,9943531,449875,0.0452,9020620,408120,2019-Survey-Results.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 6217129/359529; dry 3707974/90346; other 18428/0
+2019,total_ccp,78647890,41007041,0.5214,71348166,37200962,2019-Survey-Results.pdf,1,table,adopted,Sheet total.
+2020,boiler_slag,834131,369729,0.4433,756711,335413,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2020,bottom_ash,7973554,2955653,0.3707,7233487,2681323,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2020,fa_ba_bs_subtotal,35320007,20429875,0.5784,32041771,18533671,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Sum of the three ash types.
+2020,fbc_ash,7217772,6809788,0.9435,6547853,6177736,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2020,fgd_gypsum,17677439,13147742,0.7438,16036703,11927431,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2020,fly_ash,26512322,17104493,0.6452,24051574,15516935,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2020,other_fgd,8940873,401002,0.0449,8111024,363783,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 6065567/292553; dry 2833942/106256; other 41364/2193
+2020,total_ccp,69156091,40788407,0.5898,62737350,37002620,2020-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Sheet total.
+2021,boiler_slag,1195311,734652,0.6146,1084368,666465,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,
+2021,bottom_ash,8783796,3591948,0.4089,7968526,3258560,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,
+2021,fa_ba_bs_subtotal,37984023,23113642,0.6085,34458526,20968343,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Sum of the three ash types.
+2021,fbc_ash,8310124,8310124,1.0000,7538818,7538818,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,
+2021,fgd_gypsum,19688381,14890701,0.7563,17860999,13508617,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,
+2021,fly_ash,28004916,18787042,0.6708,25405632,17043318,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,
+2021,other_fgd,11380522,226109,0.0199,10324236,205123,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 7032003/0; dry 4284941/226109; other 63578/0
+2021,total_ccp,77363050,46540576,0.6016,70182578,42220900,2021-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Sheet total.
+2022,boiler_slag,1565764,733028,0.4682,1420437,664992,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2022,bottom_ash,7576840,2981553,0.3935,6873594,2704819,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2022,fa_ba_bs_subtotal,37370578,20546045,0.5498,33902018,18639058,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Sum of the three ash types.
+2022,fbc_ash,12772198,11813474,0.9249,11586743,10717003,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2022,fgd_gypsum,17308377,14428769,0.8336,15701895,13089559,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2022,fly_ash,28227974,16831464,0.5963,25607987,15269247,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2022,other_fgd,7790784,47580,0.0061,7067680,43164,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 4576313/4677; dry 3214471/42903; other 0/0
+2022,total_ccp,75241938,46835868,0.6225,68258338,42488785,2022-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Sheet total.
+2023,boiler_slag,3322110,384810,0.1158,3013767,349094,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,
+2023,bottom_ash,5676177,3471766,0.6116,5149341,3149533,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,
+2023,fa_ba_bs_subtotal,30422003,19851493,0.6525,27598377,18008972,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Sum of the three ash types.
+2023,fbc_ash,10176388,9272650,0.9112,9231864,8412007,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,
+2023,fgd_gypsum,17424765,17144903,0.9839,15807481,15553594,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,
+2023,fly_ash,21423716,15994917,0.7466,19435268,14510345,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,
+2023,other_fgd,8688155,50776,0.0058,7881762,46063,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 5392015/6360; dry 3296140/44416; other 0/0
+2023,total_ccp,66711312,46319822,0.6943,60519484,42020636,2023-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Sheet total.
+2024,boiler_slag,1580936,889947,0.5629,1434201,807346,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2024,bottom_ash,7666800,2720561,0.3548,6955204,2468051,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2024,fa_ba_bs_subtotal,33966336,22997076,0.6771,30813742,20862596,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Sum of the three ash types.
+2024,fbc_ash,5885300,5885300,1.0000,5339054,5339054,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2024,fgd_gypsum,16860200,17142322,1.0167,15295316,15551253,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2024,fly_ash,24718600,19386568,0.7843,22424337,17587199,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Scan read visually.
+2024,other_fgd,6862612,13643,0.0020,6225657,12377,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Wet + dry + other FGD (produced/used): wet 5122215/0; dry 1687795/6388; other 52602/7255
+2024,total_ccp,63574448,46038342,0.7242,57673769,41765281,2024-Production-and-Use-Survey-Results-FINAL.pdf,1,table,adopted,Sheet total.
