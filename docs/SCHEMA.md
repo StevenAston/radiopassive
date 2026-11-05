@@ -2,6 +2,8 @@
 
 > **Status:** SIGNED OFF by Steve, 2026-10-20; **v2.2 additions (2026-10-25, D36, D43–D48) approved by Steve.** **v2.3 additions (2026-10-26, D55–D57: per-group seepage table §4.12, pre-1950 stream files) approved by Steve 2026-10-26.** **v2.4 addition (2026-10-27, D63: `substream` column in factor files, §4.9) approved by Steve.** **v2.4b addition (2026-11-04, D70: oil_gas substream `all`, §5.1) approved by Steve.** Task 0.2, revision v2.1 (re-review fixes) of v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
 
+> **v2.5 pending, LIB v1.5 (2026-11-05, not yet approved; proposed D72).** Stream outputs (`data/streams/`, `data/streams_pre1950/`) would be committed as deterministic gzip (`<stream>.csv.gz`). Content is unchanged: UTF-8 and LF. Readers and the validator would accept both forms. Both forms of one stream present would be `F04`. Build logs stay plain. The full text to apply to §1, §2, §3, §6.1–§6.5 and §9 is in `docs/LIB_SPEC.md` §11.9. Until approval, this document's current text governs.
+
 ---
 
 ## 1. General conventions

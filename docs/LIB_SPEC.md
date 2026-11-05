@@ -281,3 +281,337 @@ Needed by Task 2.3 (conventional / unconventional / oil_sands rows share every o
 2. Precedence is unchanged: exact region beats `XWL`; ambiguity at the winning level raises `LibError`.
 3. `read_table` reads the factor-file `substream` column as a string (empty cell → `""`, never `None` or NaN), like `group`, `tier`, `route`, `residue_type`.
 4. Nothing else changes; a call that does not pass `substream` behaves exactly as in v1.3, whatever the rows hold.
+
+## 11. v1.5 (2026-11-05, DRAFT, pending Steve's approval): gzipped stream outputs
+
+Steve approved storing the stream outputs gzipped (2026-11-05). This section fixes how. It **overrides** §4.3 and §5 where they differ, and it goes with SCHEMA v2.5 (text in §11.9). Proposed decision number: D72.
+
+**Why.** The committed master files are 3.7 / 17 / 47 / 60 MB raw (coal / nuclear / oil_gas / other). GitHub warns above 50 MB per file and refuses above 100 MB. `other.csv` is already over the warning, and `oil_gas.csv` is close. Gzipped, all eight stream files (master plus pre-1950) total 7.8 MB, against 132.3 MB raw (16.9×).
+
+### 11.1 Measurements (2026-11-05)
+
+Measured on the 2-core x86_64 sandbox with Python 3.13.16 and zlib 1.3, single process. The scripts are in the session scratchpad, not in the repo.
+
+| File | Raw bytes | gzip -6 | gzip -9 | Ratio at 9 |
+|---|---:|---:|---:|---:|
+| `data/streams/coal.csv` | 3,709,408 | 291,921 | 279,674 | 13.3× |
+| `data/streams/nuclear.csv` | 17,465,942 | 1,492,695 | 1,414,078 | 12.4× |
+| `data/streams/oil_gas.csv` | 46,737,887 | 2,116,914 | 2,054,709 | 22.7× |
+| `data/streams/other.csv` | 60,110,017 | 3,955,360 | 3,786,125 | 15.9× |
+| `data/streams_pre1950/coal.csv` | 3,589,361 | 244,214 | 227,822 | 15.8× |
+| `data/streams_pre1950/nuclear.csv` | 18,516 | 1,170 | 1,110 | 16.7× |
+| `data/streams_pre1950/oil_gas.csv` | 563,678 | 45,968 | 43,165 | 13.1× |
+| `data/streams_pre1950/other.csv` | 79,183 | 5,569 | 5,288 | 15.0× |
+| **Total** | **132,273,992** | **8,153,811** | **7,811,971** | **16.9×** |
+
+Timings for `other.csv` (60 MB, 164,912 rows):
+
+- **Compression.** Level 9 takes 1.00–1.03 s (one run under load took 2.1 s). Level 6 takes 0.68–0.79 s.
+- **Decompression.** 0.12–0.15 s.
+- **The rest of the pipeline is slower.** `read_table` on the plain file takes 5.0 s, and plain `write_master` of the same rows takes 5.5 s. `csv.reader` over a gzip text stream runs as fast as over the plain file (1.00 s vs 1.02 s).
+- **Round trip.** `read_table` → `write_master` of the committed `other.csv` gives byte-identical output.
+
+Determinism findings:
+
+1. **Fixed header.** `gzip.GzipFile(filename="", mode="wb", compresslevel=9, fileobj=BytesIO(), mtime=0)` and `gzip.compress(data, 9, mtime=0)` give identical bytes. Both start with the header `1f 8b 08 00 00 00 00 00 02 ff`: no FNAME flag, MTIME 0, XFL 2, OS 255.
+2. **Unsafe options.** `mtime=None` (the current time) changes the bytes. So does a non-empty `filename`, and `gzip.open(path, "wb")` takes the filename from the path. With either, writing to scratch `0.csv.gz` and to the committed `coal.csv.gz` would give different bytes.
+3. **Chunking is safe.** Feeding the same bytes in 8 KiB, 64 KiB or 1 MiB `write()` calls gives the same output as one call.
+4. **Wrapping is not.** A `csv.writer` → `io.TextIOWrapper` → `GzipFile` chain gives output 6 bytes longer than the one-shot form. Closing the wrapper triggers a `Z_SYNC_FLUSH`, which adds an empty stored block. The output is still deterministic, but whether a flush happens depends on how the code is written.
+5. **zlib versions differ.** Compressed bytes are guaranteed only for the same zlib implementation and version. zlib-ng, or a different zlib release, can produce different but equally valid streams. Nothing may therefore depend on compressed bytes matching across machines (see 11.5).
+
+### 11.2 Which files are gzipped
+
+| Files | Form | |
+|---|---|---|
+| `data/streams/<stream>.csv` (master) | gzipped | **Recommended.** These are the large files (up to 60 MB). Nobody reads them by eye in a diff. |
+| `data/streams_pre1950/<stream>.csv` | gzipped | **Recommended.** `coal` is 3.6 MB raw. One rule for every stream output is simpler than a size threshold. The other three are small, but treating them differently would only add a rule. |
+| `research/<stream>/build_log.csv` | **plain** | **Recommended.** These are small (0.7–137 kB) and reviewed by people in diffs. They stay plain CSV, written by each stream's unchanged `write_log`. |
+| `data/factors/*`, `data/activity/*`, `data/reference/*`, `data/*.csv` | plain | Unchanged. These are hand-curated inputs. |
+| `build/master.csv` (Task 3.1) | not decided here | It is a derived output under `build/`. When Task 3.1 specifies it, the reader and validator already accept either form (11.3, 11.6). |
+
+*Alternatives considered.*
+
+- **Gzip master files only.** This was rejected: coal pre-1950 would stay at 3.6 MB, and there would be two conventions for one kind of file.
+- **Git LFS.** This was rejected because it needs extra tooling and remote quota, and it breaks plain `git clone` reproducibility.
+- **Splitting files by decade.** This was rejected: it changes the SCHEMA §3 "one file per stream" contract and still grows linearly.
+
+### 11.3 Naming, and accepting both forms
+
+1. **Name.** A gzipped stream output is named `<stream>.csv.gz`, for example `data/streams/coal.csv.gz` and `data/streams_pre1950/coal.csv.gz`.
+2. **Detection by suffix only.** A path whose final suffix is `.gz` (case-sensitive) is read and written as gzip. Any other path is plain. The library does not sniff file contents.
+   - A `.gz` path that is not valid gzip raises `LibError` in `read_table`, and is reported as `F03` by the validator.
+   - A gzip file named `.csv` fails UTF-8 decoding and is reported the same way.
+   - *Alternative:* magic-byte sniffing. This was rejected because the format would then not be visible from the name.
+3. **Both forms stay supported permanently.** `read_table`, `write_master` and the validator accept both `.csv` and `.csv.gz` with no deprecation date.
+   - The validator's test fixtures (`pipeline/tests/conftest.py`, `test_validate.py`, `test_schema_v22.py`), the stream test fixtures (`written`) and `build/master.csv` are plain, and should stay plain.
+   - Only the stream CLIs' **committed** outputs switch to `.csv.gz`.
+4. **Both forms present raises.** If `<dir>/<stream>.csv` and `<dir>/<stream>.csv.gz` both exist, the stream file is ambiguous:
+   - `resolve_stream_file` raises `LibError` (11.4);
+   - the stream CLI exits 2 in diff mode (11.5);
+   - default discovery in the validator reports `F04` (11.6).
+
+   Nothing silently prefers one form. The usual cause is an old-code `--write` run on a branch after migration.
+
+### 11.4 Library changes (`pipeline/lib/io.py`, `pipeline/lib/rows.py`)
+
+New in `io.py`:
+
+- **`GZIP_LEVEL = 9`.** **Recommended over 6.** Level 9 is 4.2% smaller (7.81 vs 8.15 MB in total; 3.79 vs 3.96 MB for `other`), and it costs about 0.3 s more per `other` write, next to a stream build of tens of seconds or more. The constant is part of the format: changing it changes every committed byte, so it needs a spec change.
+- **`gzip_bytes(data: bytes) -> bytes`.** Returns `gzip.compress(data, compresslevel=GZIP_LEVEL, mtime=0)`, or the equivalent single `GzipFile(filename="", mode="wb", compresslevel=GZIP_LEVEL, fileobj=io.BytesIO(), mtime=0)` write with no explicit `flush()`.
+  - The output starts with `1f 8b 08 00 00 00 00 00 02 ff`.
+  - It does not depend on the wall clock or on any path.
+  - `gzip.open(<path>, ...)` and a `TextIOWrapper` over `GzipFile` are **not** allowed for writing (11.1, findings 2 and 4).
+  - A non-`bytes` argument raises `LibError`.
+- **`read_bytes(path) -> bytes`.** Returns the file's **content**: the decompressed bytes for a `.gz` path, the raw bytes otherwise.
+  - A missing or unreadable file, or a corrupt or truncated gzip stream, raises `LibError` naming the path. This covers `gzip.BadGzipFile`, `EOFError`, `zlib.error` and `OSError`.
+  - Path type checks are as for `read_table` (§8.8.4).
+- **`first_difference(a: bytes, b: bytes) -> int | None`.** Splits both arguments into lines, keeping the `\n`. It returns the 1-based number of the first line that differs, where line 1 is the header, or `None` when `a == b`.
+  - When one input is a strict line-prefix of the other, it returns the number of the first line the shorter one lacks.
+  - A missing final newline counts as a difference on that line.
+  - Raises `LibError` for non-`bytes` input.
+- **`resolve_stream_file(directory, stream) -> Path | None`.** Looks for `<directory>/<stream>.csv.gz` and `<directory>/<stream>.csv`.
+  - If only one exists, it returns that path.
+  - If neither exists, it returns `None`.
+  - If both exist, it raises `LibError` naming both.
+  - Only regular files count; a directory with either name raises `LibError`.
+
+Changed:
+
+- **`read_table(path)`.** For a `.gz` path, it decompresses the file and then parses exactly as for a plain file, with `utf-8-sig` decoding, the same coercion and the same errors. A gzip-level failure raises `LibError` naming the path. For the same content, the result is identical to reading the plain file.
+- **`write_master(rows, path)`.** All the §4.3 / §8.3 / §8.8 rules stand. The change is the order of work:
+  1. Format the whole file in memory as before: header plus body, `csv.writer` with `lineterminator="\n"`, encoded UTF-8 with no BOM.
+  2. Write the bytes. A plain path gets them unchanged, so plain output is byte-identical to v1.4. A `.gz` path gets `gzip_bytes(those bytes)`.
+
+  The decompressed content of a `.gz` output equals the plain output for the same rows, byte for byte. Files are opened in binary mode, so the line endings are LF on every platform. The existing rule that formatting happens before the file is opened (no partial output on a bad cell) also covers compression.
+
+Unchanged: LF line endings, UTF-8 encoding, header first, sort order, float formatting and every error condition. Gzip is only a container around the same bytes.
+
+*Not required (optional hardening).* `write_master` may write to a temporary file in the same directory and then call `os.replace`, so an interrupted write never leaves a truncated `.gz`. A truncated gzip is detected on read anyway (`LibError` / `F03`).
+
+### 11.5 Stream CLIs (`pipeline/streams/{coal,nuclear,oil_gas,other}.py`, `main`)
+
+1. **Constants.** `MAIN_OUTPUT = Path("data") / "streams" / "<stream>.csv.gz"` and `PRE1950_OUTPUT = Path("data") / "streams_pre1950" / "<stream>.csv.gz"`. `LOG_OUTPUT` is unchanged and stays plain.
+2. **Diff mode (default).** The CLI builds into a scratch directory as now, writing the fresh master and pre-1950 files as `.csv.gz` with `write_master` and the log with `write_log`. It then compares each target by **content**, never by compressed bytes:
+   - **Master and pre-1950 targets.** The CLI calls `resolve_stream_file` on the target's directory.
+     - Both forms present: it prints an error naming both files and exits **2**, whatever the other targets show.
+     - Neither present: the difference is "missing".
+     - Only the plain `.csv`: the difference is "legacy plain form, run --write to migrate". This counts even when the content matches, so an unmigrated tree never reports "identical".
+     - Only the `.csv.gz`: the CLI compares `read_bytes(committed)` with `read_bytes(fresh)`. An unreadable gzip is a difference ("unreadable: <reason>").
+   - **Build log.** Compared as plain bytes, as now. A missing file is a difference.
+   - **Output.** For each differing target, the CLI prints one stderr line: `<rel path>: first difference at line N`, `<rel path>: missing`, or the legacy or unreadable message. It then prints the existing summary line, `differs from the committed file(s): ...`, and exits 1.
+   - Diff mode never writes, deletes or touches a committed file.
+   - Exit 0 and `outputs identical to the committed files` only when every target matches.
+3. **`--write`.** For each master and pre-1950 target:
+   - If the committed `.csv.gz` exists and its decompressed content equals the fresh content, the CLI **leaves it untouched**: same bytes, same mtime. This is **Recommended**: a machine with a different zlib (11.1, finding 5) then never rewrites an unchanged file, so git diffs only on real content changes.
+   - Otherwise it writes the file with `write_master`, which is byte-stable on a given zlib.
+   - If a plain sibling `<stream>.csv` exists, the CLI deletes it after the `.gz` is in place. This is how the migration works, and it is also the repair for the both-present state.
+   - The log is written as now.
+   - The `written:` line names the `.gz` paths and flags `(unchanged)` / `(removed legacy <stream>.csv)` where those apply.
+   - Exit 0.
+
+   *Alternative:* always rewrite. This is simpler, but it causes git churn across zlib builds.
+4. **Optional refactor.** The four `main` functions are identical apart from their constants. The code-writer may move the compare/write logic into one shared helper, for example `pipeline/streams/_outputs.py`. Tests exercise the CLIs, so behaviour is what matters.
+
+### 11.6 Validator (`pipeline/validate.py`)
+
+1. **Discovery.** With `master_files=None`, `_resolve_master_files` collects `data/streams/*.csv` and `data/streams/*.csv.gz`, sorted by file name.
+   - **Both present.** If both forms of the same stream exist, the validator reports **`F04`** once per pair, with `row = None` and `file` set to the `.csv.gz` display name. The message names both files. **Neither** file of the pair is read, which is consistent with "a file with an F-code is not validated".
+     - *Recommended* over raising: the validator's contract is to report issues, and `FileNotFoundError` is reserved for missing required files.
+     - *Alternative:* raise `FileExistsError` and exit 2.
+   - **Explicit lists.** An explicit `master_files` list (or CLI `FILE` list) is taken literally, with no pairing check: the caller named the files.
+2. **Reading.** `_read_csv` opens a `.gz` path with `gzip.open(path, "rt", encoding="utf-8", newline="")`. Reading is not byte-sensitive, so `gzip.open` is fine here.
+   - A gzip failure (`OSError` including `BadGzipFile`, `EOFError`, `zlib.error`) or a decode failure is reported as `F03`, `cannot read as gzip-compressed UTF-8 CSV: <reason>`.
+   - The BOM strip, `F01`, `F02` and `D01` behave as for plain files.
+   - Plain-file behaviour is unchanged.
+   - The suffix rule applies to every table `_read_csv` reads, but only stream outputs are expected to use it.
+3. **Display names.** These keep the suffix, for example `Issue.file == "data/streams/coal.csv.gz"`.
+4. **Row checks.** These do not change. Every check that reads master rows (`_coerce_master`, `_check_master_row`, `_check_product`, `_check_cross_rows`) sees the same `_Table` whichever form the file is in. `X01`–`X05` treat rows from `.csv` and `.csv.gz` files alike. Processing order is sorted file name.
+5. **Pre-1950 files.** `data/streams_pre1950/` files are still never read, in either form.
+6. **CLI help text.** The `main()` help (`default: data/streams/*.csv`) and the module docstring become `data/streams/*.csv and *.csv.gz`.
+7. **No import cycle.** `pipeline/lib/io.py` imports from `pipeline/validate.py`, so the validator must not import from `pipeline.lib`. It uses `gzip` directly.
+
+### 11.7 Repository and migration
+
+1. **`.gitattributes`** (new, at the repo root), with the single line `*.csv.gz binary`. This stops text diffs, merges and EOL conversion on the gzipped files. A merge conflict on a `.csv.gz` file is resolved by re-running the stream CLI with `--write`.
+   - *Optional:* `*.csv.gz binary diff=gzip`, plus a per-clone `git config diff.gzip.textconv "gzip -dc"`, gives readable `git diff` and `git log -p` output. It is not committed config, so it is left to Steve.
+2. **One commit for everything.** **Recommended.** The commit contains the code (lib, validator, four CLIs), the test updates, the docs (SCHEMA v2.5, this section, the per-stream SPEC output tables, D72), `.gitattributes`, the eight `.csv.gz` files produced by `python -m pipeline.streams.<s> --write` for each stream, and the deletion of the eight plain `.csv` files (`git add -A data/streams data/streams_pre1950`).
+   - Before committing: run each CLI once more without `--write`, which must exit 0, then run `python -m pipeline.validate --root .`, which must report no issues.
+   - *Alternative:* one commit per stream. This works because the reader accepts both forms, but between the commits the code expects `.gz` while three streams are still plain, so their diff mode exits 1 (legacy). There is no benefit, because the data does not change.
+3. **History.** The old plain blobs stay in history. That is acceptable: the caller reported `.git` at 24 MB, and nothing needs rewriting.
+   - **Cost to note:** git already zlib-compresses blobs and delta-compresses similar plain-text versions in packs. Gzip blobs do not delta.
+   - So from now on, every content change to a stream adds roughly its full gzipped size to history: about 3.8 MB for `other`, 7.8 MB if all streams change.
+   - A plain-text change touching few lines would have added only a small delta. A factor change usually rewrites most of a stream's rows anyway, so the practical difference is modest. It does argue against committing rebuilds without content changes, which 11.5.3 already prevents.
+4. **Before migrating, land or rebase concurrent work that writes stream outputs.** The coal research and ACAA import work under way on 2026-11-05 is an example. A branch built with the old code writes `coal.csv` next to `coal.csv.gz`, which is exactly the both-present case (11.3.4). It is repaired by re-running `--write` with the new code.
+
+### 11.8 Done conditions and test items (for the spec-blind test-writer)
+
+Tests are written from this section, §4.3/§5/§8, and SCHEMA §6 as amended by v2.5. They go in `pipeline/tests/lib/test_io_gz.py` (library), `pipeline/tests/test_validate_gz.py` (validator), and the existing stream suites (CLI). They use only `tmp_path`. Never hard-code a compressed digest or a compressed length (11.1, finding 5). Assert on the header bytes and on decompressed content instead.
+
+**A. Round trip (lib).**
+
+1. `write_master(rows, p.csv.gz)` followed by `read_table(p.csv.gz)` returns the same records as writing to `p.csv` and reading that back. Cover the empty list, header-only output, `None` cells, lists, booleans, non-ASCII text and floats.
+2. `gzip.decompress(p.csv.gz bytes)` equals the bytes of `p.csv`.
+3. The decompressed content uses LF only, has no CR and no BOM, and is valid UTF-8.
+4. Plain output is unchanged from v1.4. A fixed row set, written plain, matches a hand-written expected byte string.
+
+**B. Determinism (lib).**
+
+1. Two `write_master` calls to `.gz` paths give byte-identical files. This also holds for different file names and directories (`a.csv.gz` vs `sub/coal.csv.gz`).
+2. The result does not depend on the clock. Patch `time.time` to two different values (for example 0 and 2e9), or write twice more than one second apart: the bytes are identical, and bytes 4–7 (MTIME) are zero.
+3. Header bytes 0–9 equal `1f 8b 08 00 00 00 00 00 02 ff`. The FLG byte has no FNAME, FCOMMENT or FEXTRA bit.
+4. `gzip_bytes(b"")` and `gzip_bytes(x)` both decompress to their input, and `gzip_bytes(x)` equals `gzip.compress(x, 9, mtime=0)`. The second comparison is same-process, so the same zlib is used.
+5. `gzip_bytes` of a non-`bytes` argument raises `LibError`.
+
+**C. Reading either form (lib).**
+
+1. For the same content, `read_table` on a `.csv` file and on a `.csv.gz` file gives equal results.
+2. `read_bytes` returns decompressed content for a `.gz` path and raw bytes otherwise.
+3. Each of these raises `LibError` naming the path, for both `read_table` and `read_bytes`: a `.gz` file holding plain text, a truncated `.gz` (last 10 bytes cut), a `.gz` with a corrupted CRC, and an empty `.gz` file.
+4. `first_difference` cases:
+   - equal input gives `None`;
+   - a difference in the header gives 1;
+   - a difference at line k gives k;
+   - extra trailing lines give the first extra line;
+   - a missing final newline gives that line;
+   - non-`bytes` input raises `LibError`.
+
+**D. Both forms present.**
+
+1. `resolve_stream_file` returns the `.gz` path, the plain path or `None` in the three single-form cases. It raises `LibError` naming both files when both exist, and also when either name is a directory.
+2. The CLI diff run with both forms present exits 2 and leaves both files untouched.
+3. `--write` with both present exits 0, leaves only the `.csv.gz`, and that file's content equals a fresh build.
+
+**E. CLI diff on tampered content (each stream suite, adapted).**
+
+1. After `--write`, a diff run exits 0.
+2. Decompress the committed `.csv.gz`, change one cell on data line k, and recompress with `gzip_bytes`. The diff run then exits 1, its stderr names the file and `first difference at line k`, and the tampered file is left byte-for-byte as it was.
+3. The same holds for the pre-1950 file.
+4. A copy with the same content but **different compressed bytes** (recompressed at level 1, or with a non-zero mtime) gives exit 0 in diff mode. After `--write`, the copy is left untouched (same bytes), because the content is unchanged.
+5. A plain committed `.csv` with correct content and no `.gz` gives exit 1 with the legacy message. `--write` then creates the `.gz` and removes the `.csv`.
+6. A missing `.gz` gives exit 1. A corrupt `.gz` gives exit 1 and is not overwritten by the diff run.
+7. The build-log checks are unchanged (still plain).
+
+**F. Validator on gz trees.**
+
+1. A valid master file stored as `data/streams/x.csv.gz` gives the same issue list as the same content stored as `x.csv`, apart from the `file` name. This holds for default discovery and for explicit `master_files`.
+2. Invalid rows inside a `.gz` give the same row codes with `file` ending in `.csv.gz`.
+3. Corrupt or truncated gzip gives `F03`, and the file's rows are not validated.
+4. With both `x.csv` and `x.csv.gz`: default discovery gives exactly one `F04` (row `None`, file `data/streams/x.csv.gz`), and neither file's rows are checked. Passing both explicitly gives no `F04`.
+5. Cross-file `X01` is reported for a key duplicated between `a.csv` and `b.csv.gz`.
+6. `data/streams_pre1950/*.csv.gz` is never read, even if invalid.
+7. CLI `FILE` arguments ending in `.csv.gz` work.
+
+**G. Existing stream suites (`pipeline/tests/streams/test_*.py`).** These change only where they name committed output paths or compare committed bytes. Specifically:
+
+- `data/streams/<s>.csv` becomes `.csv.gz`, and the same for `streams_pre1950`.
+- Comparisons between a CLI-written `.gz` and the plain `written` fixture use `read_bytes`, that is, content.
+- The tamper steps decompress, edit and recompress (E2).
+- No assertion about rows, values, logs or validator row codes changes.
+- `pipeline/tests/test_seepage_by_group.py::test_real_pre1950_files_cause_no_issues` must glob `*.csv*` (or both patterns). Otherwise its set-up assertion fails once the plain files are gone.
+- `test_oil_gas.py::test_committed_tree_cli_matches_when_files_exist` must check for `oil_gas.csv.gz`. Otherwise it **silently skips** after migration.
+
+**H. Performance (budget).**
+
+1. `gzip_bytes` on the committed `other` master content (60 MB) finishes in ≤ 5 s. Measured: 1.0 s, 2.1 s under load.
+2. `write_master` of the committed `other` rows to a `.csv.gz` finishes in ≤ 20 s. Measured: 5.5 s plain + 1.0 s compression.
+3. `read_table` of `other.csv.gz` takes ≤ 1.5 × `read_table` of the plain file + 2 s, measured in the same test. Measured: 5.0 s plain, with 0.15 s added for decompression.
+
+These run single-process and do not parallelise. They are skipped if the committed `other` stream is absent.
+
+**Done when:**
+
+- items A–H pass;
+- all four stream CLIs exit 0 in diff mode on the migrated tree;
+- `python -m pipeline.validate --root .` reports no issues;
+- no file in the repo exceeds 50 MB (the largest expected is `other.csv.gz`, about 3.8 MB);
+- `.gitattributes` holds `*.csv.gz binary`;
+- the docs in the impact list (11.10) are updated;
+- Steve has approved SCHEMA v2.5 and D72.
+
+### 11.9 SCHEMA v2.5 text (to apply on approval)
+
+1. **§1 General conventions.** Add this bullet: "**Compression (v2.5, D72).** Stream outputs (`data/streams/`, `data/streams_pre1950/`) are committed as gzip-compressed CSV, `<stream>.csv.gz`. Inside the gzip container every §1 rule applies unchanged: UTF-8, LF line endings, header row. The gzip header carries no file name and MTIME 0, and the writer uses compression level 9 (LIB_SPEC §11). Readers and the validator accept the plain `.csv` form as well. If both forms of one stream are present, that is an error."
+2. **§2 table.**
+   - The `data/streams/*.csv` row becomes "`data/streams/<stream>.csv.gz` (or plain `.csv`)".
+   - The `data/streams_pre1950/<stream>.csv` row becomes "`data/streams_pre1950/<stream>.csv.gz` (or plain `.csv`)".
+   - Add a row: "`.gitattributes` | `*.csv.gz binary` | no | v2.5".
+3. **§3 heading.** "Master table (`data/streams/*.csv[.gz]`, `build/master.csv`)". **§3.2:** the pre-1950 file is `data/streams_pre1950/<stream>.csv.gz`.
+4. **§6.1.** `master_files` default: "every `data/streams/*.csv` and `data/streams/*.csv.gz` (sorted by file name); if both forms of one stream exist, `F04` and neither is read". The `Issue.file` example becomes `"data/streams/coal.csv.gz"`.
+5. **§6.2.** "`FILE`s are master files, plain or `.csv.gz`".
+6. **§6.3 file-level codes.**
+   - `F03` gains "or a `.gz` file that is not a valid gzip stream".
+   - New code: "`F04` | Default discovery found a stream in both forms (`<x>.csv` and `<x>.csv.gz`) in `data/streams/`; reported once per pair against the `.csv.gz`, `row = None`; neither file is validated".
+7. **§6.5 behaviour details.** Add a row: "Gzipped files | Selected by the `.gz` suffix only; decompressed and then treated exactly as plain files; display names keep the suffix; an explicit `master_files` list is taken literally (no `F04`)". Extend the `residue_seepage_by_group` row's last sentence to "in either form".
+8. **§9 change log.** Add: "2026-11-05 | **v2.5** (Steve, D72): stream outputs committed as `<stream>.csv.gz` (deterministic gzip, level 9, MTIME 0, no file name); readers accept both forms; both present is `F04` in the validator and an error in the stream CLIs; build logs stay plain; `.gitattributes` `*.csv.gz binary` (LIB_SPEC §11)."
+
+### 11.10 Impact list: everything that hard-codes a stream output path
+
+Code:
+
+- `pipeline/lib/io.py`:
+  - `read_table` gains `.gz`;
+  - new: `GZIP_LEVEL`, `gzip_bytes`, `read_bytes`, `first_difference`, `resolve_stream_file`.
+- `pipeline/lib/rows.py`:
+  - `write_master` formats in memory, then writes plain or gzip.
+- `pipeline/validate.py`:
+  - `_resolve_master_files` (line ~1058): globs both forms and adds the `F04` pairing;
+  - `_read_csv` (line ~268): gzip path and `F03`;
+  - `validate` (line ~1072): the master loop and `F04`;
+  - `main` help string (line ~1143) and the module docstring.
+- `pipeline/streams/coal.py`:
+  - `MAIN_OUTPUT`, `PRE1950_OUTPUT` (lines 75–76);
+  - `main` (lines 891–937).
+- `pipeline/streams/nuclear.py`:
+  - constants (lines 74–75);
+  - `main` (from line 1226).
+- `pipeline/streams/oil_gas.py`:
+  - constants (lines 106–107);
+  - `main` (from line 1215).
+- `pipeline/streams/other.py`:
+  - constants (lines 100–101);
+  - `main` (from line 1316).
+- `write_log` in all four streams is **unchanged**.
+
+Tests:
+
+- `pipeline/tests/streams/test_coal.py`:
+  - 385–391: `issues` fixture. It may keep copying the plain `written` file as `coal.csv`, or switch to `.gz`. Its file filter must match whatever name it uses.
+  - 889–910: `test_cli_write_and_diff`. Change the paths, compare content, use the E2 tamper.
+  - 1870–1895: change the paths and the pre-1950 tamper.
+  - Unchanged: 246–251 (`written`, plain in `tmp`), 257–263 (`_copy_tree` ignore patterns still match the directories) and 866–872 (determinism on plain files).
+- `pipeline/tests/streams/test_nuclear.py`:
+  - 537–546: `issues` fixture;
+  - 2013–2038: paths, content comparison, byte tamper at 2028–2038;
+  - 2049–2055: paths.
+- `pipeline/tests/streams/test_oil_gas.py`:
+  - 537–546;
+  - 1858–1897: paths, comparison, byte tamper at 1879–1890;
+  - 1909–1914: silent-skip risk.
+  - Unchanged: 1976–1977 (directory creation only).
+- `pipeline/tests/streams/test_other.py`:
+  - 1033–1043;
+  - 3298–3307;
+  - 3355–3356;
+  - 3401–3402.
+  - Unchanged, unless the fixtures switch to `.gz`: 359–363, 1461, 2001, 2419–2437 and 3178–3179, which only touch plain `written` files or directories.
+- `pipeline/tests/streams/{nuclear,oil_gas,other}_oracle.py`: docstrings only (lines 12–14).
+- `pipeline/tests/test_seepage_by_group.py:328`: the glob.
+- No change: `pipeline/tests/conftest.py:93` (creates the directory only), `pipeline/tests/test_schema_v22.py:75` (a plain fixture name), `pipeline/tests/test_validate.py` and `pipeline/tests/lib/*` (plain fixtures; new gz tests are added beside them).
+
+Docs:
+
+- `docs/SCHEMA.md`: §1, §2 (lines 38–39), §3 heading (line 45), §3.2 (line 96), §6.1 (lines 411, 420), §6.2, §6.3, §6.5 (line 531), §9, as in 11.9.
+- Output tables and acceptance lines in the stream specs:
+  - `docs/COAL_SPEC.md`: lines 23–24, 124;
+  - `docs/NUCLEAR_SPEC.md`: lines 21–22, 357, 445;
+  - `docs/OIL_GAS_SPEC.md`: lines 22–23, 159, 442;
+  - `docs/OTHER_SPEC.md`: lines 24–25, 413.
+- `docs/PHASE2_PLAN.md`: line 12, and line 62 (the proposed `data/streams/memo.csv` would become `.csv.gz` if adopted).
+- `PLAN.md`: lines 58, 214.
+- `docs/DECISIONS.md`: D57 (wording) and new D72.
+
+Data and repo:
+
+- Remove the 8 files `data/streams/{coal,nuclear,oil_gas,other}.csv` and `data/streams_pre1950/{coal,nuclear,oil_gas,other}.csv`, and add their `.csv.gz` counterparts.
+- Add `.gitattributes`.
+- `research/*/build_log.csv` is untouched.
