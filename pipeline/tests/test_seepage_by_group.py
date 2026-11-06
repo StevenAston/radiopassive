@@ -325,7 +325,7 @@ def test_ordering_and_reference_faults_are_both_reported_on_one_row(tmp_root):
 # --------------------------------------------------------------------------- pre-1950 stream files (D57)
 
 def test_real_pre1950_files_cause_no_issues(project_root):
-    assert list((project_root / "data" / "streams_pre1950").glob("*.csv")), "test set-up: real file exists"
+    assert list((project_root / "data" / "streams_pre1950").glob("*.csv*")), "test set-up: real file exists"
     assert_clean(validate(project_root, []))
 
 

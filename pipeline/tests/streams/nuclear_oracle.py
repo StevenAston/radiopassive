@@ -10,8 +10,8 @@ What it produces
 ----------------
 ``Oracle(root).expected()`` returns an ``Expected`` object holding
 
-* ``rows``     dict key -> ``ER``  for data/streams/nuclear.csv (years 1950-2025),
-* ``pre``      dict key -> ``ER``  for data/streams_pre1950/nuclear.csv,
+* ``rows``     dict key -> ``ER``  for data/streams/nuclear.csv.gz (years 1950-2025),
+* ``pre``      dict key -> ``ER``  for data/streams_pre1950/nuclear.csv.gz,
 * ``missing``  list of ``Miss`` (a (group, route, year) with a driver value and no factor row),
 * ``events``   per-event bookkeeping used by the conservation tests.
 

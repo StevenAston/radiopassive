@@ -13,8 +13,6 @@ import csv
 import logging
 import math
 import re
-import sys
-import tempfile
 from collections import Counter
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
@@ -25,7 +23,8 @@ from pipeline.lib import LibError
 from pipeline.lib.bounds import Bounds, product, sum_correlated, sum_independent
 from pipeline.lib.factors import apply, master_unit, result_unit, select
 from pipeline.lib.io import read_table
-from pipeline.lib.rows import make_row, write_master
+from pipeline.lib.rows import make_row
+from pipeline.streams._outputs import diff_mode_preflight, finish
 
 STREAM = "coal"
 WORLD_ACTIVITY = "XWL"  # country code of the world aggregate in activity and factor tables
@@ -72,8 +71,8 @@ BASIS_ORDER = ("interpolated", "extrapolated")
 LOG_COLUMNS = ("kind", "year", "country", "group", "detail")
 REST_OF_WORLD_NOTE = "rest of world (world aggregate minus listed countries)"
 
-MAIN_OUTPUT = Path("data") / "streams" / "coal.csv"
-PRE1950_OUTPUT = Path("data") / "streams_pre1950" / "coal.csv"
+MAIN_OUTPUT = Path("data") / "streams" / "coal.csv.gz"
+PRE1950_OUTPUT = Path("data") / "streams_pre1950" / "coal.csv.gz"
 LOG_OUTPUT = Path("research") / "coal" / "build_log.csv"
 
 
@@ -900,6 +899,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
     root: Path = args.root
 
+    if not args.write:
+        # Ambiguity is decidable before the (slow) build.
+        early = diff_mode_preflight(root, (MAIN_OUTPUT, PRE1950_OUTPUT))
+        if early is not None:
+            return early
+
     result = build(root)
     counts = Counter(e["kind"] for e in result.log)
     print(f"rows 1950-2025: {len(result.rows)}; rows 1800-1949: {len(result.rows_pre1950)}")
@@ -907,34 +912,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"log {kind}: {counts.get(kind, 0)}")
 
     targets = ((MAIN_OUTPUT, result.rows), (PRE1950_OUTPUT, result.rows_pre1950))
-    if args.write:
-        for rel, rows in targets:
-            (root / rel).parent.mkdir(parents=True, exist_ok=True)
-            write_master(rows, root / rel)
-        (root / LOG_OUTPUT).parent.mkdir(parents=True, exist_ok=True)
-        write_log(result.log, root / LOG_OUTPUT)
-        print("written: " + ", ".join(str(rel) for rel, _ in targets) + f", {LOG_OUTPUT}")
-        return 0
-
-    differing = []
-    with tempfile.TemporaryDirectory() as scratch:
-        fresh_files = []
-        for n, (rel, rows) in enumerate(targets):
-            fresh = Path(scratch) / f"{n}.csv"
-            write_master(rows, fresh)
-            fresh_files.append((rel, fresh))
-        fresh_log = Path(scratch) / "log.csv"
-        write_log(result.log, fresh_log)
-        fresh_files.append((LOG_OUTPUT, fresh_log))
-        for rel, fresh in fresh_files:
-            committed = root / rel
-            if not committed.is_file() or committed.read_bytes() != fresh.read_bytes():
-                differing.append(str(rel))
-    if differing:
-        print("differs from the committed file(s): " + ", ".join(differing), file=sys.stderr)
-        return 1
-    print("outputs identical to the committed files")
-    return 0
+    return finish(root, targets, result.log, LOG_OUTPUT, write_log, args.write)
 
 
 if __name__ == "__main__":

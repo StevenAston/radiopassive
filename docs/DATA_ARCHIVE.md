@@ -261,3 +261,9 @@ Tests go in `research/activity/tests/test_raw_manifest.py`, or in `pipeline/test
 - a test restore (5.2) of that version into a scratch folder makes `raw_manifest.py check` exit 0;
 - the flags marked **check** in 5.3 have been confirmed or corrected in this file;
 - `import/` is confirmed ignored in the real repo (§1).
+
+## 7. Clarifications after the test round (orchestrator, 2026-11-06)
+1. Self-exclusion: the manifest never lists **the manifest file in use** (the `--manifest` path when given) **nor the default `research/activity/raw/MANIFEST.csv`**.
+2. `write` prints removed files with the kind `missing`, in the same format as `check`.
+3. A malformed manifest (wrong header or field count, CRLF, uppercase or wrong-length sha256, unparseable `fetched` date, negative size) makes `check` and `write` exit 2 with a message naming the line.
+4. `import/` is confirmed git-ignored in the real repository (`.gitignore` line `import/`).

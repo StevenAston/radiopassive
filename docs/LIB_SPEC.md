@@ -615,3 +615,11 @@ Data and repo:
 - Remove the 8 files `data/streams/{coal,nuclear,oil_gas,other}.csv` and `data/streams_pre1950/{coal,nuclear,oil_gas,other}.csv`, and add their `.csv.gz` counterparts.
 - Add `.gitattributes`.
 - `research/*/build_log.csv` is untouched.
+
+### 11.11 Clarifications after the test round (orchestrator, 2026-11-06)
+1. Line numbers in diff messages are **file lines** (header = line 1), matching `first_difference`; in §11.8 E2, "data line k" means file line k.
+2. A zero-byte `.csv.gz` is a corrupt gzip: validator `F03`, library `LibError`.
+3. `gzip_bytes` accepts `bytes` only; `bytearray`/`memoryview` raise `LibError` (callers pass `bytes`).
+4. Detection is by suffix only: a gzip file named `.csv` is read as text and fails as a malformed CSV (`F01`/`F03` as today); no sniffing.
+5. `first_difference` splits on LF only; a lone CR is ordinary content.
+6. `resolve_stream_file` on a missing directory returns "neither present" (the caller's existing error), not a different exception.

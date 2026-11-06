@@ -3295,8 +3295,10 @@ class TestCli:
         assert w.returncode == 0, (
             f"--write exited {w.returncode}\nstdout: {w.stdout[-800:]}\nstderr: {w.stderr[-1500:]}"
         )
-        main = root / "data" / "streams" / "other.csv"
-        pre = root / "data" / "streams_pre1950" / "other.csv"
+        from pipeline.lib.io import gzip_bytes, read_bytes
+
+        main = root / "data" / "streams" / "other.csv.gz"
+        pre = root / "data" / "streams_pre1950" / "other.csv.gz"
         logf = root / "research" / "other" / "build_log.csv"
         assert main.is_file() and pre.is_file() and logf.is_file(), (
             "--write must write all three files (OTHER_SPEC 1)"
@@ -3304,10 +3306,10 @@ class TestCli:
         res = other_mod.build(root)
         write_master(list(res.rows), tmp_path / "m.csv")
         write_master(list(res.rows_pre1950), tmp_path / "p.csv")
-        assert main.read_bytes() == (tmp_path / "m.csv").read_bytes(), (
+        assert read_bytes(main) == (tmp_path / "m.csv").read_bytes(), (
             "CLI master output differs from build() + write_master"
         )
-        assert pre.read_bytes() == (tmp_path / "p.csv").read_bytes(), (
+        assert read_bytes(pre) == (tmp_path / "p.csv").read_bytes(), (
             "CLI pre-1950 output differs"
         )
         out = w.stdout + w.stderr
@@ -3322,13 +3324,13 @@ class TestCli:
         assert logf.read_bytes() != good, "the diff run must not overwrite the log"
         logf.write_bytes(good)
         t = pre.read_bytes()
-        pre.write_bytes(t.replace(b"other,geothermal", b"other,geothermaI", 1))
+        pre.write_bytes(gzip_bytes(read_bytes(pre).replace(b"other,geothermal", b"other,geothermaI", 1)))
         assert run().returncode != 0, (
             "a differing pre-1950 file must give a non-zero exit"
         )
         pre.write_bytes(t)
         text = main.read_bytes()
-        tampered = text.replace(b"other,geothermal", b"other,geothermaI", 1)
+        tampered = gzip_bytes(read_bytes(main).replace(b"other,geothermal", b"other,geothermaI", 1))
         main.write_bytes(tampered)
         assert run().returncode != 0, (
             "a differing master file must give a non-zero exit"
@@ -3352,8 +3354,8 @@ class TestCli:
             "--write",
         ]
         files = [
-            root / "data" / "streams" / "other.csv",
-            root / "data" / "streams_pre1950" / "other.csv",
+            root / "data" / "streams" / "other.csv.gz",
+            root / "data" / "streams_pre1950" / "other.csv.gz",
             root / "research" / "other" / "build_log.csv",
         ]
         first = None
@@ -3398,8 +3400,8 @@ class TestCli:
         shutil.copytree(ROOT / "schema", root / "schema", dirs_exist_ok=True)
         found = [
             i
-            for i in validate(root, master_files=["data/streams/other.csv"])
-            if i.file == "data/streams/other.csv"
+            for i in validate(root, master_files=["data/streams/other.csv.gz"])
+            if i.file == "data/streams/other.csv.gz"
         ]
         assert not found, "\n".join(f"{i.rule} {i.message}" for i in found[:8])
 

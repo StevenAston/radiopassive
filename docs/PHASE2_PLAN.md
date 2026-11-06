@@ -9,7 +9,7 @@ For each stream ①–⑤:
 - `data/reference/commodity_factors.csv`: per-tonne commodity footprints (SCHEMA §4.7), for ④ and for construction in every stream.
 - `data/reference/residue_types.csv`: the empty ε (radon escape) and seepage columns get values, one per residue type, from the Phase 1 proposals.
 - `pipeline/streams/<stream>.py`: multiplies activity series × factors, applies the D6 allocation and writes master rows.
-- `data/streams/<stream>.csv`: annual master rows, as Bq by group × tier × stage × country, with low/central/high.
+- `data/streams/<stream>.csv.gz`: annual master rows, as Bq by group × tier × stage × country, with low/central/high.
 - Tests for each stream, plus a benchmark comparison (PLAN done condition (e): two benchmark years, two independent estimates, within a factor of 3).
 - Task 2.6: `research/tier2_memo.md` (transmission, storage and firming). This is research only, with no code.
 
@@ -59,7 +59,7 @@ Each step follows the agreed workflow:
 
 1. **Storage of memo series (D43/D44).** Wood-ash fallout Cs-137 and wood natural nuclides are memo series, but the schema only has `memo_earth_moved`. Options:
    - **(a)** Add a tier value `memo_biosphere`. It would sit outside tier totals like `memo_earth_moved`, and the change is one vocab line plus validator support. *(recommended)*
-   - **(b)** Keep a separate `data/streams/memo.csv` with the same columns.
+   - **(b)** Keep a separate `data/streams/memo.csv.gz` with the same columns.
 2. **Marking re-release rows (D43).** METHODS identifies them by group + stage, which needs no schema change. The alternative is an explicit route value, `air_rerelease`. I recommend the explicit route, because it can't be misread.
 3. **Pu-239 + Pu-240 combined reports (D42).** OSPAR and others report the two together. Proposed split rule: use activity ratios by facility type from the literature (e.g. reprocessing discharges ≈ the spent-fuel Pu-240/Pu-239 activity ratio), with bounds. The multiplier then applies to the Pu-239 share.
 4. **Pu239 group ID.** Keep `Pu239` (recommended), or rename it `Pu239+` and have the test-writer update one fixture.

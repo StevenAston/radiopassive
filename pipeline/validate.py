@@ -5,6 +5,11 @@ every reference and support table against its JSON schema, the controlled
 vocabularies and the cross-row rules, and reports every problem as an
 ``Issue`` with a rule code from SCHEMA §6.3.
 
+Master files are read as plain CSV or, for a ``.gz`` suffix, as gzip-compressed
+CSV (default discovery: ``data/streams/*.csv`` and ``data/streams/*.csv.gz``;
+SCHEMA §6, LIB_SPEC §11.6). This module must not import ``pipeline.lib``: the
+library imports from here.
+
 Usage:
     python -m pipeline.validate [--root DIR] [FILE ...]
     pixi run validate
@@ -18,11 +23,13 @@ from __future__ import annotations
 import argparse
 import csv
 import datetime as _dt
+import gzip
 import json
 import math
 import os
 import re
 import sys
+import zlib
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -268,11 +275,24 @@ def _bounds_ok(record: dict, low: str, central: str, high: str) -> bool | None:
 def _read_csv(ctx: _Context, path: Path, expected: list[str] | None) -> _Table:
     """Read a CSV, reporting F01/F02/F03 and D01. Rows are padded/truncated."""
     name = _display_name(path, ctx.root)
+    gzipped = path.name.endswith(".gz")  # suffix only, never sniffed (LIB_SPEC §11.3)
     try:
-        with open(path, encoding="utf-8", newline="") as handle:
+        if gzipped and path.stat().st_size == 0:
+            raise EOFError("empty file is not a gzip stream")
+        with (
+            gzip.open(path, "rt", encoding="utf-8", newline="")
+            if gzipped
+            else open(path, encoding="utf-8", newline="")
+        ) as handle:
             records = list(csv.reader(handle, strict=True))
     except (UnicodeDecodeError, csv.Error) as exc:
-        ctx.add(name, None, "F03", f"cannot read as UTF-8 CSV: {exc}")
+        kind = "gzip-compressed UTF-8 CSV" if gzipped else "UTF-8 CSV"
+        ctx.add(name, None, "F03", f"cannot read as {kind}: {exc}")
+        return _Table(name, [], [], ok=False)
+    except (OSError, EOFError, zlib.error) as exc:
+        if not gzipped:
+            raise
+        ctx.add(name, None, "F03", f"cannot read as gzip-compressed UTF-8 CSV: {exc}")
         return _Table(name, [], [], ok=False)
 
     if not records:
@@ -1054,15 +1074,25 @@ def _check_cross_rows(ctx: _Context, rows: list[_MasterRow]) -> None:
 # --------------------------------------------------------------------------
 
 
-def _resolve_master_files(root: Path,
-                          master_files: Iterable[str | os.PathLike] | None) -> list[Path]:
+def _resolve_master_files(
+    root: Path, master_files: Iterable[str | os.PathLike] | None
+) -> tuple[list[Path], list[tuple[Path, Path]]]:
+    """Return (files to read, (plain, gz) pairs found in both forms)."""
     if master_files is None:
-        return sorted((root / "data" / "streams").glob("*.csv"))
+        streams = root / "data" / "streams"
+        found = sorted(
+            [*streams.glob("*.csv"), *streams.glob("*.csv.gz")], key=lambda p: p.name
+        )
+        names = {p.name for p in found}
+        pairs = [(p, p.with_name(p.name + ".gz")) for p in found
+                 if p.name.endswith(".csv") and p.name + ".gz" in names]
+        skip = {p for pair in pairs for p in pair}
+        return [p for p in found if p not in skip], pairs
     resolved = []
     for item in master_files:
         path = Path(item)
         resolved.append(path if path.is_absolute() else root / path)
-    return resolved
+    return resolved, []
 
 
 def _sort_key(issue: Issue) -> tuple:
@@ -1111,7 +1141,12 @@ def validate(root: str | os.PathLike,
         _check_events(ctx, data / "events.csv")
 
     master_rows: list[_MasterRow] = []
-    for path in _resolve_master_files(root, master_files):
+    files, both_forms = _resolve_master_files(root, master_files)
+    for plain, gz in both_forms:
+        ctx.add(_display_name(gz, root), None, "F04",
+                f"stream present in both forms: {plain.name} and {gz.name}; "
+                "neither is validated (run the stream CLI with --write to repair)")
+    for path in files:
         if not path.is_file():
             ctx.add(_display_name(path, root), None, "F03", "file not found")
             continue
@@ -1140,7 +1175,7 @@ def main(argv: list[str] | None = None) -> int:
         prog="python -m pipeline.validate",
         description="Validate Radiopassive data files (docs/SCHEMA.md §6).")
     parser.add_argument("--root", default=".", help="project root (default: current directory)")
-    parser.add_argument("files", nargs="*", help="master-format CSVs (default: data/streams/*.csv)")
+    parser.add_argument("files", nargs="*", help="master-format CSVs (default: data/streams/*.csv and *.csv.gz)")
     args = parser.parse_args(argv)
 
     try:

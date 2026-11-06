@@ -19,8 +19,8 @@ python -m pipeline.streams.oil_gas [--root PATH] [--write]
 
 | File | Content |
 |---|---|
-| `data/streams/oil_gas.csv` | Master rows, years 1950–2025. Must pass `python -m pipeline.validate --root .` |
-| `data/streams_pre1950/oil_gas.csv` | Master columns, years 1900–1949, `quantity = flow` only; outside the master schema (SCHEMA §3.2, D57). Non-empty: gas and oil radon and the Pb-210 plate-out in the gas system (§6), which have drivers from 1900. Nothing else is non-empty today (§3.8) |
+| `data/streams/oil_gas.csv.gz` | Master rows, years 1950–2025. Must pass `python -m pipeline.validate --root .` |
+| `data/streams_pre1950/oil_gas.csv.gz` | Master columns, years 1900–1949, `quantity = flow` only; outside the master schema (SCHEMA §3.2, D57). Non-empty: gas and oil radon and the Pb-210 plate-out in the gas system (§6), which have drivers from 1900. Nothing else is non-empty today (§3.8) |
 | `research/oil_gas/build_log.csv` | The full log (§8). Not a master file and not validated |
 
 Master files are written with `pipeline.lib.rows.write_master` (deterministic, sorted by the SCHEMA §3 key; `write_master([])` writes a header-only file).
@@ -156,7 +156,7 @@ A failed `select` is "no factor" **only** when the `LibError` message starts wit
 
 ### 3.8 Pre-1950
 
-The script walks 1900–1949 through the same code path (the earliest activity year is 1900). Rows for 1900–1949 go to `data/streams_pre1950/oil_gas.csv`. In practice:
+The script walks 1900–1949 through the same code path (the earliest activity year is 1900). Rows for 1900–1949 go to `data/streams_pre1950/oil_gas.csv.gz`. In practice:
 
 - **Written:** gas radon, NGL radon, vented gas radon, Pb-210 plate-out (§6.2) and oil radon (§6.3), 1900–1949, because `gas_production_m3` and `oil_production_t` start in 1900 and the factors are valid from 1900. These are single-driver families (product `gas`, `ngl` or `oil`, variant `default`, rule `none`).
 - **Not written, logged as aggregated `no_driver` runs:** produced water and everything derived from it (the driver starts in 1950; so there is no pre-1950 scale or sludge, and the D31 opening stock omits oil and gas scale before 1950, gap G13 of the factor notes); flaring (the volume series starts in 1950, §6.4); oil sands (1967).
@@ -439,7 +439,7 @@ Aggregated entries carry the output-row country convention (`XXX` for world seri
 
 Tests read factor and activity values from the files (never hard-coded), with explicit **premise assertions** (§9(i)) so that a changed registry fails loudly instead of passing silently.
 
-- **(a) Schema.** `data/streams/oil_gas.csv` passes `python -m pipeline.validate --root .`. In particular: `product` present and in {`oil`, `gas`, `ngl`, `bitumen`} on every row (V11); tier allowed for the stage (V03); `residue_type` present exactly for `impounded`, `reisolated`, `dispersed` and absent for `liberated`, `route` present exactly for `liberated` (R02); no routine-transfer stage and no `transfer_*` row (V15, X02, X05 not triggered); no accident route; `Rn222+` only as a liberated `flow` (V09); allocation completeness (X03): for every key without variant that has a non-default row, all three variants exist and the `default` rule contains `alloc:value`; `bound_main` rows carry `alloc:main` and `bound_radio` rows `alloc:radio` (R02); no duplicate key (X01), which the §5.5 merge exists to prevent; `factor_ids` present (modelled rows) and resolvable (V13); all `source_ids` resolve (V07); residue types resolve (V12).
+- **(a) Schema.** `data/streams/oil_gas.csv.gz` passes `python -m pipeline.validate --root .`. In particular: `product` present and in {`oil`, `gas`, `ngl`, `bitumen`} on every row (V11); tier allowed for the stage (V03); `residue_type` present exactly for `impounded`, `reisolated`, `dispersed` and absent for `liberated`, `route` present exactly for `liberated` (R02); no routine-transfer stage and no `transfer_*` row (V15, X02, X05 not triggered); no accident route; `Rn222+` only as a liberated `flow` (V09); allocation completeness (X03): for every key without variant that has a non-default row, all three variants exist and the `default` rule contains `alloc:value`; `bound_main` rows carry `alloc:main` and `bound_radio` rows `alloc:radio` (R02); no duplicate key (X01), which the §5.5 merge exists to prevent; `factor_ids` present (modelled rows) and resolvable (V13); all `source_ids` resolve (V07); residue types resolve (V12).
 - **(b) Candidate nuclides and coverage** (METHODS §4.3 ①). For each family in §5–§7 and each year with a driver value and a registry row valid in that year, a row exists for every (group, tier, route, residue, substream) of the family, and for the joint families for every product and variant (nine rows per key). The test enumerates the registry. The committed log contains **no** `no_factor` entry. METHODS §4.3 lists for ③: `Ra226+`, `Ra228+`, `Th228+`, `Pb210+`, `Po210`, `Rn222+`, `K40`. `Ra226+`, `Ra228+`, `Pb210+`, `K40` and `Rn222+` each appear in some 2010 production or processing flow row; **`Th228+` and `Po210` appear only in drilling cuttings (and `Th228+` in oil sands tailings)**: at `production` and `processing_transport` they are engine ingrowth from `Ra228+` and `Pb210+` and the registry has no rows for them. This is reported, not failed (§10). Coverage by geography: `USA` and `XXX` rows for every water, solids and abandonment key 1950–2025; `USA` rows only for drilling; `CAN` only for oil sands.
 - **(c) Conservation.**
   1. *Water tier split.* For each geography, substream, group and year, the four water tier rows (recomputed before the merge) sum at central to $A^s_g$ within $10^{-3}$ relative (the share premise), and no tier value exceeds $A$ at any bound.

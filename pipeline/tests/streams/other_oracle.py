@@ -9,7 +9,7 @@ registry or the activity files is hard-coded; every value is read from the tree 
 
 ``Oracle(root).expected()`` returns an ``Expected`` with
 
-* ``rows`` / ``pre``   dict key -> ``ER`` for data/streams/other.csv and data/streams_pre1950/other.csv,
+* ``rows`` / ``pre``   dict key -> ``ER`` for data/streams/other.csv.gz and data/streams_pre1950/other.csv.gz,
 * ``log``              dict kind -> list of expectation tuples (see ``Expected``),
 * ``units``            wood-partition bookkeeping per (country, year),
 * ``peat``             peat-chain bookkeeping per (country, year),

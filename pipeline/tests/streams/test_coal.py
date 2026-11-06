@@ -895,20 +895,23 @@ class TestDeterminism:
 
         w = subprocess.run(cmd + ["--write"], cwd=str(ROOT), env=env, capture_output=True, text=True, timeout=900, check=False)
         assert w.returncode == 0, f"--write exited {w.returncode}\nstdout: {w.stdout[-800:]}\nstderr: {w.stderr[-1500:]}"
-        out_main = root / "data" / "streams" / "coal.csv"
-        out_pre = root / "data" / "streams_pre1950" / "coal.csv"
-        assert out_main.read_bytes() == Path(written[0]).read_bytes(), "CLI output differs from build() + write_master"
-        assert out_pre.read_bytes() == Path(written[1]).read_bytes()
+        from pipeline.lib.io import gzip_bytes, read_bytes
+
+        out_main = root / "data" / "streams" / "coal.csv.gz"
+        out_pre = root / "data" / "streams_pre1950" / "coal.csv.gz"
+        assert read_bytes(out_main) == Path(written[0]).read_bytes(), "CLI output differs from build() + write_master"
+        assert read_bytes(out_pre) == Path(written[1]).read_bytes()
         assert (root / "research" / "coal" / "build_log.csv").is_file(), "--write must write research/coal/build_log.csv"
 
         d = subprocess.run(cmd, cwd=str(ROOT), env=env, capture_output=True, text=True, timeout=900, check=False)
         assert d.returncode == 0, f"diff run on identical files exited {d.returncode}\n{d.stderr[-800:]}"
 
-        text = out_main.read_text(encoding="utf-8")
-        out_main.write_text(text.replace("coal,all", "coal,al1", 1), encoding="utf-8", newline="\n")
+        text = read_bytes(out_main).decode("utf-8")
+        tampered = gzip_bytes(text.replace("coal,all", "coal,al1", 1).encode("utf-8"))
+        out_main.write_bytes(tampered)
         t = subprocess.run(cmd, cwd=str(ROOT), env=env, capture_output=True, text=True, timeout=900, check=False)
         assert t.returncode != 0, "without --write a differing committed file must give a non-zero exit"
-        assert out_main.read_text(encoding="utf-8") != text, "the diff run must not overwrite files"
+        assert out_main.read_bytes() == tampered, "the diff run must not overwrite files"
 
 
 # --------------------------------------------------------------------------------------------
@@ -1874,8 +1877,10 @@ class TestV12Cli:
 
         w = run("--write")
         assert w.returncode == 0, w.stderr[-1000:]
-        main = root / "data" / "streams" / "coal.csv"
-        pre = root / "data" / "streams_pre1950" / "coal.csv"
+        from pipeline.lib.io import gzip_bytes, read_bytes
+
+        main = root / "data" / "streams" / "coal.csv.gz"
+        pre = root / "data" / "streams_pre1950" / "coal.csv.gz"
         logf = root / "research" / "coal" / "build_log.csv"
         assert main.is_file() and pre.is_file() and logf.is_file(), "--write must write all three files"
         assert run().returncode == 0, "identical files must give exit 0"
@@ -1887,10 +1892,11 @@ class TestV12Cli:
         assert logf.read_text(encoding="utf-8") != good, "the diff run must not overwrite the log"
         logf.write_text(good, encoding="utf-8", newline="\n")
 
-        t = pre.read_text(encoding="utf-8")
-        pre.write_text(t.replace("coal,all", "coal,al1", 1), encoding="utf-8", newline="\n")
+        t = read_bytes(pre).decode("utf-8")
+        original = pre.read_bytes()
+        pre.write_bytes(gzip_bytes(t.replace("coal,all", "coal,al1", 1).encode("utf-8")))
         assert run().returncode != 0, "a differing pre-1950 file must give a non-zero exit (A18)"
-        pre.write_text(t, encoding="utf-8", newline="\n")
+        pre.write_bytes(original)
         assert run().returncode == 0
 
         logf.unlink()

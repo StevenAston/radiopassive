@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import io
 import logging
 import math
 import os
@@ -13,6 +14,7 @@ from ..validate import KEY_COLUMNS
 from ..validate import MASTER_COLUMNS as _VALIDATOR_COLUMNS
 from . import LibError
 from .bounds import Bounds
+from .io import gzip_bytes
 
 logger = logging.getLogger(__name__)
 
@@ -173,9 +175,14 @@ def write_master(rows: Iterable[Mapping[str, Any]], path: str | os.PathLike) -> 
         # open() would treat an int as a file descriptor.
         raise LibError(f"path must be a str or os.PathLike, got {path!r}")
     try:
-        with open(path, "w", encoding="utf-8", newline="\n") as handle:
-            writer = csv.writer(handle, lineterminator="\n")
-            writer.writerow(MASTER_COLUMNS)
-            writer.writerows(body)
-    except (OSError, TypeError, ValueError) as exc:
+        buffer = io.StringIO(newline="")
+        writer = csv.writer(buffer, lineterminator="\n")
+        writer.writerow(MASTER_COLUMNS)
+        writer.writerows(body)
+        data = buffer.getvalue().encode("utf-8")
+        if os.fspath(path).endswith(".gz"):
+            data = gzip_bytes(data)
+        with open(path, "wb") as handle:
+            handle.write(data)
+    except (OSError, TypeError, ValueError, UnicodeEncodeError) as exc:
         raise LibError(f"cannot write {path!r}: {exc}") from exc

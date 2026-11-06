@@ -55,7 +55,7 @@ The work runs in seven phases:
 | `docs/DECISIONS.md` | Running decision log (extends D1–D13). |
 | `data/reference/nuclides.csv` | Half-lives, decay constants, mean emitted energy per decay, daughters and branching ratios. |
 | `data/activity/*.csv` | Activity spine: generation, production, produced water, capacity additions, material intensities (1950–present). |
-| `data/streams/<stream>.csv` | Per-stream annual Bq by nuclide × tier × process stage, low/central/high. |
+| `data/streams/<stream>.csv.gz` | Per-stream annual Bq by nuclide × tier × process stage, low/central/high. |
 | `data/events.csv` | Catalogue of discrete events. |
 | `data/baselines.csv` | Natural and weapons-fallout baselines. |
 | `data/sources.csv` | Bibliography registry; every factor links to a source ID. |
@@ -211,7 +211,7 @@ Process stages to cover (from METHODS.md; indicative):
 |---|---|
 | Description | Turn activity data × factors into annual Bq by nuclide × tier × process stage, with low/central/high. |
 | Input | Tasks 0.1–0.3, 1.1, the relevant 1.2–1.6, 1.8, 1.9. |
-| Output / Effect | `data/streams/<stream>.csv`; `pipeline/streams/<stream>.py`. |
+| Output / Effect | `data/streams/<stream>.csv.gz`; `pipeline/streams/<stream>.py`. |
 | Done condition | (a) The dataset passes `validate.py`; (b) every factor traces to a `source_id`; (c) the script reproduces the CSV from raw inputs; (d) every process stage in METHODS.md is present or explicitly marked negligible with justification; (e) totals for ≥ 2 benchmark years agree with ≥ 2 independent published estimates to within a factor of 3, or the discrepancy is explained in a note. |
 | Verification | Rerun the script and diff the output; `verifier` checks (b), (d), (e). |
 

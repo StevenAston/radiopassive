@@ -2,7 +2,7 @@
 
 > **Status:** SIGNED OFF by Steve, 2026-10-20; **v2.2 additions (2026-10-25, D36, D43–D48) approved by Steve.** **v2.3 additions (2026-10-26, D55–D57: per-group seepage table §4.12, pre-1950 stream files) approved by Steve 2026-10-26.** **v2.4 addition (2026-10-27, D63: `substream` column in factor files, §4.9) approved by Steve.** **v2.4b addition (2026-11-04, D70: oil_gas substream `all`, §5.1) approved by Steve.** Task 0.2, revision v2.1 (re-review fixes) of v2 after the independent schema review (2026-10-20). Governs every CSV under `data/` and every input table of the pipeline. Rules trace to `docs/METHODS.md`, cited as "METHODS §n"; a bare "§n" refers to this document. Derived outputs under `build/` are specified provisionally in §8.
 
-> **v2.5 approved (D72), applied with the migration.** Steve approved this on 2026-11-06. Stream outputs (`data/streams/`, `data/streams_pre1950/`) are to be committed as deterministic gzip (`<stream>.csv.gz`). The content is unchanged: UTF-8 with LF line endings. Readers and the validator accept both the plain and the gzipped form. If both forms of one stream are present, the validator reports `F04`. Build logs stay plain. The text for §1, §2, §3, §6.1–§6.5 and §9 is in `docs/LIB_SPEC.md` §11.9. It is applied to this document in the migration commit, which lands after D73. Until then, the current text describes the files on disk.
+> **v2.5 (D72) approved by Steve 2026-11-06 and applied in the migration.** Stream outputs (`data/streams/`, `data/streams_pre1950/`) are committed as deterministic gzip (`<stream>.csv.gz`). The content is unchanged: UTF-8 with LF line endings. Readers and the validator accept both the plain and the gzipped form. If both forms of one stream are present, the validator reports `F04`. Build logs stay plain. The text follows `docs/LIB_SPEC.md` §11.9.
 
 ---
 
@@ -14,6 +14,7 @@
 - **Lists inside a cell:** `;`-separated with no spaces (e.g. `S0012;S0040`).
 - **Identifiers:** lower_snake_case for controlled vocabularies; prefixed IDs for records (`S0001` sources, `E001` events, `B01` baselines, `RB01` reference bands, `<stream>:0001` factors).
 - **Activity is stored as head activity, as reported** (METHODS §3.2, D24). The group multiplier $m_k$ is applied in the pipeline, never in stored data.
+- **Compression (v2.5, D72).** Stream outputs (`data/streams/`, `data/streams_pre1950/`) are committed as gzip-compressed CSV, `<stream>.csv.gz`. Inside the gzip container every §1 rule applies unchanged: UTF-8, LF line endings, header row. The gzip header carries no file name and MTIME 0, and the writer uses compression level 9 (LIB_SPEC §11). Readers and the validator accept the plain `.csv` form as well. If both forms of one stream are present, that is an error.
 - **No dose quantities anywhere** (D1). The forbidden tokens are listed in `vocab.json` → `dose_tokens` (`dose`, `sv`, `msv`, `usv`, `nsv`, `sievert`, `rem`, `mrem`, `mansv` and variants). A token is matched as a **whole word**: names and values are lower-cased and split on every character that is not a letter or a digit (`_`, `-`, `/`, space, …). The rule applies to:
   - every column name of every table the validator reads (`F02`);
   - the cell values of the columns `series`, `unit`, `name`, `description` and `quantity_class` in every table that has them (`D01`).
@@ -37,14 +38,15 @@
 | `data/baselines.csv` | Natural and fallout baselines (§4.5) | no | Task 1.7 |
 | `data/activity/*.csv` | Activity spine (§4.6) | no | Task 1.9 |
 | `data/factors/*.csv` | Factor registry, one file per stream (§4.9) | no | Tasks 2.1–2.5 |
-| `data/streams/*.csv` | Master-format rows, one file per stream (§3) | no | Tasks 2.1–2.5 |
-| `data/streams_pre1950/<stream>.csv` | Pre-1950 undecayed flows, master columns (§3.2, D31, D57) | no (not validated by the master schema) | Phase 2 |
+| `data/streams/<stream>.csv.gz` (or plain `.csv`) | Master-format rows, one file per stream (§3) | no | Tasks 2.1–2.5 |
+| `data/streams_pre1950/<stream>.csv.gz` (or plain `.csv`) | Pre-1950 undecayed flows, master columns (§3.2, D31, D57) | no (not validated by the master schema) | Phase 2 |
 | `build/master.csv` | Merge of the stream files and nothing else (§3) | no | Task 3.1 |
+| `.gitattributes` | `*.csv.gz binary` | no | v2.5 |
 | `schema/*.json` | Row schemas for every table above: `master`, `sources`, `events`, `countries`, `activity`, `baselines`, `commodity_factors`, `factors`, `residue_types`, `reference_bands` | yes (all ten) | Task 0.2 |
 
 ---
 
-## 3. Master table (`data/streams/*.csv`, `build/master.csv`)
+## 3. Master table (`data/streams/*.csv[.gz]`, `build/master.csv`)
 
 One row = one quantity of one nuclide group, in one tier, from one stage (and product, residue type and release route where they apply), in one country and year, under one allocation variant.
 
@@ -95,7 +97,7 @@ They are kept out by **convention**, which the route list supports. Every Libera
 
 **`opening_stock` (D31).** Residues created before 1950 enter as `opening_stock` rows: year 1950 only, any stock tier except `sealed_in_core` and the memo tiers (`memo_earth_moved`, `memo_biosphere`), the activity present on 1 January 1950 after decay, usually `basis = modelled` from pre-1950 activity series (which `data/activity/` allows back to 1800). The decay engine starts each stock from these values.
 
-**Pre-1950 stream files (v2.3, D31 Option A, D57).** `data/streams_pre1950/<stream>.csv` has the master columns, years 1800–1949 and `quantity = flow` only. The flows are undecayed. The files are **not validated by the master schema** (its year range is 1950–2025, D14); the engine decays them to the 1950 opening stock. They are written by the stream scripts alongside `data/streams/<stream>.csv`.
+**Pre-1950 stream files (v2.3, D31 Option A, D57).** `data/streams_pre1950/<stream>.csv.gz` has the master columns, years 1800–1949 and `quantity = flow` only. The flows are undecayed. The files are **not validated by the master schema** (its year range is 1950–2025, D14); the engine decays them to the 1950 opening stock. They are written by the stream scripts alongside `data/streams/<stream>.csv`.
 
 ### 3.3 Cross-row rules
 
@@ -410,7 +412,7 @@ from pipeline.validate import Issue, validate
 
 @dataclass(frozen=True)
 class Issue:
-    file: str          # path relative to root, POSIX separators, e.g. "data/streams/coal.csv"
+    file: str          # path relative to root, POSIX separators, e.g. "data/streams/coal.csv.gz"
     row: int | None    # 1-based data-row number (header excluded); None for file-level issues
     rule: str          # rule code from §6.3, e.g. "V03"
     message: str       # human-readable explanation
@@ -419,7 +421,7 @@ def validate(root: str | os.PathLike, master_files: Iterable[str | os.PathLike] 
 ```
 
 - `root` is a project root laid out as in §2. Every call validates all the **required** files of §2, plus every **optional** file that exists: `data/events.csv`, `data/baselines.csv`, `data/reference/commodity_factors.csv`, `data/reference/residue_seepage_by_group.csv`, `data/activity/*.csv`, `data/factors/*.csv`.
-- `master_files`: paths (absolute, or relative to `root`) of master-format CSVs to check. If `None`, every `data/streams/*.csv` (sorted by name). `build/master.csv` is checked only when passed explicitly. An empty list checks no master files.
+- `master_files`: paths (absolute, or relative to `root`) of master-format CSVs to check. If `None`, every `data/streams/*.csv` and `data/streams/*.csv.gz` (sorted by file name); if both forms of one stream exist, `F04` and neither is read. `build/master.csv` is checked only when passed explicitly. An empty list checks no master files.
 - An empty list of issues means everything is valid. Issues are returned sorted by file, then row (`None` first), then rule.
 - A missing *required* file raises `FileNotFoundError`. It is not reported as an `Issue`.
 - **Cross-row rules (X\*) consider all master files together**, in processing order (§6.5).
@@ -427,7 +429,7 @@ def validate(root: str | os.PathLike, master_files: Iterable[str | os.PathLike] 
 ### 6.2 Command line
 
 `python -m pipeline.validate [--root DIR] [FILE ...]` (also `pixi run validate`).
-- `--root` defaults to the current directory; `FILE`s are master files (default as above).
+- `--root` defaults to the current directory; `FILE`s are master files, plain or `.csv.gz` (default as above).
 - Prints one line per issue to stdout, `file:row: RULE message` (`row` printed as `-` when `None`), then a summary line. Errors go to stderr.
 - **Exit codes:** 0 = no issues; 1 = one or more issues; 2 = usage error or missing required file.
 
@@ -441,7 +443,8 @@ One row may raise several codes. Each code is raised **only** for the condition 
 |---|---|
 | `F01` | Header does not exactly match the specified columns, in order |
 | `F02` | A column name contains a dose token as a whole word (§1) |
-| `F03` | File cannot be read as UTF-8 CSV, or a listed master file does not exist |
+| `F03` | File cannot be read as UTF-8 CSV (or a `.gz` file that is not a valid gzip stream), or a listed master file does not exist |
+| `F04` | Default discovery found a stream in both forms (`<x>.csv` and `<x>.csv.gz`) in `data/streams/`; reported once per pair against the `.csv.gz`, `row = None`; neither file is validated |
 | `D01` | A cell value in a checked column (`series`, `unit`, `name`, `description`, `quantity_class`) contains a dose token as a whole word (§1). Reported once per row |
 
 **Master table**
@@ -517,6 +520,7 @@ Applied before schema validation, in every table:
 | A file with `F01`, `F02` or `F03` | Its data rows are not validated (nor used for lookups) |
 | Country validity window | Inclusive: valid if `valid_from ≤ year ≤ valid_to` |
 | CLI paths | Relative `FILE` arguments are taken relative to `--root` |
+| Gzipped files | Selected by the `.gz` suffix only; decompressed and then treated exactly as plain files; display names keep the suffix; an explicit `master_files` list is taken literally (no `F04`) |
 | Unknown or missing event | `V08` only; `X05` is skipped for that row |
 | Unknown stage | `V02` only; `V03` and `V11` are skipped |
 | Banned domains | Matched on the URL's host only: the domain itself or any subdomain |
@@ -530,7 +534,7 @@ Applied before schema validation, in every table:
 | Countries | `valid_from > valid_to` is `T03`; countries have no `T04` |
 | Dose tokens | `F02` uses `vocab.forbidden_column_tokens`, `D01` uses `vocab.dose_tokens` (identical lists by default, kept separate so either can be tuned). Matching is whole-word on lower-cased text split on every non-alphanumeric character; `µ` and `μ` count as letters. `D01` is one issue per row, listing the offending column=value pairs |
 | `reference_bands` keys | Each named nuclide or group at most once per `quantity_class`, and the `*` default at most once per class |
-| `residue_seepage_by_group` | Optional (absent = no issue; header-only is valid). `T01`: all three `seepage_*` values, `basis` and `source_ids` required, values in [0, 1]. `T02`: duplicate (`residue_type`, `group`), on the later row. `T03`: low ≤ central ≤ high. `T04`: `residue_type` in `residue_types.csv`, `group` a head code in `groups.csv`, every `source_ids` entry in `sources.csv`. The residue type need not have a filled seepage set in `residue_types.csv`. `data/streams_pre1950/` files are never read |
+| `residue_seepage_by_group` | Optional (absent = no issue; header-only is valid). `T01`: all three `seepage_*` values, `basis` and `source_ids` required, values in [0, 1]. `T02`: duplicate (`residue_type`, `group`), on the later row. `T03`: low ≤ central ≤ high. `T04`: `residue_type` in `residue_types.csv`, `group` a head code in `groups.csv`, every `source_ids` entry in `sources.csv`. The residue type need not have a filled seepage set in `residue_types.csv`. `data/streams_pre1950/` files are never read, in either form |
 | `residue_types` with only `basis`/`source_ids` filled | Allowed (no issue): recording a source before the values is harmless |
 | Sources for reference tables | `reference_bands.csv` and `residue_types.csv` cite sources that must be in `data/sources.csv` (`T04`); `nuclides.csv` and `groups.csv` `source_ids` are not resolved in v2 |
 | Issue order | Sorted by `file` (string), then `row` (`None` first), then `rule` |
@@ -576,5 +580,6 @@ The vocabularies for these (`views`, `runs`, `conventions`, `horizons_a`, the ti
 | 2026-10-20 | **v2** after the independent schema review: master gains `product`, `residue_type`, `factor_ids`, `route`; routine vs event transfers; events gain `to_tiers` and activity bounds; `opening_stock` (D31); new tables `residue_types.csv`, `reference_bands.csv`, factor registry; JSON schemas and rule codes (`T01`–`T05`, `D01`) for every support table; `V10`–`V13`, `E03`, `G04`, `G05`; dose tokens checked in values; URL required for inaccessible sources; field-name mapping; provisional derived-output dimensions. |
 | 2026-10-25 | **v2.2** (Steve): tier `memo_biosphere` (D47; biosphere-cycling memo for wood ash and wood natural nuclides, D43/D44; allowed at `biomass_peat`; flow only; not in tier totals); route `air_rerelease` (D48; schema conditional ties it to `biomass_peat`/`Cs137+`/flow); substream `biomass_domestic` and residue type `biomass_domestic_ash` (D45); `dispersed` at `coal_mining` and `sealed_fuel_cycle` at `accident` (D36). |
 | 2026-10-27 | **v2.4** (Steve, D63): factor files gain a `substream` column after `stage` (§4.9); optional value, checked against `substreams[<stream>]`; `select` gains the `substream` match key (LIB_SPEC §10). |
+| 2026-11-05 | **v2.5** (Steve, D72): stream outputs committed as `<stream>.csv.gz` (deterministic gzip, level 9, MTIME 0, no file name); readers accept both forms; both present is `F04` in the validator and an error in the stream CLIs; build logs stay plain; `.gitattributes` `*.csv.gz binary` (LIB_SPEC §11). |
 | 2026-11-04 | **v2.4b** (Steve, D70): `vocab.json` → `substreams.oil_gas` gains `all` (§5.1), for oil and gas rows that cannot be split into `conventional` and `unconventional` (gas, NGL, vented and oil radon, Pb-210 plate-out, flaring), as `coal` already has `all`. Vocabulary change only: no column, rule code or schema change. |
 | 2026-10-26 | **v2.3** (Steve): new table `residue_seepage_by_group.csv` (§4.12, D56), with fallback to the residue-type triple; seepage triples filled for 15 residue types (D55); sources S0950–S0971 added; pre-1950 stream file convention `data/streams_pre1950/<stream>.csv` documented (§3, D57). |

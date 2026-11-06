@@ -20,8 +20,8 @@ Outputs:
 
 | File | Content |
 |---|---|
-| `data/streams/coal.csv` | Master rows, years 1950–2025. Must pass `python -m pipeline.validate --root .` |
-| `data/streams_pre1950/coal.csv` | Master columns, years 1800–1949, `quantity = flow` only. **Not part of the master schema** (its year range is 1950–2025); it is the undecayed input to the opening-stock estimate (D31, Option A). The Phase 3 engine decays it. Tests validate it against `schema/master.json` with only the `year` bounds relaxed. |
+| `data/streams/coal.csv.gz` | Master rows, years 1950–2025. Must pass `python -m pipeline.validate --root .` |
+| `data/streams_pre1950/coal.csv.gz` | Master columns, years 1800–1949, `quantity = flow` only. **Not part of the master schema** (its year range is 1950–2025); it is the undecayed input to the opening-stock estimate (D31, Option A). The Phase 3 engine decays it. Tests validate it against `schema/master.json` with only the `year` bounds relaxed. |
 
 Both files are written with `pipeline.lib.rows.write_master` (deterministic, sorted by the SCHEMA §3 key).
 
@@ -121,7 +121,7 @@ For $a-b$ with independent errors, central $c=c_a-c_b$; $\mathrm{low}=c-\sqrt{(c
 
 ## 9. Done conditions and tests
 
-- **(a) Schema.** `data/streams/coal.csv` passes `python -m pipeline.validate --root .`; no row has a tier or route that the stage does not allow (V09/V15 etc.).
+- **(a) Schema.** `data/streams/coal.csv.gz` passes `python -m pipeline.validate --root .`; no row has a tier or route that the stage does not allow (V09/V15 etc.).
 - **(b) Candidate nuclides.** Every group in §3 appears in the ash tiers for every year 1950–2025.
 - **(c) Conservation.** For each year and group: stack release + fly-ash residue rows = fly-ash-borne activity $F_g$ (bound-wise, to rounding), and the three tier shares of each residue sum back to the residue (central values; within 1e-9 relative).
 - **(d) Determinism.** Two builds write byte-identical files; row order is the SCHEMA key order.

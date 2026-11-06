@@ -12,3 +12,6 @@ build/*.tmp
 
 # Steve-supplied external data (not tracked; see research/nuclear/notes.md for source and version)
 import/
+
+# local archives (zpaqfranz snapshots live outside the repo, see docs/DATA_ARCHIVE.md)
+*.zpaq

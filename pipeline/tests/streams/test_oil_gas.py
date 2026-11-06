@@ -1855,16 +1855,18 @@ class TestCli:
         root = make_mini(tmp_path, mini_act(), name="cli_root")
         w = self._run(root, "--write")
         assert w.returncode == 0, f"--write exited {w.returncode}\nstdout: {w.stdout[-800:]}\nstderr: {w.stderr[-1500:]}"
-        main = root / "data" / "streams" / "oil_gas.csv"
-        pre = root / "data" / "streams_pre1950" / "oil_gas.csv"
+        from pipeline.lib.io import gzip_bytes, read_bytes
+
+        main = root / "data" / "streams" / "oil_gas.csv.gz"
+        pre = root / "data" / "streams_pre1950" / "oil_gas.csv.gz"
         logf = root / "research" / "oil_gas" / "build_log.csv"
         assert main.is_file() and pre.is_file() and logf.is_file(), "--write must write all three files (OIL_GAS_SPEC 1)"
         res = og_mod.build(root)
         m2, p2 = tmp_path / "m2.csv", tmp_path / "p2.csv"
         write_master(list(res.rows), m2)
         write_master(list(res.rows_pre1950), p2)
-        assert main.read_bytes() == m2.read_bytes(), "CLI master output differs from build() + write_master"
-        assert pre.read_bytes() == p2.read_bytes(), "CLI pre-1950 output differs"
+        assert read_bytes(main) == m2.read_bytes(), "CLI master output differs from build() + write_master"
+        assert read_bytes(pre) == p2.read_bytes(), "CLI pre-1950 output differs"
         counts = Counter(e["kind"] for e in res.log)
         printed = {m.group(1): int(m.group(2)) for m in re.finditer(r"^log (\w+): (\d+)\s*$", w.stdout + w.stderr, re.MULTILINE)}
         for kind, n in counts.items():
@@ -1877,12 +1879,12 @@ class TestCli:
         assert logf.read_bytes() != good, "the diff run must not overwrite the log"
         logf.write_bytes(good)
         t = pre.read_bytes()
-        pre.write_bytes(t.replace(b"oil_gas,", b"oil_gaz,", 1))
+        pre.write_bytes(gzip_bytes(read_bytes(pre).replace(b"oil_gas,", b"oil_gaz,", 1)))
         assert pre.read_bytes() != t
         assert self._run(root).returncode != 0, "a differing pre-1950 file must give a non-zero exit"
         pre.write_bytes(t)
         text = main.read_bytes()
-        tampered = text.replace(b"oil_gas,", b"oil_gaz,", 1)
+        tampered = gzip_bytes(read_bytes(main).replace(b"oil_gas,", b"oil_gaz,", 1))
         assert tampered != text
         main.write_bytes(tampered)
         assert self._run(root).returncode != 0, "a differing master file must give a non-zero exit"
@@ -1894,7 +1896,7 @@ class TestCli:
 
     def test_cli_second_write_is_byte_identical(self, tmp_path):
         root = make_mini(tmp_path, mini_act(), name="cli_twice")
-        files = [root / "data" / "streams" / "oil_gas.csv", root / "data" / "streams_pre1950" / "oil_gas.csv",
+        files = [root / "data" / "streams" / "oil_gas.csv.gz", root / "data" / "streams_pre1950" / "oil_gas.csv.gz",
                  root / "research" / "oil_gas" / "build_log.csv"]
         first = None
         for _ in range(2):
@@ -1908,8 +1910,8 @@ class TestCli:
 
     def test_committed_tree_cli_matches_when_files_exist(self):
         """Informational: the committed outputs (when present) must equal a fresh build; skipped until they exist."""
-        if not (ROOT / "data" / "streams" / "oil_gas.csv").exists():
-            pytest.skip("data/streams/oil_gas.csv is not committed yet")
+        if not (ROOT / "data" / "streams" / "oil_gas.csv.gz").exists():
+            pytest.skip("data/streams/oil_gas.csv.gz is not committed yet")
         p = self._run(ROOT)
         assert p.returncode == 0, f"committed oil_gas outputs differ from a fresh build:\n{p.stdout[-600:]}{p.stderr[-600:]}"
 

@@ -2010,12 +2010,14 @@ class TestCli:
 
         w = run("--write")
         assert w.returncode == 0, f"--write exited {w.returncode}\nstdout: {w.stdout[-800:]}\nstderr: {w.stderr[-1500:]}"
-        main = root / "data" / "streams" / "nuclear.csv"
-        pre = root / "data" / "streams_pre1950" / "nuclear.csv"
+        from pipeline.lib.io import gzip_bytes, read_bytes
+
+        main = root / "data" / "streams" / "nuclear.csv.gz"
+        pre = root / "data" / "streams_pre1950" / "nuclear.csv.gz"
         logf = root / "research" / "nuclear" / "build_log.csv"
         assert main.is_file() and pre.is_file() and logf.is_file(), "--write must write all three files (NUCLEAR_SPEC 1)"
-        assert main.read_bytes() == Path(written[0]).read_bytes(), "CLI master output differs from build() + write_master"
-        assert pre.read_bytes() == Path(written[1]).read_bytes(), "CLI pre-1950 output differs"
+        assert read_bytes(main) == Path(written[0]).read_bytes(), "CLI master output differs from build() + write_master"
+        assert read_bytes(pre) == Path(written[1]).read_bytes(), "CLI pre-1950 output differs"
         assert "no_factor" in (w.stdout + w.stderr), "the CLI prints counts by kind (8)"
         assert run().returncode == 0, "identical files must give exit 0"
 
@@ -2026,12 +2028,12 @@ class TestCli:
         logf.write_bytes(good)
 
         t = pre.read_bytes()
-        pre.write_bytes(t.replace(b"nuclear,fuel_cycle", b"nuclear,fuel_cyc1", 1))
+        pre.write_bytes(gzip_bytes(read_bytes(pre).replace(b"nuclear,fuel_cycle", b"nuclear,fuel_cyc1", 1)))
         assert run().returncode != 0, "a differing pre-1950 file must give a non-zero exit"
         pre.write_bytes(t)
 
         text = main.read_bytes()
-        tampered = text.replace(b"nuclear,fuel_cycle", b"nuclear,fuel_cyc1", 1)
+        tampered = gzip_bytes(read_bytes(main).replace(b"nuclear,fuel_cycle", b"nuclear,fuel_cyc1", 1))
         main.write_bytes(tampered)
         assert run().returncode != 0, "a differing master file must give a non-zero exit"
         assert main.read_bytes() == tampered, "the diff run must not overwrite files"
@@ -2046,7 +2048,7 @@ class TestCli:
         env = dict(os.environ)
         env["PYTHONPATH"] = str(ROOT) + os.pathsep + env.get("PYTHONPATH", "")
         cmd = [sys.executable, "-m", "pipeline.streams.nuclear", "--root", str(root), "--write"]
-        files = [root / "data" / "streams" / "nuclear.csv", root / "data" / "streams_pre1950" / "nuclear.csv",
+        files = [root / "data" / "streams" / "nuclear.csv.gz", root / "data" / "streams_pre1950" / "nuclear.csv.gz",
                  root / "research" / "nuclear" / "build_log.csv"]
         first = None
         for _ in range(2):

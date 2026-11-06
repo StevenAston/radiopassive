@@ -9,8 +9,8 @@ activity files is hard-coded.
 
 ``Oracle(root).expected()`` returns an ``Expected`` holding
 
-* ``rows``   dict key -> ``ER`` for data/streams/oil_gas.csv (1950-2025),
-* ``pre``    dict key -> ``ER`` for data/streams_pre1950/oil_gas.csv (1900-1949),
+* ``rows``   dict key -> ``ER`` for data/streams/oil_gas.csv.gz (1950-2025),
+* ``pre``    dict key -> ``ER`` for data/streams_pre1950/oil_gas.csv.gz (1900-1949),
 * ``neg``    list of (year, label, magnitude) rest-of-world / quantity residuals below zero,
 * ``no_unit_value`` list of (family, year) joint rows that cannot be allocated,
 * ``parts``  dict of unallocated intermediate values for the conservation tests.
