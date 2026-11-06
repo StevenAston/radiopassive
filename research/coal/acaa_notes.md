@@ -165,9 +165,9 @@ Three mappings follow. **L (liberal, current rows):** dispersed = all ACAA use. 
 
 ---
 
-## 6. Proposed revision (D72 draft)
+## 6. Proposed revision (D73 draft)
 
-Nothing below has been applied. `data/factors/coal.csv`, `pipeline/streams/coal.py`, the specs and `docs/DECISIONS.md` are untouched.
+**Applied 2026-11-06 as D73 (Steve approved option A as recommended; the number is D73 because D72 is reserved for the gzip LIB v1.5 work).** §6.2 (coal:0080–0094, coal:0074–0079 retired), §6.5 (notes of coal:0040–0048), §6.7 (tests, COAL_SPEC v1.3, factors_notes.md) and §6.8 (S0255–S0259, S1258, S0214) are in place; `pipeline/streams/coal.py` is unchanged and the coal outputs are identical. The text below is the proposal as written.
 
 ### 6.1 Verification that the US rows are inert today
 
@@ -178,17 +178,19 @@ Nothing below has been applied. `data/factors/coal.csv`, `pipeline/streams/coal.
 
 ### 6.2 Option A (recommended): replace the six two-era USA rows with five era rows built from the yearly series
 
-Keep the present structure (one unit-1 share per tier, ash fly + bottom + slag combined, region `USA`), but derive the values from the survey tables and the mapping of §4, in five eras that follow the data rather than the old two-era chart reading. New IDs coal:0080–0094 (5 eras × 3 tiers); coal:0074–0079 are kept in the registry and marked RETIRED (D72) in their notes, following D70, because documents cite them by id and the tests reference the numbers.
+Keep the present structure (one unit-1 share per tier, ash fly + bottom + slag combined, region `USA`), but derive the values from the survey tables and the mapping of §4, in five eras that follow the data rather than the old two-era chart reading. New IDs coal:0080–0094 (5 eras × 3 tiers); coal:0074–0079 are kept in the registry and marked RETIRED (D73) in their notes, following D70, because documents cite them by id and the tests reference the numbers.
 
-Rule for each era: dispersed central = S1 production-weighted mean over the years with category detail; dispersed low = lowest annual S2; dispersed high = highest annual L; reisolated central = mining as a share of production, low 0, high = highest annual value (placeholder 0.003 / 0.02 before 1990, where no category data were read); impounded central = 1 − dispersed − reisolated (so central values sum to 1.000), impounded low/high = 1 − dispersed high − reisolated high and 1 − dispersed low.
+Rule for each era (exact, as implemented in the pooled calculation): let $P$ be production and $U$ use of fly ash + bottom ash + boiler slag, summed over the era's years with a category table (1990s: 1994, 1995, 1999; 2018 excluded), and let $D$ be the same-year tonnage of **waste stabilisation, CCR pond closure, oil/gas field services and mining applications** for those three ash types only (FGD gypsum, FGD wet/dry/other and FBC ash never enter $P$, $U$ or $D$). Then dispersed central $=(U-D)/P$ (S1, pooled tonnage ratio, not a mean of annual ratios); reisolated central = mining applications$/P$; low/high as before (dispersed low = lowest annual S2, high = highest annual L; reisolated low 0, high = highest annual mining share; placeholder 0.003 / 0.02 before 1990). **Structural fills, soil modification/stabilisation, aggregate and agriculture stay in dispersed** (§4). Centrals are stored to 3 decimals: dispersed and reisolated are rounded to 0.001 and impounded $=1-$ dispersed $-$ reisolated, so the three centrals sum to exactly 1.000; impounded low/high $=1-$ dispersed high $-$ reisolated high and $1-$ dispersed low (bounds unchanged by the rounding).
 
 | Era | Dispersed low / central / high | Reisolated low / central / high | Impounded low / central / high | Basis |
 |---|---|---|---|---|
-| 1966–1989 | 0.09 / 0.21 / 0.28 | 0 / 0.003 / 0.02 | 0.70 / 0.790 / 0.91 | L only (no category detail read before 1990), low lowered 0.03 for undetected disposal-like uses; reisolated placeholder |
-| 1990–1999 | 0.25 / 0.29 / 0.35 | 0 / 0.010 / 0.02 | 0.63 / 0.703 / 0.75 | S1 from three detail years (1994, 1995, 1999) plus 2000 not in era |
-| 2000–2009 | 0.24 / 0.36 / 0.46 | 0 / 0.017 / 0.03 | 0.51 / 0.628 / 0.76 | S1 from ten detail years |
-| 2010–2015 | 0.23 / 0.38 / 0.52 | 0 / 0.030 / 0.04 | 0.44 / 0.592 / 0.77 | S1 from six years |
-| 2016–2025 | 0.45 / 0.53 / 0.68 | 0 / 0.008 / 0.03 | 0.30 / 0.467 / 0.55 | S1 from eight years (2018 has no category table; 2025 carries 2024) |
+| 1966–1989 | 0.09 / 0.207 / 0.28 | 0 / 0.003 / 0.02 | 0.70 / 0.790 / 0.91 | L only (no category detail read before 1990), low lowered 0.03 for undetected disposal-like uses; reisolated placeholder |
+| 1990–1999 | 0.25 / 0.287 / 0.35 | 0 / 0.010 / 0.02 | 0.63 / 0.703 / 0.75 | S1 from three detail years (1994, 1995, 1999) |
+| 2000–2009 | 0.24 / 0.355 / 0.46 | 0 / 0.017 / 0.03 | 0.51 / 0.628 / 0.76 | S1 from ten detail years |
+| 2010–2015 | 0.23 / 0.377 / 0.52 | 0 / 0.030 / 0.04 | 0.44 / 0.593 / 0.77 | S1 from six years |
+| 2016–2025 | 0.45 / 0.525 / 0.68 | 0 / 0.008 / 0.03 | 0.30 / 0.467 / 0.55 | S1 from eight years (2018 has no category table; 2025 carries 2024) |
+
+Reconciliation note (D73 check): an independent rebuild gave 0.347 (2000–09) and 0.368 (2010–15). The difference from 0.355 and 0.377 is 0.0088 and 0.0095, which equals the pooled soil modification/stabilisation share (0.0088 and 0.0095) to four decimals; subtracting it reproduces 0.3465 and 0.3678. So the cause is a mapping difference, not an arithmetic error: the rebuild treated soil modification/stabilisation as disposal-like, my rule keeps it dispersed (§4) and it is not in `acaa_uses.csv` for 2016–2024 (key categories only), so subtracting it would apply unevenly across eras. This is an inference from the match, not a confirmed reading of the rebuild. The 2016–25 difference (0.524 against 0.5253) is within rounding and unexplained. Values above are unchanged apart from rounding to 3 decimals (0.21 to 0.207, 0.29 to 0.287, 0.36 to 0.355, 0.38 to 0.377, 0.53 to 0.525; impounded 2010–15 0.592 to 0.593 so that the centrals sum to 1). If soil modification is to be treated as disposal-like, the central would fall by about 0.009 in 2000–09 and 2010–15 and the S2 low bound would need recomputing.
 
 Compared with the present rows: 1991–2009 central 0.33 becomes 0.29 (1990s) and 0.36 (2000s); 2010–2025 central 0.55 becomes 0.38 (2010–15) and 0.53 (2016–25); reisolated central 0 becomes 0.008–0.030 (it was an unsupported zero). Uncertainty: the bounds above combine year-to-year variation, mapping choice (L, S1, S2) and the survey's extrapolation. I did not add an extra margin for the extrapolation error (ACAA states none). The low bound for 2016–2025 assumes 2023–24 pond-closure reporting is right; if the 2024 figure is incomplete (§5.3) the central is about 0.03 too high.
 
@@ -246,7 +248,7 @@ A series such as `us_fly_ash_use_fraction` (annual, 1966–2024, unit `1`) would
 
 - **Current outputs:** none. No `data/streams/coal.csv` row, `factor_ids` or `source_ids` changes under A or B (US rows inert, XWL rows untouched). The notes-only edit to coal:0040–0048 changes `data/factors/coal.csv` text, not outputs.
 - **Tests that would change (to be confirmed by running the suite):** the ID ranges 74–79 hard-coded in `test_no_usa_route_shares_in_world_rows` and `test_usa_shares_not_used_for_world_rows` become 74–94 (or all `region == USA` rows); `test_usa_share_edit_does_not_change_world_rows` edits coal:0077, which is still valid if the row is retained (RETIRED) but should be pointed at a live row such as coal:0088; any registry/validator count or "all rows used" checks keyed to the old six (none found in `test_coal.py` by search; the oracle file `coal_oracle.py` does not mention coal:0074–0079). Validator rules for factors (low ≤ central ≤ high; years in order; unit-1) are met by the proposed rows.
-- **Spec sections:** COAL_SPEC §5 step 3 (the sentence "The `USA` shares (`coal:0074`–`0079`) are inert…" becomes `coal:0074`–`0094`); §10 (bullet "The US route shares and the ACAA series are not applied to the world"); the factor notes (`research/coal/factors_notes.md`, item 15 of the choices list and gap G13, which says ACAA gave no pre-1991 years: now it does). D72 itself, one line, plus a pointer from COAL_SPEC §12.17. With option B, §5 steps 3 and the test oracle would also change (residue-keyed share selection).
+- **Spec sections:** COAL_SPEC §5 step 3 (the sentence "The `USA` shares (`coal:0074`–`0079`) are inert…" becomes `coal:0074`–`0094`); §10 (bullet "The US route shares and the ACAA series are not applied to the world"); the factor notes (`research/coal/factors_notes.md`, item 15 of the choices list and gap G13, which says ACAA gave no pre-1991 years: now it does). D73 itself, one line, plus a pointer from COAL_SPEC §12.17. With option B, §5 steps 3 and the test oracle would also change (residue-keyed share selection).
 - **Benchmarks (§9 / `research/coal/benchmarks.md`):** none use the US shares.
 
 ### 6.8 Proposed `data/sources.csv` entries (not applied; IDs S0255–S0259 are unused anywhere in the repository)
@@ -278,4 +280,4 @@ Also to update (not applied): **S1258** ("ACAA 1987 data sheet", currently `inac
 ## 8. Items for the main session's memory (from this task, for your decision)
 
 - ACAA series files and the rebuild script live in `research/coal/` (`acaa_series.csv`, `acaa_uses.csv`, `acaa_build_series.py`), source of truth for any US ash route-share work.
-- Steve's decision is pending on D72 (option A recommended; B and C deferred).
+- Steve approved D73 on 2026-11-06: option A as recommended; B and C deferred.

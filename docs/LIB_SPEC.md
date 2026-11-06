@@ -282,9 +282,9 @@ Needed by Task 2.3 (conventional / unconventional / oil_sands rows share every o
 3. `read_table` reads the factor-file `substream` column as a string (empty cell → `""`, never `None` or NaN), like `group`, `tier`, `route`, `residue_type`.
 4. Nothing else changes; a call that does not pass `substream` behaves exactly as in v1.3, whatever the rows hold.
 
-## 11. v1.5 (2026-11-05, DRAFT, pending Steve's approval): gzipped stream outputs
+## 11. v1.5, approved (D72; drafted 2026-11-05, approved by Steve 2026-11-06): gzipped stream outputs
 
-Steve approved storing the stream outputs gzipped (2026-11-05). This section fixes how. It **overrides** §4.3 and §5 where they differ, and it goes with SCHEMA v2.5 (text in §11.9). Proposed decision number: D72.
+Steve approved storing the stream outputs gzipped (2026-11-05). This section fixes how. It **overrides** §4.3 and §5 where they differ, and it goes with SCHEMA v2.5 (text in §11.9). Decision D72 (confirmed). Every choice marked **Recommended** below is the adopted one; the alternatives are kept for the record. The validator code `F04` is confirmed. The second half of D72, a zpaqfranz snapshot of the untracked raw inputs, is specified in `docs/DATA_ARCHIVE.md`; Steve rejected DVC.
 
 **Why.** The committed master files are 3.7 / 17 / 47 / 60 MB raw (coal / nuclear / oil_gas / other). GitHub warns above 50 MB per file and refuses above 100 MB. `other.csv` is already over the warning, and `oil_gas.csv` is close. Gzipped, all eight stream files (master plus pre-1950) total 7.8 MB, against 132.3 MB raw (16.9×).
 
@@ -433,15 +433,15 @@ Unchanged: LF line endings, UTF-8 encoding, header first, sort order, float form
 ### 11.7 Repository and migration
 
 1. **`.gitattributes`** (new, at the repo root), with the single line `*.csv.gz binary`. This stops text diffs, merges and EOL conversion on the gzipped files. A merge conflict on a `.csv.gz` file is resolved by re-running the stream CLI with `--write`.
-   - *Optional:* `*.csv.gz binary diff=gzip`, plus a per-clone `git config diff.gzip.textconv "gzip -dc"`, gives readable `git diff` and `git log -p` output. It is not committed config, so it is left to Steve.
+   - **Optional, not required: readable diffs.** A clone that wants `git diff` and `git log -p` to show decompressed CSV can use the line `*.csv.gz binary diff=gzip` in `.gitattributes` and run, once per clone, `git config diff.gzip.textconv "gzip -dc"`. A `diff=gzip` attribute with no matching config is harmless (git falls back to binary), so the committed `.gitattributes` may carry either form. The committed default is `*.csv.gz binary`. No test, CLI or tool may depend on the textconv setting. On Windows, `gzip` must be on the `PATH` that git uses (Git for Windows ships one in its `usr\bin`); check with `gzip --version` in Git Bash.
 2. **One commit for everything.** **Recommended.** The commit contains the code (lib, validator, four CLIs), the test updates, the docs (SCHEMA v2.5, this section, the per-stream SPEC output tables, D72), `.gitattributes`, the eight `.csv.gz` files produced by `python -m pipeline.streams.<s> --write` for each stream, and the deletion of the eight plain `.csv` files (`git add -A data/streams data/streams_pre1950`).
    - Before committing: run each CLI once more without `--write`, which must exit 0, then run `python -m pipeline.validate --root .`, which must report no issues.
    - *Alternative:* one commit per stream. This works because the reader accepts both forms, but between the commits the code expects `.gz` while three streams are still plain, so their diff mode exits 1 (legacy). There is no benefit, because the data does not change.
-3. **History.** The old plain blobs stay in history. That is acceptable: the caller reported `.git` at 24 MB, and nothing needs rewriting.
+3. **History (growth accepted by Steve, 2026-11-06).** The old plain blobs stay in history. That is acceptable: `.git` is about 24 MB, and nothing needs rewriting.
    - **Cost to note:** git already zlib-compresses blobs and delta-compresses similar plain-text versions in packs. Gzip blobs do not delta.
    - So from now on, every content change to a stream adds roughly its full gzipped size to history: about 3.8 MB for `other`, 7.8 MB if all streams change.
    - A plain-text change touching few lines would have added only a small delta. A factor change usually rewrites most of a stream's rows anyway, so the practical difference is modest. It does argue against committing rebuilds without content changes, which 11.5.3 already prevents.
-4. **Before migrating, land or rebase concurrent work that writes stream outputs.** The coal research and ACAA import work under way on 2026-11-05 is an example. A branch built with the old code writes `coal.csv` next to `coal.csv.gz`, which is exactly the both-present case (11.3.4). It is repaired by re-running `--write` with the new code.
+4. **Ordering (fixed by Steve, 2026-11-06).** The D73 coal revision (factor changes in `data/factors/coal.csv`, which leave the coal outputs identical) lands **before** the D72 migration commit. The migration commit is then built on top of it, and its pre-commit checks (11.7.2) confirm that the coal diff run still exits 0. More generally, land or rebase any concurrent work that writes stream outputs before migrating. A branch built with the old code writes `coal.csv` next to `coal.csv.gz`, which is exactly the both-present case (11.3.4). It is repaired by re-running `--write` with the new code.
 
 ### 11.8 Done conditions and test items (for the spec-blind test-writer)
 
@@ -526,9 +526,9 @@ These run single-process and do not parallelise. They are skipped if the committ
 - no file in the repo exceeds 50 MB (the largest expected is `other.csv.gz`, about 3.8 MB);
 - `.gitattributes` holds `*.csv.gz binary`;
 - the docs in the impact list (11.10) are updated;
-- Steve has approved SCHEMA v2.5 and D72.
+- SCHEMA v2.5 (11.9) is applied to `docs/SCHEMA.md` and the D72 row is in `docs/DECISIONS.md` (both approved 2026-11-06).
 
-### 11.9 SCHEMA v2.5 text (to apply on approval)
+### 11.9 SCHEMA v2.5 text (approved with D72; applied in the migration commit)
 
 1. **§1 General conventions.** Add this bullet: "**Compression (v2.5, D72).** Stream outputs (`data/streams/`, `data/streams_pre1950/`) are committed as gzip-compressed CSV, `<stream>.csv.gz`. Inside the gzip container every §1 rule applies unchanged: UTF-8, LF line endings, header row. The gzip header carries no file name and MTIME 0, and the writer uses compression level 9 (LIB_SPEC §11). Readers and the validator accept the plain `.csv` form as well. If both forms of one stream are present, that is an error."
 2. **§2 table.**

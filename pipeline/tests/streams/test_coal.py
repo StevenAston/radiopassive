@@ -368,9 +368,10 @@ class TestRowConventions:
         assert min(yp) >= 1800 and max(yp) <= 1949, f"pre-1950 years {min(yp)}-{max(yp)} outside 1800-1949"
 
     def test_no_usa_route_shares_in_world_rows(self, rows):
-        usa = {f"coal:{n:04d}" for n in range(74, 80)}
+        # D73: coal:0074-0079 retired, coal:0080-0094 live; all are USA-only shares.
+        usa = {f"coal:{n:04d}" for n in range(74, 95)}
         bad = [r for r in rows.rows if usa & set(ids(r["factor_ids"]))]
-        assert not bad, f"USA-only share factors (coal:0074-0079) used on {len(bad)} rows; first: {describe(bad[0])}"
+        assert not bad, f"USA-only share factors (coal:0074-0094) used on {len(bad)} rows; first: {describe(bad[0])}"
 
     def test_unapplied_factors_not_used(self, rows):
         banned = {"coal:0067", "coal:0072", "coal:0073"}
@@ -1215,14 +1216,16 @@ class TestMiniTreeCapAndShares:
         xwl_share = o.share(y, "impounded")
         assert xwl_share["factor_id"] == "coal:0046"
         row = rows.one(y, world=True, stage="combustion_power", group=g, tier="impounded", residue_type="coal_bottom_ash")
-        assert close(float(row["value_central"]), Bk.central * 0.468, 1e-9), "XWL share 0.468, not the USA 0.45"
+        assert close(float(row["value_central"]), Bk.central * 0.468, 1e-9), "XWL share 0.468, not the USA 0.592 (coal:0089)"
         assert "coal:0046" in ids(row["factor_ids"])
-        usa = {f"coal:{n:04d}" for n in range(74, 80)}
+        usa = {f"coal:{n:04d}" for n in range(74, 95)}  # D73: retired 0074-0079 and live 0080-0094
         assert not any(usa & set(ids(r["factor_ids"])) for r in rows.rows)
 
     def test_usa_share_edit_does_not_change_world_rows(self, coal_mod, tmp_path):
         def edit(records):
-            return [{**r, "value_central": "0.5", "value_low": "0.4", "value_high": "0.6"} if r["factor_id"] == "coal:0077" else r
+            # D73: edit every live USA share (coal:0080-0094), which covers all mini-tree years.
+            live_usa = {f"coal:{n:04d}" for n in range(80, 95)}
+            return [{**r, "value_central": "0.5", "value_low": "0.4", "value_high": "0.6"} if r["factor_id"] in live_usa else r
                     for r in records]
         _, _, base, _ = _build_mini(coal_mod, tmp_path / "a", mini_activity())
         _, _, edited, _ = _build_mini(coal_mod, tmp_path / "b", mini_activity(), edit)
