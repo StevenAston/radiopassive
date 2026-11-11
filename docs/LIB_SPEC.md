@@ -1,6 +1,6 @@
 # `pipeline/lib` — contract (Phase 2, step 1)
 
-Status: draft for the test-writer and the code-writer, 2026-10-25. Derived from METHODS §10–§11 and SCHEMA §3–§6. Where this file and METHODS disagree, METHODS wins and this file is a bug.
+Status: draft for the test-writer and the code-writer, 2026-10-25. **Current version v1.6 (2026-11-11, D74): §12 adds the `ore_type` match key.** Derived from METHODS §10–§11 and SCHEMA §3–§6. Where this file and METHODS disagree, METHODS wins and this file is a bug.
 
 Each module listed here is a pure function library. None of them reads files implicitly, uses the network, or keeps global state. Errors raise `LibError`, a subclass of `ValueError` defined in `pipeline/lib/__init__.py`, with a message naming the offending input.
 
@@ -623,3 +623,33 @@ Data and repo:
 4. Detection is by suffix only: a gzip file named `.csv` is read as text and fails as a malformed CSV (`F01`/`F03` as today); no sniffing.
 5. `first_difference` splits on LF only; a lone CR is ordinary content.
 6. `resolve_stream_file` on a missing directory returns "neither present" (the caller's existing error), not a different exception.
+
+## 12. v1.6 (2026-11-11, approved by Steve as D74): `ore_type` match key
+
+Needed by Task 2.4 (`docs/WIND_SOLAR_SPEC.md` v1.0) and by the nuclear Olympic Dam family F8 (`docs/NUCLEAR_SPEC.md` §14): the copper and rare-earth rows of `data/reference/commodity_factors.csv` share every other key and differ only by ore type (SCHEMA §4.7, v2.6). The rule mirrors §10 (v1.4, `substream`) exactly.
+
+1. **`select` accepts `ore_type` as a match key** (added to `MATCH_KEYS`). Semantics are those of every other key: **exact equality** with the row's `ore_type` cell. A row with an empty `ore_type` matches only `ore_type=""` (or a call that does not pass `ore_type` at all). There is **no wildcard**: `ore_type=""` does not match a row whose cell is `porphyry_stratiform`, and `ore_type="all"` matches only rows whose cell is the literal value `all` (a copper ore type meaning "smelter rows not split by ore type", not a wildcard).
+2. **Precedence is unchanged:** an exact-region row beats an `XWL` row; ambiguity at the winning level raises `LibError` (`ambiguous factor rows`); no candidate raises `LibError` (`no factor row`). `ore_type` takes no part in precedence: it filters candidates before the region rule, like every other key.
+3. **`read_table` reads the `ore_type` column as a string**: an empty cell becomes `""`, never `None` or NaN, as `substream` (§10 item 3). Non-empty cells are stripped of surrounding whitespace like every string cell. This applies to any file that has an `ore_type` column (in v2.6 only `commodity_factors.csv`).
+4. **Backward compatibility:** a call that does not pass `ore_type` behaves exactly as in v1.5, whatever the rows hold (so a call on a file with several ore types for the same other keys raises `ambiguous factor rows`, which is the intended loud failure). Factor files without an `ore_type` column are unaffected; passing `ore_type` against rows that lack the key: a row dict without the key matches only `ore_type=""` (missing is treated as empty).
+5. **`factor_id` on commodity rows:** `select` returns the row dict unchanged, including `factor_id`; no other function changes. `apply` needs no change (unit `Bq/t`).
+6. Nothing else changes: `MATCH_KEYS` gains one member; the `unknown match key(s)` error lists it among the allowed keys.
+
+### 12.1 Done conditions and test items (for the spec-blind test-writer)
+
+Tests go in `pipeline/tests/lib/test_select_ore_type.py`; they use in-memory row dicts and `tmp_path` CSVs only, and do not read the implementation.
+
+- **T1 exact match.** Rows A (`ore_type="porphyry_stratiform"`) and B (`ore_type="iocg_high_u"`), otherwise identical (commodity `copper`, component `own_residue`, group `Ra226+`, tier `impounded`, residue `metal_tailings`, region `XWL`, window 1950–2025): `ore_type="porphyry_stratiform"` returns A; `ore_type="iocg_high_u"` returns B.
+- **T2 empty matches only empty.** Add row C with `ore_type=""`: `ore_type=""` returns C; `ore_type="porphyry_stratiform"` never returns C.
+- **T3 no wildcard.** With only rows A and B present, `ore_type=""` raises `LibError` whose message starts with `no factor row`; so does `ore_type="cu_co_stratiform"`.
+- **T4 `all` is a literal.** Row D `ore_type="all"`: `ore_type="all"` returns D; `ore_type="porphyry_stratiform"` does not return D.
+- **T5 omitted key.** With rows A and B (same other keys), a call without `ore_type` raises `LibError` starting `ambiguous factor rows`; with A alone, a call without `ore_type` returns A (v1.5 behaviour).
+- **T6 region precedence unchanged.** Rows E (`iocg_olympic_dam`, region `AUS`) and F (`iocg_olympic_dam`, region `XWL`): `region="AUS"` returns E; `region="CHN"` returns F. Rows G (`iocg_high_u`, `AUS`) and H (`porphyry_stratiform`, `XWL`): `region="AUS", ore_type="porphyry_stratiform"` returns H (the exact-region row G does not match the key, so precedence never sees it).
+- **T7 ambiguity at the winning level.** Two rows identical in every key including `ore_type` and region raise `ambiguous factor rows`.
+- **T8 year window.** `ore_type` filtering combines with the window: an OD row valid 1988–2025 is not returned for 1987 (`no factor row`).
+- **T9 `read_table`.** A CSV with an `ore_type` column and one empty and one non-empty cell (with surrounding spaces) reads as `""` and the stripped string; the empty cell is never `None`.
+- **T10 missing key in a row dict.** A row dict without an `ore_type` key matches `ore_type=""` and does not match `ore_type="all"`.
+- **T11 key set.** `"ore_type" in MATCH_KEYS`; an unknown key (e.g. `oretype`) still raises `unknown match key(s)` and the message lists `ore_type` among the allowed keys.
+- **T12 regression.** The existing v1.4 `substream` tests and every other `pipeline/tests/lib` test pass unchanged.
+
+Verification: the verifier runs the suite, then mutation-tests `select` (drop `ore_type` from `MATCH_KEYS`; treat empty as wildcard; read empty `ore_type` as `None`): each mutant must be killed by at least one of T1–T11.

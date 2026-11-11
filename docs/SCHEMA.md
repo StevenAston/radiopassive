@@ -4,7 +4,7 @@
 
 > **v2.5 (D72) approved by Steve 2026-11-06 and applied in the migration.** Stream outputs (`data/streams/`, `data/streams_pre1950/`) are committed as deterministic gzip (`<stream>.csv.gz`). The content is unchanged: UTF-8 with LF line endings. Readers and the validator accept both the plain and the gzipped form. If both forms of one stream are present, the validator reports `F04`. Build logs stay plain. The text follows `docs/LIB_SPEC.md` §11.9.
 
-> **v2.6 PENDING (D74, 2026-11-11): text below, NOT applied.** The validator, the JSON schemas, `vocab.json` and the data files are unchanged; the table in §4.7 and the rule codes in §6.3 describe v2.5 until Steve approves `docs/WIND_SOLAR_SPEC.md` v0.1. Proposed changes: (1) `commodity_factors.csv` gains `factor_id` (first column; WIND_SOLAR_SPEC Q2, needed for V13) and `ore_type` (after `region`; D74(c)), and `ore_type` joins the key (§4.7a below); (2) new reference table `commodity_fuel_inputs.csv` (§4.13 below; D74(d)); (3) `vocab.json`: `commodities` gains `cast_iron` and `tio2_pigment`, and a new map `ore_types` lists the allowed `ore_type` values per commodity; (4) `component = embedded_fuel` is no longer allowed in `commodity_factors.csv` (fuel inputs move to §4.13). The analogous precedent is the `substream` key of v2.4 (D63).
+> **v2.6 (D74) approved by Steve 2026-11-11.** `commodity_factors.csv` gains `factor_id` (first column; ids resolvable by `V13`) and `ore_type` (after `region`; in the key), `component` is narrowed to `own_residue`, the new optional table `commodity_fuel_inputs.csv` holds fuel inputs (§4.13), and `vocab.json` gains `cast_iron`, `tio2_pigment`, an `ore_types` map and a `fuel_input_fuels` map (§4.7, §5.5). The precedent is the `substream` key of v2.4 (D63). Implementation: the validator, JSON schemas and `pipeline.lib.factors.select` (LIB_SPEC §12, v1.6) are changed first; the data built for v2.6 is staged under `build/d74_staging/` and enters `data/` in one commit once the v2.6 validator passes its tests.
 
 ---
 
@@ -34,7 +34,8 @@
 | `data/reference/residue_types.csv` | Per-residue engine parameters: ε for radon and thoron, seepage (§4.10) | yes | Tasks 0.2 (codes), 1.3–1.6 (values) |
 | `data/reference/residue_seepage_by_group.csv` | Per-group seepage overrides of the residue-type triple (§4.12, D56) | yes (when present) | Seepage research, 2026-10-26 |
 | `data/reference/reference_bands.csv` | Inter-evaluation uncertainty bands for nuclide data (§4.11, D27) | yes | Task 0.3 |
-| `data/reference/commodity_factors.csv` | Per-tonne commodity footprints (§4.7, METHODS §6.2) | no | Tasks 1.5, 1.9 |
+| `data/reference/commodity_factors.csv` | Per-tonne commodity footprints, own residues (§4.7, METHODS §6.2) | no (checked when present) | Tasks 1.5, 1.9, 2.4 (v2.6) |
+| `data/reference/commodity_fuel_inputs.csv` | Fuel and electricity per tonne of commodity, reference only (§4.13, D74(d)) | no (checked when present) | Task 2.4 (v2.6) |
 | `data/sources.csv` | Bibliography registry (§4.3) | yes | All tasks |
 | `data/events.csv` | Event catalogue (§4.4) | no | Task 1.8 |
 | `data/baselines.csv` | Natural and fallout baselines (§4.5) | no | Task 1.7 |
@@ -44,7 +45,7 @@
 | `data/streams_pre1950/<stream>.csv.gz` (or plain `.csv`) | Pre-1950 undecayed flows, master columns (§3.2, D31, D57) | no (not validated by the master schema) | Phase 2 |
 | `build/master.csv` | Merge of the stream files and nothing else (§3) | no | Task 3.1 |
 | `.gitattributes` | `*.csv.gz binary` | no | v2.5 |
-| `schema/*.json` | Row schemas for every table above: `master`, `sources`, `events`, `countries`, `activity`, `baselines`, `commodity_factors`, `factors`, `residue_types`, `reference_bands` | yes (all ten) | Task 0.2 |
+| `schema/*.json` | Row schemas for every table above: `master`, `sources`, `events`, `countries`, `activity`, `baselines`, `commodity_factors`, `commodity_fuel_inputs`, `factors`, `residue_types`, `reference_bands` | yes (all eleven, v2.6) | Task 0.2 |
 
 ---
 
@@ -225,53 +226,29 @@ Baselines are **not** merged into `build/master.csv`; they are exported alongsid
 
 **Key:** (`series`, `year`, `country`) across all activity files. The **mass of earth moved** (the D21 memo series in tonnes) is stored here as `earth_moved_t_<stream>`; the Bq side is in master rows with tier `memo_earth_moved`.
 
-### 4.7 `commodity_factors.csv`
+### 4.7 `commodity_factors.csv` (v2.6, D74)
 
 | Column | Type | Rule |
 |---|---|---|
-| `commodity` | enum | `vocab.json` → `commodities` |
-| `component` | enum | `own_residue`, `embedded_fuel` (METHODS §6.2) |
+| `factor_id` | code | **v2.6.** First column. `commodity:<4 digits>`; unique within the file **and** across every factor file (§4.9). These ids join the set that `V13` resolves master `factor_ids` against |
+| `commodity` | enum | `vocab.json` → `commodities` (v2.6 adds `cast_iron`, `tio2_pigment`) |
+| `component` | enum | **v2.6:** `own_residue` only (METHODS §6.2 (i)). Fuel inputs (METHODS §6.2 (ii)) are in `commodity_fuel_inputs.csv` (§4.13) |
 | `group` | code | In `groups.csv` |
 | `tier` | enum | Any non-Sealed tier |
 | `route` | enum | Required when `tier = liberated`, else empty |
 | `residue_type` | code | In `residue_types.csv`; required for residue tiers, else empty |
-| `region` | code | In `countries.csv` (`XWL` allowed) |
+| `region` | code | In `countries.csv` (`XWL` allowed); one code, never a list |
+| `ore_type` | code | **v2.6.** Directly after `region`. **Required** for a commodity that has an entry in `vocab.json` → `ore_types`, and then one of its values; **empty** for every other commodity. v2.6 values: `copper`: `porphyry_stratiform`, `iocg_olympic_dam`, `iocg_high_u`, `cu_co_stratiform`, `all` (smelter rows not split by ore type); `ree_oxide`: `ree_bayan_obo`, `ree_ionic_clay`, `ree_monazite`, `ree_mt_weld` |
 | `year_from`, `year_to` | int | Validity window, `year_from ≤ year_to` |
 | `allocation_variant`, `allocation_rule` | enum, list | As master; variant completeness and token coupling as master (§3.3 rule 3) |
-| `value_low`, `value_central`, `value_high` | float ≥ 0 | Activity per tonne of refined commodity; low ≤ central ≤ high |
+| `value_low`, `value_central`, `value_high` | float ≥ 0 | Activity per tonne of refined commodity, before D6; low ≤ central ≤ high |
 | `unit` | const | `Bq/t` |
 | `below_detection` | bool | As master |
 | `basis`, `source_ids`, `notes` | | As master |
 
-**Key:** (`commodity`, `component`, `group`, `tier`, `route`, `residue_type`, `region`, `year_from`, `allocation_variant`).
+**Key (v2.6):** (`commodity`, `component`, `ore_type`, `group`, `tier`, `route`, `residue_type`, `region`, `year_from`, `allocation_variant`). `factor_id` is a second, independent uniqueness rule. `T05` groups rows by the key without `allocation_variant`, so `ore_type` is part of the allocation-completeness group.
 
-### 4.7a `commodity_factors.csv` changes in v2.6 (PENDING, D74; not applied)
-
-| Column | Type | Rule |
-|---|---|---|
-| `factor_id` | code | **New, first column.** `commodity:<4 digits>`, unique within the file **and** across every factor file (§4.9); the validator adds these ids to the set that `V13` resolves master `factor_ids` against |
-| `ore_type` | code | **New, directly after `region`.** Optional (empty = not ore-type-specific). If given, must be in `vocab.json` → `ore_types[<commodity>]`. v2.6 values: `copper`: `porphyry_stratiform`, `iocg_olympic_dam` (pending WIND_SOLAR_SPEC Q1), `iocg_high_u`, `cu_co_stratiform`, `all` (smelter rows not split by ore type); `ree_oxide`: `ree_bayan_obo`, `ree_ionic_clay`, `ree_monazite`, `ree_mt_weld` (pending Q6). Every other commodity: none (cell empty) |
-| `component` | enum | Narrowed: `own_residue` only. A row with `embedded_fuel` fails `T01` (the fuel inputs live in §4.13) |
-| `commodity` | enum | Gains `cast_iron` and `tio2_pigment` (vocabulary and JSON enum) |
-
-**Key (v2.6):** (`commodity`, `component`, `ore_type`, `group`, `tier`, `route`, `residue_type`, `region`, `year_from`, `allocation_variant`). `factor_id` is a second, independent uniqueness rule. **`T05`** groups by the key without `allocation_variant`, so `ore_type` is part of the allocation-completeness group. **Validator checks added:** `F01` header with the two new columns in place; `T01` for a malformed `factor_id`, a non-`own_residue` component, or an `ore_type` cell on a commodity with no `ore_types` entry; `T02` duplicate key or duplicate `factor_id` (also against `data/factors/*.csv`); `T04` `ore_type` not in `ore_types[<commodity>]`. `pipeline.lib.factors.select` accepts `ore_type` as an exact-equality match key (LIB v1.6, as `substream` in LIB_SPEC §10).
-
-### 4.13 `commodity_fuel_inputs.csv` (PENDING, v2.6, D74(d); not applied)
-
-Fuel (and electricity) consumed per tonne of refined commodity. **Reference only**: never multiplied into any stream file and never added to a stream total (D22). The Phase 3 lifecycle (per-TWh) view multiplies ④'s commodity tonnes by these inputs and by the coal and oil-and-gas streams' own per-tonne footprints.
-
-| Column | Type | Rule |
-|---|---|---|
-| `commodity` | enum | `vocab.json` → `commodities` |
-| `fuel` | enum | `coal`, `coke`, `petroleum_coke`, `natural_gas`, `fuel_oil`, `electricity` |
-| `stream_ref` | enum | The stream whose footprint applies: `coal` (coal, coke), `oil_gas` (petroleum coke, gas, oil); empty for `electricity` |
-| `region` | code | In `countries.csv` (`XWL` allowed) |
-| `year_from`, `year_to` | int | Validity window, `year_from ≤ year_to` |
-| `value_low`, `value_central`, `value_high` | float ≥ 0 | low ≤ central ≤ high |
-| `unit` | enum | `t/t` for every fuel except `electricity`; `MWh/t` for `electricity` |
-| `basis`, `source_ids`, `notes` | | As master |
-
-**Key:** (`commodity`, `fuel`, `region`, `year_from`). **Validator checks:** `F01` header; `T01` schema (enums, types, the unit–fuel coupling, `stream_ref` empty exactly for `electricity` and `coal`/`oil_gas` as listed otherwise); `T02` duplicate key; `T03` bounds and window; `T04` `commodity`, `region`, `source_ids` resolve. Optional file: absent is not an error (as `commodity_factors.csv`). The validator does **not** read it into any master check: no master row may cite it (it has no ids).
+**Validator checks (v2.6):** `F01` header exactly as above, in order; `T01` schema failures, including a malformed `factor_id`, `component` other than `own_residue`, an `ore_type` cell on a commodity with no `ore_types` entry, an empty `ore_type` on a commodity that has one, or a `region` containing `;`; `T02` duplicate key, or a `factor_id` duplicated within the file or against any `data/factors/*.csv` id; `T03` bounds and window; `T04` `ore_type` not in `ore_types[<commodity>]`, and the existing `region`, `group`, `residue_type`, `source_ids` references; `T05` allocation completeness. `pipeline.lib.factors.select` matches `ore_type` with exact equality (LIB_SPEC §12).
 
 ### 4.8 `countries.csv`
 
@@ -414,6 +391,7 @@ Transfer rows follow §3.1 instead of this matrix.
 - **Precedence:** the commodity-stage rule is applied first, then the oil-and-gas rule. So an `oil_gas` row at `construction` takes a commodity (building materials), not an oil or gas product.
 - **Oil and gas** (`stream = oil_gas`, every stage except `construction`): `product` is **required**, one of `oil`, `gas`, `ngl`, `bitumen`. Residues shared between products are split by value (D6, `alloc:value`).
 - **Commodity stages** (`commodity_supply`, `end_of_life`, `construction`): `product` is **required**, one of `vocab.json` → `commodities`.
+- **Ore types (v2.6, D74).** `vocab.json` → `ore_types` maps a commodity to its allowed `ore_type` values in `commodity_factors.csv` (§4.7); master rows carry no `ore_type` column (the stream script sums ore types into the commodity product; the region code and the notes keep the class visible). `fuel_input_fuels` maps each fuel of `commodity_fuel_inputs.csv` to its `stream_ref` (§4.13).
 - **`decommissioning`** (nuclear): `product` must be empty. Decommissioning waste and releases are not commodities.
 - **Every other row:** `product` must be empty.
 
@@ -522,10 +500,10 @@ One row may raise several codes. Each code is raised **only** for the condition 
 | `G03` | groups | `multiplier_scope = flow_only` but `role ≠ released_gas`, or the reverse |
 | `G04` | groups | `chain`, `role` or `multiplier_scope` not in its enum; a `parent_group` not in `groups.csv`; or a duplicate `group` |
 | `G05` | groups | A released-gas group that names a `parent_group`, where that parent is not a `chain` group containing the gas group's head as a member (released gases with no parent, e.g. `Kr88+`, are not escape groups and are not checked) |
-| `T01` | countries, activity, baselines, commodity_factors, factors, residue_types, residue_seepage_by_group, reference_bands | Row fails the table's JSON schema (incl. coercion failure) |
+| `T01` | countries, activity, baselines, commodity_factors, commodity_fuel_inputs (v2.6), factors, residue_types, residue_seepage_by_group, reference_bands | Row fails the table's JSON schema (incl. coercion failure) |
 | `T02` | same | Duplicate key (§4.5–4.11) |
 | `T03` | same | Bounds out of order (low ≤ central ≤ high, including `seepage_low/central/high` in `residue_seepage_by_group`; `year_from ≤ year_to`; residue parameter sets all-or-none and ordered; residue parameters filled without `basis` and `source_ids`) |
-| `T04` | same | A reference that does not resolve: `source_ids` (sources), `country`/`region` (countries), `group` (groups), `residue_type` (residue types; also `residue_seepage_by_group`), `driver_series` (activity series), `stage` for the stream (factors), `applies_to` (nuclides or groups) |
+| `T04` | same | A reference that does not resolve: `source_ids` (sources), `country`/`region` (countries), `ore_type` (`vocab.json` → `ore_types`, v2.6), `commodity` (commodities), `group` (groups), `residue_type` (residue types; also `residue_seepage_by_group`), `driver_series` (activity series), `stage` for the stream (factors), `applies_to` (nuclides or groups) |
 | `T05` | commodity_factors | Allocation completeness, as `X03` (bound-row tokens are `T01`) |
 
 **Membership vs schema.** The JSON schemas check types, fixed enums and conditional rules. They do **not** check whether a substream, stage, product, residue type, country, group, source, factor or event ID exists; those are V-, E02- and T04-codes only. If `stream` itself is invalid (`R02`), `V01`–`V03` and `V11` are skipped for that row; if `tier` is invalid, `V03` is skipped.
@@ -612,5 +590,5 @@ The vocabularies for these (`views`, `runs`, `conventions`, `horizons_a`, the ti
 | 2026-10-27 | **v2.4** (Steve, D63): factor files gain a `substream` column after `stage` (§4.9); optional value, checked against `substreams[<stream>]`; `select` gains the `substream` match key (LIB_SPEC §10). |
 | 2026-11-05 | **v2.5** (Steve, D72): stream outputs committed as `<stream>.csv.gz` (deterministic gzip, level 9, MTIME 0, no file name); readers accept both forms; both present is `F04` in the validator and an error in the stream CLIs; build logs stay plain; `.gitattributes` `*.csv.gz binary` (LIB_SPEC §11). |
 | 2026-11-04 | **v2.4b** (Steve, D70): `vocab.json` → `substreams.oil_gas` gains `all` (§5.1), for oil and gas rows that cannot be split into `conventional` and `unconventional` (gas, NGL, vented and oil radon, Pb-210 plate-out, flaring), as `coal` already has `all`. Vocabulary change only: no column, rule code or schema change. |
-| 2026-11-11 | **v2.6 PENDING** (D74; text only, not applied): `commodity_factors.csv` gains `factor_id` and `ore_type` (key), `component` narrowed to `own_residue`; new optional table `commodity_fuel_inputs.csv` (§4.13); `vocab.json` gains `cast_iron`, `tio2_pigment` and an `ore_types` map (§4.7a). Applied only after Steve approves `docs/WIND_SOLAR_SPEC.md` v0.1. |
+| 2026-11-11 | **v2.6** (Steve, D74): `commodity_factors.csv` gains `factor_id` (`commodity:NNNN`, V13 universe) and `ore_type` (key; required for commodities with an `ore_types` entry), `component` narrowed to `own_residue`, `region` single code; new optional table `commodity_fuel_inputs.csv` (§4.13); `vocab.json` gains `cast_iron`, `tio2_pigment`, `ore_types`, `fuel_input_fuels`; `select` gains `ore_type` (LIB v1.6). Data staged in `build/d74_staging/`. |
 | 2026-10-26 | **v2.3** (Steve): new table `residue_seepage_by_group.csv` (§4.12, D56), with fallback to the residue-type triple; seepage triples filled for 15 residue types (D55); sources S0950–S0971 added; pre-1950 stream file convention `data/streams_pre1950/<stream>.csv` documented (§3, D57). |
