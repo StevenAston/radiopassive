@@ -113,7 +113,7 @@ Next: cement (1-2e7), tin, TiO2, silicon (about 2e6). After D6 allocation, coppe
 
 ## 6. Benchmarks for done condition (e)
 UNSCEAR 2016 Annex B has **no** Bq factors for wind/solar (only ore mass and occupational dose), so D51's benchmarks for stream 4 must come from elsewhere. Candidates, two needed in two years:
-1. Bayan Obo inventories (S0405): 149 Mt tailings at 1.0-1.6 Bq/g Th-232 (1.5e17-2.4e17 Bq), 55 Mt BF slag, to end 2006; compare cumulative ree_oxide rows x Bayan Obo REO.
+1. Bayan Obo inventories (S0405): 149 Mt tailings at 1.0-1.6 Bq/g Th-232 (1.5e14-2.4e14 Bq; corrected 2026-11-11, was printed 1,000x too high), 55 Mt BF slag, to end 2006; compare cumulative ree_oxide rows x Bayan Obo REO.
 2. UK steel (NRPB-W48): four plants 2.1e10 Pb-210 and 1.35e11 Po-210 Bq/a (1999); US/UNSCEAR 2000 Table 28 typical plants.
 3. Olympic Dam: tailings radon 520 TBq/a, feed Ra-226 (S0408).
 4. IAEA SRS-68 / TRS-419 annual NORM masses (TRS 419 for metals); red mud 150 Mt/a (S0436) at 100-500 Bq/kg gives 1.5e13-7.5e13 Bq/a Ra-226 (corrected 2026-11-11: was printed 1,000x too high) plus Th, against the aluminium rows.

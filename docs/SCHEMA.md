@@ -4,7 +4,7 @@
 
 > **v2.5 (D72) approved by Steve 2026-11-06 and applied in the migration.** Stream outputs (`data/streams/`, `data/streams_pre1950/`) are committed as deterministic gzip (`<stream>.csv.gz`). The content is unchanged: UTF-8 with LF line endings. Readers and the validator accept both the plain and the gzipped form. If both forms of one stream are present, the validator reports `F04`. Build logs stay plain. The text follows `docs/LIB_SPEC.md` §11.9.
 
-> **v2.6 (D74) approved by Steve 2026-11-11.** `commodity_factors.csv` gains `factor_id` (first column; ids resolvable by `V13`) and `ore_type` (after `region`; in the key), `component` is narrowed to `own_residue`, the new optional table `commodity_fuel_inputs.csv` holds fuel inputs (§4.13), and `vocab.json` gains `cast_iron`, `tio2_pigment`, an `ore_types` map and a `fuel_input_fuels` map (§4.7, §5.5). The precedent is the `substream` key of v2.4 (D63). Implementation: the validator, JSON schemas and `pipeline.lib.factors.select` (LIB_SPEC §12, v1.6) are changed first; the data built for v2.6 is staged under `build/d74_staging/` and enters `data/` in one commit once the v2.6 validator passes its tests.
+> **v2.6 (D74) approved by Steve 2026-11-11.** `commodity_factors.csv` gains `factor_id` (first column; ids resolvable by `V13`) and `ore_type` (after `region`; in the key), `component` is narrowed to `own_residue`, the new optional table `commodity_fuel_inputs.csv` holds fuel inputs (§4.13), and `vocab.json` gains `cast_iron` and `tio2_pigment` (in `commodities` and `products.commodity`), an `ore_types` map and a `fuel_input_fuels` map, and `commodity_components` becomes `["own_residue"]` (§4.7, §4.13, §5.5). The precedent is the `substream` key of v2.4 (D63). Implementation: the validator, JSON schemas and `pipeline.lib.factors.select` (LIB_SPEC §12, v1.6) are changed first; the data built for v2.6 is staged under `build/d74_staging/` and enters `data/` in one commit once the v2.6 validator passes its tests.
 
 ---
 
@@ -230,9 +230,9 @@ Baselines are **not** merged into `build/master.csv`; they are exported alongsid
 
 | Column | Type | Rule |
 |---|---|---|
-| `factor_id` | code | **v2.6.** First column. `commodity:<4 digits>`; unique within the file **and** across every factor file (§4.9). These ids join the set that `V13` resolves master `factor_ids` against |
+| `factor_id` | code | **v2.6.** First column. Pattern exactly `^commodity:[0-9]{4}$` (lower-case prefix, colon, four digits; `commodity:0001`–`commodity:9999`). Unique within the file **and** across every factor file (§4.9). These ids join the set that `V13` resolves master `factor_ids` against |
 | `commodity` | enum | `vocab.json` → `commodities` (v2.6 adds `cast_iron`, `tio2_pigment`) |
-| `component` | enum | **v2.6:** `own_residue` only (METHODS §6.2 (i)). Fuel inputs (METHODS §6.2 (ii)) are in `commodity_fuel_inputs.csv` (§4.13) |
+| `component` | enum | **v2.6:** `own_residue` only (METHODS §6.2 (i)); `vocab.json` → `commodity_components` is `["own_residue"]` (v2.6 removes `embedded_fuel`, which no other table or code used; the master-row boolean `embedded_fuel` is a different thing and is unchanged). Fuel inputs (METHODS §6.2 (ii)) are in `commodity_fuel_inputs.csv` (§4.13) |
 | `group` | code | In `groups.csv` |
 | `tier` | enum | Any non-Sealed tier |
 | `route` | enum | Required when `tier = liberated`, else empty |
@@ -248,7 +248,9 @@ Baselines are **not** merged into `build/master.csv`; they are exported alongsid
 
 **Key (v2.6):** (`commodity`, `component`, `ore_type`, `group`, `tier`, `route`, `residue_type`, `region`, `year_from`, `allocation_variant`). `factor_id` is a second, independent uniqueness rule. `T05` groups rows by the key without `allocation_variant`, so `ore_type` is part of the allocation-completeness group.
 
-**Validator checks (v2.6):** `F01` header exactly as above, in order; `T01` schema failures, including a malformed `factor_id`, `component` other than `own_residue`, an `ore_type` cell on a commodity with no `ore_types` entry, an empty `ore_type` on a commodity that has one, or a `region` containing `;`; `T02` duplicate key, or a `factor_id` duplicated within the file or against any `data/factors/*.csv` id; `T03` bounds and window; `T04` `ore_type` not in `ore_types[<commodity>]`, and the existing `region`, `group`, `residue_type`, `source_ids` references; `T05` allocation completeness. `pipeline.lib.factors.select` matches `ore_type` with exact equality (LIB_SPEC §12).
+**Validator checks (v2.6):** `F01` header exactly as above, in order; `T01` schema failures, including a malformed `factor_id`, `component` other than `own_residue`, an `ore_type` cell on a commodity with no `ore_types` entry, an empty `ore_type` on a commodity that has one, or a `region` containing `;`; `T02` duplicate key, or a `factor_id` duplicated within the file or against any `data/factors/*.csv` id. **Which row is flagged:** within the file, the **later** row in file order (the message names the first, as every `T02`); for a clash with a factor file, the **`commodity_factors.csv` row** is flagged (factor files are checked first, SCHEMA §6.5 order) and the message names the factor file and line; the factor-file row is not flagged. `T03` bounds and window; `T04` `ore_type` not in `ore_types[<commodity>]`, and the existing `region`, `group`, `residue_type`, `source_ids` references; `T05` allocation completeness, **as `X03`**: reported **once per key** (the key without `allocation_variant`), on the key's **first row in file order** (so a lone bound row without its `default` is flagged itself; with several rows, the earliest of them), message naming the missing variants or the missing `alloc:value`/`alloc:mass` token. A bound row lacking its own token is `T01`, not `T05`.
+
+**Migration note (v2.5 → v2.6, for the code-writer).** `pipeline/tests/fixtures/commodity_factors.csv` and the commodity-factor cases in `pipeline/tests/test_validate.py` (e.g. `test_t01_commodity_factors`, `test_t01_commodity_bound_row_needs_its_own_token`, the `F01` optional-table case and the optional-table presence case) use the v2.5 header. Migrate them to the v2.6 header: add `factor_id` (first, `commodity:0001`, …) and `ore_type` (after `region`; a valid copper value such as `porphyry_stratiform` on copper rows, empty for commodities without an `ore_types` entry), adjust any row index or column-position assumption, and keep each test's intent unchanged (the same code on the same logical row). Any fixture row with `component = embedded_fuel` changes to `own_residue` unless the test is about that rejection, which is now a `T01` case. `pipeline.lib.factors.select` matches `ore_type` with exact equality (LIB_SPEC §12).
 
 ### 4.8 `countries.csv`
 
@@ -325,6 +327,35 @@ The residue-type triple in §4.10 applies one seepage fraction to every nuclide 
 
 **Fallback rule:** for a given residue type and group, the engine uses the row here if one exists; otherwise it uses the residue-type triple in `residue_types.csv` (§4.10). A row is useful only where the residue type has a filled seepage set, and the validator does not require one for the other residue types. Rows are added only where research supports a group-specific number; absence of a row means "same as the residue-type triple", not "zero".
 
+### 4.13 `commodity_fuel_inputs.csv` — fuel inputs per tonne of commodity (v2.6, D74(d))
+
+Fuel and electricity consumed per tonne of refined commodity (METHODS §6.2 (ii)). **Reference only:** no stream script reads it, no master row cites it (it has no ids), and it is never added to a stream total in either view (D22). The Phase 3 lifecycle (per-TWh) view multiplies stream ④'s commodity tonnes by these inputs and by the per-tonne footprints of the stream named in `stream_ref`. Replaces the `embedded_fuel` component of `commodity_factors.csv` (§4.7).
+
+| Column | Type | Rule |
+|---|---|---|
+| `commodity` | enum | `vocab.json` → `commodities` |
+| `fuel` | enum | A key of `vocab.json` → `fuel_input_fuels`: `coal`, `coke`, `petroleum_coke`, `natural_gas`, `fuel_oil`, `electricity` |
+| `stream_ref` | enum or empty | Must equal `fuel_input_fuels[<fuel>]`: `coal` for `coal` and `coke`; `oil_gas` for `petroleum_coke`, `natural_gas`, `fuel_oil`; **empty** for `electricity` |
+| `region` | code | In `countries.csv` (`XWL` allowed); one code, never a list |
+| `year_from`, `year_to` | int | 1800 ≤ year ≤ 2100; validity window, `year_from ≤ year_to` |
+| `value_low`, `value_central`, `value_high` | float ≥ 0 | Input per tonne of refined commodity; low ≤ central ≤ high |
+| `unit` | enum | Allowed set {`t/t`, `MWh/t`}: **`MWh/t` if and only if `fuel = electricity`**, `t/t` for every other fuel (tonnes of fuel per tonne of commodity) |
+| `basis` | enum | As master (`measured`, `compiled`, `modelled`, `interpolated`, `extrapolated`) |
+| `source_ids` | list | Required, at least one; every ID in `sources.csv` |
+| `notes` | string | Optional |
+
+There is no `below_detection` column (a fuel input is never a non-detect).
+
+**Key (for `T02`):** (`commodity`, `fuel`, `region`, `year_from`). Unique within the file.
+
+**Rule codes.** The file is optional: absent is not an error; present, it is checked like `commodity_factors.csv`.
+- `F01`: header not exactly the columns above, in order (as for `commodity_factors.csv`). `F02`, `F03` and `D01` apply as to every CSV the validator reads (`D01` checks only the `value_checked_columns`; of those this table has `unit`).
+- `T01`: the row fails `schema/commodity_fuel_inputs.json` (including coercion failure): a type or enum failure in `commodity`, `fuel`, `unit` or `basis`; a negative value; `unit` not coupled to `fuel` as above; `stream_ref` not equal to `fuel_input_fuels[<fuel>]` (non-empty for `electricity`, empty or wrong for any other fuel); an empty `source_ids`; a `region` containing `;`.
+- `T02`: duplicate key. The **later** row in file order is flagged; the message names the first.
+- `T03`: `value_low ≤ value_central ≤ value_high` fails, or `year_from > year_to`.
+- `T04`: `commodity` not in `commodities`, `fuel` not a key of `fuel_input_fuels`, `region` not in `countries.csv`, or a `source_ids` entry not in `sources.csv`.
+- No `T05` (no allocation columns) and no master cross-check.
+
 ---
 
 ## 5. Controlled vocabularies (`data/reference/vocab.json`)
@@ -390,7 +421,7 @@ Transfer rows follow §3.1 instead of this matrix.
 
 - **Precedence:** the commodity-stage rule is applied first, then the oil-and-gas rule. So an `oil_gas` row at `construction` takes a commodity (building materials), not an oil or gas product.
 - **Oil and gas** (`stream = oil_gas`, every stage except `construction`): `product` is **required**, one of `oil`, `gas`, `ngl`, `bitumen`. Residues shared between products are split by value (D6, `alloc:value`).
-- **Commodity stages** (`commodity_supply`, `end_of_life`, `construction`): `product` is **required**, one of `vocab.json` → `commodities`.
+- **Commodity stages** (`commodity_supply`, `end_of_life`, `construction`): `product` is **required**, one of `vocab.json` → `commodities`. `vocab.json` → `products.commodity` (the list the product rule reads, `product_rules.by_stage`) must equal `commodities` element for element; **v2.6 adds `cast_iron` and `tio2_pigment` to both** (and to the commodity enum of `schema/commodity_factors.json`), so stream ④ rows with those products pass `V11`.
 - **Ore types (v2.6, D74).** `vocab.json` → `ore_types` maps a commodity to its allowed `ore_type` values in `commodity_factors.csv` (§4.7); master rows carry no `ore_type` column (the stream script sums ore types into the commodity product; the region code and the notes keep the class visible). `fuel_input_fuels` maps each fuel of `commodity_fuel_inputs.csv` to its `stream_ref` (§4.13).
 - **`decommissioning`** (nuclear): `product` must be empty. Decommissioning waste and releases are not commodities.
 - **Every other row:** `product` must be empty.

@@ -74,6 +74,12 @@ def build_registry():
         r = dict(r)
         if r["commodity"] == "ree_oxide":
             r["ore_type"] = ree_map[i]
+            if r["ore_type"] in ("ree_bayan_obo", "ree_ionic_clay") and int(r["year_from"]) > 1982:
+                # WIND_SOLAR_SPEC v1.1 §13 S1: wind REE tonnage exists from 1982; Bayan Obo has produced since the
+                # late 1950s and ionic clays since the 1980s; the per-tonne values are carried back unchanged.
+                r["notes"] = (f"Window extended {r['year_from']} -> 1982 (WIND_SOLAR_SPEC v1.1 S1; values carried back "
+                              "unchanged, no earlier measurement). ") + r["notes"]
+                r["year_from"] = "1982"
         if r["ore_type"] == "iocg_high_u":
             if r["year_from"] == "1988":  # OD-only era (weights OD 1.00): becomes iocg_olympic_dam
                 r["ore_type"] = "iocg_olympic_dam"
@@ -152,6 +158,9 @@ def build_vocab():
     for c in ("cast_iron", "tio2_pigment"):
         if c not in v["commodities"]:
             v["commodities"].append(c)
+        if c not in v["products"]["commodity"]:  # SCHEMA §5.5: products.commodity mirrors commodities
+            v["products"]["commodity"].append(c)
+    v["commodity_components"] = ["own_residue"]  # SCHEMA v2.6 §4.7: embedded_fuel removed (fuel inputs in §4.13)
     v["ore_types"] = {
         "copper": ["porphyry_stratiform", "iocg_olympic_dam", "iocg_high_u", "cu_co_stratiform", "all"],
         "ree_oxide": ["ree_bayan_obo", "ree_ionic_clay", "ree_monazite", "ree_mt_weld"],
@@ -409,7 +418,19 @@ def build_shares(od):
     ph("wind_pm_share_onshore", range(1982, 2026), [(1982, 1999, 0.0), (2000, 2009, 0.10), (2010, 2019, 0.25), (2020, 2025, 0.30)], "S0400;S0413", "share of new onshore capacity with permanent-magnet generators [A] (Q11).")
     ph("wind_pm_share_offshore", range(2001, 2026), [(2001, 2009, 0.0), (2010, 2015, 0.20), (2016, 2019, 0.50), (2020, 2025, 0.75)], "S0400", "share of new offshore capacity with permanent-magnet generators [A] (Q11).")
     ph("pv_utility_share", range(2001, 2026), [(2001, 2009, 0.30), (2010, 2015, 0.55), (2016, 2025, 0.60)], "S0444", "utility-scale share of new PV [A] (Q12).")
-    ph("steel_bf_route_share", range(1950, 2026), [(1950, 1969, 0.90), (1970, 1989, 0.80), (1990, 2009, 0.68), (2010, 2025, 0.71)], "S0421", "BF-route (BOF plus open hearth) share = 1 - EAF share (Q10); cross-check prod_pig_iron/prod_steel.")
+    prod = {(r["series"], int(r["year"])): float(r["value_central"]) for r in read("data/activity/commodity_production.csv")
+            if r["country"] == "XWL" and r["series"] in ("prod_pig_iron", "prod_steel")}
+    for y in range(1950, 2026):
+        v = era(y, [(1950, 1969, 0.90), (1970, 1989, 0.80), (1990, 2009, 0.68), (2010, 2025, 0.71)])
+        note = "BF-route (BOF plus open hearth) share = 1 - EAF share (Q10)."
+        src = "S0421"
+        if ("prod_pig_iron", y) in prod and ("prod_steel", y) in prod:
+            ratio = prod[("prod_pig_iron", y)] / prod[("prod_steel", y)]
+            if abs(v - ratio) > 0.15:
+                note = (f"Era placeholder {v:.2f} was outside +-0.15 of prod_pig_iron/prod_steel ({ratio:.3f}, open-hearth era: "
+                        "pig iron plus scrap); set to that ratio (WIND_SOLAR_SPEC v1.1 S3).")
+                v, src = ratio, "S0421;S0410"
+        rows.append(arow("steel_bf_route_share", y, "XWL", v, v, v, "1", "modelled", src, PH + note))
     ph("ree_route_share_bayan_obo", range(1982, 2026), [(1982, 2011, 0.60), (2012, 2025, 0.55)], "S0403;S0411;S0404", "REE route share, Bayan Obo [A] (Q6).")
     ph("ree_route_share_ionic_clay", range(1982, 2026), [(1982, 2011, 0.35), (2012, 2025, 0.30)], "S0403", "REE route share, ionic clays [A].")
     ph("ree_route_share_monazite", range(1982, 2026), [(1982, 2025, 0.05)], "S0404", "REE route share, monazite [A].")
@@ -436,7 +457,8 @@ def build_shares(od):
         else:
             c_share = c_t / world
         od_t = od.get(y, (0, 0, 0))[1]
-        a_other = (float(r["A_iocg_high_u_t"]) - od_t) / world
+        od_orig = {2024: 322000.0, 2025: 330000.0}.get(y, od_t)  # copper_classes.md A tonnage used Copper SA totals
+        a_other = (float(r["A_iocg_high_u_t"]) - od_orig) / world  # PH + CP as in copper_classes.md
         assert a_other >= -1e-9, y
         a_other = max(a_other, 0.0)
         od_s = od_t / world
@@ -463,27 +485,45 @@ def od_series():
             c = 190000
         elif y == 2023:
             c = 212500
-        elif y == 2024:
-            c = 322000
-        else:
-            c = 330000
+        else:  # 2024-25: the 322/330 kt of copper_classes.md are BHP Copper South Australia totals (OD + PH + CP after the
+            c = 215000  # OZ Minerals acquisition, May 2023); OD alone held at the FY2023 level [A] (+-20 percent)
         cu[y] = (c * 0.8, c, c * 1.2) if y != 2023 else (212500 * 0.98, 212500, 212500 * 1.02)
     cu[2021] = (205300 * 0.98, 205300, 205300 * 1.02)
     cu[2022] = (138400 * 0.98, 138400, 138400 * 1.02)
     u_read = {2021: 3267 * 0.848, 2022: 2375 * 0.848, 2023: 2888.0}
     ratio = 2888.0 / 212500
-    uu = {}
+    od_share_aus = 2888.0 / 4693.0  # FY2023: OD is the only conventional mill since Ranger stopped processing (Jan 2021)
+    aus = {int(r["year"]): r for r in read("data/activity/uranium.csv") if r["series"] == "u_production" and r["country"] == "AUS"}
+    isl = [r for r in read("data/factors/nuclear.csv") if r["stage"] == "u_mining_isl" and r["region"] == "XWL"
+           and not r["group"] and not r["driver_series"]]
+
+    def conv(y):  # AUS conventional tonnage as the nuclear stream computes it: P x (1 - s), s = XWL default ISL share
+        f = [r for r in isl if int(r["year_from"]) <= y <= int(r["year_to"])]
+        assert len(f) == 1, y
+        sl, sc, sh = (float(f[0][k]) for k in ("value_low", "value_central", "value_high"))
+        a = aus[y]
+        return (float(a["value_low"]) * (1 - sh), float(a["value_central"]) * (1 - sc), float(a["value_high"]) * (1 - sl))
+
+    uu, how = {}, {}
     for y in cu:
         if y in u_read:
             v = u_read[y]
-            uu[y] = (v * 0.98, v, v * 1.02)
+            t, how[y] = (v * 0.98, v, v * 1.02), "read"
+        elif y >= 2024:
+            v = float(aus[y]["value_central"]) * od_share_aus
+            t, how[y] = (v * 0.8, v, v * 1.2), "share"
         else:
             v = cu[y][1] * ratio
-            uu[y] = (v * 0.7, v, v * 1.3)
-    return cu, uu, set(u_read)
+            t, how[y] = (v * 0.7, v, v * 1.3), "ratio"
+        cv = conv(y)
+        capped = tuple(min(a, b) for a, b in zip(t, cv))
+        if capped != t:
+            how[y] += "+cap"
+        uu[y] = capped
+    return cu, uu, how
 
 
-def build_activity_appends(cu, uu, u_years):
+def build_activity_appends(cu, uu, how):
     aus_u = {int(r["year"]): r for r in read("data/activity/uranium.csv") if r["series"] == "u_production" and r["country"] == "AUS"}
     aus_cu = {int(r["year"]): r for r in read("data/activity/commodity_production.csv") if r["series"] == "prod_copper" and r["country"] == "AUS"}
     cu_rows, u_rows = [], []
@@ -492,11 +532,17 @@ def build_activity_appends(cu, uu, u_years):
         cu_rows.append(arow("prod_copper_od", y, "AUS", *cu[y], "t", "compiled" if read_cu else "modelled",
                             "S0407", "D74(a). Olympic Dam refined copper, BHP fiscal year ending June ascribed to the calendar year. "
                             + ("Read (S0407: FY2021 205.3 kt, FY2022 138.4 kt, FY2023 212.5 kt); +-2 percent." if read_cu else
-                               "ESTIMATE [A] +-20 percent (copper_classes.md section 4.1); replace from BHP/WMC annual reports.")))
-        u_rows.append(arow("u_production_od", y, "AUS", *uu[y], "t", "compiled" if y in u_years else "modelled",
-                           "S0407", "D74(a). Olympic Dam uranium, t U (U3O8 x 0.848), fiscal year to calendar year. "
-                           + ("Read (S0407 payable U3O8)." if y in u_years else
-                              "ESTIMATE [A]: prod_copper_od x FY2023 ratio 0.01359 t U per t Cu, +-30 percent; replace from BHP/WMC reports.")))
+                               ("ESTIMATE [A] +-20 percent: OD alone held at the FY2023 level; the 322 and 330 kt of copper_classes.md section 4.1 are BHP Copper South Australia totals (OD + Prominent Hill + Carrapateena after May 2023) and are not used; replace from BHP annual reports." if y >= 2024 else
+                               "ESTIMATE [A] +-20 percent (copper_classes.md section 4.1); replace from BHP/WMC annual reports."))))
+        h = how[y]
+        txt = {"read": "Read (S0407 payable U3O8 x 0.848; +-2 percent).",
+               "share": "ESTIMATE [A]: AUS u_production x FY2023 OD share 0.6154 (OD is the only conventional mill since Ranger stopped processing in January 2021); +-20 percent.",
+               "ratio": "ESTIMATE [A]: prod_copper_od x FY2023 ratio 0.01359 t U per t Cu, +-30 percent."}[h.split("+")[0]]
+        if h.endswith("+cap"):
+            txt += " Bounds capped at the AUS conventional tonnage P x (1 - s) of the nuclear stream (NUCLEAR_SPEC 14.3 rule)."
+        u_rows.append(arow("u_production_od", y, "AUS", *uu[y], "t", "compiled" if h.startswith("read") else "modelled",
+                           "S0407", "D74(a). Olympic Dam uranium, t U, BHP fiscal year to calendar year. " + txt
+                           + ("" if h.startswith("read") else " Replace from BHP/WMC annual reports.")))
         if y in aus_u:
             assert uu[y][1] <= float(aus_u[y]["value_central"]), (y, uu[y], aus_u[y]["value_central"])
         if y in aus_cu:
@@ -523,6 +569,8 @@ def main():
     counts["data/factors/wind_solar.csv"] = write("data/factors/wind_solar.csv", header("data/factors/oil_gas.csv"), [])
     counts["data/activity/material_intensity.csv"] = write("data/activity/material_intensity.csv", ACT_COLS, build_intensity())
     cu, uu, uy = od_series()
+    for y in sorted(uu):
+        print("OD", y, round(cu[y][1]), [round(x) for x in uu[y]], uy[y])
     counts["data/activity/wind_solar_shares.csv"] = write("data/activity/wind_solar_shares.csv", ACT_COLS, build_shares(cu))
     cu_rows, u_rows = build_activity_appends(cu, uu, uy)
     for target, extra in (("data/activity/commodity_production.csv", cu_rows), ("data/activity/uranium.csv", u_rows)):

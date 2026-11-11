@@ -1,6 +1,6 @@
 # `pipeline/streams/wind_solar.py`: stream script contract (Task 2.4, wind and solar materials)
 
-Status: **v1.0 FINAL (2026-11-11), approved by Steve as D74.** For the test-writer and the code-writer. Steve approved every resolution of §0 on 2026-11-11 (Q1: a fourth copper ore type `iocg_olympic_dam`; Q2: a `factor_id` column `commodity:NNNN`; Q3–Q18 as recommended, including the housekeeping of Q14). The schema (v2.6), library (v1.6), vocabulary, registry, engine-parameter, source and activity changes this contract depends on are built and staged under `build/d74_staging/` (manifest `build/d74_staging/APPLY.md`, generator `research/wind_solar/build_d74_staging.py`); they enter `data/` in one commit after the v2.6 validator and LIB v1.6 pass their spec-blind tests, because the current validator rejects the new columns (§12). The Tier 2 `grid` stage (`research/tier2_memo.md`) is **not** in scope; it is named only as a possible later extension (§7.4).
+Status: **v1.1 (2026-11-11): v1.0 FINAL (approved by Steve as D74) plus the clarifications after the spec-blind test round (§13.9–§13.20, S1–S11), written into the body.** For the test-writer and the code-writer. Steve approved every resolution of §0 on 2026-11-11 (Q1: a fourth copper ore type `iocg_olympic_dam`; Q2: a `factor_id` column `commodity:NNNN`; Q3–Q18 as recommended, including the housekeeping of Q14). The schema (v2.6), library (v1.6), vocabulary, registry, engine-parameter, source and activity changes this contract depends on are built and staged under `build/d74_staging/` (manifest `build/d74_staging/APPLY.md`, generator `research/wind_solar/build_d74_staging.py`); they enter `data/` in one commit after the v2.6 validator and LIB v1.6 pass their spec-blind tests, because the current validator rejects the new columns (§12). The Tier 2 `grid` stage (`research/tier2_memo.md`) is **not** in scope; it is named only as a possible later extension (§7.4).
 
 Derived from METHODS §2.3, §3, §5, §6.1–§6.3, §8, §10 (D6, §10.2 attribution, §10.3 negligibility), §11; SCHEMA v2.5 and **v2.6** (D74); `docs/LIB_SPEC.md` v1.6 (§3.1 `select`, §10 and §12: exact-equality `substream` and `ore_type` keys); `docs/DECISIONS.md` D1–D74; `PLAN.md` Task 2.4; `research/wind_solar/commodity_notes.md`, `copper_classes.md`, `commodity_factors_draft.csv` (208 rows), `material_intensity_v2.csv` (222 rows), `copper_class_shares.csv`, `co_product_inputs.csv`, `sources_task24_proposed.csv`; `research/tier2_memo.md`; `data/activity/capacity_additions.csv`. Modelled on `docs/OIL_GAS_SPEC.md` v1.1 and `docs/OTHER_SPEC.md` v1.1 (structure, the coal lessons of COAL_SPEC §11–§12, the D71 clarifications), so where a convention is not restated here it is the oil and gas one. Where this file and METHODS disagree, METHODS wins and this file is a bug.
 
@@ -123,7 +123,7 @@ The three `cu_class_share_*` series plus `prod_copper_od / prod_copper` sum to 1
 | `u_production_od` | `uranium.csv` | `AUS` | 1988–2025 | `t` (t U) | nuclear carve-out only; premise here |
 | `od_value_share_u` ($w_U$) | `wind_solar_shares.csv` | `AUS` | 1988–2025 | `1` | §6.3, both streams; placeholder 0.12 (S0407) |
 
-The tonnages in `copper_classes.md` §4.1 are mine-level estimates [A, ±20 %] (45 kt Cu 1988–89 … 330 kt 2025) and must be replaced from BHP/WMC annual reports before they are applied; FY2023 (212.5 kt Cu, 2,888 t U) is read (S0407).
+OD copper: FY2021–23 read (S0407: 205.3, 138.4, 212.5 kt); other years mine-level estimates [A, ±20 %] from `copper_classes.md` §4.1, except **2024–25 = 215 kt [A]** (the 322 / 330 kt there are BHP Copper South Australia totals including PH and CP, so the PH+CP class share keeps its `copper_classes.md` tonnage and OD is held at the FY2023 level). OD uranium follows the NUCLEAR_SPEC §14.2 rule (BHP FY2021–23; 2024–25 = AUS × 0.6154; earlier years Cu × 0.01359; every bound capped at the AUS conventional tonnage).
 
 **Group Q: world production (exists, `commodity_production.csv`, `XWL`).** `prod_copper`, `prod_aluminium`, `prod_steel`, `prod_pig_iron`, `prod_ree_oxide`, `prod_silver`, `prod_zinc`, `prod_tin`, `prod_cement`: used only for the §4.3 attribution check $\sigma_c\le1$ and the OD share.
 
@@ -185,7 +185,7 @@ A **family** is the set of registry rows sharing (`commodity`, `ore_type`, regio
 
 ### 3.2 Aggregation: one row per master key
 
-Several technology classes $k$ contribute to the same master key (e.g. copper tailings at `XXX` from `wind_on_nopm`, `wind_on_pm`, `wind_off_*` all land in substream `wind`). The script sums them per key with **`sum_correlated`** (the same factor row multiplies every contribution, so they are fully correlated in it) and lists the union of `factor_ids` and `source_ids`. Wind and solar never merge (different `substream`). **Ore types that share a master key** (CU-OD and CU-A: both `AUS`, `metal_tailings`, same groups) are merged the same way **after** the D6 split, variant by variant (OD default $1-w_U$, PH/CP default `d6_value_share_copper_iocg_ph_cp`); the merged row's `notes` name both ore types and `factor_ids` lists both factor ids. Master rows have no `ore_type` column (SCHEMA §5.5); the §9(f) hand case recomputes both parts.
+Several technology classes $k$ contribute to the same master key (e.g. copper tailings at `XXX` from `wind_on_nopm`, `wind_on_pm`, `wind_off_*` all land in substream `wind`). **The factor is applied per class and the class contributions are summed afterwards** (v1.1, S4): each contribution is computed stepwise (§4.2 steps 1–5), then the contributions that share a master key and variant are summed with **`sum_correlated`** (the same factor row multiplies every contribution, so they are fully correlated in it), listing the union of `factor_ids` and `source_ids`. No summed tonnage is formed before the factor. Wind and solar never merge (different `substream`). **Ore types that share a master key** (CU-OD and CU-A: both `AUS`, `metal_tailings`, same groups) are merged the same way **after** the D6 split, variant by variant (OD default $1-w_U$, PH/CP default `d6_value_share_copper_iocg_ph_cp`); the merged row's `notes` name both ore types and `factor_ids` lists both factor ids. Master rows have no `ore_type` column (SCHEMA §5.5); the §9(f) hand case recomputes both parts.
 
 ### 3.3 Notes suffixes (OIL_GAS_SPEC §3.3 grammar)
 
@@ -226,13 +226,24 @@ with $\pi_k$ the drivetrain or utility share or its complement. A year with no c
 
 ### 4.2 Commodity tonnes
 
-$$M_{k,c}(y)=\mathrm{product}\big(C_k(y),\,I_{k,c}(y)\big)\quad[\mathrm{t}],\qquad M_{s,c}(y)=\sum_{k\in s}M_{k,c}(y)\ \text{(after the factor, §3.2)}$$
+Named intermediates, in this order, one `product`, `apply` or `split` per step (stepwise nesting as coal, nuclear and oil and gas; D71 C4):
 
-Steel tonnes are multiplied by `steel_bf_route_share` (the steel rows are per tonne of BF-route steel; EAF scrap steel carries no ore residue, a stated simplification). REE tonnes are multiplied by the route shares (§5.2) and the charge factor (§6.2). Copper tonnes are split by class share (§5.1).
+1. $C_k=\mathrm{product}(C_{\mathrm{tech}(k)},\,\pi_k)$ (§4.1), in GW.
+2. $M_{k,c}=\mathrm{product}(C_k,\,I_{k,c})$, in t.
+3. $T_{k,c,o}=\mathrm{product}(M_{k,c},\,\mathrm{sh}_{c,o})$, in t. $\mathrm{sh}_{c,o}$ is the family's one tonnage share:
+   - the copper class share $s_o$ (§5.1);
+   - for REE, route share × charge factor of the variant, multiplied as exact scalars first (§5.2, §6.2);
+   - `steel_bf_route_share` for steel;
+   - otherwise 1, and the step is skipped.
+4. $A_{k,o,g,\tau}=\mathrm{apply}(T_{k,c,o},\ \text{"t"},\ F_{o,g,\tau})$, in Bq/a.
+5. For joint families, $\mathrm{split}(A,\ \text{shares of the variant})$ (§6); otherwise $A$ is the `default` value.
+6. Sum over classes $k$ (and over ore types sharing a key) per master key and variant with `sum_correlated` (§3.2).
+
+EAF scrap steel carries no ore residue (a stated simplification). A contribution whose step-3 tonnage is exactly 0 at central is **skipped**: no lookup, no row, no log (§13.13).
 
 ### 4.3 Attribution check (METHODS §10.2)
 
-For every commodity with a world series: $\sigma_c(y)=\big(\sum_k M_{k,c}(y)\big)/Q_c(y)$ at central must satisfy $\sigma_c\le1$, else `LibError` (LIB_SPEC §2.3 semantics). The script records $\sigma_c$ in the log (`attribution`, one entry per commodity and decade, detail the maximum). Indicative 2024 (author arithmetic, not a test): copper about 2.3 Mt of 23 Mt ($\sigma\approx0.10$), aluminium 3.6 Mt of 72 Mt (0.05), REE about 0.03 (wind magnets only).
+For every commodity with a world series: $\sigma_c(y)=\big(\sum_k M_{k,c}(y)\big)/Q_c(y)$ (central $M_{k,c}$ of §4.2 step 2) at central must satisfy $\sigma_c\le1$, else `LibError` (LIB_SPEC §2.3 semantics). The script records $\sigma_c$ in the log (`attribution`, one entry per commodity and decade, detail the maximum). Indicative 2024 (author arithmetic, not a test): copper about 2.3 Mt of 23 Mt ($\sigma\approx0.10$), aluminium 3.6 Mt of 72 Mt (0.05), REE about 0.03 (wind magnets only).
 
 ---
 
@@ -242,13 +253,15 @@ For every commodity with a world series: $\sigma_c(y)=\big(\sum_k M_{k,c}(y)\big
 
 For each class share $s_o(y)$, $o\in\{$`porphyry_stratiform`, `iocg_olympic_dam`, `iocg_high_u`, `cu_co_stratiform`$\}$, with $s_{\mathrm{OD}}(y)=$ `prod_copper_od`$_{\mathrm{AUS}}$ / `prod_copper`$_{\mathrm{XWL}}$ (central ratio, exact; zero before 1988):
 
-$$R^{\mathrm{Cu}}_{o,g,\tau}(y)=\mathrm{apply}\big(\mathrm{product}(M_{s,\mathrm{Cu}}(y),\,s_o(y)),\ \text{"t"},\ F_{o,g,\tau}\big)$$
+$$A^{\mathrm{Cu}}_{k,o,g,\tau}(y)=\mathrm{apply}\big(\mathrm{product}(M_{k,\mathrm{Cu}}(y),\,s_o(y)),\ \text{"t"},\ F_{o,g,\tau}\big)$$
+
+per class $k$ (§4.2 steps 3–4), split by D6 (step 5) and summed over $k$ (step 6)
 
 then D6 (§6.1, §6.3). The smelter family CU-SM applies to the whole copper tonnage (no class split) with the porphyry D6 shares. **Indicative** (copper_classes.md §4.3, 2024): world S5 tailings factor $2.6\times10^{7}$ / $4.8\times10^{7}$ / $2.0\times10^{8}$ Bq per t Cu before D6; smelter terms add $2.3\times10^{6}$.
 
 ### 5.2 Rare earths
 
-$M_{s,\mathrm{REE}}$ is wind REO (Nd, Pr, Dy, Tb oxides, about 0.28 t/MW for direct-drive PM); solar REE is reported as 0 (METHODS §10.2; Phase 1 §6). For each route $r$: $\mathrm{product}(M,\ \text{route share}_r,\ \text{charge factor})$ → registry family RE-*. The four route shares sum to 1 at central (premise). Dy and Tb come mainly from ionic clays, so a single route split for all four oxides is a stated simplification (§10).
+$M_{s,\mathrm{REE}}$ is wind REO (Nd, Pr, Dy, Tb oxides, about 0.28 t/MW for direct-drive PM); solar REE is reported as 0 (METHODS §10.2; Phase 1 §6). For each class $k$, route $r$ and variant $v$: $T=\mathrm{product}(M_{k,\mathrm{REE}},\ \text{route share}_r\times\text{charge factor}_v)$ (§4.2 step 3), then the RE-* factor. Because the charge factor differs by variant, REE contributions are computed per variant from step 3 on. The four route shares sum to 1 at central (premise). Dy and Tb come mainly from ionic clays, so a single route split for all four oxides is a stated simplification (§10).
 
 ### 5.3 Steel, cast iron, aluminium, cement and the rest
 
@@ -289,7 +302,7 @@ $P_{\mathrm{OD}}(y)=$ `prod_copper_od`$(y)\times F_{\mathrm{OD}}$ (Bq/a by group
 | `bound_main` (`alloc:main`) | 1 | 0 |
 | `bound_radio` (`alloc:radio`) | 0 | 1 |
 
-Stream ④ books only its own copper's part of the copper ledger: $M_{s,\mathrm{Cu}}\,s_{\mathrm{OD}}\,F_{\mathrm{OD}}\times(1-w_U)$ in the default. The rest of the copper ledger belongs to copper's other end uses (outside the energy streams; non-energy sequel). Consistency test (§9(c)4): for every year and variant, nuclear F8 + copper ledger = $P_{\mathrm{OD}}$ at low, central and high (relative $10^{-5}$), computed from the files. **Not in either ledger:** the military share $w_U(1-\phi)P_{\mathrm{OD}}$ (D16; zero in practice after 1990, logged); the OD mine-ventilation and mill radon (stay in nuclear F1/F3 on full `AUS` tonnage, NUCLEAR_SPEC §14.3).
+Stream ④ books only its own copper's part of the copper ledger: $M_{s,\mathrm{Cu}}\,s_{\mathrm{OD}}\,F_{\mathrm{OD}}\times(1-w_U)$ in the default. The rest of the copper ledger belongs to copper's other end uses (outside the energy streams; non-energy sequel). Consistency test (§9(c)4): for every year and variant, nuclear F8 + copper ledger = $P_{\mathrm{OD}}$ at low, central and high (relative $10^{-5}$), computed from the files. **Not in either ledger:** the military share $a_v(1-\phi)P_{\mathrm{OD}}$ per variant (D16; non-zero only 1988–90; logged by the nuclear stream); the OD mine-ventilation and mill radon (stay in nuclear F1/F3 on full `AUS` tonnage, NUCLEAR_SPEC §14.3).
 
 ---
 
@@ -333,7 +346,7 @@ The five `embedded_fuel` draft rows (steel U238+/Th232, cement U238+, silicon U2
 - **`commodity_supply`**: every row of this stream.
 - **`end_of_life`**: no rows. Landfilled blades and panels create no new mobilisation, and recycling-smelter off-gas is expected negligible (Phase 1 §7; METHODS §6.3 note). Marked **negligible** under §10.3 with the Phase 1 estimate stated in §9(d).
 - **Thin-film PV** (CdTe, CIGS): by-product metals (Te, Cd, In, Ga, Se) about $10^{7}$ Bq/MW × 2.3 % share by value allocation (`commodity_notes.md` §3.13): negligible; no rows (Q9). The result depends on D6 (mass allocation would make Te about $10^{12}$ Bq/t).
-- **Dropped intensity materials:** boron, chromium, manganese, molybdenum, nickel, lead (rooftop), germanium, polymers, carbon fibre, aggregate: no footprint in the registry; listed in the log once (`no_footprint`).
+- **Dropped intensity materials:** boron, chromium, manganese, molybdenum, nickel, lead (rooftop), germanium, polymers, carbon fibre, aggregate: no footprint in the registry. They were never put into `material_intensity.csv`, so the script never sees them and they are **not logged**. `no_footprint` fires only for an `mi_*` series whose commodity has no registry family. No such series exists in the staged files, so it fires only in fixtures (§13.15).
 - **CSP:** capacity exists, intensity does not (`no_intensity`).
 
 ### 7.4 Possible later extension (not in v0.1)
@@ -352,9 +365,9 @@ A Tier 2 **`grid`** stage (T&D copper and aluminium, BESS balance of plant) driv
 | `no_footprint` | an intensity commodity with no registry family (once per commodity per build) |
 | `placeholder_share` | a group S placeholder row was used; aggregated per series and year run |
 | `attribution` | the $\sigma_c$ record of §4.3 (one per commodity and decade) |
-| `od_military_remainder` | $w_U(1-\phi)>0$ in a year (§6.3) |
+| `od_military_remainder` | written by the **nuclear** stream only (NUCLEAR_SPEC §14.4), per year and variant with $a_v(1-\phi)>0$; never by this stream |
 
-Aggregated runs are identified by `country`, `group` and the union of years (D71 C9). The CLI writes the full log with `--write`.
+Aggregated runs are identified by `country`, `group` and the union of years (D71 C9). Field formats: §13.14. The CLI writes the full log with `--write`.
 
 ---
 
@@ -363,7 +376,7 @@ Aggregated runs are identified by `country`, `group` and the union of years (D71
 Tests read every factor, intensity and share from the files, behind explicit premise assertions (§9(i)).
 
 - **(a) Schema.** `data/streams/wind_solar.csv.gz` passes the validator **with schema v2.6 applied** (Q1, Q2). In particular: `product` in commodities (V11); stage `commodity_supply`, tiers allowed (V03; `commodity_supply` allows impounded, dispersed, liberated, memo_earth_moved); residue/route rules (R02); X03 for every joint key; `factor_ids` resolve (V13, needs Q2); no `embedded_fuel = true` row.
-- **(b) Coverage.** For each family and each year with a driver and a registry row, a row exists for every registry (group, tier, route, residue) combination and, for joint families, all three variants. The committed log has no `no_factor`. METHODS §4.3 candidates for ④ (U-238 and Th-232 series, Pb-210, Po-210, Rn-222): each appears in some 2020 row. The report lists every commodity under 0.1 % of the stream in every decade (Q16).
+- **(b) Coverage.** For each family and each year with a driver and a registry row, a row exists for every registry (group, tier, route, residue) combination and, for joint families, all three variants. The committed log has no `no_factor` (v1.1: RE-BO and RE-IC windows start in 1982, S1; every other family's window covers the years in which its tonnage is non-zero). METHODS §4.3 candidates for ④ (U-238 and Th-232 series, Pb-210, Po-210, Rn-222): each appears in some 2020 row. The report lists every commodity under 0.1 % of the stream in every decade (Q16).
 - **(c) Conservation and identities.**
   1. Class shares: $\sum_o s_o(y)=1$ at central ($10^{-6}$); each copper family's rows divided by its factor and D6 share equal $M_{s,\mathrm{Cu}}s_o$.
   2. REE routes sum to 1; the charge factor is applied once.
@@ -376,12 +389,12 @@ Tests read every factor, intensity and share from the files, behind explicit pre
 
   | # | Year | Component | Stream-side quantity | Reference | Independence | Indicative (author arithmetic, not an expectation) |
   |---|---|---|---|---|---|---|
-  | B1 | 2006 (cumulative to end 2006) | REE, Bayan Obo tailings Th-232 | RE-BO Th232 tailings factor (before D6 and charge factor) × cumulative Bayan Obo REO (CHN `prod_ree_oxide` × `ree_route_share_bayan_obo`, 1958–2006) | S0405: 149 Mt tailings at 1.0–1.6 Bq/g Th-232, $1.5$–$2.4\times10^{17}$ Bq | **Partly circular**: the factor (113 t tailings per t REO) is derived from the same inventory. Independent route: ore mined to end 2006, 276 Mt at 0.032 % ThO₂ (1.14 Bq/g), gives $3.1\times10^{17}$ Bq Th-232 mined, an upper bound for the tailings (tested: stream ≤ upper bound and ≥ ⅓ of it) | route-share placeholder matters; result reported with it |
+  | B1 | 1990–2006 cumulative | REE, Bayan Obo tailings Th-232 | RE-BO Th232 tailings factor (before D6 and charge factor) × cumulative Bayan Obo REO (CHN `prod_ree_oxide` × `ree_route_share_bayan_obo`, **1990–2006**; the CHN series starts in 1990, so output since the late 1950s before that is outside the sum) | S0405: 149 Mt tailings at 1.0–1.6 Bq/g Th-232 = $1.5$–$2.4\times10^{14}$ Bq to end 2006 | **Partly circular** (the 113 t/t factor comes from the same inventory). Independent upper bound: ore mined to end 2006, 276 Mt at 1.14 Bq/g = $3.1\times10^{14}$ Bq | Stream about 0.31 of the ore bound (about $9.5\times10^{13}$ Bq), 0.40–0.63 of the inventory. **Pass rule (v1.1, S2): stream ≤ ore bound, ≥ 1/10 of it, and within ×3 of the inventory range**: it passes. The shortfall is expected (1958–89 output excluded). v1.0 printed $10^{17}$, a ×1,000 slip |
   | B2 | 1999 | Steel stack Pb-210 and Po-210 | ST stack factors × GBR `prod_steel` 1999 × `steel_bf_route_share` | NRPB-W48 (S0430): four UK plants $2.1\times10^{10}$ Pb-210, $1.35\times10^{11}$ Po-210 Bq/a | **Partly circular** (the factor's low is Scunthorpe, W48); IJmuiden (RP-135 Table 15) and UNSCEAR 2000 Table 28 set the centre and high | 16.3 Mt × 0.78 [A] × 4,600 = $5.8\times10^{10}$ (ratio 2.8, near the edge); Po-210 $1.5\times10^{11}$ (1.1) |
   | B3 | 2017 | Aluminium red mud Ra-226 | AL Ra226+ (impounded + dispersed) × `prod_aluminium` 2017 | S0436: about 150 Mt/a red mud at 100–500 Bq/kg Ra-226: $1.5$–$7.5\times10^{13}$ Bq/a | Independent of the factor's tonnage basis (3.2 t/t, S0409 activities) | $9.6\times10^{5}\times5.94\times10^{7}=5.7\times10^{13}$ (inside the range; range test). `commodity_notes.md` §6 item 4 now reads $1.5$–$7.5\times10^{13}$ (corrected 2026-11-11 from a ×1,000 slip) |
   | B4 | 2010 | OD tailings radon | **Deferred to Phase 3** (radon from residues is an engine flow, SCHEMA §3.2) | S0408: completed tailings facility 520 TBq/a (13.9 MBq/s ≈ 439 TBq/a, source quirk) | Independent | Phase 2 checks only that the implied effective ε (about 0.004, Phase 1 §8) lies inside the `metal_tailings` ε triple (premise) |
 
-  Two benchmark years with independent references are therefore 1999 (B2) and 2017 (B3), with 2006 (B1) as a consistency check. A B2 Pb-210 ratio above 3 is a **documented miss**, not a failure, if the Po-210 ratio passes (the 4.0e9 versus 3.96e10 Bq/a contradiction in the NRPB papers is unresolved, `commodity_notes.md` §3.2).
+  Two benchmark years with independent references are therefore 1999 (B2) and 2017 (B3), with 1990–2006 (B1) as a consistency check. A B2 Pb-210 ratio above 3 is a **documented miss**, not a failure, if the Po-210 ratio passes (the 4.0e9 versus 3.96e10 Bq/a contradiction in the NRPB papers is unresolved, `commodity_notes.md` §3.2).
 - **(f) Hand-computed cases** (at least twelve, 2020 unless stated): a CU-B `Ra226+` row (all three variants); a CU-OD row in 2023 with $w_U=0.12$ and the matching nuclear F8 row; a CU-C row (COD); a CU-SM slag dispersed row; RE-BO Th232 in 2015 (default, both bounds, charge factor); RE-MW in 2012 and absence in 2011; an ST stack Po210 row (BF share); an AL red-mud dispersed row; a CE `Rn222+` row; an AG row (joint, radio = silver); a wind row merging three classes; a PV rooftop aluminium row; a placeholder-flagged row's notes.
 - **(g) Fixtures** (miniature trees in `tmp_path`): absent share series → `no_driver`, no raise; a share with high > 1 raises; class shares that do not sum to 1 fail the premise; $\sigma_c>1$ raises; duplicate activity rows raise; ambiguous registry rows propagate; `ore_type=""` does not match an `iocg_high_u` row (exact equality); a missing OD series gives no CU-OD rows and logs `no_driver`; CSP-only capacity logs `no_intensity`.
 - **(h) Pre-1950 file:** header only.
@@ -419,7 +432,7 @@ All data items below are **built and staged** under `build/d74_staging/` with th
 **Schema and library (SCHEMA v2.6, LIB v1.6)**
 - S1. `schema/commodity_factors.json` and `pipeline/validate.py` `_check_commodity_factors`: new columns `factor_id` (first, Q2) and `ore_type` (after `region`); key becomes (`commodity`, `component`, `ore_type`, `group`, `tier`, `route`, `residue_type`, `region`, `year_from`, `allocation_variant`); `ore_type` checked against `vocab.json` → `ore_types[<commodity>]`; `commodity:NNNN` ids unique across factor files and added to the V13 universe; commodity enum gains `cast_iron`, `tio2_pigment`.
 - S2. New table `data/reference/commodity_fuel_inputs.csv` with `schema/commodity_fuel_inputs.json` and validator checks (SCHEMA §4.13 proposal).
-- S3. `vocab.json`: `commodities` += `cast_iron`, `tio2_pigment`; new `ore_types` map (copper: `porphyry_stratiform`, `iocg_olympic_dam` (Q1), `iocg_high_u`, `cu_co_stratiform`, `all`; ree_oxide: `ree_bayan_obo`, `ree_ionic_clay`, `ree_monazite`, `ree_mt_weld` (Q6)); `commodity_components` keeps `embedded_fuel` (value retained for master rows of other streams' lifecycle use) but no commodity row may use it (validator: `T01` on `commodity_factors.csv` if `component = embedded_fuel`).
+- S3. `vocab.json`: `commodities` += `cast_iron`, `tio2_pigment`; new `ore_types` map (copper: `porphyry_stratiform`, `iocg_olympic_dam` (Q1), `iocg_high_u`, `cu_co_stratiform`, `all`; ree_oxide: `ree_bayan_obo`, `ree_ionic_clay`, `ree_monazite`, `ree_mt_weld` (Q6)); `products.commodity` gains `cast_iron` and `tio2_pigment` too (it must equal `commodities`, SCHEMA §5.5); `commodity_components` becomes `["own_residue"]` (`embedded_fuel` removed: nothing else reads it; the master boolean `embedded_fuel` is unaffected); `fuel_input_fuels` map for §4.13.
 - L1. `pipeline/lib/factors.py` `select`: accept `ore_type` (and `commodity`, `component`, already listed) as exact-equality match keys; `read_table` reads `ore_type` as a string (empty → `""`). LIB_SPEC §12 (v1.6) text to be written with S1.
 - Spec-blind tests for S1–S3 and L1 first (Phase 2 workflow), then the registry.
 
@@ -453,6 +466,38 @@ All data items below are **built and staged** under `build/d74_staging/` with th
 8. Where this spec says "registry" it means `commodity_factors.csv`; share constants live in activity series because §4.9 factor rows have no key that can name a commodity, ore type or variant (deviation from the D74 wording "placeholder constants in the registry", flagged for Steve).
 
 ---
+
+### 13.9–13.20 Clarifications after the spec-blind test round (v1.1, 2026-11-11; orchestrator, within D74)
+
+9. **S1, REE windows.** RE-BO (`ree_bayan_obo`) and RE-IC (`ree_ionic_clay`) rows now start in **1982** (they started in 1990 and 1991). Reasons:
+   - wind REE tonnage exists from 1982 (the non-PM classes carry JRC GB-DFIG Nd and Dy);
+   - Bayan Obo has produced since the late 1950s, and ionic clays since the 1980s.
+   The per-tonne values are carried back unchanged, with a note on each of the 17 rows. `prod_ree_oxide` CHN is **not** extended: the repository has no CHN source before 1990. The stream does not use that series (only B1 does), so its 1990 start limits B1 only.
+10. **S2, B1.** The ×1,000 slip is corrected to $10^{14}$ Bq and the period is 1990–2006. The pass rule and result are in §9(e).
+11. **S3, steel share.** `steel_bf_route_share` is set to `prod_pig_iron/prod_steel` (`XWL`) in years where the era placeholder lay outside ±0.15 of that ratio. That is 1950–69: the ratio is 0.71–0.75 against the placeholder 0.90, because open-hearth steel was pig iron plus scrap. These rows are flagged in `notes`. 1970–81 (0.80) was inside the band and is kept. The ±0.15 premise is unchanged.
+12. **S4, order of operations.** The factor is applied per class, then the classes are summed (§3.2, §4.2 steps 1–6). Bounds are those of the stepwise products. The summed-tonnage form of v1.0 is withdrawn.
+13. **Zero tonnage.** A contribution whose step-3 tonnage is exactly 0 at central (a structural zero share or a zero intensity) is skipped: **no row, no `select`, no `no_factor` or `no_driver` entry**. Missing years are treated differently:
+    - a capacity year missing **inside** a series' span gives `no_driver`;
+    - years **before** a series' first year (wind onshore 1982, offshore and PV 2001) are silent.
+14. **S6, log fields.** Every entry has `kind`, `year`, `country`, `group`, `detail`:
+    - `no_factor`: `year` first year of the run; `country` the output country (`XXX` or the region); `group` the group; `detail` `<commodity>/<ore_type or ->/<tier>/<residue_type or route>: first-last (n years)`.
+    - `no_driver`, `no_intensity`, `placeholder_share`: `year` first year of the run; `country` the series country (`XWL` written as `XXX`); `group` `""`; `detail` `<series>: first-last (n years)`.
+    - `no_footprint`: `year`, `country`, `group` all `""`; `detail` `<commodity> (<mi_ series name>)`; once per commodity per build.
+    - `attribution`: `year` the first year of the decade (1980, 1990, …); `country` `XXX`; `group` `""`; `detail` `<commodity>: max sigma <value, 4 significant digits> in <year>`.
+    - `no_family`, `lib_warning`: as OIL_GAS_SPEC §8 (`year` and `country` empty for `lib_warning`).
+15. **S7.** See §7.3: `no_footprint` cannot fire with the staged files.
+16. **S8, negligibility.** `end_of_life` and thin film are stated negligible **in this spec only** (§7.3, §9(d)). No log entry and no row or note is written for them.
+17. **S9, years walked.** The script walks **1950–2025** only. There is no pre-1950 walk; the pre-1950 file is header-only, and no driver exists before 1982.
+18. **S10, φ for the OD identity.** §9(c)4 needs nuclear F8, so it stays contingent until NUCLEAR_SPEC §14 is built.
+    - `phi_civil` central is 1 from 1991 (its low bound is 0.85–0.98 through 1991–2025), so the military remainder is zero at central from 1991.
+    - The identity is tested at central. It is tested at low and high only where $\phi$ has equal bounds, which is no year today.
+19. **S11, exact shares.** These are used at **central value only**, as exact scalars (LIB_SPEC §2.2 does the same for D6 shares): D6 value shares, copper class shares, REE route shares, the charge factor and `od_value_share_u`.
+    - In the staged data their low = central = high anyway.
+    - Drivetrain, utility and steel-route shares are also low = central = high in the staged data. They enter through `product` as `Bounds`, which gives the same result.
+20. **S5, `source_ids` and driver basis.** As OTHER_SPEC §13.14:
+    - A row's `source_ids` is the union of its commodity factor's `source_ids` and those of every activity row behind a contribution that was computed (not skipped, §13.13). Those rows are: capacity; drivetrain or utility share; intensity; class, route, charge, steel-route and D6 shares; and `prod_copper_od` and `prod_copper` for CU-OD.
+    - The `driver basis` suffix uses only the bases of those contributions' capacity and intensity rows.
+    - Share rows give the `share basis` and `allocation basis` suffixes instead (§3.3).
 
 ## Appendix A. Engine parameters for the eight residue types (approved, D74 Q14; staged)
 
@@ -488,4 +533,5 @@ Bold = newly proposed seepage (the other four types already have seepage from D5
 | Date | Change |
 |---|---|
 | 2026-11-11 | v0.1 DRAFT. D74 recorded; open questions Q1–Q18; Appendix A residue parameters. |
+| 2026-11-11 | **v1.1.** Test-round clarifications S1–S11 (§13.9–§13.20): REE windows from 1982; B1 corrected to $10^{14}$ Bq over 1990–2006, with a pass rule; steel-route share taken from pig iron where out of band; per-class stepwise arithmetic. |
 | 2026-11-11 | **v1.0 FINAL.** Steve approved all resolutions (§0). OD-only and PH+CP rows, factor ids, rooftop rule fixed; data staged under `build/d74_staging/` (§12). |

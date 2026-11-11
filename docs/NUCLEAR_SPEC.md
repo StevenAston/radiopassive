@@ -339,7 +339,8 @@ Church Rock (16 July 1979, commercial mill, United Nuclear) is an impoundment fa
 | `no_factor` | a `select` failed with `no factor row` (§3.6). **Aggregated**: one entry per contiguous year run per (stage, family/route, country, group); `year` = the first year, `detail` = `first-last (n years)` |
 | `no_driver` | a driver series has no value for a year (including the whole run when `nuc_reprocessed_gwa` or `nuc_sea_dumped_tbq` is absent, or a 2025 not yet carried forward, §12 item A1). **Aggregated** as `no_factor`, per (series, country). Not written for the country-level series of §5.2 and §5.3 in years where a country has no row |
 | `no_family` | a family has no registry rows at all (`fbr` in-core and spent fuel); once per build |
-| `negative_residual` | §4.2; one entry per year |
+| `negative_residual` | §4.2; one entry per year. Also (v1.3) §14.3: AUS carve-out with negative raw central, fields as stated there |
+| `od_military_remainder` | (v1.3) §14.4: one entry per year and variant with $a_v(1-\phi)>0$; fields as stated there |
 | `predecessor_dropped` | §3.5 |
 | `event_not_modelled` | §7.1 (E008 and any other nuclear event without registry rows; detail `marker only`). Not written for E002, E003, E004 or E013 |
 | `no_inventory` | §7.3 (a release group with no inventory row; today E002 `Kr88+` and `Xe133m`, v1.2) |
@@ -518,13 +519,38 @@ Olympic Dam (OD) tailings are one physical pool that both streams count today: t
 
 `build()` therefore reads `data/reference/commodity_factors.csv` in addition to v1.2's inputs (a fixture tree must contain it, or F8 logs `no_family` and writes nothing). `select` is called with `ore_type` (LIB v1.6). A premise asserts `u_production_od` ≤ `u_production`$_{\mathrm{AUS}}$ and `prod_copper_od` ≤ `prod_copper`$_{\mathrm{AUS}}$ at central in every year.
 
+**OD series rule (reconciliation, 2026-11-11).** `u_production_od` must never exceed the AUS conventional tonnage **as this stream computes it**, bound by bound: $C^{\mathrm{AUS}}=\big(P_l(1-s_h),\;P_c(1-s_c),\;P_h(1-s_l)\big)$ with $s$ the AUS ISL share of §4.1 (the `XWL` default). The staged series is built so (generator `research/wind_solar/build_d74_staging.py`):
+- **FY2021–FY2023: BHP-reported** payable U₃O₈ × 0.848 (S0407), ±2 %: 2,770, 2,014 and 2,888 t U.
+- **2024–2025:** since Ranger stopped processing (January 2021), OD is Australia's only conventional mill (Beverley/Four Mile and Honeymoon are ISR), so OD = the real AUS conventional output. It is estimated as `u_production`$_{\mathrm{AUS}}$ × the FY2023 OD share 2,888 / 4,693 = 0.6154, giving 2,830 t U, ±20 % [A]. The earlier estimate (the 322 / 330 kt Cu × 0.01359 t U per t Cu) gave 4,376 and 4,485 t U, above the stream's AUS conventional tonnage (3,839 t U at central). It was wrong for two reasons: those copper figures are BHP **Copper South Australia** totals (OD + Prominent Hill + Carrapateena after May 2023), so `prod_copper_od` 2024–25 is now 215 kt [A]; and the Cu ratio ignores that AUS conventional ≈ OD.
+- **1988–2020:** `prod_copper_od` × 0.01359 t U per t Cu [A], ±30 %.
+- **Every year:** each bound capped at $C^{\mathrm{AUS}}$. With the staged files no cap binds, so no year clips.
+
+Reconciled figures (t U, central):
+
+| Year | AUS `u_production` | AUS conventional in this stream, $P_c(1-0.165)$ | OD `u_production_od` (low / central / high) | Basis |
+|---|---|---|---|---|
+| 2021 | 4,192 | 3,500 | 2,715 / 2,770 / 2,826 | BHP FY2021 |
+| 2022 | 4,553 | 3,802 | 1,974 / 2,014 / 2,054 | BHP FY2022 |
+| 2023 | 4,693 | 3,919 | 2,830 / 2,888 / 2,946 | BHP FY2023 |
+| 2024 | 4,598 | 3,839 | 2,264 / 2,830 / 3,395 | AUS × 0.6154 [A] |
+| 2025 | 4,598 (carried) | 3,839 | 2,264 / 2,830 / 3,395 | AUS × 0.6154 [A] |
+
+**Known consequence (limit, not a defect):** from 2021 the F6 remainder for AUS ($C^{\mathrm{AUS}}-P^{\mathrm{OD}}$, about 900–1,800 t U) is **not a real conventional mill**: it is the AUS ISR output that the `XWL` default ISL share (0.165, against an Australian share of about 0.38) books as conventional (§4.1 known limit). An `AUS` ISL-share row would remove it. That is a registry change outside D74 and is not made here.
+
 ### 14.3 What changes in the AUS rows (the carve-out)
 
 Only **F6 (tailings)** changes, and only for `AUS` in years with a `u_production_od` value:
 
 $$T^{\mathrm{conv,F6}}_{\mathrm{AUS},y}=\mathrm{product}\Big(\mathrm{cdiff}\big(\mathrm{product}(P_{\mathrm{AUS},y},\,1-s_{\mathrm{AUS},y}),\;P^{\mathrm{OD}}_{y}\big),\ \phi_y\Big)$$
 
-where cdiff is the **correlated difference** of §3.4 (OD is a named component of the national total and is all conventional, so it is subtracted from the conventional tonnage before the civil share). A negative central is clipped to 0 and logged `negative_residual` (series `u_production_od`, country `AUS`); a clipped bound sets the flag with cause `clipped_difference`. Rows gain the notes fragment `Olympic Dam carved out (D74)`.
+where cdiff is the **correlated difference**, defined here because §3.4 states that v1.2 does not use it (the same helper as COAL_SPEC §12.1 and OIL_GAS_SPEC §3.4). For $a=(l_a,c_a,h_a)$ and $b=(l_b,c_b,h_b)$: central $c=c_a-c_b$; $\mathrm{low}=\min(l_a-l_b,\,c)$; $\mathrm{high}=\max(h_a-h_b,\,c)$; then each of low, central and high is clipped to $\ge0$. A clipped low or central sets `nd_floored`, cause `clipped_difference`. It applies only here: OD is a named component of the national total and is all conventional, so it is subtracted from the conventional tonnage before the civil share.
+
+**Clipping.** Under the §14.2 series rule the cap makes a clip impossible with the staged data. If a future series still produces one:
+- **Raw central $c<0$:** no F6 row for that AUS year (all groups). One `negative_residual` entry: `kind` `negative_residual`, `year` $y$, `country` `AUS`, `group` `""`, `detail` `u_production_od: conventional AUS minus OD = <c, 6 significant digits> t U; no F6 rows` (one entry per year, not per group).
+- **Clipped central exactly 0** (raw $c=0$, whatever the high): **no row and no log entry.** This follows D70 resolution 8 and OTHER_SPEC §13 (a fully used-up remainder writes nothing), with no 0/0/0 or (0,0,h) rows. It deliberately differs from OTHER_SPEC D71(d), which writes flagged (0,0,h) rows.
+- **Central > 0 with a clipped low:** the row is written, flagged `clipped_difference`.
+
+Rows gain the notes fragment `Olympic Dam carved out (D74)`.
 
 **Unchanged** (stated so that tests do not expect a change): F1 mine radon and F2 ISL radon (full AUS tonnage: OD mine ventilation stays in nuclear, 100 % to uranium, a stated limit: it is not split by D6 because no copper row books mine ventilation); F3 mill radon and F4 mill dust (full AUS; OD's hydrometallurgical uranium circuit has no copper counterpart); F5 uranium product (full AUS: product uranium is uranium); F7 (USA only); every other country; the rest-of-world residual; all reactor, transfer and event families.
 
@@ -534,7 +560,18 @@ For $1988\le y\le2025$ with a `prod_copper_od` value, each group $g$ of the OD f
 
 $$\mathrm{F8}_{g,v}(y)=\mathrm{product}\Big(\mathrm{apply}\big(Q^{\mathrm{OD}}_{y},\text{"t"},F^{\mathrm{OD}}_{g}\big),\ a_v(y),\ \phi_y\Big),\qquad a_{\mathrm{default}}=w_U(y),\ a_{\mathrm{bound\_main}}=0,\ a_{\mathrm{bound\_radio}}=1$$
 
-with $Q^{\mathrm{OD}}$ = `prod_copper_od` and $w_U$ an exact share (central value of `od_value_share_u`; LIB_SPEC §2.2). Row columns: country `AUS`, substream `fuel_cycle`, stage `u_milling`, tier `impounded`, **residue `metal_tailings`** (the same residue type as the copper ledger, so the engine gives the pool one ε and one seepage; WIND_SOLAR_SPEC Appendix A sets `metal_tailings` ε222 equal to `u_tailings`), quantity `flow`, unit `Bq/a`, basis `modelled`, product empty, `allocation_variant` $v$, `allocation_rule` `civil:ratio;alloc:value` (default), `civil:ratio;alloc:main`, `civil:ratio;alloc:radio` (X04 and R02 both hold; $y\ge1988$ so `civil:ratio` always), `factor_ids` the OD commodity factor id (`commodity:NNNN`, resolvable under schema v2.6, D74 Q2), `source_ids` the factor's plus the three activity rows', notes `F8: Olympic Dam pool, nuclear ledger (D74), D6 <variant>`. Bound-share zeros are structural (`Bounds.exact(0.0)`, unflagged). The military remainder $w_U(1-\phi)$ is not written and is logged `od_military_remainder` when positive.
+with $Q^{\mathrm{OD}}$ = `prod_copper_od` and $w_U$ an exact share (central value of `od_value_share_u`; LIB_SPEC §2.2). Row columns: country `AUS`, substream `fuel_cycle`, stage `u_milling`, tier `impounded`, **residue `metal_tailings`** (the same residue type as the copper ledger, so the engine gives the pool one ε and one seepage; WIND_SOLAR_SPEC Appendix A sets `metal_tailings` ε222 equal to `u_tailings`), quantity `flow`, unit `Bq/a`, basis `modelled`, product empty, `allocation_variant` $v$, `allocation_rule` `civil:ratio;alloc:value` (default), `civil:ratio;alloc:main`, `civil:ratio;alloc:radio` (X04 and R02 both hold; $y\ge1988$ so `civil:ratio` always), `factor_ids` the OD commodity factor id (`commodity:NNNN`, resolvable under schema v2.6, D74 Q2), `source_ids` the factor's plus the three activity rows', notes `F8: Olympic Dam pool, nuclear ledger (D74), D6 <variant>`. Bound-share zeros are structural (`Bounds.exact(0.0)`, unflagged).
+
+**Military remainder, per variant.** The pool share booked by F8 in variant $v$ is $a_v\phi$; the remainder $a_v(1-\phi_y)P_{\mathrm{OD}}$ is military (D16) and is **not written**:
+- `default`: $w_U(1-\phi)P_{\mathrm{OD}}$;
+- `bound_main`: 0;
+- `bound_radio`: $(1-\phi)P_{\mathrm{OD}}$.
+
+With the files today $\phi$ < 1 only in 1988–1990 (central 0.822, 0.907, 0.998), so only those years have a remainder. It is logged once per year and variant with $a_v(1-\phi_c)>0$ (`bound_main` never):
+- `kind` `od_military_remainder`, `year` $y$, `country` `AUS`, `group` `""`;
+- `detail` `<variant>: a_v*(1-phi)=<value, 6 significant digits>; Ra226+ central <Bq/a, 6 significant digits>`.
+
+The value uses central $\phi$; `Ra226+` is named as the indicator group so that the entry carries a magnitude.
 
 **Groups F6 has and F8 lacks:** `Pa231`, `Ac227+` (the OD rows carry no U-235-series daughters other than `U235+`): a stated limit; F8 is not padded.
 
@@ -542,13 +579,26 @@ with $Q^{\mathrm{OD}}$ = `prod_copper_od` and $w_U$ an exact share (central valu
 
 ### 14.5 Done-condition changes
 
-- **(c) new identity (cross-stream):** for every year 1988–2025 and variant, F8 (per group) + the copper ledger of the same pool + the logged military remainder $w_U(1-\phi)P_{\mathrm{OD}}$ equals $P_{\mathrm{OD}}=Q^{\mathrm{OD}}F^{\mathrm{OD}}$ within $10^{-5}$ at central (at low and high only where $\phi$ has equal bounds, since `product` combines bounds non-linearly) (WIND_SOLAR_SPEC §9(c)4; the copper ledger is computed from the files, not from stream ④'s rows, which hold only wind/solar copper).
+- **(c) new identity (cross-stream):** for every year 1988–2025 and variant $v$, F8 (per group) + the copper ledger of the same pool ($(1-a_v)P_{\mathrm{OD}}$) + the military remainder $a_v(1-\phi)P_{\mathrm{OD}}$ equals $P_{\mathrm{OD}}=Q^{\mathrm{OD}}F^{\mathrm{OD}}$ within $10^{-5}$ at central (at low and high only where $\phi$ has equal bounds, since `product` combines bounds non-linearly) (WIND_SOLAR_SPEC §9(c)4; the copper ledger is computed from the files, not from stream ④'s rows, which hold only wind/solar copper).
 - **(c) carve-out:** for AUS, F6 tonnage + $P^{\mathrm{OD}}\phi$ = the v1.2 F6 tonnage at central (relative $10^{-6}$) in every year where no clipping occurred.
 - **(e) benchmarks:** unchanged in method; the F6 tailings totals for AUS fall (2023: by about $1.06\times10^{14}$ Bq S5) and F8 adds $w_U P_{\mathrm{OD}}$ (2023 default about $3.5\times10^{13}$ Bq S5 [I]). No §9(e) benchmark uses tailings, so no pass/fail changes; the mine-radon benchmark is untouched (F1 unchanged).
 - **(f) hand cases:** AUS 2023 F6 `Ra226+` with the carve-out; F8 `Ra226+` 2023 in all three variants.
-- **(g) fixtures:** `u_production_od` > AUS conventional tonnage (clip, flag, log); absent OD series (F6 as v1.2, F8 no rows, `no_driver`); absent `commodity_factors.csv` (F8 `no_family`).
+- **(g) fixtures:** `u_production_od` > AUS conventional central (no F6 row, one `negative_residual` entry with the §14.3 fields); `u_production_od` = AUS conventional central exactly (no row, no log); only the low bound exceeding (row written, flagged `clipped_difference`); $\phi<1$ year (one `od_military_remainder` entry each for `default` and `bound_radio`, none for `bound_main`); absent OD series (F6 as v1.2, F8 no rows, `no_driver`); absent `commodity_factors.csv` (F8 `no_family`).
 - **(i) premises:** as §14.2; the OD factor rows exist for every year 1988–2025 with residue `metal_tailings`; `od_value_share_u` in $[0,1]$.
 
 ### 14.6 Known limits added
 
 OD tonnages outside FY2021–23 and $w_U$ are placeholders or estimates until the BHP/WMC annual-report series are in (`copper_classes.md` §4.1, §6.2 "Not done"); OD mine ventilation and mill emissions stay 100 % in nuclear; F8 has no Pa-231/Ac-227 rows; the ISL-share limit for AUS (§4.1) is unaffected but now applies to the non-OD remainder only.
+
+### 14.7 Existing tests to update (`pipeline/tests/streams/test_nuclear.py`, `nuclear_oracle.py`; the code-writer changes them minimally, intent unchanged)
+
+1. **Row keys need `allocation_variant`.** F8 keys differ only by variant: `rkey` (line 135) must append `r["allocation_variant"]`, and so must the oracle key tuples in `nuclear_oracle.py` (they gain `"default"` for v1.2 families). This affects `test_unique_keys` (450) and `compare_all` / `TestRowsAgainstOracle`.
+2. **`compare_row` (317)** rejects any non-`default` variant. Allow `bound_main` and `bound_radio` on F8 rows (stage `u_milling`, residue `metal_tailings`) only.
+3. **`test_ids_present_and_sorted` (467)** asserts every factor id starts with `nuclear:`. Accept `commodity:` ids on F8 rows only.
+4. **`metal_tailings` residue.** `test_residue_type_only_on_tailings_and_church_rock` (484–491) and the substream/stage convention checks must accept `metal_tailings` on F8 rows (`u_milling`, `impounded`, `AUS`, 1988–2025).
+5. **F6 oracle carve-out.** In `nuclear_oracle.py` the F6 family (line 340, `"T": "conv"`) must use the §14.3 tonnage for AUS (the correlated difference with `u_production_od`) and must expect F8 rows. `TestTonnagePartition` (`Tconv + Tisl = Tall`) stays on the un-carved tonnages: F1 and F2 are unchanged.
+6. **`LOG_KINDS` (line 100)** gains `od_military_remainder`. `test_negative_residual_none_in_real_data` (973) stays true (no clip with the staged series), and its expected set must also admit `u_production_od` entries if a fixture produces them.
+7. **Mill-balance filter.** `TestMillBalance.test_tailings_to_product_ratio` (1346) compares F5 with F6 per country-year. For AUS in 1988–2025 the F6 row is carved: either exclude AUS from 1988 onward, or compare F5 with F6 + $P^{\mathrm{OD}}\phi$ × the tailings factor.
+8. **`make_mini` (2108)** copies `data/reference/` (which will hold `commodity_factors.csv`) but writes only the activity files given. Mini trees without `u_production_od` and `prod_copper_od` then produce F8 `no_driver` runs. Either add the two series and `od_value_share_u` to `mini_act`, or accept the `no_driver` entries in tests that assert exact log contents (`TestMiniBase`, `TestMiniMissingAndAbsent`).
+9. **`test_total_row_count` (599)** and every count-based expectation grow by the F8 rows: 38 years × 10 groups × 3 variants = 1,140 rows. They lose any AUS F6 rows that §14.3 removes (none with the staged data).
+10. **Text comparison against the v1.2 baseline:** only AUS F6 rows (1988–2025) change and only F8 rows are added (as `test_nuclear_od.py` `TestUnchanged` already assumes).
