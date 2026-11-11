@@ -1,9 +1,11 @@
 path,size,sha256,fetched
 import/1-s2.0-S0048969720305957-main.pdf,2489673,a91174babe4b7086ff12bc1d61ebe159ed5984c69f042d84a98f52253f9c862d,2026-11-06
 import/1-s2.0-S0147651323014094-main.pdf,4698574,1969222e1685cb972377b4cd7e61a340ee9e6a673fb8ab2dac41a17111865745,2026-11-06
+import/1-s2.0-S0921344920305176-main.pdf,2337896,0a8aaefe32d2151f5e177c44380eaf67eece361fcf45339d9e80f0e527a2c6dc,2026-11-11
 "import/1977Kruger and Umana (1975), Radon in geothermal reservoir engineerin.pdf",386251,03ca5d471bbf22b9f37e0549301bf17d6925af7a5f1f72279d6ba8521ed44b00,2026-11-06
 import/20031111.pdf,487698,9d2e455e741e601926bca4fb1a408cb927cc70e7c8c0e67da5a9f2bca297d4c1,2026-11-06
 import/2024-Production-and-Use-Charts.pdf,136341,f6579aafe18435f6e1e8c8ac8ec6515090558d03608db717855d1f4935851151,2026-11-06
+import/2025-Annual-Planning-Outlook.pdf,1813730,ad651a04541993240946ab2beb0695709e3acec88d472dfaae8ce12167f375a9,2026-11-11
 import/2825.pdf,716218,21951cce15a20e4c862ab849bdf9a512f324e4e05fb355ebc39327ba9607e0e2,2026-11-06
 import/31058925.pdf,902937,f69ef84d7333c41885208bbb4e96a89b68c0ccf561d5fe6321fded6de81ff719,2026-11-06
 import/412.pdf,6555028,f3a887fd828e6d730b445bf04acf530893dece65853d72722252c19e810d4183,2026-11-06
@@ -13,6 +15,7 @@ import/Batini GEOPHYSICAL WELL LOGGING- A CONTRIBUTION.pdf,1515523,23a984a4823f9
 import/Bioenergian tuotannossa syntyvän tuhkan radioaktiivisuus.pdf,2047134,88d4143ae57a678d9b8d0b55985ec40390e4fc05c5ee404743860dc4649aea55,2026-11-06
 import/CAS_02_DE_AM_R_009-RAPPORTO_SULLA_RADIOATTIVITA_DELLE_ROCCE_E_DA_RADON.pdf,2216065,ab7d73c0389c8d03a8c74b3f19e5d076a85b123c673597cd76c18ff2cba009ff,2026-11-06
 import/Diffuse NORM Wastes Waste Characterization and Risk Assessment Draft.PDF,15052903,3daacc3b254f9bf669e877a5f49ba9aac27649a426b45f48f1e060fb1f6eac8d,2026-11-06
+import/EC RP-135 VOL 1 - Effluent and dose control from European Union NORM industries - Assessment of current situation and proposal for a harmonised Community approach - Volume 1 - Main Report.pdf,1057626,c781e03425cbf72aaa3138e99996bd110ca811401cfd12436e807471f22b9764,2026-11-11
 import/ENDF-B-VIII.0_nfy/CHANGELOG.txt,824,b934aa362a59d03c0823bcb4743e4598208b9828f48373318db3aabd91e04c1f,2026-11-06
 import/ENDF-B-VIII.0_nfy/README.txt,289,fcf9a030c61c05b2e1cbe04b4fbbdf786e0bfaffe7e9c76e776ddc582f27de22,2026-11-06
 import/ENDF-B-VIII.0_nfy/nfy-090_Th_227.endf,125932,de158f3ad1a0d945b9da8cda127056999692001544b2ddfbe0c666ed49310b38,2026-11-06
@@ -50,6 +53,8 @@ import/ENDF-B-VIII.0_nfy/nfy-releaseNotes.pdf,1640202,8836235812b6847958310b2374
 import/ENDF-B-VIII.0_nfy/nfy.list,2695,5ad3e4a5370c848e172a6c460b2c08160a771c6b8feb431b0ee6ab73fc7d6ebf,2026-11-06
 import/EPA-520-1-73-004 - ASSESSMENT OF POTENIAL RADIOLOGICAL HEALTH EFFECTS FROM RADON IN NATURAL GAS.pdf,2090537,22c3996a06ff87d0b3d3097a7a13527d320bc9e3bfab99918e666092b54584f6,2026-11-06
 import/EPA-HQ-OLEM-2020-0107-1384_content.pdf,477361,350058dd3bd5e76706ea439651fcebbcaf3941e0d279355769a76a5877fd714b,2026-11-06
+import/EPA-SAB_Low-Activity-Mixed-Waste_Release-Modeling_Advisory.pdf,200928,7c1219835a63a2c552065e464fb24f3c582be2fea1f486d318dbe2f53f0d4314,2026-11-11
+import/EPA-SAB_TENORM_Occurrence-and-Risks_Advisory.pdf,86124,440da10f67e166c1ed078796f60ed5a3b3dd600a09bed0cab16eb2f590cc916d,2026-11-11
 import/FS-163-97.pdf,110051,7cbc4cbe74ce00dd34c910a73c4560d7c66e62a551dab1f922ad46edfdfcb2c0,2026-11-06
 import/Global-Gas-Flaring-Tracker-Report-June-20-2024.pdf,10452515,210f8498c40ef34c049a23ac6d245cfe173b1507a399ea3ccfe08fbc7894bfb1,2026-11-06
 import/Grill 2021 AGES Austrian wood-fuel monitoring.pdf,2655100,f35d41914281ac475d58e14ec93f04dab51ad1b5571ce37fb024373d350816ee,2026-11-06
@@ -57,9 +62,13 @@ import/HEALTH.IMPACTS.OF.GEOTHERMAL.ENERGY.pdf,963657,85dd587db4717d46ddb118bb7b
 import/HUMAN HEALTH IMPLICATIONS OF GEOTHERMAL ENERGY - L.R. Anspaugh and J.L. Hahn - Lawrence Livermore Laboratory.pdf,2282405,e24e93a9b875c6d459457762a637fa351391eca50a74b03e90ffd11f988b6bb6,2026-11-06
 "import/Hedvall, R. and Erlandsson, B. (1992). Radioactivity in peat fuel and ash from a peat-fired power plant.pdf",1134604,0b121c8a6778262e1327bc0154d27092799bafd36bf364b28233ddaf7f2c6553,2026-11-06
 "import/IAEA (2003). Assessing radiation doses to the public from radionuclides in timber and wood products, IAEA-TECDOC-1376.pdf",655857,ecc69c6e99cc11518df1bfb3ab7361040e0c5ee53da00be41006b480767db9b5,2026-11-06
+import/IAEA SRS-49 Safety Report Series 49 - Assessing the Need for Radiation Protection Measures in Work Involving Minerals and Raw Material.pdf,728652,06ae737cdf74eb26cd45307f39f6c951766e182cb8a51eac6d482bceba2a6f58,2026-11-11
 import/Interpretation of Radon Concentration in the Serrazzano Zone of the Larderello Geothermal Field.pdf,554200,0e633ce27526b1ec27b36a9db3db6f2c1ae2d4d7b4a690a03fd97982768bb8ac,2026-11-06
 import/LBL11555.pdf,42657118,6904af36c8a81a31c914c7ac716605d934a03accb9d13b0d1b79754a598946f7,2026-11-06
 import/ML24134A119.pdf,3556332,b24f4dabe818808e79eb49997245000643a60a6def91f73cd2beceb8fe5d716b,2026-11-06
+import/NORM_in_mining_industry_in_Poland.pdf,184823,47376b6f84d43e4dd5a2548de043a9328a453e6468d6bebde73f0de5f9fc53db,2026-11-11
+import/NREL - An Updated Life Cycle Assessment of Utility-Scale Solar Photovoltaic Systems Installed in the United States.pdf,3636683,d5b14f70525251b338af0edd0be01033c02eb9fd366bc846e3f9c6b41e16f36f,2026-11-11
+import/Natural radiation and its hazard in copper ore mines in Poland.pdf,680758,301c30b5ec77d22f118342c594a4d656e71729671d6d3971213e20f5f06166f0,2026-11-11
 import/Proceedings of the Second DOE-ENEL Workshop on Cooperative Research in Geothermal Energy.pdf,42657118,6904af36c8a81a31c914c7ac716605d934a03accb9d13b0d1b79754a598946f7,2026-11-06
 import/Puutavaran radioaktiivisuus Suomessa.pdf,878706,e8748f2fcd087479baae93c1ebf2439f914be5e888857eb23c348bcab21fea80,2026-11-06
 import/Radiological-evaluation-of-mine-water-discharges-from-hard-coal-mining-in-the-Fossa-Eugeniana.pdf,799964,e6365791f596b6f6c183c49bc242c6722bb4e08492ecdc3777caf11035c58178,2026-11-06
@@ -166,9 +175,13 @@ import/rogovin.tmi.2.vol1.pdf,2519844,9d12e4e93bb62cb04a72b229e5c7b5817ef70767d2
 import/rogovin.tmi.2.vol2.p1.pdf,3554830,86a109b386a27d643f239619a654ca750eeb014d7dc6e22ba43c9eaebc31a90e,2026-11-06
 import/rogovin.tmi.2.vol2.p2.pdf,9641239,e2077c0d819480693bbe557f5e5ddabbffbdfee5ed05991b6184a606bbca3ce1,2026-11-06
 import/rogovin.tmi.2.vol2.p3.pdf,7300882,85ba56b6e0044951076be35a42a44bbfa888341dad8dc4ccb7ad3dfe470dd441,2026-11-06
+import/s40831-024-00941-z Life Cycle Assessment of Metallurgical Grade Silicon Comparing Charge Mixtures and Yields.pdf,1937455,f71886f77d57bcb1245d35d880818e27baccc294fe99423c46e249c3c94537c1,2026-11-11
+import/s40831-024-00941-z.pdf,1937455,f71886f77d57bcb1245d35d880818e27baccc294fe99423c46e249c3c94537c1,2026-11-11
+import/s41467-026-75910-z.pdf,4498660,6ba8e1586fe78a58f50182fae94764e2afca6cf83a821cc46ec0790e32bb597a,2026-11-11
 import/sakoda2011.pdf,517997,60ddedc8b56a128992a167daa505b0a96d200c3761349167d1f2c2e6ee893364,2026-11-06
 import/tadmor1986.pdf,1248611,110e5bbf583066dddaf5d3477c4643883052d4ff004d44a1fc022bd486ff2362,2026-11-06
 import/tasker2018.pdf,2911740,4421de1e440f9bde369254dbe0b99e7568de3d63c76e1396528219f570ec8204,2026-11-06
+import/tr161.pdf,1316178,e39eb164dfa23955739df6dbcae0fd48d6dddb8630467d54d0d87d528619e0dc,2026-11-11
 import/whitehead1980.pdf,626516,c4a27816d4c590c561496162674e2f942cb42d903ac22b47c6631acb06a8acc1,2026-11-06
 import/whitehead1996.pdf,536480,f24a804084f423459ebc4f0f20761835182b60e7e97c0c230ff645849b19ee80,2026-11-06
 import/zeevaert2006.pdf,395946,834e4c3dd5cbee7fcc63eaffa25f48ca4192d2df984fca2a5b5fa573a3acc2da,2026-11-06
