@@ -5,15 +5,32 @@ Scope reminder: activity in Bq and Bq/a only, no dose quantities (D1). Tier 2 is
 
 Confidence labels used throughout: **[E]** established by a source read in full or in the relevant table; **[R]** reported by a source I could read only in part or at second hand; **[I]** my inference or arithmetic from cited inputs; **[A]** my assumption, no source.
 
+> **REVISION 2026-11-11 (copper factor; Task 2.4 copper classes, `research/wind_solar/copper_classes.md`).** The seed copper footprint used below (S5 $1.35\times10^{8}$ Bq/t, range $1.4\times10^{7}$ to $6.0\times10^{8}$) is **superseded**. Copper tailings are now split into three ore types and production-weighted. 2024 world factor, S5 tailings: low $2.6\times10^{7}$, central $4.8\times10^{7}$, high $2.0\times10^{8}$ Bq/t Cu (central 0.35 of the old; spread 8x instead of 43x).
+>
+> Re-run of section 4.1 (same tonnages: T&D copper 3.0 Mt (2.0 to 4.5), aluminium 5.5 Mt, D6 factor 0.7 / 0.85 / 1.0, storage chemistry term $2.5\times10^{12}$, BESS copper 0.1075 Mt):
+>
+> | Quantity (2024, Bq/a) | Old | New |
+> |---|---|---|
+> | T&D copper, central | $3.44\times10^{14}$ | $1.22\times10^{14}$ |
+> | Grid (Cu + Al), low / central / high | $2.3\times10^{13}$ / $3.6\times10^{14}$ / $2.8\times10^{15}$ | $4.1\times10^{13}$ / $1.40\times10^{14}$ / $9.4\times10^{14}$ |
+> | BESS copper, central | $1.2\times10^{13}$ | $4.4\times10^{12}$ |
+> | $A_{\mathrm{T2}}$ central | $3.75\times10^{14}$ | **$1.46\times10^{14}$** (0.39 of old) |
+>
+> Effect on the percentages (central, basis A, pro-rata): ② coal C1 1.2 % to **0.45 %**, S5 11 % to **4.3 %** (now below the 5 % threshold at central; 28 % at the upper bound); ③ oil and gas C1 2.7 % to **1.0 %**, S5 30 % to **12 %**; ① nuclear C1 0.12 % to **0.047 %**, S5 3.3 % to **1.3 %**; ⑤ other C1 6.6 % to **2.6 %** (S5 still enormous); ④ **unchanged** (11 to 54 %, matched-factor ratio; the copper factor cancels). The "include narrowly" verdict stands because of ④, ⑤ and ③ on S5; ② no longer clears 5 % at central and ⑤ no longer clears it on C1 at central.
+>
+> Tonnage cross-check, Deetman et al. 2021 (S1805, now read): their **whole** electricity-sector copper inflow (generation, transmission and storage) is 2.09 Mt/a in 2015 (11.9 % of production) and 4.3 to 4.9 Mt/a in 2050. The 3.0 Mt/a for T&D alone (grey source S1818) is therefore on the high side; with 2.0 Mt/a the new $A_{\mathrm{T2}}$ is $1.06\times10^{14}$ (0.28 of old). The T&D split is in Deetman's SI, not the paper. Stated figures above keep 3.0 Mt.
+>
+> DRC cobalt-uranium: the paper is now read (section 7 of `copper_classes.md`). A Katanga copper override would lower, not raise, the tailings factor (DRC ore is 2 to 3 % Cu). Recommendation: page callout only; no `cobalt` commodity row for v2.
+
 ---
 
 ## 0. Answer first
 
 1. **Should v2 include Tier 2? Yes, but narrowly.** The threshold in PLAN Task 2.6 (more than 5 % of any stream's total) is exceeded for stream ④ on every basis tried, for stream ⑤ on every basis, for ② and ③ on a like-for-like chain-solids basis at central values, for ② and ③ at the upper bound of the stream-total basis, and for ① only at the upper bound of the chain-solids basis. The exceedance is driven by **one item: copper in the transmission and distribution (T&D) grid**, through copper-mine tailings. Aluminium (red mud) is a distant second. Everything specific to batteries (Li, Co, Ni, graphite, Mn, V, Pb, phosphate) sums to **less than 1 % of the Tier 2 total** at the 2024 benchmark.
 2. **Recommended v2 scope:** one new stage, `grid` (T&D copper, aluminium, and their steel/zinc/concrete, plus the copper and aluminium in battery energy storage systems), driven by the Task 2.4 commodity table times a grid material intensity. No new radiological research is needed for it. Battery chemistries, flow batteries, lead-acid, pumped hydro and firming plant stay **memo-only or excluded** (table in section 7).
-3. **Most material Tier 2 item:** T&D copper, about $3\times10^{14}$ Bq/a on the chain-solids basis at 2024 (range $2\times10^{13}$ to $3\times10^{15}$, a factor of about 40 either way, almost all of it the copper-tailings factor). It is about 13 % of the whole world copper-mining burden on the same basis, because the grid takes about 13 % of world copper.
+3. **Most material Tier 2 item:** T&D copper, about $3\times10^{14}$ Bq/a on the chain-solids basis at 2024 (range $2\times10^{13}$ to $3\times10^{15}$, a factor of about 40 either way, almost all of it the copper-tailings factor). **[Revised 2026-11-11: $1.2\times10^{14}$ central, range about $4\times10^{13}$ to $9\times10^{14}$; see the revision box.]** It is about 13 % of the whole world copper-mining burden on the same basis, because the grid takes about 13 % of world copper.
 4. **The ④ result does not depend on the copper factor.** Tier 1 for ④ is also dominated by copper (PV and wind plant), so grid-to-plant copper tonnage is the ratio, and the per-tonne factor cancels. Whatever Task 2.4 settles on, Tier 2 is **11–54 %** of ④ (pro-rata by TWh) or **18–190 %** (all storage and VRE connection grid charged to ④).
-5. **Fuel streams ①②③ do depend on the copper factor.** At central values Tier 2 is 1.2 % (②), 2.7 % (③), 0.1 % (①) of stream totals including radon and fission products, and 11 %, 30 % and 3.3 % of the chain-solids total. Re-run when `commodity_factors.csv` exists (formula in section 4.1).
+5. **Fuel streams ①②③ do depend on the copper factor.** **[Superseded 2026-11-11: now 0.45 %, 1.0 %, 0.05 % of C1 and 4.3 %, 12 %, 1.3 % of S5; see the revision box.]** Original text: at central values Tier 2 is 1.2 % (②), 2.7 % (③), 0.1 % (①) of stream totals including radon and fission products, and 11 %, 30 % and 3.3 % of the chain-solids total. Re-run when `commodity_factors.csv` exists (formula in section 4.1).
 6. **Notable finding for the page, not for Tier 2:** a peer-reviewed study (Manzuk and Philippe, *Nature Communications*, 2026) estimates 2 000–5 000 t of natural uranium left the DRC in cobalt-hydroxide exports in 2000–2024. That is about 0.5–1 % of world uranium mining per year, small as a Bq flux but a genuinely unexpected radioactivity route in battery supply chains. It belongs in Task 2.4's copper/cobalt regional factors or the sequel, not in Tier 2 (section 3.2).
 
 ---
@@ -127,7 +144,7 @@ Aluminium red mud, S5 (three groups only): $9.6\times10^{5}$ / $3.2\times10^{6}$
 - Arithmetic **[I]**: natural uranium is $1.235\times10^{7}$ Bq U-238 per kg U (`research/baselines/derivations.md`), so 1 t U = $1.24\times10^{10}$ Bq U-238 and about $2.5\times10^{10}$ Bq with U-234. The 25-year average is 80–200 t U/a, i.e. $2\times10^{12}$ to $5\times10^{12}$ Bq/a of U-238+U-234. Recent years will be higher because DRC cobalt output grew about twentyfold over the period; scaling by cobalt output gives my rough 275–680 t U in 2024 (**[A]** on the cumulative cobalt series, recalled rather than read; recompute from USGS DS140 or MCS history). That is 0.5–1 % of world uranium mining (about 60 kt U in 2024) and, in Bq, $7\times10^{12}$ to $1.7\times10^{13}$ for U-238+U-234: not material against the stream totals above, but comparable to the whole of ①'s non-Sealed `U238+` flow ($1.8\times10^{13}$ Bq/a in 2024), because ① moves the uranium it mines into the Sealed tier. The world uranium production figure (about 60 kt U in 2024) is recalled, not read **[A]**.
 - Regional river-sediment context: Luilu River 154 Bq/kg and Dilala River 378 Bq/kg U-238 (Atibu et al. 2021, via a citing paper, S1811, not read) **[R]**; consistent with elevated U in the Kolwezi belt.
 - Stationary share: LFP uses no cobalt, so stationary storage's share of this flux is 1–5 % **[A]**, about $3\times10^{11}$ Bq/a.
-- Overlap: this U is **not** in ① (not a nuclear-fuel flow, mostly undeclared), and the generic copper factor undercounts Katanga copper. **Recommendation: not Tier 2.** Pass to Task 2.4 as a candidate regional override for `copper` and a new `cobalt` commodity (DRC), and flag it to Steve as a candidate callout ("unexpected source"). Memo-only for Tier 2.
+- Overlap: this U is **not** in ① (not a nuclear-fuel flow, mostly undeclared), and the generic copper factor undercounts Katanga copper. **Recommendation: not Tier 2.** Pass to Task 2.4 as a candidate regional override for `copper` and a new `cobalt` commodity (DRC), and flag it to Steve as a candidate callout ("unexpected source"). Memo-only for Tier 2. **[Updated 2026-11-11: paper read in full. Katanga override rejected (it would lower the tailings factor); cobalt commodity not recommended for v2; page callout only. Intermediate-mobility total more than 7,000 t U extracted 2000 to 2024, 2,000 to 5,000 t exported; method and numbers in `copper_classes.md` section 7.]**
 - Ni–Co laterites (Indonesia, Philippines, New Caledonia, Cuba): no cobalt-specific NORM data; see nickel.
 
 #### Nickel (sulphide and laterite, including HPAL residues)
@@ -243,14 +260,14 @@ Basis B (storage and VRE connection grid, with Chen's 0.5–0.86–2.0 Mt/a copp
 | Brine Li (DLE) | ③ `og_produced_water`; ⑤ `geothermal_brine`, `geothermal_scale` | — | Watch item. |
 | Vanadium from oil/coal ash and spent catalyst; U–V co-production | ③ `oil_sands_coke`; ② ash; ① uranium mining | — | Already counted at source. |
 | Phosphogypsum from LFP | D4 sequel (phosphate) | `phosphate_rock` (not in the commodity vocabulary; present in `commodity_production.csv`) | Pointer to sequel; no Tier 2 row. |
-| DRC cobalt hydroxide uranium | Not in ① (not fuel-cycle); regional undercount in `copper` | `copper`, new `cobalt` | Regional override candidate for Task 2.4. |
+| DRC cobalt hydroxide uranium | Not in ① (not fuel-cycle); not a copper-tailings undercount (revised 2026-11-11) | none for v2 | Page callout only (`copper_classes.md` section 7). |
 | Steel scrap with NORM scale | ③ `abandonment_scrap` | `steel` | Not Tier 2. |
 
 ---
 
 ## 6. Uncertainty, contradictions and caveats
 
-1. **Copper tailings footprint** is the dominant uncertainty: factor 40 spread (seed table), single-source tonnages per tonne ore, and the D6 allocation (0.7–1.0 assumed for copper). Task 2.4 will change it.
+1. **Copper tailings footprint** is the dominant uncertainty: factor 40 spread (seed table), single-source tonnages per tonne ore, and the D6 allocation (0.7–1.0 assumed for copper). **Task 2.4 changed it 2026-11-11: spread now 8x, central 0.35x; remaining uncertainty is Chilean tailings (unmeasured), other IOCG uranium and the 200 t/t tonnage; see the revision box.**
 2. **Grid tonnage** rests on one grey source (3 Mt Cu, 5–6 Mt Al) plus cross-checks on different bases (IEA 2030 share, ETC cumulative, Chen's VRE-only grid). The T&D split (transmission only, versus distribution) is unknown; if Tier 2 were limited to transmission above, say, 100 kV, I would expect a smaller fraction of the copper, but I found no source for the split, so I include all T&D **[A]**.
 3. **Stationary storage in 2020** (10 GWh) is unsourced; 2024 values come from two independent trackers (170 vs 205 GWh), a 20 % spread. Rho Motion's "deployments" and BNEF's "installations" definitions differ.
 4. **LFP share and bill of materials** for stationary storage are applied from automotive BatPaC packs.
@@ -268,7 +285,7 @@ Basis B (storage and VRE connection grid, with Chen's 0.5–0.86–2.0 Mt/a copp
 
 | Item | NORM pathway | Order of magnitude (2024) | Material vs Tier 1? | Recommendation | Reason |
 |---|---|---|---|---|---|
-| Conductors, Cu cables (T&D) | Cu tailings, smelter slag and off-gas | $3.4\times10^{14}$ Bq/a S5 ($2\times10^{13}$–$2.8\times10^{15}$) | **Yes** (④ always; ②③ central S5) | **Stream (stage `grid`)** | Largest item; no new factors; commodity-driven |
+| Conductors, Cu cables (T&D) | Cu tailings, smelter slag and off-gas | **$1.2\times10^{14}$ Bq/a S5 ($3.7\times10^{13}$–$8.8\times10^{14}$; revised 2026-11-11, was $3.4\times10^{14}$)** | **Yes** (④ always; ②③ central S5) | **Stream (stage `grid`)** | Largest item; no new factors; commodity-driven |
 | Conductors Al (ACSR, AAAC) | Red mud | $1.7\times10^{13}$ Bq/a | Marginal | **Stream (same stage)** | Same mechanism; 5 % of grid term |
 | Steel towers, cores, GOES, galvanising (Zn) | Iron-ore tailings, slag; stack Pb/Po | $\sim10^{12}$ Bq/a | No | **Include in tonnage, no separate item** | Steel and zinc footprints tiny |
 | Subsea cable lead sheath | Pb mining and smelting | $\ll10^{12}$ Bq/a | No | **Memo-only** | No seed factor; small tonnage |

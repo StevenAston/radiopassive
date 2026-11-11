@@ -57,8 +57,16 @@ Zircon 2-4 Bq/g U-238, 0.4-1 Th-232 (EPA). Foundry zircon use per tonne casting 
 ### 3.4 Cement and concrete, grade C
 Kiln Po-210 per t cement spans 2.1e3 (Kunze, German model, 97% filter) to 3.9e4 (UNSCEAR 2000), a factor of 37, unresolved; RP-135 assumes 50% volatilisation. Rn-222 7.9e4. Cement kiln dust (Ra-226 15, Th-232 8-11, K-40 1300-2700 Bq/kg, S0436) has no tonnage per tonne cement or Pb/Po data: gap, `cement_kiln_residue` left empty. Aggregates and sand are product at about 0.02-0.04 Bq/g, not residue (D21 spirit); no rows.
 
-### 3.5 Copper, grade C (generic), B (Olympic Dam)
-Phase 1 rows kept and chain-completed. The generic tailings value spans a factor of 60 between sources (UNSCEAR 1988 vs TRS 419). It is the biggest single driver of the ranking. Smelter slag ~2.2 t/t Cu at 0.4-2 Bq/g Ra-226 (training slides); smelter off-gas from one 1980s US plant with assumed capacity. Olympic Dam: 50.8 t ore per t Cu, Ra-226 3.5e8-7.6e8, plus U-238 left in tailings; the uranium product (3.6e13 Bq) goes to the nuclear stream. Uranium co-production elsewhere (Kazakh, Zambian copper-uranium) not researched.
+### 3.5 Copper, REVISED 2026-11-11 (full detail in `copper_classes.md`), grade B-C
+**Superseded:** the Phase 1 generic tailings row (S5 central 1.35e8 Bq/t Cu, range 1.4e7-6.0e8, whose two sources differ x60) and the Olympic Dam-only rows (kept in the CSV, `ore_type = superseded`).
+**Now three `ore_type` classes** (Steve's proposal of 2026-11-11, tested against Chau 2008, ARPANSA TR161, Resolution Copper, TECDOC-1952, BHP EIS, Ehrig 2020, Habibi 2026, Manzuk and Philippe 2026):
+- `porphyry_stratiform` (B): measured tailings 8-65 Bq/kg per nuclide (Poland flotation waste Ra-226 30-65; Arizona tailings U 1.5 ppm; Australian metalliferous tailings Ra-226 mean 23, n=8). Used 15/30/100 Bq/kg x 100/200/400 t/t Cu = S5 6.7e6 / 2.6e7 / 1.8e8. No Chilean measurement found.
+- `iocg_high_u` (A): Olympic Dam (tailings U-238 2,000-5,800, Ra-series about 7,000 Bq/kg; S5 1.2e9-2.7e9), Prominent Hill (1,270-1,420 U-238), Carrapateena (2,640-2,950). 2.2 % of world copper in 2024 but about half of the weighted Bq.
+- `cu_co_stratiform` (C): DRC Katanga; ore 50-210 Bq/kg (Manzuk), 2-3 % Cu so per tonne Cu below B (S5 6.1e6 / 1.4e7 / 4.3e7). Its uranium leaves in cobalt hydroxide (callout, not a copper row).
+**Production-weighted world factor (S5, tailings, Bq per t Cu), 2024:** 2.6e7 / **4.8e7** / 2.0e8 against old 1.4e7 / 1.35e8 / 6.0e8. Central x0.35, spread 8x not 43x. Era values 1950-2025 in `copper_classes.md` section 4. Other IOCG with unverified U (Salobo, Candelaria, Sossego, Ernest Henry; about 2.5 % of world) would add 51 % if class A.
+**Smelter (unchanged, no class split):** slag Ra-226 0.4-2 Bq/g now corroborated by IAEA SRS-49 Table 1 (S0448); precipitator dust Pb-210/Po-210 up to 200 Bq/g (SRS-49), Olympic Dam smelter dust 1,000 Bq/g (BHP SEIS Table 26.10); EC RP-135 has no copper residue data. Off-gas row still one assumed 1980s plant.
+**Olympic Dam overlap:** the nuclear stream already books about 36 % of the 2023 Olympic Dam pool (S5) through AUS `u_production` at generic F6 factors. Proposal in `copper_classes.md` section 6 (OQ-4 / OQ-CU-1).
+**DRC cobalt-uranium:** recommended as a page callout only (`copper_classes.md` section 7).
 
 ### 3.6 Aluminium, grade B
 Red mud 3.2 t/t Al; Th-232 100-550 Bq/kg (range 45-1800), Ra-226 100-1000 (97-1700); I raised the high bounds to the S0409 maximum (1350 Bq/kg). Residue enrichment 1.6-3x over bauxite (S0437). Reuse share 1-10% is my assumption. Gaps: alumina calciner/boiler Pb-210/Po-210 and smelter emissions (UNSCEAR 1988 Table 45, plant capacity unknown); `red_mud` has seepage but no epsilon.
@@ -88,7 +96,7 @@ Te, Cd, In, Ga, Se are by-products of Cu, Zn, Al. By value allocation (Te about 
 
 | Rank | Commodity | Onshore geared | Offshore DD-PMSG | Utility PV c-Si |
 |---|---|---|---|---|
-| 1 | copper (generic) | 9e8 | 2e9 | 3e9 |
+| 1 | copper (generic; **superseded 2026-11-11**: world factor now 0.35x, so roughly 3e8 / 7e8 / 1e9) | 9e8 | 2e9 | 3e9 |
 | 2 | REE (charge factor 2.5) | 7e7 | 1.2e9 | 0 |
 | 3 | steel | 1.0e8 | 1.1e8 | 6e7 |
 | 4 | aluminium | 4e7 | 1e7 | 2e8 |
@@ -122,7 +130,7 @@ Caveat: these test components (REE, steel, Al), not the stream total; the UNSCEA
 1. **OQ-1:** embedded fuel as a companion table of fuel inputs (recommended), or keep input-type rows in §4.7?
 2. **OQ-2:** registry holds pre-allocation values and the allocation library does the D6 variants (recommended)?
 3. **OQ-3:** REO-equivalent charge factor (1 / 2.5 / 5.9): value split among oxides or mass?
-4. **OQ-4:** one D6 allocation shared by nuclear and copper for Olympic Dam; confirm the nuclear script's handling.
+4. **OQ-4:** one D6 allocation shared by nuclear and copper for Olympic Dam. **Answered 2026-11-11:** the nuclear script does count Olympic Dam, at generic per-tU factors inside AUS (about 36 % of the 2023 pool); carve-out and shared-pool proposal in `copper_classes.md` section 6, needs Steve's decision.
 5. **OQ-vocab:** add `tio2_pigment` and `cast_iron`; add an ore-type key or column.
 6. **OQ-5:** Product tonnage in REE rows includes dispersed Th in oxide product (count as Dispersed?).
 7. **OQ-6:** D21 status of in-situ leach ionic-clay ore.
@@ -131,3 +139,4 @@ Caveat: these test components (REE, steel, Al), not the stream total; the UNSCEA
 
 ## 9. Gaps
 CKD tonnage and Pb/Po; aluminium smelter and calciner emissions; copper smelter slag measurements; Chinese and Indian sinter-plant data; zinc/lead smelter data; glass furnaces; foundry zircon use; REO route shares; tin slag per tonne; rooftop PV; NREL, RP-135 Section 2 tables (text dropped in extraction); IAEA SRS-49 and the IAEA NORM TECDOC series were not retrieved; OSPAR not consulted.
+**Update 2026-11-11:** IAEA SRS-49 was read (copper slag, dust ranges confirmed). New copper gaps: G-CU-3 no tailings measurement from Chile, Peru, China, Indonesia, Kazakhstan, Russia, Mexico (about 57 % of 2024 output); Salobo, Candelaria, Sossego, Ernest Henry uranium assays; Lumwana bulk U; class A tonnages are estimates; Katanga radium measurements.

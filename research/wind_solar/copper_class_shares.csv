@@ -1,0 +1,77 @@
+year,world_mine_cu_t,A_iocg_high_u_t,C_cu_co_stratiform_COD_t,B_porphyry_stratiform_t,A_share,C_share,B_share,other_iocg_unverified_share,zambia_share,basis_note
+1950,2380000,0,166600,2213400,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1951,2490000,0,174300,2315700,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1952,2570000,0,179900,2390100,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1953,2600000,0,182000,2418000,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1954,2640000,0,184800,2455200,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1955,2900000,0,203000,2697000,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1956,3200000,0,224000,2976000,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1957,3300000,0,231000,3069000,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1958,3190000,0,223300,2966700,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1959,3430000,0,240100,3189900,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1960,3940000,0,275800,3664200,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1961,4090000,0,286300,3803700,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1962,4220000,0,295400,3924600,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1963,4290000,0,300300,3989700,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1964,4450000,0,311500,4138500,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1965,4660000,0,326200,4333800,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1966,4580000,0,320600,4259400,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1967,4630000,0,324100,4305900,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1968,5010000,0,350700,4659300,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1969,5520000,0,386400,5133600,0.0,0.07,0.93,0.005,,"1950-69: COD share fixed at 7% (1970 data 6.5%; Union Miniere era recalled, not read); zambia not in repo before 1970"
+1970,5900000,0,385679,5514321,0.0,0.0654,0.9346,0.005,0.1159,COD from prod_copper
+1971,5940000,0,407700,5532300,0.0,0.0686,0.9314,0.005,0.1097,COD from prod_copper
+1972,6540000,0,438501,6101499,0.0,0.067,0.933,0.005,0.1097,COD from prod_copper
+1973,6920000,0,488514,6431486,0.0,0.0706,0.9294,0.005,0.1021,COD from prod_copper
+1974,7100000,0,499331,6600669,0.0,0.0703,0.9297,0.005,0.0983,COD from prod_copper
+1975,6740000,0,464928,6275072,0.0,0.069,0.931,0.005,0.096,COD from prod_copper
+1976,7260000,0,443948,6816052,0.0,0.0611,0.9389,0.005,0.098,COD from prod_copper
+1977,7420000,0,452716,6967284,0.0,0.061,0.939,0.005,0.0888,COD from prod_copper
+1978,7280000,0,472533,6807467,0.0,0.0649,0.9351,0.005,0.0898,COD from prod_copper
+1979,7350000,0,401416,6948584,0.0,0.0546,0.9454,0.005,0.0797,COD from prod_copper
+1980,7200000,0,462202,6737798,0.0,0.0642,0.9358,0.005,0.0847,COD from prod_copper
+1981,7690000,0,506481,7183519,0.0,0.0659,0.9341,0.005,0.0764,COD from prod_copper
+1982,7580000,0,505385,7074615,0.0,0.0667,0.9333,0.005,0.0699,COD from prod_copper
+1983,7610000,0,504207,7105793,0.0,0.0663,0.9337,0.005,0.0777,COD from prod_copper
+1984,7810000,0,500220,7309780,0.0,0.064,0.936,0.005,0.0738,COD from prod_copper
+1985,7990000,0,504235,7485765,0.0,0.0631,0.9369,0.005,0.0639,COD from prod_copper
+1986,7940000,0,502600,7437400,0.0,0.0633,0.9367,0.005,0.0646,COD from prod_copper
+1987,8240000,0,501864,7738136,0.0,0.0609,0.9391,0.005,0.064,COD from prod_copper
+1988,8720000,45000,505800,8169200,0.0052,0.058,0.9368,0.005,0.0594,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+1989,9040000,45000,442800,8552200,0.005,0.049,0.946,0.005,0.0597,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+1990,9200000,60000,352400,8787600,0.0065,0.0383,0.9552,0.005,0.0593,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+1991,9330000,60000,236100,9033900,0.0064,0.0253,0.9683,0.005,0.0453,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+1992,9470000,60000,144300,9265700,0.0063,0.0152,0.9784,0.005,0.0457,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+1993,9490000,60000,60000,9370000,0.0063,0.0063,0.9874,0.005,0.0455,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+1994,9500000,60000,40642,9399358,0.0063,0.0043,0.9894,0.005,0.0405,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+1995,10000000,60000,34958,9905042,0.006,0.0035,0.9905,0.015,0.0342,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+1996,11000000,60000,40165,10899835,0.0055,0.0037,0.9909,0.015,0.0309,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+1997,11500000,100000,39651,11360349,0.0087,0.0034,0.9879,0.015,0.0288,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+1998,12100000,100000,38236,11961764,0.0083,0.0032,0.9886,0.015,0.0313,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+1999,12800000,100000,33000,12667000,0.0078,0.0026,0.9896,0.015,0.0212,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2000,13300000,190000,33000,13077000,0.0143,0.0025,0.9832,0.015,0.0187,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2001,13700000,190000,37845,13472155,0.0139,0.0028,0.9834,0.015,0.0224,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2002,13600000,190000,27359,13382641,0.014,0.002,0.984,0.015,0.0226,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2003,13800000,190000,16359,13593641,0.0138,0.0012,0.985,0.015,0.0251,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2004,14700000,190000,18995,14491005,0.0129,0.0013,0.9858,0.015,0.0279,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2005,15000000,190000,97500,14712500,0.0127,0.0065,0.9808,0.025,0.031,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2006,15100000,190000,142300,14767700,0.0126,0.0094,0.978,0.025,0.0329,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2007,15500000,190000,144600,15165400,0.0123,0.0093,0.9784,0.025,0.0338,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2008,15600000,190000,239200,15170800,0.0122,0.0153,0.9725,0.025,0.0364,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2009,16000000,230000,299300,15470700,0.0144,0.0187,0.9669,0.025,0.0376,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2010,16100000,290000,378300,15431700,0.018,0.0235,0.9585,0.025,0.0476,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2011,16100000,290000,499198,15310802,0.018,0.031,0.951,0.025,0.0412,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2012,16700000,290000,619942,15790058,0.0174,0.0371,0.9455,0.025,0.0416,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2013,18400000,290000,922016,17187984,0.0158,0.0501,0.9341,0.025,0.0413,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2014,18600000,290000,1030130,17279870,0.0156,0.0554,0.929,0.025,0.0381,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2015,19300000,290000,1039010,17970990,0.015,0.0538,0.9311,0.025,0.0368,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2016,20500000,290000,1023690,19186310,0.0141,0.0499,0.9359,0.025,0.0354,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2017,20100000,290000,1094640,18715360,0.0144,0.0545,0.9311,0.025,0.0397,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2018,20600000,290000,1225230,19084770,0.0141,0.0595,0.9264,0.025,0.0425,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2019,20400000,310000,1461120,18628880,0.0152,0.0716,0.9132,0.025,0.0386,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2020,20600000,340000,1600000,18660000,0.0165,0.0777,0.9058,0.025,0.0414,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2021,21200000,350000,1740000,19110000,0.0165,0.0821,0.9014,0.025,0.0397,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2022,21900000,365000,2350000,19185000,0.0167,0.1073,0.876,0.025,0.0364,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2023,22600000,393000,2930000,19277000,0.0174,0.1296,0.853,0.025,0.0315,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2024,23000000,502000,3300000,19198000,0.0218,0.1435,0.8347,0.025,0.0296,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
+2025,23000000,515000,0,22485000,0.0224,0.0,0.9776,0.025,0.0,"A tonnages are my estimates (OD, Prominent Hill, Carrapateena), +-20%; denominators: XWL series"
