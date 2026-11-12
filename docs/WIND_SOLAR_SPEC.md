@@ -189,7 +189,7 @@ Several technology classes $k$ contribute to the same master key (e.g. copper ta
 
 ### 3.3 Notes suffixes (OIL_GAS_SPEC §3.3 grammar)
 
-Order: rule text; `; driver basis: <b>` (interpolated/extrapolated among capacity, intensity and production rows; `modelled` does not count); `; share basis: placeholder` (any group S row used is a placeholder); `; allocation basis: placeholder` (default-variant joint rows whose D6 share is a placeholder); `; below_detection cause: <causes>` last (causes as OIL_GAS_SPEC §3.3).
+Order: rule text; `; driver basis: <b>` (interpolated/extrapolated among capacity and intensity rows only, per §13.20; production and share rows do not count; `modelled` does not count) [corrected 2026-11-11 to match §13.20]; `; share basis: placeholder` (any group S row used is a placeholder); `; allocation basis: placeholder` (default-variant joint rows whose D6 share is a placeholder); `; below_detection cause: <causes>` last (causes as OIL_GAS_SPEC §3.3).
 
 ### 3.4 Arithmetic
 
@@ -390,7 +390,7 @@ Tests read every factor, intensity and share from the files, behind explicit pre
   | # | Year | Component | Stream-side quantity | Reference | Independence | Indicative (author arithmetic, not an expectation) |
   |---|---|---|---|---|---|---|
   | B1 | 1990–2006 cumulative | REE, Bayan Obo tailings Th-232 | RE-BO Th232 tailings factor (before D6 and charge factor) × cumulative Bayan Obo REO (CHN `prod_ree_oxide` × `ree_route_share_bayan_obo`, **1990–2006**; the CHN series starts in 1990, so output since the late 1950s before that is outside the sum) | S0405: 149 Mt tailings at 1.0–1.6 Bq/g Th-232 = $1.5$–$2.4\times10^{14}$ Bq to end 2006 | **Partly circular** (the 113 t/t factor comes from the same inventory). Independent upper bound: ore mined to end 2006, 276 Mt at 1.14 Bq/g = $3.1\times10^{14}$ Bq | Stream about 0.31 of the ore bound (about $9.5\times10^{13}$ Bq), 0.40–0.63 of the inventory. **Pass rule (v1.1, S2): stream ≤ ore bound, ≥ 1/10 of it, and within ×3 of the inventory range**: it passes. The shortfall is expected (1958–89 output excluded). v1.0 printed $10^{17}$, a ×1,000 slip |
-  | B2 | 1999 | Steel stack Pb-210 and Po-210 | ST stack factors × GBR `prod_steel` 1999 × `steel_bf_route_share` | NRPB-W48 (S0430): four UK plants $2.1\times10^{10}$ Pb-210, $1.35\times10^{11}$ Po-210 Bq/a | **Partly circular** (the factor's low is Scunthorpe, W48); IJmuiden (RP-135 Table 15) and UNSCEAR 2000 Table 28 set the centre and high | 16.3 Mt × 0.78 [A] × 4,600 = $5.8\times10^{10}$ (ratio 2.8, near the edge); Po-210 $1.5\times10^{11}$ (1.1) |
+  | B2 | 1999 | Steel stack Pb-210 and Po-210 | ST stack factors × GBR `prod_steel` 1999 × `steel_bf_route_share` | NRPB-W48 (S0430): four UK plants $2.1\times10^{10}$ Pb-210, $1.35\times10^{11}$ Po-210 Bq/a | **Partly circular** (the factor's low is Scunthorpe, W48); IJmuiden (RP-135 Table 15) and UNSCEAR 2000 Table 28 set the centre and high | 16.28 Mt × 0.68 (`steel_bf_route_share` 1999) gives Pb-210 $5.09\times10^{10}$ (ratio 2.43) and Po-210 $1.33\times10^{11}$ (ratio 0.98) on the committed build [updated 2026-11-11] |
   | B3 | 2017 | Aluminium red mud Ra-226 | AL Ra226+ (impounded + dispersed) × `prod_aluminium` 2017 | S0436: about 150 Mt/a red mud at 100–500 Bq/kg Ra-226: $1.5$–$7.5\times10^{13}$ Bq/a | Independent of the factor's tonnage basis (3.2 t/t, S0409 activities) | $9.6\times10^{5}\times5.94\times10^{7}=5.7\times10^{13}$ (inside the range; range test). `commodity_notes.md` §6 item 4 now reads $1.5$–$7.5\times10^{13}$ (corrected 2026-11-11 from a ×1,000 slip) |
   | B4 | 2010 | OD tailings radon | **Deferred to Phase 3** (radon from residues is an engine flow, SCHEMA §3.2) | S0408: completed tailings facility 520 TBq/a (13.9 MBq/s ≈ 439 TBq/a, source quirk) | Independent | Phase 2 checks only that the implied effective ε (about 0.004, Phase 1 §8) lies inside the `metal_tailings` ε triple (premise) |
 
@@ -402,6 +402,8 @@ Tests read every factor, intensity and share from the files, behind explicit pre
 - **(j) CLI** as OIL_GAS_SPEC §9(j).
 
 ## 10. Known limits and misses (carried onto the rows, not hidden)
+
+- **Zero net capacity additions (verifier, 2026-11-11).** The capacity series has net additions of exactly 0 in 1988 and 1992–97 (EIA rounding), so the stream has no rows in those years (rows exist for 1982–87, 1989–91 and from 1998). Zero tonnage is silent by §13 (no row, no log); the effect on totals is negligible.
 
 **Evidence grades by commodity** (`commodity_notes.md` §3, `copper_classes.md` §3):
 

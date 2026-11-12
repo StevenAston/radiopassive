@@ -103,7 +103,7 @@ GROUP_ENUMS = {
 
 SCHEMA_NAMES = ("master", "sources", "events", "countries", "activity",
                 "baselines", "commodity_factors", "factors", "residue_types",
-                "reference_bands", "residue_seepage_by_group")
+                "reference_bands", "residue_seepage_by_group", "commodity_fuel_inputs")
 
 # --------------------------------------------------------------------------
 # Data structures
@@ -152,6 +152,8 @@ class _Context:
     residue_types: set[str] = field(default_factory=set)
     activity_series: set[str] = field(default_factory=set)
     factor_ids: set[str] = field(default_factory=set)
+    # factor_id -> (file, row) of the file that registered it (T02 across factor files, v2.6)
+    factor_origin: dict[str, tuple[str, int]] = field(default_factory=dict)
     events: dict[str, dict] = field(default_factory=dict)
 
     def add(self, file: str, row: int | None, rule: str, message: str) -> None:
@@ -229,12 +231,17 @@ _CONVERTERS: dict[str, Callable[[str], object]] = {
 }
 
 
-def _coerce(raw: dict[str, str], types: dict[str, str]) -> tuple[dict, list[str]]:
-    """Coerce a support-table row: empty → None; typed columns converted."""
+def _coerce(raw: dict[str, str], types: dict[str, str],
+            exact: frozenset[str] = frozenset()) -> tuple[dict, list[str]]:
+    """Coerce a support-table row: empty → None; typed columns converted.
+
+    Cells are whitespace-stripped except those of the ``exact`` columns, whose
+    pattern is "exactly" (SCHEMA §4.7 ``factor_id``): padding there is a schema failure.
+    """
     record: dict = {}
     problems: list[str] = []
     for key, value in raw.items():
-        value = value.strip()
+        value = value if key in exact and value.strip() else value.strip()
         if not value:
             record[key] = None
             continue
@@ -363,6 +370,7 @@ class _Spec:
     key: Callable[[dict], list[tuple]]          # one or more key tuples per row
     bounds: list[tuple[str, str, str]] = field(default_factory=list)
     year_window: tuple[str, str] | None = None
+    exact: frozenset[str] = frozenset()         # columns that are not whitespace-stripped
 
 
 def _value_bounds() -> list[tuple[str, str, str]]:
@@ -380,7 +388,7 @@ def _check_table(ctx: _Context, spec: _Spec, paths: list[Path],
         if not table.ok:
             continue
         for index, raw in enumerate(table.dicts(), start=1):
-            record, problems = _coerce(raw, spec.types)
+            record, problems = _coerce(raw, spec.types, spec.exact)
             if problems:
                 ctx.add(table.name, index, "T01", "; ".join(problems))
             else:
@@ -414,7 +422,7 @@ def _check_table(ctx: _Context, spec: _Spec, paths: list[Path],
 def _t04(ctx: _Context, name: str, index: int, record: dict, *,
          sources: bool = True, country: str | None = None, group: str | None = None,
          residue: bool = False, driver: bool = False, stage: bool = False,
-         substream: bool = False) -> None:
+         substream: bool = False, commodity: bool = False) -> None:
     """Shared reference-resolution checks for the support tables."""
     unresolved: list[str] = []
     if sources:
@@ -434,6 +442,8 @@ def _t04(ctx: _Context, name: str, index: int, record: dict, *,
     if substream and record.get("substream") and record.get("stream") in ctx.vocab["substreams"] \
             and record["substream"] not in ctx.vocab["substreams"][record["stream"]]:
         unresolved.append(f"substream {record['substream']!r} for stream {record['stream']!r}")
+    if commodity and record.get("commodity") and record["commodity"] not in ctx.vocab["commodities"]:
+        unresolved.append(f"commodity {record['commodity']!r}")
     if unresolved:
         ctx.add(name, index, "T04", "unresolved reference(s): " + ", ".join(unresolved))
 
@@ -545,25 +555,56 @@ def _check_factors(ctx: _Context, paths: list[Path]) -> None:
                         lambda c, n, i, r: _t04(c, n, i, r, country="region", group="group",
                                                 residue=True, driver=True, stage=True,
                                                 substream=True))
-    ctx.factor_ids.update(r["factor_id"] for _, _, r in rows if r.get("factor_id"))
+    for name, index, record in rows:
+        if record.get("factor_id"):
+            ctx.factor_ids.add(record["factor_id"])
+            ctx.factor_origin.setdefault(record["factor_id"], (name, index))
 
 
 def _check_commodity_factors(ctx: _Context, path: Path) -> None:
-    columns = ["commodity", "component", "group", "tier", "route", "residue_type", "region",
-               "year_from", "year_to", "allocation_variant", "allocation_rule",
-               "value_low", "value_central", "value_high", "unit", "below_detection",
-               "basis", "source_ids", "notes"]
-    key_cols = ["commodity", "component", "group", "tier", "route", "residue_type",
+    columns = ["factor_id", "commodity", "component", "group", "tier", "route", "residue_type",
+               "region", "ore_type", "year_from", "year_to", "allocation_variant",
+               "allocation_rule", "value_low", "value_central", "value_high", "unit",
+               "below_detection", "basis", "source_ids", "notes"]
+    key_cols = ["commodity", "component", "ore_type", "group", "tier", "route", "residue_type",
                 "region", "year_from", "allocation_variant"]
+    ore_types = ctx.vocab.get("ore_types", {})
     spec = _Spec("commodity_factors", columns,
                  {"year_from": "int", "year_to": "int", "value_low": "float",
                   "value_central": "float", "value_high": "float",
                   "below_detection": "bool", "source_ids": "list"},
-                 key=lambda r: [tuple(r.get(c) for c in key_cols)],
-                 bounds=_value_bounds(), year_window=("year_from", "year_to"))
-    rows = _check_table(ctx, spec, [path],
-                        lambda c, n, i, r: _t04(c, n, i, r, country="region", group="group",
-                                                residue=True))
+                 # factor_id is a second, independent uniqueness rule (SCHEMA §4.7)
+                 key=lambda r: [tuple(r.get(c) for c in key_cols)]
+                 + ([("factor_id", r["factor_id"])] if r.get("factor_id") else []),
+                 bounds=_value_bounds(), year_window=("year_from", "year_to"),
+                 exact=frozenset({"factor_id"}))
+
+    def extra(ctx: _Context, name: str, index: int, record: dict) -> None:
+        _t04(ctx, name, index, record, country="region", group="group", residue=True,
+             commodity=True)
+        fid = record.get("factor_id")
+        if fid and fid in ctx.factor_origin:
+            first = ctx.factor_origin[fid]
+            ctx.add(name, index, "T02",
+                    f"duplicate factor_id {fid!r}; first at {first[0]}:{first[1]}")
+        commodity, ore = record.get("commodity"), record.get("ore_type")
+        allowed = ore_types.get(commodity)
+        if commodity is None or commodity not in ctx.vocab["commodities"]:
+            return
+        if allowed is None and ore:
+            ctx.add(name, index, "T01",
+                    f"ore_type {ore!r} on commodity {commodity!r}, which has no ore_types entry")
+        elif allowed is not None and not ore:
+            ctx.add(name, index, "T01", f"ore_type required for commodity {commodity!r}")
+        elif allowed is not None and ore not in allowed:
+            ctx.add(name, index, "T04",
+                    f"unresolved reference(s): ore_type {ore!r} for commodity {commodity!r}")
+
+    rows = _check_table(ctx, spec, [path], extra)
+    for name, index, record in rows:
+        if record.get("factor_id"):
+            ctx.factor_ids.add(record["factor_id"])
+            ctx.factor_origin.setdefault(record["factor_id"], (name, index))
     # T05: allocation completeness, as X03.
     by_key: dict[tuple, list[tuple[str, int, dict]]] = {}
     for item in rows:
@@ -576,6 +617,31 @@ def _check_commodity_factors(ctx: _Context, path: Path) -> None:
                                        for m in members])
         if message:
             ctx.add(members[0][0], members[0][1], "T05", message)
+
+
+def _check_commodity_fuel_inputs(ctx: _Context, path: Path) -> None:
+    """Fuel inputs per tonne of commodity (SCHEMA §4.13): optional, reference only."""
+    columns = ["commodity", "fuel", "stream_ref", "region", "year_from", "year_to",
+               "value_low", "value_central", "value_high", "unit", "basis", "source_ids", "notes"]
+    fuels = ctx.vocab.get("fuel_input_fuels", {})
+    spec = _Spec("commodity_fuel_inputs", columns,
+                 {"year_from": "int", "year_to": "int", "value_low": "float",
+                  "value_central": "float", "value_high": "float", "source_ids": "list"},
+                 key=lambda r: [(r.get("commodity"), r.get("fuel"), r.get("region"),
+                                 r.get("year_from"))],
+                 bounds=_value_bounds(), year_window=("year_from", "year_to"))
+
+    def extra(ctx: _Context, name: str, index: int, record: dict) -> None:
+        _t04(ctx, name, index, record, country="region", commodity=True)
+        fuel = record.get("fuel")
+        if fuel is not None and fuel not in fuels:
+            ctx.add(name, index, "T04", f"unresolved reference(s): fuel {fuel!r}")
+        elif fuel is not None and (record.get("stream_ref") or "") != (fuels[fuel] or ""):
+            ctx.add(name, index, "T01",
+                    f"stream_ref {record.get('stream_ref')!r} must equal "
+                    f"fuel_input_fuels[{fuel!r}] = {fuels[fuel]!r}")
+
+    _check_table(ctx, spec, [path], extra)
 
 
 def _check_baselines(ctx: _Context, path: Path) -> None:
@@ -1135,6 +1201,8 @@ def validate(root: str | os.PathLike,
     _check_factors(ctx, sorted((data / "factors").glob("*.csv")))
     if (ref / "commodity_factors.csv").is_file():
         _check_commodity_factors(ctx, ref / "commodity_factors.csv")
+    if (ref / "commodity_fuel_inputs.csv").is_file():
+        _check_commodity_fuel_inputs(ctx, ref / "commodity_fuel_inputs.csv")
     if (data / "baselines.csv").is_file():
         _check_baselines(ctx, data / "baselines.csv")
     if (data / "events.csv").is_file():

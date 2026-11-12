@@ -1,6 +1,6 @@
 """Independent arithmetic oracle for the nuclear stream tests (Task 2.1).
 
-Written from docs/NUCLEAR_SPEC.md (v1.2), docs/LIB_SPEC.md (v1.4) and docs/SCHEMA.md only. It does
+Written from docs/NUCLEAR_SPEC.md (v1.2; v1.3 section 14 added for the AUS F6 carve-out and F8), docs/LIB_SPEC.md (v1.4) and docs/SCHEMA.md only. It does
 NOT import pipeline.lib or pipeline.streams: the bounds arithmetic (log-space quadrature product,
 independent difference, linear and quadrature sums) is re-implemented here with the standard
 library, and the data are read with pandas straight from the CSV files. Nothing numeric from the
@@ -16,7 +16,7 @@ What it produces
 * ``events``   per-event bookkeeping used by the conservation tests.
 
 The key of a row is ``(year, substream, stage, country, group, tier, quantity, route, residue_type,
-event_id)`` with ``""`` for an empty cell.
+event_id, allocation_variant)`` with ``""`` for an empty cell (v1.3, section 14.7 item 1).
 
 Bounds conventions (LIB_SPEC 1.2, 7.7, 8.1; NUCLEAR_SPEC 3.3, 3.4)
 -------------------------------------------------------------------
@@ -143,6 +143,17 @@ def diff(a: B, b: B) -> tuple[B, float]:
     return B(low, c, high, nd, ("clipped_difference",) if nd else ()), raw
 
 
+def cdiff(a: B, b: B) -> tuple[B, float]:
+    """Correlated difference (NUCLEAR_SPEC 14.3). Returns (result, raw central difference)."""
+    raw = a.central - b.central
+    c = max(raw, 0.0)
+    lo_raw = min(a.low - b.low, raw)
+    hi_raw = max(a.high - b.high, raw)
+    lo = min(max(lo_raw, 0.0), c)
+    nd = lo_raw < 0 and lo == 0.0
+    return B(lo, c, max(hi_raw, c), nd, ("clipped_difference",) if nd else ()), raw
+
+
 def remainder(I: B, R: B) -> tuple[B, bool]:
     """Bound-wise damaged-core remainder of NUCLEAR_SPEC 7.3 item 1. Returns (D, low_was_clipped)."""
     raw_c = I.central - R.central
@@ -201,8 +212,8 @@ class Expected:
     extras: dict
 
 
-def key(year, substream, stage, country, group, tier, quantity, route="", residue="", event=""):
-    return (year, substream, stage, country, group, tier, quantity, route, residue, event)
+def key(year, substream, stage, country, group, tier, quantity, route="", residue="", event="", variant="default"):
+    return (year, substream, stage, country, group, tier, quantity, route, residue, event, variant)
 
 
 # --------------------------------------------------------------------------------------------
@@ -224,6 +235,25 @@ class Oracle:
                 if k in self.act:
                     raise ValueError(f"oracle: duplicate activity key {k}")
                 self.act[k] = r
+        # v1.3 (D74): the Olympic Dam series and factor rows (activity keyed like the others)
+        self.od_q: dict = {}
+        self.od_w: dict = {}
+        for name, series, tgt in (("commodity_production", "prod_copper_od", self.od_q),
+                                  ("wind_solar_shares", "od_value_share_u", self.od_w)):
+            p = self.root / "data" / "activity" / f"{name}.csv"
+            if p.exists():
+                df = pd.read_csv(p, dtype=str, keep_default_na=False)
+                for r in df[(df["series"] == series) & (df["country"] == "AUS")].to_dict("records"):
+                    tgt[int(r["year"])] = r
+        p = self.root / "data" / "reference" / "commodity_factors.csv"
+        self.od_factors: list = []
+        if p.exists():
+            cf = pd.read_csv(p, dtype=str, keep_default_na=False)
+            self.od_factors = [r for r in cf.to_dict("records")
+                               if r["commodity"] == "copper" and r["component"] == "own_residue"
+                               and r.get("ore_type") == "iocg_olympic_dam" and r["tier"] == "impounded"
+                               and r["residue_type"] == "metal_tailings" and r["region"] == "AUS"
+                               and r["allocation_variant"] == "default"]
         ev = pd.read_csv(self.root / "data" / "events.csv", dtype=str, keep_default_na=False)
         self.events = {r["event_id"]: r for r in ev.to_dict("records") if r["stream"] == "nuclear"}
         self.by_series: dict[str, dict[int, list[str]]] = defaultdict(lambda: defaultdict(list))
@@ -313,6 +343,7 @@ class Oracle:
         self.pred_dropped: list = []
         self.ev_info: dict = {}
         self._uranium()
+        self._olympic_dam()
         self._conv_enrich_fab()
         self._reprocessing()
         self._sea()
@@ -326,6 +357,33 @@ class Oracle:
         if er.key in tgt:
             raise RuntimeError(f"oracle: duplicate expected key {er.key}")
         tgt[er.key] = er
+
+    # ---- Olympic Dam pool, nuclear ledger (v1.3, 14.4) ------------------------------------------
+    def _olympic_dam(self):
+        groups = sorted({f["group"] for f in self.od_factors})
+        for y in sorted(self.od_q):
+            if not (1988 <= y <= 2025) or y not in self.od_w or not self.has("phi_civil", y, "XWL"):
+                continue
+            phi_row = self.arow("phi_civil", y, "XWL")
+            phi = self.a("phi_civil", y, "XWL")
+            srcs_act = self.src(self.od_q[y], self.od_w[y], phi_row)
+            basis = self.basis_words(self.od_q[y], self.od_w[y], phi_row)
+            Q = B(float(self.od_q[y]["value_low"]), float(self.od_q[y]["value_central"]),
+                  float(self.od_q[y]["value_high"]))
+            w = float(self.od_w[y]["value_central"])
+            for g in groups:
+                f = [r for r in self.od_factors if r["group"] == g
+                     and int(r["year_from"]) <= y <= int(r["year_to"])]
+                assert len(f) == 1, f"oracle: {len(f)} OD factor rows for {g} {y}"
+                f = f[0]
+                pool = prod(Q, self.fb(f))
+                src = {x for x in f["source_ids"].split(";") if x} | srcs_act
+                for v, a, rule in (("default", w, "civil:ratio;alloc:value"),
+                                   ("bound_main", 0.0, "civil:ratio;alloc:main"),
+                                   ("bound_radio", 1.0, "civil:ratio;alloc:radio")):
+                    b = exact(0.0) if v == "bound_main" else prod(pool, exact(a), phi)
+                    k = key(y, "fuel_cycle", "u_milling", "AUS", g, "impounded", "flow", "", "metal_tailings", "", v)
+                    self._put(ER(k, b, "Bq/a", [f["factor_id"]], rule, src, set(), basis, "", "F8"))
 
     # ---- uranium front end ----------------------------------------------------------------------
     def _uranium(self):
@@ -385,8 +443,18 @@ class Oracle:
         rule = "civil:pre1965" if y <= 1964 else "civil:ratio"
         basis = self.basis_words(phi_row, *drivers)
         base_src = self.src(phi_row, *drivers)
+        # v1.3 (14.3): AUS F6 takes the conventional tonnage less Olympic Dam, before the civil share
+        carve = out_country == "AUS" and self.has("u_production_od", y, "AUS")
+        if carve:
+            Tf6, raw_c = cdiff(prod(P, comp(s)), self.a("u_production_od", y, "AUS"))
+            Tf6 = None if raw_c <= 0 else prod(Tf6, phi)
+            od_src = self.src(self.arow("u_production_od", y, "AUS"))
         for name, d in self.u_fam.items():
             T = {"conv": Tconv, "isl": Tisl, "all": Tall}[d["T"]]
+            if carve and name == "F6":
+                if Tf6 is None:
+                    continue
+                T = Tf6
             uses_isl = d["T"] != "all"
             for g in self.u_groups[name]:
                 match = {"stage": d["stage"], "group": g, "tier": d["tier"], "route": d["route"]}
@@ -402,6 +470,8 @@ class Oracle:
                 ids = ([s_row["factor_id"]] if uses_isl else []) + [f["factor_id"]]
                 srcs = base_src | self.src(f) | (self.src(s_row) if uses_isl else set())
                 opt = set() if uses_isl else self.src(s_row)
+                if carve and name == "F6":
+                    srcs = srcs | od_src
                 tier = d["tier"]
                 k = key(y, "fuel_cycle", d["stage"], out_country, g, tier, "flow", d["route"], d["residue"])
                 self._put(ER(k, b, "Bq/a", ids, rule, srcs, opt, basis, "", name, ids_exact=uses_isl,

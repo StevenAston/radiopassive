@@ -620,7 +620,7 @@ def check_log(log: list[dict], O: Oracle, exp, label: str = "") -> list[str]:
     nf = log_entries(log, "no_family")
     want_nf = {
         "stage hydro: no registry rows",
-        "stage construction: no registry rows; construction waits for commodity_factors.csv",
+        "stage construction: no registry rows; construction deferred (D75)",
     }
     if {e["detail"] for e in nf} != want_nf or len(nf) != 2:
         msgs.append(
@@ -820,8 +820,8 @@ class TestPremises:
 
     def test_files_and_references(self):
         premise(
-            not (ROOT / "data" / "reference" / "commodity_factors.csv").exists(),
-            "commodity_factors.csv must be absent (7)",
+            not _mi_other_series(),
+            "material_intensity.csv must have no mi_geothermal_/mi_hydro_/mi_biomass_ series (7, D75)",
         )
         ev = pd.read_csv(ROOT / "data" / "events.csv", dtype=str, keep_default_na=False)
         premise(
@@ -3909,6 +3909,23 @@ class TestMiniRatioUnit:
         assert other_mod.build(root).rows
 
 
+def _mi_csv(series: str) -> str:
+    return (
+        "series,year,country,value_low,value_central,value_high,unit,below_detection,basis,source_ids,notes\n"
+        f"{series},1990,XWL,1,2,3,t/GW,false,extrapolated,S0400,test fixture\n"
+    )
+
+
+def _mi_other_series():
+    p = ROOT / "data" / "activity" / "material_intensity.csv"
+    if not p.exists():
+        return []
+    d = pd.read_csv(p, dtype=str, keep_default_na=False)
+    return sorted(
+        {s for s in d["series"] if s.startswith(("mi_geothermal_", "mi_hydro_", "mi_biomass_"))}
+    )
+
+
 class TestMiniErrors:
     def test_duplicate_activity_rows_raise_naming_the_key(self, other_mod, tmp_path):
         bio = [
@@ -3958,7 +3975,24 @@ class TestMiniErrors:
         with pytest.raises(lib_error()):
             other_mod.build(root)
 
-    def test_commodity_factors_file_raises(self, other_mod, tmp_path):
+    def test_commodity_factors_file_present_or_absent_gives_identical_outputs(
+        self, other_mod, tmp_path
+    ):
+        """D75: a present commodity_factors.csv neither raises nor changes any output."""
+        world = mini_world((1990,))
+        with_f = make_mini(tmp_path, world, name="with_cf")
+        premise(
+            (with_f / "data" / "reference" / "commodity_factors.csv").exists(),
+            "mini tree copies the real reference directory including commodity_factors.csv",
+        )
+        no_f = make_mini(tmp_path, world, name="without_cf")
+        (no_f / "data" / "reference" / "commodity_factors.csv").unlink()
+        a = other_mod.build(with_f)
+        b = other_mod.build(no_f)
+        assert list(a.rows) == list(b.rows), "commodity_factors.csv changed the rows (D75)"
+        assert list(a.log) == list(b.log), "commodity_factors.csv changed the log (D75)"
+
+    def test_commodity_factors_with_wind_content_does_not_raise(self, other_mod, tmp_path):
         root = make_mini(
             tmp_path,
             mini_world((1990,)),
@@ -3966,8 +4000,32 @@ class TestMiniErrors:
                 "data/reference/commodity_factors.csv": "commodity,stage,component\n"
             },
         )
+        assert other_mod.build(root).rows
+
+    @pytest.mark.parametrize("prefix", ["mi_geothermal_", "mi_hydro_", "mi_biomass_"])
+    def test_other_plant_type_material_intensity_series_raises(
+        self, other_mod, tmp_path, prefix
+    ):
+        root = make_mini(
+            tmp_path,
+            mini_world((1990,)),
+            extra_files={"data/activity/material_intensity.csv": _mi_csv(prefix + "steel")},
+        )
         with pytest.raises(lib_error()):
             other_mod.build(root)
+
+    def test_material_intensity_without_other_series_does_not_raise(
+        self, other_mod, tmp_path
+    ):
+        """Control for the guard above: wind/solar series alone are ignored."""
+        root = make_mini(
+            tmp_path,
+            mini_world((1990,)),
+            extra_files={
+                "data/activity/material_intensity.csv": _mi_csv("mi_wind_on_nopm_aluminium")
+            },
+        )
+        assert other_mod.build(root).rows
 
     def test_other_event_raises(self, other_mod, tmp_path):
         def ev(recs):

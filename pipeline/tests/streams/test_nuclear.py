@@ -98,7 +98,8 @@ TYPES = ["pwr", "bwr", "phwr", "gcr", "lwgr", "fbr"]
 NOBLE = ["Ar41", "Kr85", "Kr85m", "Kr87", "Kr88+", "Xe133", "Xe135", "Xe138+"]
 SEA_GROUPS_N = 13
 LOG_KINDS = {"no_factor", "no_driver", "no_family", "negative_residual", "predecessor_dropped",
-             "event_not_modelled", "no_inventory", "release_exceeds_inventory", "lib_warning"}
+             "event_not_modelled", "no_inventory", "release_exceeds_inventory", "lib_warning",
+             "od_military_remainder"}
 
 
 def premise(cond, msg):
@@ -134,7 +135,12 @@ def close(a: float, b: float, rel: float = REL) -> bool:
 
 def rkey(r: dict) -> tuple:
     return (int(r["year"]), r["substream"], r["stage"], r["country"], r["group"], r["tier"], r["quantity"],
-            r["route"] or "", r["residue_type"] or "", r["event_id"] or "")
+            r["route"] or "", r["residue_type"] or "", r["event_id"] or "", r["allocation_variant"] or "")
+
+
+def is_f8(r: dict) -> bool:
+    """Olympic Dam pool rows (NUCLEAR_SPEC 14.4): the only rows with residue type metal_tailings."""
+    return r["stage"] == "u_milling" and r["tier"] == "impounded" and r["residue_type"] == "metal_tailings"
 
 
 def describe(r: dict) -> str:
@@ -314,8 +320,11 @@ def compare_row(er, r: dict) -> list[str]:
         msgs.append(f"stream={r['stream']!r}")
     if r["basis"] != "modelled":
         msgs.append(f"basis={r['basis']!r}, expected 'modelled' (3.1)")
-    if r["allocation_variant"] != "default":
-        msgs.append(f"allocation_variant={r['allocation_variant']!r}")
+    # the expected variant is the last element of the key; non-default only on F8 rows (14.4)
+    if r["allocation_variant"] != er.key[-1]:
+        msgs.append(f"allocation_variant={r['allocation_variant']!r}, expected {er.key[-1]!r}")
+    if er.key[-1] != "default" and er.tag != "F8":
+        msgs.append(f"non-default variant {er.key[-1]!r} outside F8")
     if as_bool(r["embedded_fuel"]):
         msgs.append("embedded_fuel true")
     for col in ("product", "technology"):
@@ -464,7 +473,8 @@ class TestRowConventions:
             f, s = ids(r["factor_ids"]), ids(r["source_ids"])
             assert f, f"factor_ids empty: {describe(r)}"
             assert s and s == sorted(s), f"source_ids empty or unsorted {s}: {describe(r)}"
-            assert all(x.startswith("nuclear:") for x in f), f"unexpected factor id {f}: {describe(r)}"
+            prefix = "commodity:" if is_f8(r) else "nuclear:"  # F8 reads the commodity registry (14.4)
+            assert all(x.startswith(prefix) for x in f), f"unexpected factor id {f}: {describe(r)}"
 
     def test_units_by_quantity(self, rows, pre_rows):
         for r in rows.rows + pre_rows.rows:
@@ -483,7 +493,9 @@ class TestRowConventions:
 
     def test_residue_type_only_on_tailings_and_church_rock(self, rows):
         for r in rows.rows:
-            if r["residue_type"]:
+            if is_f8(r):
+                assert r["country"] == "AUS" and 1988 <= int(r["year"]) <= 2025, describe(r)
+            elif r["residue_type"]:
                 assert r["residue_type"] == "u_tailings", describe(r)
                 assert r["stage"] == "u_milling" and r["tier"] in ("impounded", "dispersed"), \
                     f"residue_type outside impounded/dispersed tailings rows: {describe(r)}"
@@ -561,6 +573,9 @@ class TestSchema:
         for r in rows.rows:
             if r["stage"] in ("u_mining_conv", "u_mining_isl", "u_milling", "reprocessing"):
                 tok = ids(r["allocation_rule"])
+                if is_f8(r):  # F8 carries the D6 token after the civil token (14.4)
+                    assert len(tok) == 2 and tok[1].startswith("alloc:"), f"F8 allocation rule: {describe(r)} {tok}"
+                    tok = tok[:1]
                 assert len(tok) == 1 and tok[0].startswith("civil:"), f"no civil token: {describe(r)} {tok}"
                 y = int(r["year"])
                 if y <= 1964 and r["event_id"] != "E003":
@@ -1355,6 +1370,8 @@ class TestMillBalance:
                 continue
             y, c = int(r5["year"]), r5["country"]
             if y < 1965 or float(r5["value_central"]) == 0 or y % 5:
+                continue
+            if c == "AUS" and y >= 1988:  # AUS F6 is carved by Olympic Dam (14.3, 14.7 item 7)
                 continue
             r6 = rows.find(y, stage="u_milling", country=c, group="U238+", tier="impounded", quantity="flow")
             assert r6, f"{c} {y}: no tailings row"

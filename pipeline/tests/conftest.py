@@ -81,7 +81,10 @@ def tmp_root(tmp_path: Path) -> Path:
     """A temporary project root: real reference tables and schemas plus the fixture registries."""
     root = tmp_path / "root"
     (root / "data").mkdir(parents=True)
-    shutil.copytree(PROJECT_ROOT / "data" / "reference", root / "data" / "reference")
+    # The optional commodity tables are not copied (see the module docstring): they cite
+    # sources and groups the fixture registries lack. Tests install their own versions.
+    shutil.copytree(PROJECT_ROOT / "data" / "reference", root / "data" / "reference",
+                    ignore=shutil.ignore_patterns("commodity_factors.csv", "commodity_fuel_inputs.csv"))
     shutil.copytree(PROJECT_ROOT / "schema", root / "schema")
     shutil.copy(FIXTURES / "sources.csv", root / "data" / "sources.csv")
     _add_cited_real_sources(root)

@@ -99,7 +99,8 @@ TXT_FALLBACK = "household share fallback (other:0050)"
 MAIN_OUTPUT = Path("data") / "streams" / "other.csv.gz"
 PRE1950_OUTPUT = Path("data") / "streams_pre1950" / "other.csv.gz"
 LOG_OUTPUT = Path("research") / "other" / "build_log.csv"
-COMMODITY_FACTORS = Path("data") / "reference" / "commodity_factors.csv"
+MATERIAL_INTENSITY = Path("data") / "activity" / "material_intensity.csv"
+_MI_PLANT_PREFIXES = ("mi_geothermal_", "mi_hydro_", "mi_biomass_")
 
 _KEY_COLUMNS = ("driver_series", "group", "tier", "route", "residue_type")
 _SELECT_KEYS = ("stage", "group", "tier", "route", "residue_type", "driver_series")
@@ -410,10 +411,15 @@ class _Builder:
                     f"factor {f['factor_id']!r}: stage {f['stage']!r} has registry rows; "
                     "the other-stream spec must be revised first (OTHER_SPEC 7)"
                 )
-        if (root / COMMODITY_FACTORS).exists():
-            raise LibError(
-                f"{COMMODITY_FACTORS} exists; the other-stream spec must be revised (OTHER_SPEC 7)"
-            )
+        mi_path = root / MATERIAL_INTENSITY
+        if mi_path.is_file():
+            for row in read_table(mi_path):
+                series = row.get("series") or ""
+                if series.startswith(_MI_PLANT_PREFIXES):
+                    raise LibError(
+                        f"{MATERIAL_INTENSITY}: series {series!r} is an other-stream plant type; "
+                        "the other-stream spec must be revised first (OTHER_SPEC 7)"
+                    )
         return factors
 
     @staticmethod
@@ -1260,8 +1266,7 @@ class _Builder:
                 "year": "",
                 "country": "",
                 "group": "",
-                "detail": "stage construction: no registry rows; construction waits for "
-                "commodity_factors.csv",
+                "detail": "stage construction: no registry rows; construction deferred (D75)",
             }
         )
         return log

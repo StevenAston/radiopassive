@@ -2,10 +2,11 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "radiopassive/schema/commodity_factors.json",
   "title": "Radiopassive commodity footprint row",
-  "description": "One row of data/reference/commodity_factors.csv (SCHEMA.md §4.7): activity per tonne of refined commodity.",
+  "description": "One row of data/reference/commodity_factors.csv (SCHEMA.md §4.7, v2.6): activity per tonne of refined commodity. The ore_type coupling to vocab.json is checked by the validator (T01/T04).",
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "factor_id",
     "commodity",
     "component",
     "group",
@@ -13,6 +14,7 @@
     "route",
     "residue_type",
     "region",
+    "ore_type",
     "year_from",
     "year_to",
     "allocation_variant",
@@ -27,6 +29,10 @@
     "notes"
   ],
   "properties": {
+    "factor_id": {
+      "type": "string",
+      "pattern": "^commodity:[0-9]{4}$"
+    },
     "commodity": {
       "enum": [
         "ree_oxide",
@@ -37,6 +43,8 @@
         "aggregate",
         "glass",
         "glass_fibre",
+        "cast_iron",
+        "tio2_pigment",
         "silicon_mg",
         "silver",
         "tellurium",
@@ -55,10 +63,7 @@
       ]
     },
     "component": {
-      "enum": [
-        "own_residue",
-        "embedded_fuel"
-      ]
+      "const": "own_residue"
     },
     "group": {
       "type": "string",
@@ -102,6 +107,14 @@
     },
     "region": {
       "type": "string",
+      "minLength": 1,
+      "pattern": "^[^;]+$"
+    },
+    "ore_type": {
+      "type": [
+        "string",
+        "null"
+      ],
       "minLength": 1
     },
     "year_from": {

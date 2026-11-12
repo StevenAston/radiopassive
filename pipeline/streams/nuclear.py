@@ -1,4 +1,4 @@
-"""Nuclear stream script (Task 2.1). Contract: docs/NUCLEAR_SPEC.md (v1.2, including section 13).
+"""Nuclear stream script (Task 2.1). Contract: docs/NUCLEAR_SPEC.md (v1.3: sections 13 and 14, the Olympic Dam amendment, D74).
 
 Usage: ``python -m pipeline.streams.nuclear [--root PATH] [--write]``
 
@@ -29,6 +29,7 @@ from pipeline.streams._outputs import diff_mode_preflight, finish
 
 STREAM = "nuclear"
 WORLD_ACTIVITY = "XWL"  # world aggregate / default region in activity and factor tables
+OD_COUNTRY = "AUS"
 WORLD_ROW = "XXX"  # SCHEMA §3 / V10: master rows use XXX for global data
 FIRST_YEAR_MAIN = 1950
 LAST_YEAR = 2025
@@ -40,9 +41,24 @@ PAIR_TOLERANCE = 1e-9  # NUCLEAR_SPEC 5.0
 
 REPROCESSED = "nuc_reprocessed_gwa"
 SEA_DUMPED = "nuc_sea_dumped_tbq"
-ACTIVITY_FILES = ("uranium.csv", "electricity_generation.csv", "nuclear.csv", "nuclear_cycle.csv")
+OD_URANIUM = "u_production_od"  # NUCLEAR_SPEC 14.2: carve-out of F6
+OD_COPPER = "prod_copper_od"  # driver of F8
+OD_SHARE = "od_value_share_u"  # w_U
+OD_FIRST_YEAR = 1988
+VARIANTS = ("default", "bound_main", "bound_radio")
+OD_RULE = {
+    "default": "civil:ratio;alloc:value",
+    "bound_main": "civil:ratio;alloc:main",
+    "bound_radio": "civil:ratio;alloc:radio",
+}
+OD_FRAGMENT = "; Olympic Dam carved out (D74)"
+ACTIVITY_FILES = (
+    "uranium.csv", "electricity_generation.csv", "nuclear.csv", "nuclear_cycle.csv",
+    "commodity_production.csv", "wind_solar_shares.csv",
+)
 USED_SERIES = frozenset(
-    {"u_production", "phi_civil", "elec_gen_nuclear", REPROCESSED, SEA_DUMPED}
+    {"u_production", "phi_civil", "elec_gen_nuclear", REPROCESSED, SEA_DUMPED,
+     OD_URANIUM, OD_COPPER, OD_SHARE}
     | {f"nuc_gen_{t}" for t in TYPES}
     | {f"nuc_cap_{t}" for t in TYPES}
 )
@@ -52,6 +68,7 @@ LOG_KINDS = (
     "no_driver",
     "no_family",
     "negative_residual",
+    "od_military_remainder",
     "predecessor_dropped",
     "event_not_modelled",
     "no_inventory",
@@ -69,6 +86,13 @@ BASIS_ORDER = ("interpolated", "extrapolated")
 LOG_COLUMNS = ("kind", "year", "country", "group", "detail")
 REST_OF_WORLD_NOTE = "rest of world (world aggregate minus listed countries)"
 CIVIL_SHARE_FLAG = "; civil share undocumented (D64)"
+
+OD_FACTOR_PATH = Path("data") / "reference" / "commodity_factors.csv"
+OD_MATCH = {
+    "commodity": "copper", "component": "own_residue", "tier": "impounded",
+    "residue_type": "metal_tailings", "ore_type": "iocg_olympic_dam",
+    "allocation_variant": "default",
+}
 
 MAIN_OUTPUT = Path("data") / "streams" / "nuclear.csv.gz"
 PRE1950_OUTPUT = Path("data") / "streams_pre1950" / "nuclear.csv.gz"
@@ -136,6 +160,21 @@ def _independent_difference(a: Bounds, b: Bounds) -> tuple[Bounds, float]:
     high = c + math.hypot(a.high - a.central, b.central - b.low)
     low = max(low_raw, 0.0)
     return Bounds(low, c, max(high, c), nd_floored=low_raw < 0.0), raw
+
+
+def _correlated_difference(a: Bounds, b: Bounds) -> tuple[Bounds, float]:
+    """Correlated difference $a-b$ (NUCLEAR_SPEC 14.3); also returns the raw central difference.
+
+    Central $c=c_a-c_b$, low $=\\min(l_a-l_b,c)$, high $=\\max(h_a-h_b,c)$, each clipped to $\\ge0$;
+    a clipped low or central sets ``nd_floored``.
+    """
+    raw = a.central - b.central
+    c = max(raw, 0.0)
+    low_raw = min(a.low - b.low, raw)
+    high_raw = max(a.high - b.high, raw)
+    low = min(max(low_raw, 0.0), c)
+    high = max(high_raw, c)
+    return Bounds(low, c, high, nd_floored=low_raw < 0.0 or raw < 0.0), raw
 
 
 def _remainder(inv: Bounds, rel: Bounds) -> tuple[Bounds, bool]:
@@ -237,6 +276,11 @@ def _qdiff_independent(a: _Q, b: _Q) -> tuple[_Q, float]:
     return _finish(out, (a, b), products=False, extra=("clipped_difference",)), raw
 
 
+def _qdiff_correlated(a: _Q, b: _Q) -> tuple[_Q, float]:
+    out, raw = _correlated_difference(a.b, b.b)
+    return _finish(out, (a, b), products=False, extra=("clipped_difference",)), raw
+
+
 # --------------------------------------------------------------------------------------
 # small helpers
 # --------------------------------------------------------------------------------------
@@ -304,6 +348,9 @@ class _Builder:
             for e in read_table(root / "data" / "events.csv")
             if e["stream"] == STREAM
         ]
+        # Absent file: F8 logs no_family (NUCLEAR_SPEC 14.2). Not indexed by (stage, group).
+        od_path = root / OD_FACTOR_PATH
+        self.od_factors = read_table(od_path) if od_path.is_file() else []
         self.series: dict[tuple[str, str], dict[int, _Driver]] = {}
         self._load_activity(root / "data" / "activity")
         self.present = {s for s, _ in self.series}
@@ -475,10 +522,9 @@ class _Builder:
             year=year,
             stream=STREAM,
             basis="modelled",
-            allocation_variant="default",
             embedded_fuel=False,
             notes=notes,
-            **fields,
+            **{"allocation_variant": "default", **fields},
         )
         (self.rows if year >= FIRST_YEAR_MAIN else self.rows_pre1950).append(row)
 
@@ -650,6 +696,7 @@ class _Builder:
                 raise
             s_row = None
         tonnage: dict[str, _Q | None] = {"all": _qproduct(prod_q, phi.q), "isl": None, "conv": None}
+        f6_od: _Driver | None = None
         if s_row is not None:
             if s_row["unit"] != "1":
                 raise LibError(f"ISL share factor {s_row['factor_id']!r}: unit {s_row['unit']!r}")
@@ -657,6 +704,21 @@ class _Builder:
             comp = _isl_complement(share, s_row["factor_id"])
             tonnage["isl"] = _qproduct(prod_q, _fq(s_row), phi.q)
             tonnage["conv"] = _qproduct(prod_q, _Q(comp), phi.q)
+            # F6 only: Olympic Dam is subtracted from the conventional tonnage before the civil
+            # share (NUCLEAR_SPEC 14.3). F1 and F2 keep the full AUS tonnage.
+            f6_od = None if rest else self.driver(OD_URANIUM, out_country, year)
+            if out_country != OD_COUNTRY:
+                f6_od = None
+        tonnage_f6 = tonnage["conv"]
+        if f6_od is not None:
+            conv_all = _qproduct(prod_q, _Q(comp))
+            diff, raw = _qdiff_correlated(conv_all, f6_od.q)
+            if raw < 0:
+                self.note(
+                    "negative_residual", year, out_country, "",
+                    f"{OD_URANIUM}: conventional AUS minus OD = {raw:.6g} t U; no F6 rows",
+                )
+            tonnage_f6 = None if raw <= 0 else _qproduct(diff, phi.q)
 
         for fam in _U_FAMILIES:
             uses_isl = fam.tonnage != "all"
@@ -675,16 +737,23 @@ class _Builder:
                         raise
                     self.note_run("no_factor", year, out_country, g, f"{fam.label}: no factor row")
                     continue
-                t = tonnage[fam.tonnage]
+                carved = fam.name == "F6" and f6_od is not None
+                if carved:
+                    if tonnage_f6 is None:
+                        continue  # nothing left of the conventional tonnage: no row (14.3)
+                    t = tonnage_f6
+                else:
+                    t = tonnage[fam.tonnage]
                 if t is None:
                     raise LibError(
                         f"factor {f['factor_id']!r} is valid in {year} but no ISL share row is"
                     )
                 factors = ([s_row] if uses_isl else []) + [f]
+                text = fam.text + text_tail + (OD_FRAGMENT if carved else "")
                 self.flow(
                     year, _qapply(t, unit, f), f, unit,
                     drivers=all_drivers,
-                    text=fam.text + text_tail,
+                    text=text,
                     substream="fuel_cycle",
                     stage=fam.stage,
                     country=out_country,
@@ -694,7 +763,9 @@ class _Builder:
                     residue_type=fam.residue or None,
                     allocation_rule=rule,
                     factor_ids=[x["factor_id"] for x in factors],
-                    source_ids=_sources(factors, all_drivers),
+                    source_ids=_sources(
+                        factors, all_drivers, f6_od.sources if carved and f6_od else ()
+                    ),
                 )
 
         # Overburden memo series: USA only, from the conventional civil tonnage (NUCLEAR_SPEC 4.4).
@@ -725,6 +796,93 @@ class _Builder:
                     factor_ids=[s_row["factor_id"], f["factor_id"]],
                     source_ids=_sources([s_row, f], all_drivers),
                 )
+
+    # ---- Olympic Dam pool, nuclear ledger (NUCLEAR_SPEC 14.4) --------------------------------
+    def olympic_dam(self) -> None:
+        label = "F8 u_milling/impounded/metal_tailings"
+        groups = sorted(
+            {f["group"] for f in self.od_factors if all(f.get(k, "") == v for k, v in OD_MATCH.items())}
+        )
+        if not groups:
+            self.note("no_family", "", OD_COUNTRY, "", f"{label}: no Olympic Dam factor rows")
+            return
+        series = (OD_COPPER, OD_SHARE)
+        # Years in which any OD input exists; with none at all, every year is a missing-driver year.
+        seen = {
+            y for name in (*series, OD_URANIUM)
+            for y in self.series.get((name, OD_COUNTRY), {}) if y >= OD_FIRST_YEAR
+        }
+        years = sorted(seen) if seen else list(range(OD_FIRST_YEAR, LAST_YEAR + 1))
+        for year in years:
+            q = self.driver(OD_COPPER, OD_COUNTRY, year)
+            w = self.driver(OD_SHARE, OD_COUNTRY, year)
+            phi = self.driver("phi_civil", WORLD_ACTIVITY, year)
+            absent = [
+                (name, d) for name, d in
+                ((OD_COPPER, q), (OD_SHARE, w), ("phi_civil", phi)) if d is None
+            ]
+            if absent:
+                for name, _ in absent:
+                    self.note_run(
+                        "no_driver", year, WORLD_ROW if name == "phi_civil" else OD_COUNTRY, "",
+                        f"{name} has no value ({label})",
+                    )
+                continue
+            assert q is not None and w is not None and phi is not None
+            if q.unit != "t":
+                raise LibError(f"{OD_COPPER} {year}: unit {q.unit!r}, expected 't'")
+            if w.bounds.central < 0.0 or w.bounds.central > 1.0:
+                raise LibError(f"{OD_SHARE} {year}: central {w.bounds.central!r} outside [0, 1]")
+            drivers = [q, w, phi]
+            ra226_central = 0.0
+            pending: list[tuple[str, float]] = []
+            for g in groups:
+                try:
+                    f = self.od_sel(year, g)
+                except LibError as exc:
+                    if not _no_factor(exc):
+                        raise
+                    self.note_run("no_factor", year, OD_COUNTRY, g, f"{label}: no factor row")
+                    continue
+                pool = _qapply(q.q, q.unit, f)
+                for v in VARIANTS:
+                    a = {"default": w.bounds.central, "bound_main": 0.0, "bound_radio": 1.0}[v]
+                    # Exact shares: the structural zero of bound_main is unflagged (LIB_SPEC 2.2).
+                    share = _Q(Bounds.exact(a))
+                    row_q = _Q(Bounds.exact(0.0)) if v == "bound_main" else _qproduct(pool, share, phi.q)
+                    self.flow(
+                        year, row_q, f, q.unit,
+                        drivers=drivers,
+                        text=f"F8: Olympic Dam pool, nuclear ledger (D74), D6 {v}",
+                        substream="fuel_cycle",
+                        stage="u_milling",
+                        country=OD_COUNTRY,
+                        group=g,
+                        tier="impounded",
+                        residue_type="metal_tailings",
+                        allocation_rule=OD_RULE[v],
+                        allocation_variant=v,
+                        factor_ids=[f["factor_id"]],
+                        source_ids=_sources([f], drivers),
+                    )
+                if g == "Ra226+":
+                    ra226_central = pool.b.central
+            # Military remainder a_v (1 - phi) P_OD is not written; one entry per year and variant.
+            for v in ("default", "bound_radio"):
+                a = w.bounds.central if v == "default" else 1.0
+                frac = a * (1.0 - phi.bounds.central)
+                if frac > 0.0:
+                    pending.append((v, frac))
+            for v, frac in pending:
+                self.note(
+                    "od_military_remainder", year, OD_COUNTRY, "",
+                    f"{v}: a_v*(1-phi)={frac:.6g}; Ra226+ central {frac * ra226_central:.6g}",
+                )
+
+    def od_sel(self, year: int, group: str) -> dict:
+        return select(
+            self.od_factors, year=year, region=OD_COUNTRY, group=group, **OD_MATCH
+        )
 
     # ---- conv_enrich_fab ----------------------------------------------------------------
     def enrichment(self) -> None:
@@ -1187,6 +1345,7 @@ def build(root: Path | str) -> BuildResult:
     try:
         b = _Builder(Path(root))
         b.uranium()
+        b.olympic_dam()
         b.enrichment()
         b.country_stage("reprocessing", REPROCESSED)
         b.country_stage("sea_disposal", SEA_DUMPED)

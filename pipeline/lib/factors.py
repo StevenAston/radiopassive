@@ -27,6 +27,7 @@ MATCH_KEYS = frozenset(
         "driver_series",
         "commodity",
         "component",
+        "ore_type",
         "allocation_variant",
     }
 )
@@ -64,7 +65,8 @@ def select(factors: Iterable[Mapping[str, Any]], *, year: int, region: str, **ma
             raise LibError(f"factor {row.get('factor_id')!r}: year_from/year_to must be ints")
         if not (yf <= year <= yt):
             continue
-        if any(row.get(k) != v for k, v in match.items()):
+        # A row without the key is treated as having an empty ore_type (LIB_SPEC §12 item 4).
+        if any((row.get(k, "") if k == "ore_type" else row.get(k)) != v for k, v in match.items()):
             continue
         if row.get("region") == region:
             exact.append(row)

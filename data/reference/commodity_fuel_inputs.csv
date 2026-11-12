@@ -1,0 +1,6 @@
+commodity,fuel,stream_ref,region,year_from,year_to,value_low,value_central,value_high,unit,basis,source_ids,notes
+steel,coal,coal,XWL,1950,2025,0.6,0.8,1,t/t,compiled,S0421;S0202,"Coking coal and PCI as coal, per t BF-route crude steel. Was draft embedded_fuel rows steel U238+/Th232 (D74(d)). Reference only, lifecycle view (D22)."
+cement,coal,coal,XWL,1950,2025,0.06,0.1,0.15,t/t,modelled,S0432,Coal-equivalent kiln fuel per t cement (clinker 3.3 GJ/t x 0.75 clinker ratio / 25 GJ/t coal; author arithmetic). Petcoke and waste fuels not separated. Reference only.
+silicon_mg,coal,coal,XWL,1950,2025,1,1.7,2.5,t/t,modelled,S0422,"Carbothermic reductants per t Si, coal fraction taken as 1.0 (upper side; charcoal is biomass). ASSUMPTION: S0422 Tables 2-4 not read. Reference only."
+aluminium,electricity,,XWL,1950,2025,14,14.5,15,MWh/t,compiled,S0437,Smelting electricity per t primary aluminium (commodity_notes.md section 1 item 4). Reference only; mix not charged until Phase 3 design.
+silicon_mg,electricity,,XWL,1950,2025,11,12,13,MWh/t,compiled,S0422,Furnace electricity per t MG-Si (commodity_notes.md section 1 item 4). Reference only.

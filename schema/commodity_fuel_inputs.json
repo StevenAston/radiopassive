@@ -1,0 +1,197 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "radiopassive/schema/commodity_fuel_inputs.json",
+  "title": "Radiopassive commodity fuel-input row",
+  "description": "One row of data/reference/commodity_fuel_inputs.csv (SCHEMA.md §4.13, v2.6): fuel or electricity per tonne of refined commodity. Reference only. The stream_ref coupling to vocab.json fuel_input_fuels is also checked by the validator.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "commodity",
+    "fuel",
+    "stream_ref",
+    "region",
+    "year_from",
+    "year_to",
+    "value_low",
+    "value_central",
+    "value_high",
+    "unit",
+    "basis",
+    "source_ids",
+    "notes"
+  ],
+  "properties": {
+    "commodity": {
+      "enum": [
+        "ree_oxide",
+        "copper",
+        "aluminium",
+        "steel",
+        "cement",
+        "aggregate",
+        "glass",
+        "glass_fibre",
+        "cast_iron",
+        "tio2_pigment",
+        "silicon_mg",
+        "silver",
+        "tellurium",
+        "cadmium",
+        "indium",
+        "gallium",
+        "selenium",
+        "zinc",
+        "lead",
+        "tin",
+        "nickel",
+        "chromium",
+        "molybdenum",
+        "zirconium",
+        "other_commodity"
+      ]
+    },
+    "fuel": {
+      "enum": [
+        "coal",
+        "coke",
+        "petroleum_coke",
+        "natural_gas",
+        "fuel_oil",
+        "electricity"
+      ]
+    },
+    "stream_ref": {
+      "enum": [
+        null,
+        "coal",
+        "oil_gas"
+      ]
+    },
+    "region": {
+      "type": "string",
+      "pattern": "^[^;]+$"
+    },
+    "year_from": {
+      "type": "integer",
+      "minimum": 1800,
+      "maximum": 2100
+    },
+    "year_to": {
+      "type": "integer",
+      "minimum": 1800,
+      "maximum": 2100
+    },
+    "value_low": {
+      "type": "number",
+      "minimum": 0
+    },
+    "value_central": {
+      "type": "number",
+      "minimum": 0
+    },
+    "value_high": {
+      "type": "number",
+      "minimum": 0
+    },
+    "unit": {
+      "enum": [
+        "t/t",
+        "MWh/t"
+      ]
+    },
+    "basis": {
+      "enum": [
+        "measured",
+        "compiled",
+        "modelled",
+        "interpolated",
+        "extrapolated"
+      ]
+    },
+    "source_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "fuel": {
+            "const": "electricity"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": {
+            "const": "MWh/t"
+          },
+          "stream_ref": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "unit": {
+            "const": "t/t"
+          },
+          "stream_ref": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "fuel": {
+            "enum": [
+              "coal",
+              "coke"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "stream_ref": {
+            "const": "coal"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "fuel": {
+            "enum": [
+              "petroleum_coke",
+              "natural_gas",
+              "fuel_oil"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "stream_ref": {
+            "const": "oil_gas"
+          }
+        }
+      }
+    }
+  ]
+}

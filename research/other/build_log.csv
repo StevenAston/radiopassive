@@ -669,5 +669,5 @@ household_wood_capped,1990,ZMB,,1990-1999 (10 years): capped low+central+high
 household_wood_capped,2016,ZMB,,2016-2023 (8 years): capped low+central+high
 household_wood_capped,1990,ZWE,,1990-2023 (34 years): capped low+central+high
 no_family,,,,stage hydro: no registry rows
-no_family,,,,stage construction: no registry rows; construction waits for commodity_factors.csv
+no_family,,,,stage construction: no registry rows; construction deferred (D75)
 lib_warning,,,,2568 pipeline.lib warnings captured: 2104 x floor dominance applied; 464 x zero central value in product

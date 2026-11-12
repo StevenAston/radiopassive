@@ -1522,7 +1522,6 @@ COMMODITY_T01 = [
     pytest.param(5, {"route": "air_dust"}, id="route-on-non-liberated-tier"),
     pytest.param(5, {"residue_type": ""}, id="residue-tier-without-residue-type"),
     pytest.param(4, {"residue_type": "ree_tailings"}, id="residue-type-on-liberated-tier"),
-    pytest.param(4, {"commodity": "unobtainium"}, id="commodity-not-in-enum"),
     pytest.param(4, {"component": "own_fuel"}, id="component-not-in-enum"),
     pytest.param(4, {"year_from": "1700"}, id="year-from-below-1800"),
     pytest.param(4, {"allocation_rule": "value"}, id="rule-token-without-prefix"),
@@ -1534,6 +1533,14 @@ COMMODITY_T01 = [
 def test_t01_commodity_factors(tmp_root, install_commodity_factors, index, changes):
     corrupt(tmp_root, "data/reference/commodity_factors.csv", index, **changes)
     assert_only(validate(tmp_root, []), "T01", rows=[index], file="data/reference/commodity_factors.csv")
+
+
+def test_t01_commodity_not_in_enum(tmp_root, install_commodity_factors):
+    # v2.6 (SCHEMA 4.7, 6.3): an unknown commodity is T01 (schema enum) and also T04 (vocab
+    # lookup); the v2.5 case asserted T01 alone because commodity had no T04 then.
+    corrupt(tmp_root, "data/reference/commodity_factors.csv", 4, commodity="unobtainium", ore_type="")
+    issues = validate(tmp_root, [])
+    assert {(i.rule, i.row) for i in issues} == {("T01", 4), ("T04", 4)}, describe(issues)
 
 
 def test_t01_commodity_bound_row_needs_its_own_token(tmp_root, install_commodity_factors):
@@ -1570,7 +1577,7 @@ def test_t02_duplicate_baseline_id(tmp_root, install_baselines):
 
 
 def test_t02_duplicate_commodity_factor_key(tmp_root, install_commodity_factors):
-    later = append_copy(tmp_root, "data/reference/commodity_factors.csv", 4, value_central="3.0e6")
+    later = append_copy(tmp_root, "data/reference/commodity_factors.csv", 4, factor_id="commodity:0099", value_central="3.0e6")
     assert_only(validate(tmp_root, []), "T02", rows=[later], file="data/reference/commodity_factors.csv")
 
 

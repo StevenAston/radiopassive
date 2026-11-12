@@ -315,7 +315,9 @@
   "chromium",
   "molybdenum",
   "zirconium",
-  "other_commodity"
+  "other_commodity",
+  "cast_iron",
+  "tio2_pigment"
  ],
  "products": {
   "oil_gas": [
@@ -347,7 +349,9 @@
    "chromium",
    "molybdenum",
    "zirconium",
-   "other_commodity"
+   "other_commodity",
+   "cast_iron",
+   "tio2_pigment"
   ]
  },
  "product_rules": {
@@ -362,8 +366,7 @@
   }
  },
  "commodity_components": [
-  "own_residue",
-  "embedded_fuel"
+  "own_residue"
  ],
  "routes": [
   "air_stack",
@@ -519,5 +522,28 @@
  "accident_routes": [
   "air_accident_release",
   "water_accident_release"
- ]
+ ],
+ "ore_types": {
+  "copper": [
+   "porphyry_stratiform",
+   "iocg_olympic_dam",
+   "iocg_high_u",
+   "cu_co_stratiform",
+   "all"
+  ],
+  "ree_oxide": [
+   "ree_bayan_obo",
+   "ree_ionic_clay",
+   "ree_monazite",
+   "ree_mt_weld"
+  ]
+ },
+ "fuel_input_fuels": {
+  "coal": "coal",
+  "coke": "coal",
+  "petroleum_coke": "oil_gas",
+  "natural_gas": "oil_gas",
+  "fuel_oil": "oil_gas",
+  "electricity": ""
+ }
 }

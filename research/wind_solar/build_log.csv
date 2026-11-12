@@ -1,0 +1,81 @@
+kind,year,country,group,detail
+no_intensity,2001,XXX,,cap_add_solar_csp: 2001-2025 (25 years)
+placeholder_share,1982,COD,,d6_value_share_copper_cu_co: 1982-1987 (6 years)
+placeholder_share,1989,COD,,d6_value_share_copper_cu_co: 1989-1991 (3 years)
+placeholder_share,1998,COD,,d6_value_share_copper_cu_co: 1998-2025 (28 years)
+placeholder_share,2009,AUS,,d6_value_share_copper_iocg_ph_cp: 2009-2025 (17 years)
+placeholder_share,1982,XXX,,d6_value_share_copper_porphyry: 1982-1987 (6 years)
+placeholder_share,1989,XXX,,d6_value_share_copper_porphyry: 1989-1991 (3 years)
+placeholder_share,1998,XXX,,d6_value_share_copper_porphyry: 1998-2025 (28 years)
+placeholder_share,1982,CHN,,d6_value_share_ree_bayan_obo: 1982-1987 (6 years)
+placeholder_share,1989,CHN,,d6_value_share_ree_bayan_obo: 1989-1991 (3 years)
+placeholder_share,1998,CHN,,d6_value_share_ree_bayan_obo: 1998-2025 (28 years)
+placeholder_share,1982,XXX,,d6_value_share_ree_monazite: 1982-1987 (6 years)
+placeholder_share,1989,XXX,,d6_value_share_ree_monazite: 1989-1991 (3 years)
+placeholder_share,1998,XXX,,d6_value_share_ree_monazite: 1998-2025 (28 years)
+placeholder_share,2001,XXX,,d6_value_share_silver: 2001-2025 (25 years)
+placeholder_share,1982,XXX,,d6_value_share_zinc: 1982-1987 (6 years)
+placeholder_share,1989,XXX,,d6_value_share_zinc: 1989-1991 (3 years)
+placeholder_share,1998,XXX,,d6_value_share_zinc: 1998-2025 (28 years)
+placeholder_share,1989,AUS,,od_value_share_u: 1989-1991 (3 years)
+placeholder_share,1998,AUS,,od_value_share_u: 1998-2025 (28 years)
+placeholder_share,2001,XXX,,pv_utility_share: 2001-2025 (25 years)
+placeholder_share,1982,XXX,,ree_charge_factor: 1982-1987 (6 years)
+placeholder_share,1989,XXX,,ree_charge_factor: 1989-1991 (3 years)
+placeholder_share,1998,XXX,,ree_charge_factor: 1998-2025 (28 years)
+placeholder_share,1982,XXX,,ree_route_share_bayan_obo: 1982-1987 (6 years)
+placeholder_share,1989,XXX,,ree_route_share_bayan_obo: 1989-1991 (3 years)
+placeholder_share,1998,XXX,,ree_route_share_bayan_obo: 1998-2025 (28 years)
+placeholder_share,1982,XXX,,ree_route_share_ionic_clay: 1982-1987 (6 years)
+placeholder_share,1989,XXX,,ree_route_share_ionic_clay: 1989-1991 (3 years)
+placeholder_share,1998,XXX,,ree_route_share_ionic_clay: 1998-2025 (28 years)
+placeholder_share,1982,XXX,,ree_route_share_monazite: 1982-1987 (6 years)
+placeholder_share,1989,XXX,,ree_route_share_monazite: 1989-1991 (3 years)
+placeholder_share,1998,XXX,,ree_route_share_monazite: 1998-2025 (28 years)
+placeholder_share,2012,XXX,,ree_route_share_mt_weld: 2012-2025 (14 years)
+placeholder_share,1982,XXX,,steel_bf_route_share: 1982-1987 (6 years)
+placeholder_share,1989,XXX,,steel_bf_route_share: 1989-1991 (3 years)
+placeholder_share,1998,XXX,,steel_bf_route_share: 1998-2025 (28 years)
+placeholder_share,2001,XXX,,wind_pm_share_offshore: 2001-2025 (25 years)
+placeholder_share,1982,XXX,,wind_pm_share_onshore: 1982-1987 (6 years)
+placeholder_share,1989,XXX,,wind_pm_share_onshore: 1989-1991 (3 years)
+placeholder_share,1998,XXX,,wind_pm_share_onshore: 1998-2025 (28 years)
+attribution,1980,XXX,,aluminium: max sigma 1.121e-07 in 1989
+attribution,1990,XXX,,aluminium: max sigma 3.155e-08 in 1999
+attribution,2000,XXX,,aluminium: max sigma 0.002865 in 2009
+attribution,2010,XXX,,aluminium: max sigma 0.0123 in 2018
+attribution,2020,XXX,,aluminium: max sigma 0.04253 in 2025
+attribution,1980,XXX,,cement: max sigma 5.64e-08 in 1989
+attribution,1990,XXX,,cement: max sigma 1.416e-08 in 1999
+attribution,2000,XXX,,cement: max sigma 0.0004893 in 2009
+attribution,2010,XXX,,cement: max sigma 0.0007482 in 2015
+attribution,2020,XXX,,cement: max sigma 0.002371 in 2025
+attribution,1980,XXX,,copper: max sigma 2.356e-07 in 1989
+attribution,1990,XXX,,copper: max sigma 5.817e-08 in 1999
+attribution,2000,XXX,,copper: max sigma 0.004072 in 2009
+attribution,2010,XXX,,copper: max sigma 0.01519 in 2019
+attribution,2020,XXX,,copper: max sigma 0.05935 in 2025
+attribution,1980,XXX,,ree_oxide: max sigma 4.083e-07 in 1989
+attribution,1990,XXX,,ree_oxide: max sigma 1e-07 in 1999
+attribution,2000,XXX,,ree_oxide: max sigma 0.005589 in 2009
+attribution,2010,XXX,,ree_oxide: max sigma 0.01669 in 2015
+attribution,2020,XXX,,ree_oxide: max sigma 0.02282 in 2021
+attribution,2000,XXX,,silver: max sigma 0.03045 in 2009
+attribution,2010,XXX,,silver: max sigma 0.1211 in 2017
+attribution,2020,XXX,,silver: max sigma 0.2074 in 2024
+attribution,1980,XXX,,steel: max sigma 1.649e-07 in 1989
+attribution,1990,XXX,,steel: max sigma 5.766e-08 in 1999
+attribution,2000,XXX,,steel: max sigma 0.002683 in 2009
+attribution,2010,XXX,,steel: max sigma 0.006136 in 2019
+attribution,2020,XXX,,steel: max sigma 0.01786 in 2024
+attribution,1980,XXX,,tin: max sigma 1.632e-09 in 1989
+attribution,1990,XXX,,tin: max sigma 5.427e-10 in 1999
+attribution,2000,XXX,,tin: max sigma 0.0004916 in 2009
+attribution,2010,XXX,,tin: max sigma 0.004659 in 2019
+attribution,2020,XXX,,tin: max sigma 0.02366 in 2025
+attribution,1980,XXX,,zinc: max sigma 1.383e-07 in 1989
+attribution,1990,XXX,,zinc: max sigma 4.142e-08 in 1999
+attribution,2000,XXX,,zinc: max sigma 0.001851 in 2009
+attribution,2010,XXX,,zinc: max sigma 0.003118 in 2015
+attribution,2020,XXX,,zinc: max sigma 0.007556 in 2025
+lib_warning,,,,154 pipeline.lib warnings captured: 154 x floor dominance applied

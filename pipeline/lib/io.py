@@ -190,9 +190,9 @@ def read_table(path: str | os.PathLike) -> list[dict]:
                     raise LibError(
                         f"{name}:{lineno}: column {col}: empty cell in a required column"
                     )
-                # Factor-file substream is "" when empty so select's exact
-                # equality works (LIB_SPEC §10.3); never None.
-                row[col] = "" if col == "substream" else None
+                # Factor-file substream and commodity ore_type are "" when empty so
+                # select's exact equality works (LIB_SPEC §10.3, §12.3); never None.
+                row[col] = "" if col in ("substream", "ore_type") else None
                 continue
             kind = COLUMN_TYPES.get(col, "str")
             if kind == "str":

@@ -1,6 +1,6 @@
-commodity,component,group,tier,route,residue_type,region,year_from,year_to,allocation_variant,allocation_rule,value_low,value_central,value_high,unit,below_detection,basis,source_ids,notes
-copper,own_residue,Ra226+,impounded,,metal_tailings,XWL,1990,2020,default,alloc:value,1.0e3,2.0e3,4.0e3,Bq/t,false,compiled,S0003,
-copper,own_residue,Ra226+,impounded,,metal_tailings,XWL,1990,2020,bound_main,alloc:main,2.0e3,4.0e3,8.0e3,Bq/t,false,compiled,S0003,
-copper,own_residue,Ra226+,impounded,,metal_tailings,XWL,1990,2020,bound_radio,alloc:radio,1.0e2,2.0e2,4.0e2,Bq/t,false,compiled,S0003,
-ree_oxide,own_residue,Th228+,liberated,air_dust,,CHN,2000,2020,default,none,1.0e6,2.0e6,5.0e6,Bq/t,false,compiled,S0003,
-zinc,own_residue,Ra226+,impounded,,metal_tailings,XWL,1990,2020,default,none,5.0e2,1.0e3,2.0e3,Bq/t,false,compiled,S0003,
+factor_id,commodity,component,group,tier,route,residue_type,region,ore_type,year_from,year_to,allocation_variant,allocation_rule,value_low,value_central,value_high,unit,below_detection,basis,source_ids,notes
+commodity:0001,copper,own_residue,Ra226+,impounded,,metal_tailings,XWL,porphyry_stratiform,1990,2020,default,alloc:value,1.0e3,2.0e3,4.0e3,Bq/t,false,compiled,S0003,
+commodity:0002,copper,own_residue,Ra226+,impounded,,metal_tailings,XWL,porphyry_stratiform,1990,2020,bound_main,alloc:main,2.0e3,4.0e3,8.0e3,Bq/t,false,compiled,S0003,
+commodity:0003,copper,own_residue,Ra226+,impounded,,metal_tailings,XWL,porphyry_stratiform,1990,2020,bound_radio,alloc:radio,1.0e2,2.0e2,4.0e2,Bq/t,false,compiled,S0003,
+commodity:0004,ree_oxide,own_residue,Th228+,liberated,air_dust,,CHN,ree_bayan_obo,2000,2020,default,none,1.0e6,2.0e6,5.0e6,Bq/t,false,compiled,S0003,
+commodity:0005,zinc,own_residue,Ra226+,impounded,,metal_tailings,XWL,,1990,2020,default,none,5.0e2,1.0e3,2.0e3,Bq/t,false,compiled,S0003,

@@ -1,4 +1,10 @@
 kind,year,country,group,detail
+od_military_remainder,1988,AUS,,default: a_v*(1-phi)=0.0214024; Ra226+ central 3.6598e+11
+od_military_remainder,1988,AUS,,bound_radio: a_v*(1-phi)=0.178353; Ra226+ central 3.04984e+12
+od_military_remainder,1989,AUS,,default: a_v*(1-phi)=0.0111943; Ra226+ central 1.91423e+11
+od_military_remainder,1989,AUS,,bound_radio: a_v*(1-phi)=0.093286; Ra226+ central 1.59519e+12
+od_military_remainder,1990,AUS,,default: a_v*(1-phi)=0.00018228; Ra226+ central 4.15598e+09
+od_military_remainder,1990,AUS,,bound_radio: a_v*(1-phi)=0.001519; Ra226+ central 3.46332e+10
 no_family,,XXX,,fbr: no registry rows for in_core family
 no_family,,XXX,,fbr: no registry rows for spent_fuel family
 no_inventory,1979,USA,Kr88+,E002: release row without an inventory row; inventory taken as 0
